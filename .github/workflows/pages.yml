@@ -17,6 +17,7 @@ on:
     - cron: '17 */6 * * *'
 permissions:
   contents: read
+  actions: read
   pages: write
   id-token: write
 concurrency:
@@ -40,17 +41,32 @@ jobs:
           python-version: '3.12'
       - run: python tests/atlas-parity.py -v
       - run: python tests/research-reference.py
+      - run: python tests/public-snapshot-cache.py
       - run: python -m pip install -r requirements-data.txt
       - run: python scripts/yahoo-stock-directory.py
+        id: directory
+        continue-on-error: true
       - run: python tests/valuation-cashflows.py
       - run: python scripts/collect-valuation-cashflows.py
+        if: steps.directory.outcome == 'success'
         env:
           OFFICE_US_TICKERS: ${{ inputs.us_tickers }}
           OFFICE_IDX_TICKERS: ${{ inputs.idx_tickers }}
       - run: node scripts/pages-data.mjs
+        if: steps.directory.outcome == 'success'
         env:
           OFFICE_US_TICKERS: ${{ inputs.us_tickers }}
           OFFICE_IDX_TICKERS: ${{ inputs.idx_tickers }}
+      - name: Reuse verified public data for an interface release when the provider is unavailable
+        if: github.event_name == 'push' && steps.directory.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          officeRunId=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/pages.yml/runs?status=success&per_page=1" --jq '.workflow_runs[0].id')
+          test -n "$officeRunId" && test "$officeRunId" != "null"
+          gh run download "$officeRunId" --repo "$GITHUB_REPOSITORY" --name github-pages --dir .tools/public-pages-cache
+          python scripts/reuse-public-snapshot.py .tools/public-pages-cache/artifact.tar
+          echo "::warning::Yahoo catalogue unavailable. This interface release retains public data from verified run $officeRunId with its original source timestamps."
       - run: node scripts/verify-valuation-data.mjs
       - run: node scripts/verify-advanced-publication.mjs
       - run: node scripts/verify-pages-universe.mjs
