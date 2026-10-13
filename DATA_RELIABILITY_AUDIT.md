@@ -40,6 +40,8 @@ Markets/Quant fit 1440/768/390/320 px. Keyboard opening, focus behavior, table s
 
 Receipts, exports used by independent numerical checks and screenshots are stored locally under ignored `validation/`. They are excluded from Git and the published artifact. Tests are Chromium/in-app browser checks, not exhaustive device/screen-reader certification or a guarantee against all future bugs and provider failures.
 
+The [published fix deployment](https://github.com/Ridwanns/longhand-office/actions/runs/38388643214) passed all 175 core tests, acquired 94 histories/105 quotes with zero provider failures, and passed all 376 model cases before deploying. Direct HTTPS rechecks then passed 20 availability/failure/recovery assertions, all 105 rendered Markets instruments, the 22-step records/restore workflow and 22 Quant assertions. The live publication timestamp was 11:12:55 UTC. Test wait predicates now require that the market controls actually exist before reading completion state; this handles slower hosted startup rather than assuming localhost timing.
+
 ## Legitimate unavailable features
 
 The source still has an IDX missing-close break; explicit earlier model cutoffs retain usable observations instead of inventing sessions. Some 20-session studies do not have 20 scored errors, so their empirical intervals remain absent. Missing portfolio prices and unknown cash do not become zero. No automatic FX consolidation, TWR/MWR without required boundary valuations, numerical macro feeds or individual bond yields were invented. Bonds represents the selected ETFs; commodities represents the selected futures. Treasury/Governance remain planned.

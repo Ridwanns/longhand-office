@@ -6,7 +6,7 @@ export async function run(original){
    const symbols=Object.keys(data.quotes).filter(k=>k.startsWith(category+':')).map(k=>k.split(':')[1]);
    for(let i=0;i<symbols.length;i+=12){const batch=symbols.slice(i,i+12);
     if(['us','idx'].includes(category))await p.evaluate(({category,batch})=>localStorage.setItem('longhand-office.watchlists.v1',JSON.stringify({[category]:batch})),{category,batch});
-    await p.goto(root+'#market/'+category);await p.reload();await p.waitForFunction(()=>!document.querySelector('#refresh-market')?.disabled);
+    await p.goto(root+'#market/'+category);await p.reload();await p.waitForFunction(()=>document.querySelector('#refresh-market')&&!document.querySelector('#refresh-market').disabled);
     for(const symbol of batch){const q=data.quotes[category+':'+symbol].quote,row=p.locator('tr[data-symbol="'+symbol+'"]');
      if(await row.locator('.watch-price').count()!==1)throw Error('No price rendered for '+category+':'+symbol+': '+await row.innerText());
      const rendered=await row.locator('.watch-price').innerText(),expected=new Intl.NumberFormat('en-GB',{maximumFractionDigits:4}).format(q.price);
