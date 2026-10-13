@@ -3,7 +3,7 @@ import {createHash} from 'node:crypto';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 const root=fileURLToPath(new URL('../',import.meta.url)),dest=path.join(root,'dist','office');
-const files=['atlas-math.js','atlas-ui.js','atlas.css','style.css','rooms.css','theme.js','building.svg','catalogue.json','model.js','quant-math.js','quant-contract.js','quant-history.js','analysis-contract.js','research-history.js','office-workflows.js','public-quote-contract.js'];
+const files=['research-math.js','research-ui.js','atlas-math.js','atlas-ui.js','atlas.css','style.css','rooms.css','theme.js','building.svg','catalogue.json','model.js','quant-math.js','quant-contract.js','quant-history.js','analysis-contract.js','research-history.js','office-workflows.js','public-quote-contract.js'];
 const generated=['index.html','app.js','office-storage.js','office-extensions.js','quant-ui.js','market-terminal.js','market-catalogue.js','browser-api.js','browser-worker.js','browser-controls.js','browser.css','market-controls.js'];
 await mkdir(dest,{recursive:true});const allowed=new Set([...files,...generated,'data']);
 for(const existing of await readdir(dest))if(!allowed.has(existing))throw Error('Unexpected file in Pages output: '+existing);

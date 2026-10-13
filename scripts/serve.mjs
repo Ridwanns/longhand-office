@@ -11,7 +11,7 @@ if(![4173,4174].includes(port))throw Error('Only local workspace port 4173 and i
 const files = new Set(['index.html','style.css','app.js','model.js','theme.js','market-terminal.js','market-catalogue.js','building.svg','catalogue.json']);
 files.add('rooms.css');
 files.add('research-history.js');
-['atlas-math.js','atlas-ui.js','atlas.css','quant-math.js','quant-contract.js','quant-history.js','analysis-contract.js','quant-ui.js','office-storage.js','office-extensions.js','office-workflows.js'].forEach(f=>files.add(f));
+['research-math.js','research-ui.js','atlas-math.js','atlas-ui.js','atlas.css','quant-math.js','quant-contract.js','quant-history.js','analysis-contract.js','quant-ui.js','office-storage.js','office-extensions.js','office-workflows.js'].forEach(f=>files.add(f));
 let local;
 if(port===4174){files.add('valuation-example.json');files.add('flowless-example.json');}
 const types = {'.html':'text/html','.css':'text/css','.js':'text/javascript','.svg':'image/svg+xml','.json':'application/json'};

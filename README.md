@@ -55,8 +55,9 @@ npm run test:api
 python scripts/reference-quant.py
 ```
 
-The current suite has **190 passing automated checks** and **4 local API checks**. The expanded publication validates **5,260 model cases** across **1,315 eligible histories**, plus **8,534 browser quote entries** (8,514 valid and 20 explicitly unavailable). The expanded **40-check browser workflow**, **22 same-page usability checks**, **20 availability/failure/recovery checks**, **22-step records/backup workflow** and **51 browser safety checks** pass. Restores use fresh isolated contexts; existing records are preserved. Historical audit reports keep their original dated counts.
+The current suite has **202 passing automated checks** and **4 local API checks**. The expanded publication validates **5,260 model cases** across **1,315 eligible histories**, plus **8,534 browser quote entries** (8,514 valid and 20 explicitly unavailable). The expanded **40-check browser workflow**, **22 same-page usability checks**, **20 availability/failure/recovery checks**, **22-step records/backup workflow** and **51 browser safety checks** pass. Restores use fresh isolated contexts; existing records are preserved. Historical audit reports keep their original dated counts.
 
+- [QUANT_REPOSITORY_REVIEW.md](QUANT_REPOSITORY_REVIEW.md): four-repository review and working option/bond/portfolio-risk toolkit, source import, numerical checks and access limits.
 - [MARKET_ATLAS_MATH.md](MARKET_ATLAS_MATH.md): reused calculators, complete retained Atlas studies, source fingerprints, independent checks and fresh-fitting limits.
 - [BROAD_MARKET_COVERAGE.md](BROAD_MARKET_COVERAGE.md): broad yfinance coverage, source gaps, exact tested scope and publication procedure.
 - [DATA_RELIABILITY_AUDIT.md](DATA_RELIABILITY_AUDIT.md): latest complete data/workflow audit, availability fixes and failure/recovery testing.
