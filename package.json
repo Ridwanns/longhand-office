@@ -3,5 +3,5 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "scripts": { "start": "node scripts/serve.mjs", "start:test": "node scripts/serve.mjs --port 4174", "test": "node --test tests/*.test.mjs", "test:api":"node --test tests/local-api.integration.mjs", "build:pages":"node scripts/build-pages.mjs" }
+  "scripts": { "start": "node scripts/serve.mjs", "start:test": "node scripts/serve.mjs --port 4174", "test": "node --test tests/*.test.mjs", "test:api":"node --test tests/local-api.integration.mjs", "data:pages":"node scripts/pages-data.mjs", "build:pages":"node scripts/build-pages.mjs" }
 }

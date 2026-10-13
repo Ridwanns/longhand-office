@@ -2,7 +2,7 @@ import {Worker} from 'node:worker_threads';
 import {readFileSync} from 'node:fs';
 import {configFor,hash,validId} from './quant-data.mjs';
 import {validateAnalysis} from './analysis-backup.mjs';
-const codeHash=hash(['../quant-math.js','./quant-data.mjs','./quant-worker.mjs'].map(p=>readFileSync(new URL(p,import.meta.url),'utf8')));
+const codeHash=hash(['../quant-math.js','./quant-data.mjs','./quant-worker.mjs','../quant-contract.js','../quant-history.js'].map(p=>readFileSync(new URL(p,import.meta.url),'utf8')));
 export class JobQueue{
  constructor(store,{concurrency=2,timeout=120000,fixture=null}={}){this.store=store;this.concurrency=concurrency;this.timeout=timeout;this.fixture=fixture;this.active=new Map();this.pending=[];for(const j of store.allPending()){j.status='queued';this.event(j,'Recovered after local server restart');store.putJob(j);this.pending.push(j.id);}this.pump();}
  event(j,stage){j.stage=stage;j.updated=new Date().toISOString();(j.events??=[]).push({stage,at:j.updated});}

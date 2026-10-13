@@ -26,3 +26,4 @@ backups/
 downloads/
 .DS_Store
 Thumbs.db
+.pages-data/

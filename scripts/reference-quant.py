@@ -5,10 +5,17 @@ import json, math, statistics, urllib.request, argparse, re
 from pathlib import Path
 parser=argparse.ArgumentParser()
 parser.add_argument('--run',default='1e064819-d043-44f6-9ad9-61e9b03c7ec5')
+parser.add_argument('--file',help='Read one exported real-data analysis instead of the local API')
+parser.add_argument('--output',default='validation/quant-independent-results.json')
 args=parser.parse_args()
 RUN=args.run
 assert re.fullmatch(r'[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}',RUN),'Use a saved run UUID.'
-j=json.load(urllib.request.urlopen('http://127.0.0.1:4174/api/local/run/'+RUN,timeout=10))
+if args.file:
+ j=json.loads(Path(args.file).read_text(encoding='utf8'))
+ if 'analysis' in j: j=j['analysis']
+ RUN=j['id']
+else:
+ j=json.load(urllib.request.urlopen('http://127.0.0.1:4174/api/local/run/'+RUN,timeout=10))
 p=[o['price'] for o in j['dataset']['observations']]
 r=[math.log(b/a) for a,b in zip(p,p[1:])]
 checks=[]
@@ -72,5 +79,5 @@ for forecast in j['results']['forecasts']:
  for audit in forecast['audit']:
   assert audit['ridgeLastLabelEnd']<=audit['origin'] and audit['arLastLabelEnd']<=audit['origin']
 receipt={'runId':RUN,'ticker':j['config']['ticker'],'source':j['dataset']['metadata']['source'],'observations':len(p),'checks':checks,'method':'Python statistics; independent Cholesky Ridge solver; no private records read.'}
-Path('validation/quant-independent-results.json').write_text(json.dumps(receipt,indent=2),encoding='utf8')
+Path(args.output).write_text(json.dumps(receipt,indent=2),encoding='utf8')
 print(json.dumps({'passed':len(checks),'ticker':receipt['ticker'],'observations':len(p)}))
