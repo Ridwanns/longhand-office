@@ -4,6 +4,8 @@ A local private investment workspace with a courtyard entrance, research Library
 
 ## Run locally
 
+Source is backed up in the private [Ridwanns/longhand-office](https://github.com/Ridwanns/longhand-office) repository. The application still runs locally. A separate, read-only Pages design preview and manual publication workflow are prepared; GitHub currently rejects Pages for this private repository under the account's plan. See [GITHUB_PAGES.md](GITHUB_PAGES.md) for the verified status, privacy boundary and static-hosting limitations. Investment records are excluded from Git.
+
 Requires Node.js 24 (verified with 24.19.0 and built-in SQLite). No npm packages, bundler, account keys or hosted service are needed to run the office.
 
 ```powershell

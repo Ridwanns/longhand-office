@@ -1,5 +1,17 @@
 # GitHub repository and Pages preview
 
+## Current status — 13 October 2026
+
+Source was pushed to [Ridwanns/longhand-office](https://github.com/Ridwanns/longhand-office), verified **PRIVATE** with `main` as the default branch. [GitHub CI](https://github.com/Ridwanns/longhand-office/actions/runs/38374011045) passed all 152 application tests and the isolated Pages build on Ubuntu/Node 24.
+
+Enabling Pages returned HTTP 422: **“Your current plan does not support GitHub Pages for this repository.”** The subsequent Pages read returned 404, confirming no Pages site is configured. Repository visibility was not changed, no public fallback repository was created, and the publication workflow was not dispatched.
+
+The read-only preview passed 84 browser assertions across 13 routes at desktop/390/320 px, including dark-theme persistence, reduced motion, skip-link/building keyboard navigation, no private data inputs, no local API requests and no JavaScript exceptions. A local preview is available while its server is running at `http://127.0.0.1:4175/pages/`. No investment records were uploaded or restored.
+
+After obtaining an eligible GitHub plan, Pages must be enabled with GitHub Actions as its source. Before manually dispatching **Publish public design preview**, understand that it publishes a publicly accessible preview; it does not provide private application hosting. A privately accessible Pages site requires an eligible Enterprise Cloud organization.
+
+## Publication boundary
+
 The complete application belongs in a **private** source repository. Personal records, databases, backups, validation artifacts, exports and credentials are excluded from Git. Source control is not a backup of investment records; continue exporting records locally.
 
 GitHub Pages is static hosting. It cannot run the local Node server, SQLite vault, market proxy or Quant workers. Publishing the existing application unchanged would leave important workflows broken and would not provide private authentication.
