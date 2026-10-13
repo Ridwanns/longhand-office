@@ -43,3 +43,5 @@ Maximum archive: 1,000 studies; import: 15 MB. Existing studies are not silently
 - Existing **29 Atlas checks**, **34 automatic ticker checks** and **22 complete Investment Lab/linked-backup checks** pass. Browser tests distinguish platform-owned download panels from application-opened workspaces.
 
 Implementation: `auto-valuation-math.js`, `auto-valuation-ui.js`, `scripts/valuation-fundamentals.mjs`, `scripts/collect-valuation-cashflows.py`, `scripts/verify-valuation-data.mjs`. Browser tests/export fixtures/screenshots use isolated contexts and remain ignored in `validation/`.
+
+Production verification: application commit `6a15db7a2befeb2dc74630a7e8abf1eaad657d55`, [Pages run 38439082562](https://github.com/Ridwanns/longhand-office/actions/runs/38439082562) and [CI run 38439082149](https://github.com/Ridwanns/longhand-office/actions/runs/38439082149) succeeded. All **27 automatic valuation browser checks** were repeated successfully on the public site in fresh isolated contexts. No JavaScript exceptions occurred. The local mobile/touch edition also completed MSFT in dark mode without horizontal overflow.
