@@ -42,10 +42,16 @@ jobs:
       - run: python tests/research-reference.py
       - run: python -m pip install -r requirements-data.txt
       - run: python scripts/yahoo-stock-directory.py
+      - run: python tests/valuation-cashflows.py
+      - run: python scripts/collect-valuation-cashflows.py
+        env:
+          OFFICE_US_TICKERS: ${{ inputs.us_tickers }}
+          OFFICE_IDX_TICKERS: ${{ inputs.idx_tickers }}
       - run: node scripts/pages-data.mjs
         env:
           OFFICE_US_TICKERS: ${{ inputs.us_tickers }}
           OFFICE_IDX_TICKERS: ${{ inputs.idx_tickers }}
+      - run: node scripts/verify-valuation-data.mjs
       - run: node scripts/verify-pages-universe.mjs
       - run: node scripts/build-pages.mjs
       - uses: actions/upload-pages-artifact@v5

@@ -45,7 +45,7 @@ The local port-4173 browser data and SQLite vault were not migrated, replaced or
 
 ## Verification and remaining limits
 
-The application suite passes **209 tests**. The broad release validates **5,260 model cases** across all **1,315 eligible histories**, and all **8,534 entries** through the browser quote adapter (8,514 accepted, 20 explicitly withheld). Expanded browser tests cover new US/IDX names, actual PLTR/EMTK Worker runs, persistence, faults, mobile layouts and bounded search. The **22-step full Investment Lab workflow**, isolated linked-analysis export/restore, **22 Quant usability checks**, **20 availability checks** and **51 browser safety checks** pass again. See [BROAD_MARKET_COVERAGE.md](BROAD_MARKET_COVERAGE.md) for current evidence; prior reports retain their dated audit counts.
+The application suite passes **219 tests**. The broad release validates **5,260 model cases** across all **1,315 eligible histories**, and all **8,534 entries** through the browser quote adapter (8,514 accepted, 20 explicitly withheld). Expanded browser tests cover new US/IDX names, actual PLTR/EMTK Worker runs, persistence, faults, mobile layouts and bounded search. The **22-step full Investment Lab workflow**, isolated linked-analysis export/restore, **22 Quant usability checks**, **20 availability checks** and **51 browser safety checks** pass again. See [BROAD_MARKET_COVERAGE.md](BROAD_MARKET_COVERAGE.md) for current evidence; prior reports retain their dated audit counts.
 
 Markets offers a searchable published stock list and rejects unsupported additions before changing the watchlist. Older saved unsupported entries remain present as **Not published**. Source failures and invalid observations receive distinct explanations. Refresh updates the publication notice; it reads a dated file, not a streaming price.
 
@@ -66,3 +66,7 @@ Only `dist/office` is published by `.github/workflows/pages.yml`. The historical
 ## Automatic ticker entry
 
 Quant Lab now starts with one ticker input. US/IDX detection, published source quote, eligible adjusted-history statistics, existing core model fitting and saving run automatically. Custom settings remain collapsed and accessible. Ticker source snapshots use a separate IndexedDB archive; its additive export/restore never replaces Office records. Core-run references require separately retained core exports on a new device. See [AUTOMATIC_TICKER_RESEARCH.md](AUTOMATIC_TICKER_RESEARCH.md) for the 34-check browser evidence and explicit source/financial-input limitations.
+
+## Automatic Atlas valuation
+
+The Atlas desk defaults to **Automatic valuation**. Published source fundamentals and eligible annual cash-flow components feed explicit earnings/FCFE scenarios from one ticker; the main research ticker drives this desk as well. Presets remain labelled hypothetical and editable. Completed studies save in a separate IndexedDB archive with additive, recomputed exports/restores. Original manual calculators and frozen reference studies remain available. See [AUTO_VALUATION.md](AUTO_VALUATION.md) for verified source coverage, tested Yahoo Financials/IDX repository observations and currency/financial-company/missing-data limits.
