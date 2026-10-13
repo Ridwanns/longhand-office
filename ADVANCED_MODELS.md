@@ -1,0 +1,55 @@
+# Advanced quantitative research in Longhand Office
+
+Implemented 14 October 2026 (Asia/Jakarta). This follows the mathematical direction in the owner's Market Atlas conversation and the inspected original analytical modules. The new implementation is dependency-free JavaScript in a separate Web Worker; it is not a claim of identical NumPy/sklearn/SciPy results or a trading edge.
+
+## Everyday use
+
+Open **Quant Lab**, enter a US or IDX ticker, and press Enter or pause. The existing core run completes first. Office then fits the advanced models on that run's retained completed prices and saves the results in this browser. Results stay below the input on the same page.
+
+The first display contains three plain-language observations: forecast evidence, volatility conditions, and historical downside. **Explore analysis** selects scenarios, return comparisons, volatility, regimes, tail risk or benchmark eligibility. Scenario views include an uncertainty ribbon, twelve unselected seeded sample paths, percentile endpoint prices and a complete 5,000-path terminal histogram. Return models have graphical RMSE comparisons. Tables, parameters and audit rows are inside disclosures. Original core results remain under **Core model archive**; their exports and thesis/decision links are unchanged.
+
+Play/Pause, Replay and the keyboard-accessible session slider reveal retained scenario values, never regenerate randomness. Reduced motion suppresses playback. Hiding the browser or changing analysis stops playback. No additional model tab opens.
+
+## Models that actually refit
+
+- **Ridge, OLS, KNN-50, histogram-stump boosting, AR(1), Mean and Zero** at 5/20 observed sessions. Ten features follow the Atlas return/volatility/moving-average/RSI/drawdown definitions. Feature warmup: 200 sessions. Minimum matured labels: 252 for shorter histories, 756 for histories of at least 1,200 prices. Training is deliberately bounded to the latest 756 matured labels, rather than claiming the original Atlas expanding-window parity. Ridge penalty 10; KNN 50; boosting 80 rounds, learning rate 0.05, 32 candidate bins, minimum leaf 40, L2 10. OLS rank failure stays unavailable. Preprocessing sees only training data.
+- **Evaluation:** at most 40 nonoverlapping chronological origins per horizon, with identical origins for valid model comparisons. RMSE, MAE, three-sign direction accuracy and improvement versus Mean remain visible, including negative improvements. Ranking is retrospective. Prior-error intervals require 30 already matured errors, and their coverage is scored subsequently. A separate final purged split-conformal boosting interval uses twenty calibration origins and the nineteenth ordered absolute error. It is not a prospective coverage guarantee or a retrospective conformal coverage score.
+- **Gaussian GARCH(1,1)** with positive omega, nonnegative alpha/beta and persistence at most 0.999. Zero-mean QML uses a deterministic bounded multi-start pattern search. This differs from Atlas's SciPy SLSQP solver. Optimizer convergence / iteration limit is retained and displayed; an approximate fit is not advertised as exact convergence. Historical comparison refits every 63 sessions from up to 756 prior returns, scores up to the latest 252 sessions, and compares causal QLIKE and variance MSE with EWMA and rolling-60 variance. Current full-window fit never enters historical scores.
+- **Two-state Gaussian HMM:** scaled EM on prior returns, variance floor 0.001 percent-squared, fixed deterministic initialization, at most sixty EM iterations. Refits every 126 sessions with up to 756 training returns; evaluation uses forward filtering only. The stress state is the higher fitted variance, not a recession label, investment signal or forecast probability of a loss. Convergence and fit dates are retained.
+- **Two 5,000-path processes:** five-session circular block bootstrap of up to 756 historical log returns, and an IID zero-log-drift Gaussian process with last-sixty sample volatility. xorshift32 / Box–Muller make the retained source/seed reproducible in this implementation. These are not NumPy-identical draws. Percentile ribbons are pointwise process scenarios, not calibrated simultaneous path intervals. The histogram always retains the whole selected horizon during playback.
+- **Historical one-session VaR/ES at 95%/99%:** up to 756 observed simple losses, exact tail counts and subsequent causal breach records over up to 252 sessions. No maximum-loss guarantee or independence-based certification is asserted.
+- **HAR when genuine OHLC is available:** annualized daily Garman–Klass proxy, lagged daily/five/22-session features, causal OLS fits. This is not intraday realized volatility. The publication now retains actual provider open/high/low fields; older publications or mismatched acquisition vintages explicitly withhold HAR. Missing OHLC is never manufactured from closes.
+- **Kalman beta where matched SPY data is available:** common-date, same-basis USD log returns, first-252 OLS initialization and forward-only beta filtering with fixed process variance 0.0001. This is descriptive benchmark sensitivity, not CAPM alpha.
+
+The advanced calculation is capped at the latest 3,000 source prices. Original source count and actual modeled date range are retained. Large calendar gaps, missing/invalid prices, duplicate/future dates, identity/currency/basis mismatches and extreme absolute daily log returns of at least five reject. The existing core data acquisition and segmentation rules remain authoritative; source quotes are not substituted into model history.
+
+## Source and privacy
+
+Advanced version: **longhand-advanced-1.0.0**. Core version **longhand-core-1.0.0** and its strict backup contract remain unchanged. Optional OHLC is joined only when instrument, acquisition vintage, source date and selected prices agree. Optional SPY data is read through anonymous same-origin public GETs with validated identity, currency and basis. Optional-source failure withholds the relevant method and keeps the core retained prices authoritative.
+
+Personal holdings, trades, thesis notes and decisions are neither uploaded nor generated. Analyses do not reprice recorded holdings, execute trades or change target weights. GitHub Pages runs these calculations in the visitor's browser; no Python service or account key is shipped. Public price/history snapshots still refresh best effort every six hours and are not exchange-entitled real-time data.
+
+## Archive and backups
+
+Advanced studies append to path-scoped IndexedDB **longhand-office.advanced.<site path>**, including optional isolated test-workspace suffix. A study retains its own immutable ID, original core run ID, creation date, normalized prices/OHLC/benchmark, settings, result, formula version and SHA-256 source/result hashes.
+
+Reload restores the saved advanced study for the exact core run without starting another fit. A new core run gets a separate study. **Export this advanced study** works even if saving fails. **Export advanced archive** exports all saved advanced studies. **Restore advanced archive** validates every source and hash, independently recomputes all results in workers, rejects duplicates/tampering/conflicting IDs, then adds new studies in one transaction without overwriting existing studies or Office records.
+
+Limit: 100 studies / 30 MB imported JSON. There is no silent pruning. Clearing browser site data removes this device's archive. Backup is separate from Office records, ticker snapshots, valuation archive and complete core analysis exports; an advanced backup retains the core reference, not the complete referenced core run. Provider text in imported files is unverified: hashes and reconciliation establish consistency, not source authenticity. No multi-device account synchronization exists.
+
+## Verification
+
+- **233 Node application tests passed**, including fourteen new advanced tests for independently calculated features/forecasts/GARCH recurrence/VaR/ES, future-data perturbations, rank failures, conformal purging, stationary fits, 5,000-path counts, genuine OHLC eligibility, benchmark currency and recomputed-result tampering.
+- **Four local API integration tests passed.** Both local servers were restarted only after verifying zero queued/running jobs and their exact Office process command lines; all databases were preserved.
+- **55 isolated advanced browser checks passed:** real NVDA/MSFT/BBCA/ADRO, six views at 1440/768/390/320 widths, shaded ribbons, both processes, keyboard/reduced-motion interaction, exact reload, backup restore into a context with an existing MSFT study, ID conflict and recomputed-hash tampering rejection, unknown ticker suppression and unchanged private record keys. No browser JavaScript errors.
+- Existing **34 automatic ticker**, **27 automatic valuation**, and **22 complete Investment Lab/linked-backup** browser checks passed again.
+- **16 representative real public US/IDX histories** passed the new publication gate, including NVDA/MU/TSM/SPY and BBCA/ADRO. The gate checks finite outputs, causal training audit and full 5,000-path counts. It does not claim every advanced family is eligible for every ticker or that each fit converges; these statuses are retained. Existing complete core-universe checks continue separately.
+- Fixed a verified UI defect: after an unknown ticker hid results, opening a saved advanced study now reveals the results region correctly.
+
+Tests run only in fresh contexts; exports and screenshots are ignored in `validation/`. Actual market counts/cutoffs can change with each publication. Numerical test fixtures explicitly identify synthetic test data and do not appear in normal app empty states.
+
+## Remaining analytical limits
+
+CAPM / FF3 / FF5 need matched dated risk-free/factor inputs and are explicitly unavailable in the fresh engine. IDX receives no substituted USD benchmark/factors. Prospective prediction registration and settlement are not yet integrated, so no forward performance is claimed. Short histories may support GARCH/regimes/scenarios while withholding the return suite; an inspected BBCA snapshot had 361 usable prices, insufficient after the 200-session warmup.
+
+Automatic long-horizon earnings / eligible annual FCFE valuation remains in the existing valuation desk, with separate assumptions and source dates. Those mechanically anchored sensitivities are not independent company fair-value estimates. The existing portfolio-risk toolkit and dated Atlas reference studies remain available; no automatic optimizer, portfolio trades or inferred positions are added. This release implements a substantial fresh research engine, not every institutional quant workflow or a guarantee of investment performance.

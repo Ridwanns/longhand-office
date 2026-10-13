@@ -52,6 +52,7 @@ jobs:
           OFFICE_US_TICKERS: ${{ inputs.us_tickers }}
           OFFICE_IDX_TICKERS: ${{ inputs.idx_tickers }}
       - run: node scripts/verify-valuation-data.mjs
+      - run: node scripts/verify-advanced-publication.mjs
       - run: node scripts/verify-pages-universe.mjs
       - run: node scripts/build-pages.mjs
       - uses: actions/upload-pages-artifact@v5

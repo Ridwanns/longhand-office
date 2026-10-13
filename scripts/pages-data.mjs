@@ -18,7 +18,7 @@ export function projectPagesHistory(raw,config,retrievedAt=new Date().toISOStrin
  if(!Array.isArray(times)||!Array.isArray(q?.close)||times.length>10000)throw Error('Invalid history arrays.');
  const zone=m.exchangeTimezoneName||(config.market==='IDX'?'Asia/Jakarta':'America/New_York'),fmt=new Intl.DateTimeFormat('en-CA',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit'}),now=new Date(retrievedAt),current=fmt.format(now),end=m.currentTradingPeriod?.regular?.end,hour=Number(new Intl.DateTimeFormat('en-GB',{timeZone:zone,hour:'2-digit',hourCycle:'h23'}).format(now));
  const todayComplete=end?now.getTime()/1000>=end+900:hour>=17;
- const rows=times.map((t,i)=>({date:fmt.format(new Date(t*1000)),timestamp:t,rawClose:q.close[i],adjustedClose:adj?.[i]??null,volume:q.volume?.[i]??null,complete:fmt.format(new Date(t*1000))<current||fmt.format(new Date(t*1000))===current&&todayComplete}));
+ const rows=times.map((t,i)=>({date:fmt.format(new Date(t*1000)),timestamp:t,rawClose:q.close[i],adjustedClose:adj?.[i]??null,open:q.open?.[i]??null,high:q.high?.[i]??null,low:q.low?.[i]??null,volume:q.volume?.[i]??null,complete:fmt.format(new Date(t*1000))<current||fmt.format(new Date(t*1000))===current&&todayComplete}));
  const metadata={ticker:config.ticker,market:config.market,provider:'yahoo',listing:m.exchangeName,instrumentType:m.instrumentType,currency:m.currency,timezone:zone,source:'Yahoo Finance published daily history',sourceUrl:'https://finance.yahoo.com/quote/'+encodeURIComponent(symbol)+'/',retrievedAt,sourceHash:hash(raw),corporateActions:r.events||{},completionPolicy:'Past exchange dates; current session only after regular-session end +15 minutes (fallback 17:00 exchange local time).'};
  return {rows,metadata};
 }
