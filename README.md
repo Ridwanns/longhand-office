@@ -2,6 +2,8 @@
 
 A local private investment workspace with a courtyard entrance, research Library, separate Paper/Real portfolio ledgers, decision Journal, Markets desk and persistent Quant Lab. Treasury and Governance remain planned.
 
+Quant Lab has a sticky desktop study directory and a compact mobile navigation menu connecting all analysis views, valuation/calculation desks and saved archives, with links to the existing Office spaces. Jumps preserve the run URL and draft fields within the Quant page. See [QUANT_NAVIGATION.md](QUANT_NAVIGATION.md) for the connected destinations and verified behavior.
+
 Quant Lab now automatically fits a separate advanced engine after a completed ticker run: seven return comparisons, GARCH, forward HMM, two 5,000-path scenario processes, VaR/ES, eligible OHLC HAR and matched SPY Kalman beta. Graphs and plain-language evidence appear first; original model tables remain in a disclosure. Source dates, inadequate history, unsupported factors and optimizer diagnostics remain explicit. Advanced studies save in browser IndexedDB with a separate additive, recomputing backup. See [ADVANCED_MODELS.md](ADVANCED_MODELS.md) for the numerical contract, privacy boundaries, 233 application tests and 79 isolated browser checks.
 
 ## Run locally
