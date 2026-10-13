@@ -11,6 +11,7 @@ The user reported an unavailable market and requested a detailed check of the co
 5. Public quote validation now checks symbol, source, price, currency, instrument type/units, source/acquisition/publication times, exchange date for US/IDX/bond ETFs, duplicate/invalid/future chart dates, and arithmetic against the exact previous available close. The same contract is used in the browser and the prepublication verifier. Invalid source data is rejected before valuation actions are offered.
 6. Errors distinguish **Not published**, **Source unavailable**, **Invalid source data**, and model-list/history limitations. Missing price change is **No prior close**, not a failed price. An old source observation is checked against the current clock rather than its frozen retrieval-time age.
 7. A missing empirical forecast interval now states **Needs 20 scored errors · N available**. The evidence threshold remains unchanged; a completed forecast is not falsely portrayed as a failed market feed.
+8. The user's newly created portfolio had no holdings and no recorded opening cash. Its generic incomplete-valuation warning incorrectly asked for prices. Guidance now depends on the actual missing data: empty portfolios say **Cash not recorded**, concentration says **Not applicable**, and the next step is Edit portfolio to supply opening cash. A priced holding with unknown cash asks only for cash; a missing holding price asks for its dated price. Explicit zero remains zero. This changes explanatory text only, not the user's records or accounting.
 
 ## Verification
 
@@ -33,6 +34,7 @@ The user reported an unavailable market and requested a detailed check of the co
 | Independent Python check of freshly exported browser AAPL analysis | 34 numerical checks / 1,254 observations |
 | Independent Python check of freshly exported browser ADRO analysis | 34 numerical checks / 361 observations |
 | Live public Longhand Research catalogue refresh | 12 reports, successful refresh, no browser exceptions |
+| Contextual valuation guidance: unknown cash, explicit zero, missing price, priced holding; reload/mobile/preservation | 9 assertions |
 
 The core ledger example independently reconciles cash 844 USD, six remaining shares, recorded cost 303, trading profit 35, fees 8 and dividends 12. Supplied price 70 gives total value 1,264 and unrealized P/L 117. Invalid oversales/withdrawals do not mutate records; missing/stale/incompatible prices suppress complete valuations and concentration. Currencies remain separate. Both complete workflows restore all records and linked analyses into fresh test environments.
 
