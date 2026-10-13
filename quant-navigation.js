@@ -1,6 +1,9 @@
 // In-page navigation only. No record writes, model requests or route replacement.
 const sections=[
  {group:'Study',key:'ticker',label:'Ticker & source',target:'#ticker-form'},
+ {group:'Study',key:'summary',label:'Stock overview',target:'#ticker-summary'},
+ {group:'Saved work',key:'manual',label:'Saved manual studies',target:'#manual-archive'},
+ {group:'Saved work',key:'predictions',label:'Registered forecasts',target:'#prediction-desk'},
  {group:'Analysis',key:'scenarios',label:'Scenarios',view:'scenarios'},
  {group:'Analysis',key:'returns',label:'Return models',view:'returns'},
  {group:'Analysis',key:'volatility',label:'Volatility · GARCH / HAR',view:'volatility'},
@@ -18,7 +21,7 @@ const sections=[
  {group:'Saved work',key:'tickers',label:'Saved ticker studies',target:'#ticker-archive'}
 ];
 const office=[['#overview','The Office'],['#market/us','Market data'],['#portfolios','Paper portfolios'],['#portfolios/real','Real portfolios'],['#theses','Investment theses'],['#decisions','Decision journal'],['#library','Research library'],['#records','Office records & backups']];
-const groups=[...new Set(sections.map(s=>s.group))];
+const groups=['Study','Analysis','Decision tools','Saved work'];
 let root,observer,frame,scrollFrame,lockedUntil=0;
 export function quantNavigation(){return `<aside class="quant-sidebar" aria-label="Study navigator"><p class="eyebrow">INVESTMENT DESK</p><p class="quant-nav-asset" data-quant-nav-asset>No ticker selected</p><nav class="quant-nav-list" aria-label="Quant Lab sections">${groups.map(group=>'<div class="quant-nav-group"><p>'+group+'</p>'+sections.filter(s=>s.group===group).map(s=>'<button type="button" data-quant-jump="'+s.key+'"'+(s.view||s.requiresCore?' disabled title="Analyse a ticker first"':'')+(s.key==='ticker'?' aria-current="location"':'')+'>'+s.label+'</button>').join('')+'</div>').join('')}</nav><details class="quant-office-links"><summary>Office spaces</summary>${office.map(([href,label])=>'<a href="'+href+'">'+label+'</a>').join('')}</details><p class="quant-nav-help">Model sections unlock after an analysis completes.</p></aside><div class="quant-mobile-nav"><label for="quant-jump-menu">Navigate study <span data-quant-nav-asset>No ticker selected</span></label><select id="quant-jump-menu" aria-label="Navigate Quant Lab">${groups.map(group=>'<optgroup label="'+group+'">'+sections.filter(s=>s.group===group).map(s=>'<option value="'+s.key+'"'+(s.view||s.requiresCore?' disabled':'')+'>'+s.label+'</option>').join('')+'</optgroup>').join('')}<optgroup label="Office spaces">${office.map(([href,label])=>'<option value="office:'+href+'">'+label+'</option>').join('')}</optgroup></select></div>`;}
 function available(){return !!root?.querySelector('#advanced-view')&&!root.querySelector('#quant-results')?.hidden;}
@@ -37,7 +40,7 @@ function followScroll(){if(!root?.isConnected||performance.now()<lockedUntil)ret
  const candidates=sections.filter(s=>s.target).map(s=>({s,el:root.querySelector(s.target)})).filter(x=>x.el&&x.el.getClientRects().length&&x.el.closest('details:not([open])')===null).map(x=>({...x,r:x.el.getBoundingClientRect()})).filter(x=>x.r.top<=line&&x.r.bottom>0).sort((a,b)=>b.r.top-a.r.top);if(candidates[0])setActive(candidates[0].s.key);
 }
 export function mountQuantNavigation(){const next=document.querySelector('.quant-room');if(!next)return;if(root!==next){observer?.disconnect();root=next;lockedUntil=0;setActive('ticker');observer=new MutationObserver(schedule);observer.observe(root.querySelector('.quant-content'),{childList:true,subtree:true,attributes:true,attributeFilter:['hidden','open']});}schedule();}
-document.addEventListener('click',e=>{const button=e.target.closest('[data-quant-jump]');if(button&&!button.disabled)go(button.dataset.quantJump);});
+document.addEventListener('click',e=>{const button=e.target.closest('[data-quant-jump],[data-summary-jump]');if(button&&!button.disabled)go(button.dataset.quantJump||button.dataset.summaryJump);});
 document.addEventListener('change',e=>{if(e.target.id==='quant-jump-menu')go(e.target.value);if(e.target.id==='advanced-view')setActive(e.target.value);});
 window.addEventListener('scroll',()=>{cancelAnimationFrame(scrollFrame);scrollFrame=requestAnimationFrame(followScroll);},{passive:true});
 window.addEventListener('hashchange',schedule);

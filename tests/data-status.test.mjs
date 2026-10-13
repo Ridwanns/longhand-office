@@ -1,0 +1,4 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {dataState,dataBadge} from '../data-status.js';
+const now=Date.parse('2026-10-14T02:00:00Z');
+test('Data states distinguish absent, undated, recent and outdated observations',()=>{assert.equal(dataState({available:false,now}).kind,'missing');assert.equal(dataState({now}).kind,'unverified');assert.equal(dataState({observedAt:'2026-10-13',now}).kind,'snapshot');assert.equal(dataState({observedAt:'2026-10-01',now}).kind,'outdated');assert.equal(dataState({observedAt:'2026-10-15',now}).kind,'unverified');});
+test('Missing model inputs stay explicit beside a valid dated source quote',()=>{const h=dataBadge({observedAt:'2026-10-13',now,modelReady:false,hasFundamentals:false});assert.ok(h.includes('Insufficient history'));assert.ok(h.includes('Missing fundamentals'));assert.ok(h.includes('Not real-time'));assert.ok(!h.includes('live price'));});

@@ -24,6 +24,8 @@ export function createLocalAPI(port){
    else if(route==='validate-backup'&&req.method==='POST'){const x=await body(req);if(!x||typeof x!=='object'||(x.format!==undefined||x.formatVersion!==undefined)&&(x.format!=='longhand-office-backup'||x.formatVersion!==2))throw Error('Incompatible backup format.');const records=validate(x.format==='longhand-office-backup'?x.records:x),runs=x.format==='longhand-office-backup'?x.analyses:[];store.validateRuns(runs);store.checkReferences(records,runs);reply(res,{records,analyses:runs});}
    else if(route==='backups'&&req.method==='GET')reply(res,store.backups(url.searchParams.get('id')));
    else if(route==='recovery'&&req.method==='GET')reply(res,store.backup(url.searchParams.get('id'),Number(url.searchParams.get('backup'))));
+   else if(route==='full-archive'&&req.method==='GET')reply(res,store.completeArchive());
+   else if(route==='restore-requests'&&req.method==='POST')reply(res,store.restoreRequests((await body(req)).requests));
    else if(route==='runs'&&req.method==='GET')reply(res,store.listJobSummaries());
    else if(route==='runs'&&req.method==='POST')reply(res,jobs.submit(await body(req)),202);
    else if(route.startsWith('run/')&&req.method==='GET'){const j=store.job(route.slice(4));if(!j)reply(res,{error:'Run not found. The submitting tab may still be sending this request.'},404);else reply(res,j);}

@@ -2,7 +2,7 @@ import {DatabaseSync} from 'node:sqlite';
 import {mkdirSync} from 'node:fs';
 import path from 'node:path';
 import {validate} from '../model.js';
-import {hash,validId} from './quant-data.mjs';
+import {hash,validId,configFor} from './quant-data.mjs';
 import {validateAnalysis} from './analysis-backup.mjs';
 export class LocalStore{
  constructor(filename){if(filename!==':memory:')mkdirSync(path.dirname(filename),{recursive:true});this.filename=filename;this.db=new DatabaseSync(filename);this.db.exec('PRAGMA journal_mode=WAL; PRAGMA busy_timeout=5000; PRAGMA foreign_keys=ON; CREATE TABLE IF NOT EXISTS workspaces(id TEXT PRIMARY KEY, revision INTEGER NOT NULL, body TEXT NOT NULL, updated TEXT NOT NULL); CREATE TABLE IF NOT EXISTS backups(id INTEGER PRIMARY KEY, workspace TEXT NOT NULL, revision INTEGER NOT NULL, body TEXT NOT NULL, reason TEXT NOT NULL, created TEXT NOT NULL); CREATE TABLE IF NOT EXISTS jobs(id TEXT PRIMARY KEY, fingerprint TEXT NOT NULL, config TEXT NOT NULL, status TEXT NOT NULL, body TEXT NOT NULL, created TEXT NOT NULL);');}
@@ -18,8 +18,10 @@ export class LocalStore{
   return {id,revision:revision+1,data,updated:now};
  });}
  job(id){if(!validId(id))throw Error('Invalid run ID.');const r=this.db.prepare('SELECT body FROM jobs WHERE id=?').get(id);return r?JSON.parse(r.body):null;}
- putJob(j){this.db.prepare('INSERT INTO jobs(id,fingerprint,config,status,body,created) VALUES(?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET status=excluded.status,body=excluded.body').run(j.id,j.fingerprint,JSON.stringify(j.config),j.status,JSON.stringify(j),j.created);}
+ putJob(j){this.db.prepare('INSERT INTO jobs(id,fingerprint,config,status,body,created) VALUES(?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET status=excluded.status,body=excluded.body').run(j.id,j.fingerprint||j.configHash,JSON.stringify(j.config),j.status,JSON.stringify(j),j.created);}
  listJobs(){return this.db.prepare('SELECT body FROM jobs ORDER BY created DESC LIMIT 200').all().map(r=>JSON.parse(r.body));}
+ restoreRequests(records){if(!Array.isArray(records)||records.length>2000)throw Error('Invalid incomplete requests.');const list=records.map(n=>{if(!validId(n.id)||!['queued','running','failed','cancelled'].includes(n.status)||!Number.isFinite(Date.parse(n.created)))throw Error('Invalid archived request.');const config=configFor(n.config);return {id:n.id,config,configHash:hash(config),fingerprint:hash(config),created:n.created,version:1,status:'cancelled',stage:'Archived incomplete request; never auto-restarted',error:'Original backup status: '+n.status};});return this.atomic(()=>{for(const j of list)if(!this.job(j.id))this.putJob(j);return {retained:true};});}
+ completeArchive(){const rows=this.db.prepare("SELECT body FROM jobs WHERE status='completed' ORDER BY created DESC LIMIT 201").all();if(rows.length>200)throw Error('Complete backup supports at most 200 completed core runs. No truncated backup was produced.');return {analyses:rows.map(r=>JSON.parse(r.body)),incompleteRuns:this.db.prepare("SELECT id,config,status,created FROM jobs WHERE status!='completed'").all().map(r=>({...r,config:JSON.parse(r.config)}))};}
  listJobSummaries(){return this.db.prepare("SELECT id,config,status,created,json_extract(body,'$.version','$.cachedFrom','$.stage','$.observations','$.error') AS info,json_array_length(body,'$.dataset.observations') AS observations FROM jobs ORDER BY created DESC LIMIT 200").all().map(r=>{const [version,cachedFrom,stage,count,error]=JSON.parse(r.info);return {id:r.id,config:JSON.parse(r.config),status:r.status,created:r.created,version,cachedFrom,stage,observations:r.observations??count,...(error?{error}:{})};});}
  allPending(){return this.db.prepare("SELECT body FROM jobs WHERE status IN ('queued','running') ORDER BY created").all().map(r=>JSON.parse(r.body));}
  cached(fingerprint){const r=this.db.prepare("SELECT body FROM jobs WHERE fingerprint=? AND status='completed' ORDER BY created DESC LIMIT 1").get(fingerprint);return r?JSON.parse(r.body):null;}

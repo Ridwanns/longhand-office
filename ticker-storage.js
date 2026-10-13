@@ -1,6 +1,7 @@
+import {workspaceScope} from './workspace-scope.js';
 import {validateTickerStudy,validateTickerBackup} from './ticker-study.js';
 let opening;
-const dbName=()=> 'longhand-office.ticker-studies.'+new URL('.',location.href).pathname+(new URLSearchParams(location.search).get('test-workspace')||'');
+const dbName=()=> 'longhand-office.ticker-studies.'+new URL('.',location.href).pathname+workspaceScope();
 const request=r=>new Promise((resolve,reject)=>{r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});
 async function db(){return opening??=new Promise((resolve,reject)=>{const r=indexedDB.open(dbName(),1);r.onupgradeneeded=()=>r.result.createObjectStore('studies',{keyPath:'id'});r.onsuccess=()=>{r.result.onversionchange=()=>r.result.close();resolve(r.result);};r.onerror=()=>{opening=null;reject(r.error);};r.onblocked=()=>{opening=null;reject(Error('Ticker storage is blocked by another tab.'));};});}
 async function transaction(mode,fn){const connection=await db(),tx=connection.transaction('studies',mode),done=new Promise((resolve,reject)=>{tx.oncomplete=resolve;tx.onabort=()=>reject(tx.error||Error('Ticker storage transaction aborted.'));tx.onerror=()=>{};});try{const result=await fn(tx.objectStore('studies'));await done;return result;}catch(e){try{tx.abort();}catch{}await done.catch(()=>{});throw e;}}

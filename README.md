@@ -1,5 +1,7 @@
 # Longhand Office
 
+The Investment Lab now has method-aware autosaved drafts, saved manual studies, a complete backup with isolated restoration, a consolidated ticker overview, a guarded forward core-forecast registry and consistent data states. See [CONTINUITY_RELEASE.md](CONTINUITY_RELEASE.md) for workflow, storage, verification and limits. The original ledger and quantitative engines are preserved.
+
 A local private investment workspace with a courtyard entrance, research Library, separate Paper/Real portfolio ledgers, decision Journal, Markets desk and persistent Quant Lab. Treasury and Governance remain planned.
 
 Quant Lab has a sticky desktop study directory and a compact mobile navigation menu connecting all analysis views, valuation/calculation desks and saved archives, with links to the existing Office spaces. Jumps preserve the run URL and draft fields within the Quant page. See [QUANT_NAVIGATION.md](QUANT_NAVIGATION.md) for the connected destinations and verified behavior.
