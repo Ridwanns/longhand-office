@@ -1,3 +1,4 @@
+import {preferenceKey} from './workspace-scope.js';
 import {dataBadge} from './data-status.js';
 import {officialRatesPanel,mountOfficialRates} from './official-rates.js';
 import {MARKET_CATEGORIES} from './market-catalogue.js';
@@ -5,7 +6,7 @@ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const num=x=>new Intl.NumberFormat('en-GB',{maximumFractionDigits:4}).format(x);
 const pct=x=>(x>0?'+':'')+new Intl.NumberFormat('en-GB',{maximumFractionDigits:2,minimumFractionDigits:2}).format(x)+'%';
 const today=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Jakarta',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
-const key='longhand-office.watchlists.v1',cache=new Map();let savedLists={};
+const key=preferenceKey('longhand-office.watchlists.v1'),cache=new Map();let savedLists={};
 try{const raw=JSON.parse(localStorage.getItem(key)||'{}');for(const category of ['us','idx'])if(Array.isArray(raw[category]))savedLists[category]=[...new Set(raw[category].filter(symbol=>typeof symbol==='string'&&(category==='us'?/^[A-Z0-9]{1,12}(-[A-Z0-9]{1,6})?$/:/^[A-Z]{4}$/).test(symbol)))].slice(0,12);}catch{}
 const symbolsFor=category=>MARKET_CATEGORIES[category].instruments?.map(i=>i.symbol)||savedLists[category]||MARKET_CATEGORIES[category].examples;
 function persistLists(){try{localStorage.setItem(key,JSON.stringify(savedLists));}catch{document.querySelector('#board-status').textContent='Watchlist preferences could not be saved; your portfolio records are unchanged.';}}
@@ -84,3 +85,5 @@ document.addEventListener('submit',event=>{
  savedLists[category]=[...current,normalized];persistLists();board.dataset.selected=normalized;form.reset();mountMarket();
 });
 import {openRun} from './quant-ui.js';
+
+document.addEventListener('office:preferences-restored',e=>{savedLists=structuredClone(e.detail.watchlists);});

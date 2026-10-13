@@ -12,7 +12,7 @@ const files = new Set(['index.html','style.css','app.js','model.js','theme.js','
 files.add('rooms.css');
 files.add('official-rates.js');files.add('official-rates-contract.js');
 files.add('quant-navigation.js');
-['manual-archive.js','workspace-scope.js','continuity-store.js','data-status.js','drafts.js','complete-backup.js','prediction-math.js','prediction-ui.js','ticker-summary.js'].forEach(f=>files.add(f));
+['manual-archive.js','workspace-preferences.js','workspace-scope.js','continuity-store.js','data-status.js','drafts.js','complete-backup.js','prediction-math.js','prediction-ui.js','ticker-summary.js'].forEach(f=>files.add(f));
 ['advanced-math.js','advanced-worker.js','advanced-storage.js','advanced-ui.js'].forEach(f=>files.add(f));
 files.add('research-history.js');
 ['auto-valuation-math.js','auto-valuation-ui.js','public-quote-contract.js','ticker-study.js','ticker-storage.js','ticker-ui.js','research-math.js','research-ui.js','atlas-math.js','atlas-ui.js','atlas.css','quant-math.js','quant-contract.js','quant-history.js','analysis-contract.js','quant-ui.js','office-storage.js','office-extensions.js','office-workflows.js'].forEach(f=>files.add(f));
