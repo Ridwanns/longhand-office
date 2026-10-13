@@ -1,5 +1,11 @@
 # Additional source review — 14 October 2026
 
+## Published release receipt
+
+App commit `c99a41773fb8d08fc86dc7d47dc2f4c63f005677` deployed successfully in [Pages run 38462609619](https://github.com/Ridwanns/longhand-office/actions/runs/38462609619); [CI 38462609157](https://github.com/Ridwanns/longhand-office/actions/runs/38462609157) passed. The live [Bonds screen](https://ridwanns.github.io/longhand-office/#market/bonds) passed all **19 rate browser checks**, and the final live Quant screen passed all **59 navigation checks**, with no JavaScript errors. Local API checks passed **4/4**; dark mode survived reload and all twelve rates remained visible at 390 px with reduced motion enabled.
+
+Publication verified **5,268 model cases** across **1,346 source histories**, with zero model failures, missing core tickers or invalid quoted prices. **29 histories** are explicitly price-only because they lack an eligible cutoff. The **8,630 quote entries** retain explicit unavailable records where required; this is not a claim that every entry has a price. Fundamentals include **26 unavailable source prices**. The independently timed stock snapshot was published at `2026-10-13T20:26:24.970Z`; Treasury collection retained 196 observations through 13 October. No provider fallback was needed for this release. Counts and timestamps can change in later scheduled publications.
+
 Pinned code inspection and bounded public endpoint probes; neither third-party MCP server nor embedded skill was installed or executed. No personal records or credentials were used.
 
 | Repository | Revision | Decision |

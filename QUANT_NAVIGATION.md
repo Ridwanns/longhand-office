@@ -2,6 +2,8 @@
 
 Implemented 14 October 2026 (Asia/Jakarta). The mathematical engines, retained runs, hashes, Office records and backup formats are unchanged.
 
+Production verification: all **59 navigation checks** passed on the live Pages release `c99a41773fb8d08fc86dc7d47dc2f4c63f005677`, including independent valuation/quant ticker labels, retained drafts, same-tab routes, keyboard activation, reduced motion and 320–1440 px layouts. [Pages 38462609619](https://github.com/Ridwanns/longhand-office/actions/runs/38462609619) and [CI 38462609157](https://github.com/Ridwanns/longhand-office/actions/runs/38462609157) succeeded. The additional official-rate panel passed 19 live checks; see [DATA_SOURCE_REVIEW.md](DATA_SOURCE_REVIEW.md).
+
 Desktop now has a sticky left-hand directory beside the working area. On screens at or below 1,000 px, a compact sticky **Navigate study** selector replaces it. Both use the same destinations:
 
 - Ticker/source desk, with the ticker input focused ready for typing.

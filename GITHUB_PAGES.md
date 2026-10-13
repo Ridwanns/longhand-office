@@ -9,6 +9,7 @@ The user requested working models and data rather than the earlier read-only des
 - Paper and Real ledgers, supplied trade prices/fees, dated cash flows and manual valuations.
 - Investment theses, published Research reports, linked decisions and append-only reviews.
 - Source-labelled US/IDX snapshots, bond ETFs, commodity futures and indices.
+- Official US Treasury daily par yields in Bonds and Macro, with source dates, missing/stale states and basis-point spreads. See [DATA_SOURCE_REVIEW.md](DATA_SOURCE_REVIEW.md).
 - Historical risk, AR(1), Ridge, zero/mean comparisons, chronological evaluation and seeded scenarios for eligible equities/ETFs.
 - Research toolkit: European option value/Greeks/IV, regular bond price/yield/duration, fresh same-currency portfolio covariance/risk and OpenBB-format imports, with reproducible study export/restore. See [QUANT_REPOSITORY_REVIEW.md](QUANT_REPOSITORY_REVIEW.md).
 - Market Atlas decision calculators with standalone export/restore, plus verified historical advanced reference studies; see [MARKET_ATLAS_MATH.md](MARKET_ATLAS_MATH.md) for the distinction from fresh runs.
@@ -49,7 +50,7 @@ The application suite passes **219 tests**. The broad release validates **5,260 
 
 Markets offers a searchable published stock list and rejects unsupported additions before changing the watchlist. Older saved unsupported entries remain present as **Not published**. Source failures and invalid observations receive distinct explanations. Refresh updates the publication notice; it reads a dated file, not a streaming price.
 
-Markets are published snapshots; refresh reloads the latest published file and does not open a streaming source. Model histories are limited to the published universe and retained five-year source window. Provider outages/rate limits can delay updates. Individual bonds/yields and a numerical macroeconomic indicator feed remain unconnected. Treasury/Governance remain planned. Forecasts/scenarios are statistical studies, not validated investment probabilities. No broker orders, automatic ledger corporate actions, FX conversion, tax lots or TWR/MWR were added.
+Markets are published snapshots; refresh reloads the latest published file and does not open a streaming source. Model histories are limited to the published universe and retained five-year source window. Provider outages/rate limits can delay updates. Official US Treasury par yields are connected separately; individual bond prices, Indonesian government bond yields and other numerical macroeconomic feeds remain unconnected. The family Treasury/Governance rooms remain planned. Forecasts/scenarios are statistical studies, not validated investment probabilities. No broker orders, automatic ledger corporate actions, FX conversion, tax lots or TWR/MWR were added.
 
 ## Build and publication
 
@@ -57,6 +58,7 @@ Markets are published snapshots; refresh reloads the latest published file and d
 python -m pip install -r requirements-data.txt
 python scripts/yahoo-stock-directory.py
 npm run data:pages
+node scripts/official-rates-data.mjs
 node scripts/verify-pages-universe.mjs
 npm run build:pages
 ```
