@@ -75,4 +75,6 @@ The current suite has **219 passing automated checks** and **4 local API checks*
 - [LOCAL_VAULT.md](LOCAL_VAULT.md): actual storage paths, migration/recovery, backup policy, cash-flow and review rules.
 - Earlier implementation evidence: VALIDATION.md, VALUATION.md, FLOWLESS.md, US_MARKET.md, MARKET_WORKSPACE.md and MARKET_TERMINAL.md. Their dated historical limits/counts are superseded by this release where functionality changed.
 
+See [DATA_SOURCE_REVIEW.md](DATA_SOURCE_REVIEW.md) for the additional US/IDX repository assessment, official Treasury observations, verification and provider limitations.
+
 The refined entrance and differentiated rooms use the existing architectural SVG, system fonts, warm stone/ivory, forest/charcoal and copper. Both themes, reduced motion, conventional navigation, keyboard-accessible rooms/modals and responsive tables remain available.

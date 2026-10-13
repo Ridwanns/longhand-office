@@ -10,6 +10,7 @@ const portIndex=process.argv.indexOf('--port'),port=portIndex<0?4173:Number(proc
 if(![4173,4174].includes(port))throw Error('Only local workspace port 4173 and isolated test port 4174 are supported.');
 const files = new Set(['index.html','style.css','app.js','model.js','theme.js','market-terminal.js','market-catalogue.js','building.svg','catalogue.json']);
 files.add('rooms.css');
+files.add('official-rates.js');files.add('official-rates-contract.js');
 files.add('quant-navigation.js');
 ['advanced-math.js','advanced-worker.js','advanced-storage.js','advanced-ui.js'].forEach(f=>files.add(f));
 files.add('research-history.js');
@@ -38,7 +39,7 @@ const server=http.createServer(async(req,res)=>{
     }catch(error){res.writeHead(502);return res.end(JSON.stringify({error:error.name==='TimeoutError'?'Flowless read timed out. Keep its local server running on port 8000.':error.name==='TypeError'?'Flowless is unavailable. Start its existing local server on port 8000; no ingestion is triggered by Longhand Office.':error.message}));}
   }
   // Only generated public data is readable here; workspace/vault files remain outside this allowlist.
-  if(/^\/data\/(manifest\.json|market\.json|fundamentals\.json|history\/(US|IDX)-[A-Z]{1,6}(-[A-Z])?\.json)$/.test(url.pathname)){
+  if(/^\/data\/(manifest\.json|market\.json|fundamentals\.json|official-rates\.json|history\/(US|IDX)-[A-Z]{1,6}(-[A-Z])?\.json)$/.test(url.pathname)){
     try{const body=await readFile(path.join(root,'.pages-data',url.pathname.slice(6)));res.writeHead(200,{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});return res.end(body);}catch{res.writeHead(404);return res.end('Public snapshot unavailable.');}
   }
   const name = url.pathname.slice(1) || 'index.html';

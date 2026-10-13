@@ -70,6 +70,7 @@ jobs:
       - run: node scripts/verify-valuation-data.mjs
       - run: node scripts/verify-advanced-publication.mjs
       - run: node scripts/verify-pages-universe.mjs
+      - run: node scripts/official-rates-data.mjs
       - run: node scripts/build-pages.mjs
       - uses: actions/upload-pages-artifact@v5
         with:
