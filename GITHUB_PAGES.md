@@ -10,6 +10,7 @@ The user requested working models and data rather than the earlier read-only des
 - Investment theses, published Research reports, linked decisions and append-only reviews.
 - Source-labelled US/IDX snapshots, bond ETFs, commodity futures and indices.
 - Historical risk, AR(1), Ridge, zero/mean comparisons, chronological evaluation and seeded scenarios for eligible equities/ETFs.
+- Market Atlas decision calculators with standalone export/restore, plus verified historical advanced reference studies; see [MARKET_ATLAS_MATH.md](MARKET_ATLAS_MATH.md) for the distinction from fresh runs.
 - Persistent immutable browser analyses, research attachments, complete export and validated atomic restoration into a browser IndexedDB vault.
 - Existing architecture, light/dark themes, responsive tables, keyboard navigation and reduced-motion behavior.
 
@@ -43,7 +44,7 @@ The local port-4173 browser data and SQLite vault were not migrated, replaced or
 
 ## Verification and remaining limits
 
-The application suite passes **181 tests**. The broad release validates **5,260 model cases** across all **1,315 eligible histories**, and all **8,534 entries** through the browser quote adapter (8,514 accepted, 20 explicitly withheld). Expanded browser tests cover new US/IDX names, actual PLTR/EMTK Worker runs, persistence, faults, mobile layouts and bounded search. The **22-step full Investment Lab workflow**, isolated linked-analysis export/restore, **22 Quant usability checks**, **20 availability checks** and **51 browser safety checks** pass again. See [BROAD_MARKET_COVERAGE.md](BROAD_MARKET_COVERAGE.md) for current evidence; prior reports retain their dated audit counts.
+The application suite passes **190 tests**. The broad release validates **5,260 model cases** across all **1,315 eligible histories**, and all **8,534 entries** through the browser quote adapter (8,514 accepted, 20 explicitly withheld). Expanded browser tests cover new US/IDX names, actual PLTR/EMTK Worker runs, persistence, faults, mobile layouts and bounded search. The **22-step full Investment Lab workflow**, isolated linked-analysis export/restore, **22 Quant usability checks**, **20 availability checks** and **51 browser safety checks** pass again. See [BROAD_MARKET_COVERAGE.md](BROAD_MARKET_COVERAGE.md) for current evidence; prior reports retain their dated audit counts.
 
 Markets offers a searchable published stock list and rejects unsupported additions before changing the watchlist. Older saved unsupported entries remain present as **Not published**. Source failures and invalid observations receive distinct explanations. Refresh updates the publication notice; it reads a dated file, not a streaming price.
 

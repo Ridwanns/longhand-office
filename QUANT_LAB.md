@@ -61,3 +61,7 @@ No general top-level source-code license was present in the inspected tree. Font
 ## Reproduction
 
 `npm test` runs offline model/storage/adapter tests with clearly labelled synthetic fixtures. Start `npm run start:test` before `npm run test:api`. `python scripts/reference-quant.py` independently verifies the retained isolated AAPL run using Python statistics and a Cholesky Ridge solver, distinct from the JS elimination solver. Browser workflow and layout evidence are described in RELEASE_VALIDATION.md.
+
+## Owner-authorized Atlas reuse, 13 October follow-up
+
+After the owner explicitly requested reuse of their Market Atlas mathematics, the complete decision-calculation implementation was adapted into an Office ES module, with the original Python implementation retained for parity checks. The historical advanced datasets are separately exposed as verified, dated reference studies. Their 30 September fits do not replace the fresh core runner or change old analyses. See [MARKET_ATLAS_MATH.md](MARKET_ATLAS_MATH.md) for the copied source, exact scope, current tests and limitations. This supersedes the earlier no-source-copy statement for this authorized follow-up; the earlier audit remains historical.
