@@ -1,0 +1,12 @@
+{
+  "version":1,
+  "portfolios":[{
+    "id":"flowless-demo-portfolio",
+    "name":"TEST ONLY — Flowless IDX connection",
+    "currency":"IDR",
+    "openingCash":1000000,
+    "transactions":[{"id":"flowless-demo-buy","symbol":"BBCA","date":"2026-10-09","side":"Buy","quantity":100,"price":5500,"fee":5500,"note":"TEST ONLY — synthetic purchase price and fees, not a market observation."}]
+  }],
+  "theses":[],
+  "decisions":[]
+}

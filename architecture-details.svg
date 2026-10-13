@@ -1,0 +1,13 @@
+<g id="material-detail" pointer-events="none">
+ <path d="M283 191L440 264M475 144L610 207M592 257L735 324" stroke="#f6efe0" opacity=".45" stroke-width="2"/>
+ <path d="M239 348L363 406L454 363" fill="none" stroke="#665c46" opacity=".18" stroke-width="5"/>
+ <path d="M425 251L450 263L477 250L451 238Z" fill="#334b3b" opacity=".38"/>
+ <path d="M431 251L450 260L470 250L451 241Z" fill="#839375" opacity=".6"/>
+ <ellipse cx="450" cy="250" rx="12" ry="5" fill="#bbc6a8" opacity=".7"/>
+ <path d="M409 317V293M407 310L395 301M410 304L420 295" stroke="#596147" stroke-width="2"/>
+ <ellipse cx="408" cy="291" rx="17" ry="16" fill="#7d906e"/><ellipse cx="402" cy="285" rx="11" ry="12" fill="#9aac87"/>
+ <path d="M318 216L333 223L348 215L333 208Z" fill="#89998e" opacity=".58" stroke="#63756b"/>
+ <path d="M319 218L333 224" stroke="#e8efe4" opacity=".75"/>
+ <path d="M536 170L551 177L566 170L551 163Z" fill="#89998e" opacity=".55" stroke="#63756b"/>
+ <path d="M536 172L550 178" stroke="#e8efe4" opacity=".75"/>
+</g>

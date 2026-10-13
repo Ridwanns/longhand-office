@@ -1,0 +1,34 @@
+import {DatabaseSync} from 'node:sqlite';
+import {mkdirSync} from 'node:fs';
+import path from 'node:path';
+import {validate} from '../model.js';
+import {hash,validId} from './quant-data.mjs';
+import {validateAnalysis} from './analysis-backup.mjs';
+export class LocalStore{
+ constructor(filename){if(filename!==':memory:')mkdirSync(path.dirname(filename),{recursive:true});this.filename=filename;this.db=new DatabaseSync(filename);this.db.exec('PRAGMA journal_mode=WAL; PRAGMA busy_timeout=5000; PRAGMA foreign_keys=ON; CREATE TABLE IF NOT EXISTS workspaces(id TEXT PRIMARY KEY, revision INTEGER NOT NULL, body TEXT NOT NULL, updated TEXT NOT NULL); CREATE TABLE IF NOT EXISTS backups(id INTEGER PRIMARY KEY, workspace TEXT NOT NULL, revision INTEGER NOT NULL, body TEXT NOT NULL, reason TEXT NOT NULL, created TEXT NOT NULL); CREATE TABLE IF NOT EXISTS jobs(id TEXT PRIMARY KEY, fingerprint TEXT NOT NULL, config TEXT NOT NULL, status TEXT NOT NULL, body TEXT NOT NULL, created TEXT NOT NULL);');}
+ atomic(fn){this.db.exec('BEGIN IMMEDIATE');try{const value=fn();this.db.exec('COMMIT');return value;}catch(e){this.db.exec('ROLLBACK');throw e;}}
+ read(id){if(!validId(id))throw Error('Invalid workspace ID.');const r=this.db.prepare('SELECT * FROM workspaces WHERE id=?').get(id);return r?{id,revision:r.revision,data:JSON.parse(r.body),updated:r.updated}:null;}
+ write(id,revision,data,reason='save',runs=[]){if(!validId(id)||!Number.isSafeInteger(revision)||revision<0)throw Error('Invalid workspace revision.');validate(data);this.validateRuns(runs);return this.atomic(()=>{
+  const current=this.read(id);if((current?.revision||0)!==revision){const e=Error('Workspace changed in another tab. Reload before saving.');e.status=409;throw e;}
+  this.checkReferences(data,runs);
+  const now=new Date().toISOString(),body=JSON.stringify(data);
+  this.db.prepare('INSERT INTO backups(workspace,revision,body,reason,created) VALUES(?,?,?,?,?)').run(id,revision,current?JSON.stringify(current.data):body,reason,now);
+  for(const r of runs){if(!this.job(r.id))this.putJob(r);}
+  this.db.prepare('INSERT INTO workspaces(id,revision,body,updated) VALUES(?,?,?,?) ON CONFLICT(id) DO UPDATE SET revision=excluded.revision,body=excluded.body,updated=excluded.updated').run(id,revision+1,body,now);
+  return {id,revision:revision+1,data,updated:now};
+ });}
+ job(id){if(!validId(id))throw Error('Invalid run ID.');const r=this.db.prepare('SELECT body FROM jobs WHERE id=?').get(id);return r?JSON.parse(r.body):null;}
+ putJob(j){this.db.prepare('INSERT INTO jobs(id,fingerprint,config,status,body,created) VALUES(?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET status=excluded.status,body=excluded.body').run(j.id,j.fingerprint,JSON.stringify(j.config),j.status,JSON.stringify(j),j.created);}
+ listJobs(){return this.db.prepare('SELECT body FROM jobs ORDER BY created DESC LIMIT 200').all().map(r=>JSON.parse(r.body));}
+ listJobSummaries(){return this.db.prepare("SELECT id,config,status,created,json_extract(body,'$.version','$.cachedFrom','$.stage','$.observations','$.error') AS info,json_array_length(body,'$.dataset.observations') AS observations FROM jobs ORDER BY created DESC LIMIT 200").all().map(r=>{const [version,cachedFrom,stage,count,error]=JSON.parse(r.info);return {id:r.id,config:JSON.parse(r.config),status:r.status,created:r.created,version,cachedFrom,stage,observations:r.observations??count,...(error?{error}:{})};});}
+ allPending(){return this.db.prepare("SELECT body FROM jobs WHERE status IN ('queued','running') ORDER BY created").all().map(r=>JSON.parse(r.body));}
+ cached(fingerprint){const r=this.db.prepare("SELECT body FROM jobs WHERE fingerprint=? AND status='completed' ORDER BY created DESC LIMIT 1").get(fingerprint);return r?JSON.parse(r.body):null;}
+ nextVersion(config){return Number(this.db.prepare("SELECT COALESCE(MAX(json_extract(body,'$.version')),0)+1 AS version FROM jobs WHERE json_extract(config,'$.ticker')=? AND json_extract(config,'$.market')=?").get(config.ticker,config.market).version);}
+ validateRuns(runs){if(!Array.isArray(runs)||runs.length>200)throw Error('Invalid analysis backup bundle.');for(const r of runs){validateAnalysis(r);if(!validId(r.id)||r.status!=='completed'||!r.dataset?.observations?.length||!r.results||hash(r.results)!==r.resultHash||hash(r.dataset.observations)!==r.dataset.dataHash||hash(r.config)!==r.configHash)throw Error('Analysis backup is incomplete or its hashes do not match.');const existing=this.job(r.id);if(existing&&existing.resultHash!==r.resultHash)throw Error('Run ID conflicts with an existing immutable result.');}}
+ checkReferences(data,runs=[]){for(const record of [...data.theses,...data.decisions])for(const ref of record.analysisRefs||[]){const run=runs.find(r=>r.id===ref.runId)||this.job(ref.runId);if(!run||run.status!=='completed'||run.resultHash!==ref.resultHash||run.config.ticker!==ref.ticker||run.config.market!==ref.market||run.config.cutoff!==ref.cutoff||run.results.modelVersion!==ref.modelVersion)throw Error('Missing or mismatched immutable analysis '+ref.runId+'. Include linked runs in the backup.');}}
+ export(data){validate(data);this.checkReferences(data);const ids=new Set([...data.theses,...data.decisions].flatMap(r=>(r.analysisRefs||[]).map(x=>x.runId))),analyses=[...ids].map(id=>this.job(id));this.validateRuns(analyses);const bundle={format:'longhand-office-backup',formatVersion:2,exportedAt:new Date().toISOString(),records:data,analyses,analysisPolicy:'All linked completed runs include normalized datasets, results, audit metadata and hashes. Unlinked runs remain in the local Quant archive and can be exported individually.'};if(Buffer.byteLength(JSON.stringify(bundle),'utf8')>50000000)throw Error('Backup exceeds the 50 MB restore limit. Export individual analyses and preserve the local database; no incomplete backup was produced.');return bundle;}
+ backups(id){return this.db.prepare('SELECT id,revision,reason,created FROM backups WHERE workspace=? ORDER BY id DESC LIMIT 30').all(id);}
+ backup(id,n){const r=this.db.prepare('SELECT body FROM backups WHERE workspace=? AND id=?').get(id,n);if(!r)throw Error('Backup not found.');return this.export(JSON.parse(r.body));}
+ close(){this.db.close();}
+}
+

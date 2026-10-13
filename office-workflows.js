@@ -1,0 +1,34 @@
+import {api} from './office-storage.js';
+import {ledger,validateValuation} from './model.js';
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+export function bindOffice({storage,getData,save,setData,render,toast,dialog,download,key}){
+ const error=e=>dialog.querySelector('.form-error')?.replaceChildren(document.createTextNode(e.message));
+ const shell=(title,fields,submit)=>'<form id="office-link-form"><div class="dialog-heading"><h2 id="dialog-title">'+title+'</h2><button type="button" data-action="close" class="close" aria-label="Close editor">×</button></div><div class="form-body">'+fields+'<p class="form-error" role="alert"></p></div><div class="dialog-footer"><button class="primary">'+submit+'</button></div></form>';
+ function submit(fn){const revision=storage.revision,original=localStorage.getItem(key);dialog.showModal();dialog.querySelector('form').onsubmit=async event=>{event.preventDefault();const button=event.target.querySelector('[type=submit]')||event.target.querySelector('.dialog-footer button');if(button.disabled)return;button.disabled=true;event.target.setAttribute('aria-busy','true');try{if(storage.revision!==revision||!storage.marker&&localStorage.getItem(key)!==original)throw Error('Records changed. Reopen this editor.');await fn(new FormData(event.target));dialog.close();toast('Saved to your local workspace.');}catch(e){error(e);}finally{button.disabled=false;event.target.removeAttribute('aria-busy');}};}
+ storage.channel.onmessage=async e=>{if(storage.marker&&e.data.id===storage.marker.id&&e.data.revision>storage.revision){try{setData(await storage.load());if(dialog.open&&!dialog.querySelector('[aria-busy="true"]'))dialog.close();render();toast('Local vault updated in another tab.');}catch(error){toast(error.message);}}};
+ document.addEventListener('click',async e=>{
+  const b=e.target.closest('[data-action]');try{
+   if(b?.dataset.action==='migrate'){
+    b.disabled=true;const snapshot=localStorage.getItem(key),records=structuredClone(getData()),bundle=await storage.backup(records);
+    if(localStorage.getItem(key)!==snapshot)throw Error('Browser records changed. Reopen Local Records before migrating.');
+    download(JSON.stringify(bundle,null,2),'longhand-before-vault-'+new Date().toISOString().slice(0,10)+'.json');
+    await storage.migrate(records,snapshot);render();toast('Backup retained. Local vault connected.');
+   }
+   if(b?.dataset.action==='vault-backups'){const rows=await api('backups?id='+storage.marker.id);document.querySelector('#vault-recovery').innerHTML=rows.length?'<ul>'+rows.map(r=>'<li>'+esc(r.created)+' · '+esc(r.reason)+' · revision '+r.revision+' <button class="secondary" data-recovery="'+r.id+'">Download recovery copy</button></li>').join('')+'</ul>':'<p>No recovery snapshots.</p>';}
+   const recovery=e.target.closest('[data-recovery]');if(recovery)download(JSON.stringify(await api('recovery?id='+storage.marker.id+'&backup='+recovery.dataset.recovery),null,2),'longhand-recovery-'+recovery.dataset.recovery+'.json');
+  }catch(error){toast(error.message);if(b)b.disabled=false;}
+ });
+ document.addEventListener('office:attach-analysis',e=>{
+  const run=e.detail,records=getData();dialog.innerHTML=shell('Attach completed analysis','<p>'+esc(run.config.ticker)+' · cutoff '+run.config.cutoff+' · '+esc(run.results.modelVersion)+' · run version '+run.version+'</p><label>Thesis or decision<select name="target" required><option value="">Choose a record</option>'+[...records.theses.map(r=>({r,k:'thesis'})),...records.decisions.map(r=>({r,k:'decision'}))].map(({r,k})=>'<option value="'+k+':'+esc(r.id)+'">'+k+' · '+esc(r.title)+'</option>').join('')+'</select></label><p class="quiet-note">This link retains this exact run, cutoff and result hash when newer versions exist. Create a thesis or decision first if the list is empty.</p>','Attach analysis');
+  submit(async f=>{const target=f.get('target'),split=target.indexOf(':'),kind=target.slice(0,split),id=target.slice(split+1);await save(next=>{const r=(kind==='thesis'?next.theses:next.decisions).find(r=>r.id===id);if(!r)throw Error('Record not found.');if((r.analysisRefs||[]).some(a=>a.runId===run.id))throw Error('This run is already attached.');(r.analysisRefs??=[]).push({runId:run.id,ticker:run.config.ticker,market:run.config.market,cutoff:run.config.cutoff,modelVersion:run.results.modelVersion,resultHash:run.resultHash});});});
+ });
+ document.addEventListener('office:market-valuation',e=>{
+  const q=e.detail,market=q.market==='IDX'?'IDX':'US',normalize=s=>market==='IDX'?s.toUpperCase().replace(/\.JK$/,''):s.toUpperCase().replace('.','-');
+  const matches=getData().portfolios.flatMap(p=>ledger(p).holdings.filter(h=>h.quantity>0&&normalize(h.symbol)===normalize(q.symbol)&&p.currency===q.currency).map(h=>({p,h})));
+  const stamp=typeof q.timestamp==='string'?new Date(q.timestamp):new Date((q.timestamp||q.marketTime)*1000);
+  const observationDate=q.date||q.marketDate||new Intl.DateTimeFormat('en-CA',{timeZone:market==='IDX'?'Asia/Jakarta':'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(stamp);
+  dialog.innerHTML=shell('Review market observation','<p class="market-confirm-price">'+esc(q.symbol)+' · '+esc(q.price)+' '+esc(q.currency)+'</p><p>Observation date: <strong>'+esc(observationDate)+'</strong><br>Source: '+esc(q.provider||'Yahoo Finance')+'<br>Type: '+esc(q.priceKind||'regular-session snapshot')+'<br>Retrieved: '+esc(q.retrievedAt)+'</p><label>Matching portfolio position<select name="position" required><option value="">Choose a position</option>'+matches.map(({p,h},i)=>'<option value="'+i+'">'+esc(p.name)+' · '+(p.mode||'paper')+' · '+esc(h.symbol)+'</option>').join('')+'</select></label><p class="quiet-note">'+(matches.length?'Confirmation appends this dated observation. No transaction, previous price or exchange rate is changed.':'No held position matches both ticker and currency. Record a holding first; no FX conversion is inferred.')+'</p><label class="check-label"><input type="checkbox" required name="confirm"> I reviewed this price, date and source.</label>','Append valuation record');
+  if(!matches.length)dialog.querySelector('.dialog-footer button').disabled=true;
+  submit(async f=>{const selected=matches[Number(f.get('position'))];if(!selected)throw Error('Choose a matching position.');await save(next=>{const p=next.portfolios.find(p=>p.id===selected.p.id),price={id:crypto.randomUUID(),symbol:selected.h.symbol,price:q.price,currency:q.currency,date:observationDate,source:(q.provider||'Yahoo Finance')+'; observed '+observationDate+'; retrieved '+q.retrievedAt,origin:'market',market,provider:q.provider||'Yahoo Finance',priceKind:q.priceKind||'regular-session snapshot',retrievedAt:q.retrievedAt};validateValuation(price,p);(p.valuations??=[]).push(price);});});
+ });
+}

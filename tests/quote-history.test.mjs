@@ -1,0 +1,14 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {yahooHistory,dailyChange} from '../scripts/quote-history.mjs';
+const timestamp='2026-10-12T18:00:00Z';
+const stamps=['2026-10-08T13:30:00Z','2026-10-09T13:30:00Z','2026-10-12T13:30:00Z'].map(s=>Date.parse(s)/1000);
+const body=close=>({chart:{result:[{meta:{exchangeTimezoneName:'America/New_York'},timestamp:stamps,indicators:{quote:[{close}]}}]}});
+test('chart points retain actual source dates and closes, not fabricated interpolation',()=>assert.deepEqual(yahooHistory(body([100,110,105]),timestamp),[{date:'2026-10-08',close:100},{date:'2026-10-09',close:110},{date:'2026-10-12',close:105}]));
+test('change uses previous source session rather than current incomplete daily bar',()=>{const change=dailyChange(yahooHistory(body([100,110,105]),timestamp),121,'2026-10-12');assert.equal(change.value,11);assert.ok(Math.abs(change.percent-10)<1e-10);assert.equal(change.referenceDate,'2026-10-09');});
+test('negative change independently equals (90 - 100) / 100',()=>{const change=dailyChange([{date:'2026-10-09',close:100}],90,'2026-10-12');assert.equal(change.value,-10);assert.ok(Math.abs(change.percent+10)<1e-10);});
+test('missing history or a prior session with zero yields unavailable change',()=>{assert.equal(dailyChange([],100,'2026-10-12'),null);assert.equal(dailyChange([{date:'2026-10-12',close:90}],100,'2026-10-12'),null);assert.equal(dailyChange([{date:'2026-10-09',close:0}],100,'2026-10-12'),null);});
+test('missing/null/zero observations are excluded without substituting a zero chart point',()=>{assert.deepEqual(yahooHistory(body([null,0,105]),timestamp),[{date:'2026-10-12',close:105}]);assert.deepEqual(yahooHistory({},timestamp),[]);});
+test('future source observations do not enter history',()=>assert.deepEqual(yahooHistory(body([100,110,105]),'2026-10-09T18:00:00Z'),[{date:'2026-10-08',close:100},{date:'2026-10-09',close:110}]));
+test('invalid timezone does not invent dates or history',()=>{const data=body([100,110,105]);data.chart.result[0].meta.exchangeTimezoneName='invented';assert.deepEqual(yahooHistory(data,timestamp),[]);});
+test('malformed optional history does not break a valid price snapshot',()=>{const data=body([100,110,105]);data.chart.result[0].timestamp={};assert.deepEqual(yahooHistory(data,timestamp),[]);data.chart.result[0].timestamp=stamps;data.chart.result[0].indicators.quote[0].close='invalid';assert.deepEqual(yahooHistory(data,timestamp),[]);});

@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "portfolios": [{
+    "id": "valuation-demo-portfolio",
+    "name": "TEST ONLY — manual valuation example",
+    "currency": "USD",
+    "openingCash": 5000,
+    "transactions": [
+      {"id":"demo-buy-a","symbol":"ALPHA","date":"2026-10-01","side":"Buy","quantity":10,"price":100,"fee":10,"note":"TEST ONLY — synthetic transaction price."},
+      {"id":"demo-buy-b","symbol":"BETA","date":"2026-10-02","side":"Buy","quantity":20,"price":50,"fee":5,"note":"TEST ONLY — synthetic transaction price."},
+      {"id":"demo-sell-a","symbol":"ALPHA","date":"2026-10-03","side":"Sell","quantity":2,"price":120,"fee":2,"note":"TEST ONLY — synthetic transaction price."}
+    ],
+    "valuations": [
+      {"id":"demo-price-a","symbol":"ALPHA","price":130,"currency":"USD","date":"2026-10-12","source":"TEST ONLY — synthetic supplied price, not a market quote."},
+      {"id":"demo-price-b","symbol":"BETA","price":45,"currency":"USD","date":"2026-10-12","source":"TEST ONLY — synthetic supplied price, not a market quote."}
+    ]
+  }],
+  "theses": [{"id":"demo-thesis","title":"TEST ONLY — valuation evidence exercise","symbol":"ALPHA","status":"Draft","assumptions":"TEST ONLY — unrelated synthetic instruments for arithmetic checks.","evidence":"TEST ONLY — example retains a published report reference.","risks":"TEST ONLY — no investment recommendation.","reviewDate":"2026-10-12","reports":["coal-in-transition-2026-10-08"]}],
+  "decisions": [{"id":"demo-decision","title":"TEST ONLY — review manual valuation","date":"2026-10-12","reviewDate":"2026-10-12","rationale":"TEST ONLY — preserve linked records while testing valuation.","expected":"TEST ONLY — value USD 5163, unrealized P/L USD 127.","outcome":"TEST ONLY — independent arithmetic agrees.","thesisId":"demo-thesis","portfolioId":"valuation-demo-portfolio","reports":["coal-in-transition-2026-10-08"],"status":"Reviewed"}]
+}

@@ -1,0 +1,14 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {marketInstrument,projectMarketSnapshot,readMarketSnapshot} from '../scripts/market-adapter.mjs';
+const retrieved='2026-10-13T00:00:00Z',stamp=1791835200;
+const body=meta=>({chart:{result:[{meta}],error:null}});
+const future={symbol:'GC=F',currency:'USD',instrumentType:'FUTURE',regularMarketPrice:1234.5,regularMarketTime:stamp};
+test('categories have fixed instrument allowlists, no URL proxy or arbitrary lookup',()=>{assert.equal(marketInstrument('commodities','GC=F').unit,'USD / troy ounce');for(const [c,s] of [['us','AAPL'],['commodities','http://example.com'],['bonds','^TNX'],['macro','GC=F']])assert.throws(()=>marketInstrument(c,s));});
+test('commodity quote keeps futures identity, units and actual source timestamp',()=>{const q=projectMarketSnapshot(body(future),'commodities','GC=F',retrieved);assert.equal(q.instrumentType,'FUTURE');assert.equal(q.unit,'USD / troy ounce');assert.equal(q.timestamp,'2026-10-12T20:00:00.000Z');assert.equal(q.realtimeVerified,false);assert.equal(q.delayMinutes,null);});
+test('bond ETF price is labelled per ETF share, not yield or par value',()=>{const q=projectMarketSnapshot(body({...future,symbol:'TLT',instrumentType:'ETF',regularMarketPrice:80}),'bonds','TLT',retrieved);assert.equal(q.unit,'USD / ETF share');assert.equal(q.price,80);assert.equal(q.instrumentType,'ETF');});
+test('IHSG retains IDR source currency but displays index points without conversion',()=>{const q=projectMarketSnapshot(body({...future,symbol:'^JKSE',currency:'IDR',instrumentType:'INDEX',regularMarketPrice:6000}),'macro','^JKSE',retrieved);assert.equal(q.unit,'index points');assert.equal(q.currency,'IDR');assert.equal(q.price,6000);});
+test('wrong instrument identity, type or source currency is rejected',()=>{for(const change of [{symbol:'CL=F'},{instrumentType:'ETF'},{currency:'IDR'}])assert.throws(()=>projectMarketSnapshot(body({...future,...change}),'commodities','GC=F',retrieved));});
+test('missing price or timestamp is unavailable without substituting zero',()=>{for(const change of [{regularMarketPrice:null},{regularMarketPrice:0},{regularMarketPrice:NaN},{regularMarketTime:null},{regularMarketTime:1791999999}])assert.throws(()=>projectMarketSnapshot(body({...future,...change}),'commodities','GC=F',retrieved));});
+test('fetch encodes allowed special symbols into a fixed HTTPS GET',async()=>{let called;const q=await readMarketSnapshot('commodities','GC=F',{now:()=>retrieved,fetcher:async(url,options)=>{called={url,options};return {ok:true,json:async()=>body(future)};}});assert.ok(called.url.startsWith('https://query1.finance.yahoo.com/v8/finance/chart/GC%3DF?'));assert.equal(called.options.body,undefined);assert.equal(q.price,1234.5);});
+test('unknown instrument never triggers network fetch',async()=>{let calls=0;await assert.rejects(()=>readMarketSnapshot('macro','AAPL',{fetcher:async()=>{calls++;}}));assert.equal(calls,0);});
