@@ -55,9 +55,10 @@ npm run test:api
 python scripts/reference-quant.py
 ```
 
-The current suite has **160 passing automated checks**. The latest usability release verifies **376 model configurations across 94 published instruments**, all **94 through actual browser Workers**, **105 quote entries**, **21 same-page usability assertions**, the **22-check complete records/backup workflow**, **51 browser safety checks** and **40 local audit checks**. Previous releases additionally retained independent Python verification of AAPL/BBCA results. Tests use isolated records/workspaces; no restore runs over the ordinary workspace.
+The current suite has **175 passing automated checks**. The latest follow-up verifies **376 model configurations across 94 published instruments**, all **94 through actual browser Workers**, **105 quote entries and rendered market details**, **22 same-page usability assertions**, **20 availability/failure/recovery assertions**, the **22-check complete records/backup workflow**, **51 browser safety checks** and **40 local audit checks**. Fresh AAPL/ADRO browser exports each pass 34 independent Python numerical checks. Tests use isolated records/workspaces; no restore runs over the ordinary workspace.
 
-- [QUANT_USABILITY_VALIDATION.md](QUANT_USABILITY_VALIDATION.md): same-page results, expanded stock coverage, seed/search fixes and current verification.
+- [DATA_RELIABILITY_AUDIT.md](DATA_RELIABILITY_AUDIT.md): latest complete data/workflow audit, availability fixes and failure/recovery testing.
+- [QUANT_USABILITY_VALIDATION.md](QUANT_USABILITY_VALIDATION.md): same-page results, expanded stock coverage and seed/search fixes.
 - [WEB_RELEASE_VALIDATION.md](WEB_RELEASE_VALIDATION.md): working public browser release, data/privacy boundaries and deployment evidence.
 - [AUDIT_2026-10-13.md](AUDIT_2026-10-13.md): preceding local audit, preservation evidence and remaining limits.
 - [RELEASE_VALIDATION.md](RELEASE_VALIDATION.md): preceding release walkthrough and implementation evidence.

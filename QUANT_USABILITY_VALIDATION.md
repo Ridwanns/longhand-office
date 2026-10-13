@@ -1,5 +1,7 @@
 # Same-page Quant and expanded stock coverage — 13 October 2026
 
+The subsequent [data reliability audit](DATA_RELIABILITY_AUDIT.md) expands verification to 175 automated checks and every rendered market instrument, adds availability/failure recovery, and explains remaining legitimate unavailable data. The initial usability evidence below is retained as a historical release record.
+
 The user requested simpler stock selection, results below the controls, an explanation of seed, and working major US/IDX coverage including ADRO. This update preserves model formulas, immutable runs, records, linked research and the architectural design. It supersedes preceding documentation that described a new result tab and a 20-instrument publication.
 
 ## Concrete changes

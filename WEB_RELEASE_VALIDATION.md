@@ -1,6 +1,6 @@
 # Working public Office — 13 October 2026
 
-The subsequent [Quant usability update](QUANT_USABILITY_VALIDATION.md) supersedes the 20-instrument universe and separate result tab described in the initial release. Current defaults include 94 histories/105 quote entries, all model results stay below the controls, and the automated suite has 160 tests. The historical evidence below remains the initial public release record.
+The subsequent [Quant usability update](QUANT_USABILITY_VALIDATION.md) supersedes the 20-instrument universe and separate result tab described in the initial release. Current defaults include 94 histories/105 quote entries, all model results stay below the controls, and the latest [data reliability audit](DATA_RELIABILITY_AUDIT.md) has 175 automated checks. The historical evidence below remains the initial public release record.
 
 The user explicitly authorized public source/Pages and then required working models and market data. The earlier read-only preview was replaced with a functional browser edition. [Open Quant Lab](https://ridwanns.github.io/longhand-office/#quant) or [Markets](https://ridwanns.github.io/longhand-office/#market/us).
 

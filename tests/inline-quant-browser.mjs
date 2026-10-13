@@ -10,6 +10,7 @@ export async function run(original){
   await p.locator('.quant-advanced summary').click();await p.locator('[name=market]').selectOption('IDX');await p.locator('[data-history-ticker=ADRO]').first().click();
   check('ADRO is selectable with explicit eligible cutoff and liquidity estimate',(await p.locator('[name=ticker]').inputValue())==='ADRO'&&(await p.locator('#quant-data-status').innerText()).includes('Recent traded-value estimate'));
   const a=await runForm();const firstUrl=p.url();
+  const intervalModel=a.results.forecasts.find(f=>f.horizon===20).models.find(m=>m.interval===null);check('Missing empirical interval states the actual evidence requirement',!intervalModel||(await p.locator('.forecast-study').last().innerText()).includes('Needs 20 scored errors · '+intervalModel.count+' available'));
   check('ADRO results appear below controls, with one tab and one h1',a.status==='completed'&&a.config.ticker==='ADRO'&&c.pages().length===1&&await p.locator('h1').count()===1&&await p.locator('#quant-results').evaluate(e=>e.getBoundingClientRect().top>document.querySelector('#quant-form').getBoundingClientRect().bottom));
   await p.getByRole('button',{name:'Run again with these settings',exact:true}).click();await p.waitForFunction(url=>location.href!==url,firstUrl);await p.locator('.quant-values').waitFor();const same=await result();
   check('Same data, settings and seed reproduce exactly without replacing original run',same.id!==a.id&&same.resultHash===a.resultHash&&JSON.stringify(same.results)===JSON.stringify(a.results));

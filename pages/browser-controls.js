@@ -1,9 +1,10 @@
 import {publicManifest} from './browser-api.js';
+import './market-controls.js';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const normalized=(ticker,market)=>ticker.trim().toUpperCase().replace(market==='IDX'?/\.JK$/:/[.]/,market==='IDX'?'':'-');
 const bound=new WeakSet();let ticket=0;
 const number=x=>new Intl.NumberFormat('en-GB',{maximumFractionDigits:0}).format(x);
-async function publication(){const board=document.querySelector('#market-board');if(!board||board.dataset.publicationNote)return;board.dataset.publicationNote='true';try{const m=await publicManifest(),p=document.createElement('p');if(!board.isConnected)return;p.className='market-publication';p.textContent='Data publication: '+new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Jakarta',dateStyle:'medium',timeStyle:'medium'}).format(new Date(m.publishedAt))+' WIB. Dated snapshots; refresh checks published files. Prices are not streaming. '+(Date.now()-Date.parse(m.publishedAt)>86400000?'Publication is over 24 hours old.':'');board.prepend(p);}catch(e){if(board.isConnected)board.prepend(document.createTextNode(e.message));}}
+async function publication(){const board=document.querySelector('#market-board');if(!board)return;try{const m=await publicManifest();if(!board.isConnected)return;let p=board.querySelector('.market-publication');if(!p){p=document.createElement('p');p.className='market-publication';board.prepend(p);}p.textContent='Data publication: '+new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Jakarta',dateStyle:'medium',timeStyle:'medium'}).format(new Date(m.publishedAt))+' WIB. Dated snapshots; refresh checks published files. Prices are not streaming. '+(Date.now()-Date.parse(m.publishedAt)>86400000?'Publication is over 24 hours old.':'');}catch(e){if(board.isConnected){let p=board.querySelector('.market-publication');if(!p){p=document.createElement('p');p.className='market-publication';board.prepend(p);}p.textContent='Publication status could not be loaded: '+e.message;}}}
 function selectStock(form,ticker){form.elements.ticker.value=ticker;form.dataset.manualCutoff='false';form.elements.ticker.dispatchEvent(new Event('input',{bubbles:true}));form.elements.ticker.focus();}
 async function controls(){const current=++ticket,form=document.querySelector('#quant-form');if(!form)return;try{const manifest=await publicManifest();if(current!==ticket||!form.isConnected)return;let panel=document.querySelector('#published-history');if(!panel){panel=document.createElement('section');panel.id='published-history';panel.className='published-history simple-stock-picker';form.before(panel);}
  const update=(preserve=false)=>{
@@ -24,5 +25,6 @@ async function controls(){const current=++ticket,form=document.querySelector('#q
 document.addEventListener('click',e=>{const button=e.target.closest('[data-history-ticker]'),form=document.querySelector('#quant-form');if(button&&form)selectStock(form,button.dataset.historyTicker);});
 document.addEventListener('input',e=>{if(e.target.id!=='coverage-search')return;const needle=e.target.value.toLowerCase().trim();document.querySelectorAll('[data-stock-search]').forEach(b=>b.hidden=!b.dataset.stockSearch.includes(needle));});
 window.addEventListener('hashchange',()=>setTimeout(()=>{controls();publication();},0));
+document.addEventListener('office:market-refreshed',()=>publication());
 new MutationObserver(()=>{const form=document.querySelector('#quant-form');if(form&&!form.dataset.publishedControls){form.dataset.publishedControls='true';controls();}publication();}).observe(document.querySelector('#main'),{childList:true});
 controls();publication();

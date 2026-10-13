@@ -1,6 +1,7 @@
 import {validate} from './model.js';
 import {configFor,validId} from './quant-contract.js';
 import {validateAnalysis as checkAnalysis} from './analysis-contract.js';
+import {validatePublicQuote} from './public-quote-contract.js';
 const dbName='longhand-office.browser.'+new URL('.',import.meta.url).pathname,owner=crypto.randomUUID(),active=new Map(),channel=new BroadcastChannel(dbName+'.jobs');
 let dbPromise,manifestPromise,pumping=false;
 const request=r=>new Promise((resolve,reject)=>{r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});
@@ -14,7 +15,19 @@ function putJob(tx,j){tx.objectStore('jobs').put(j);tx.objectStore('summaries').
 function event(j,stage){j.stage=stage;j.updated=new Date().toISOString();(j.events??=[]).push({at:j.updated,stage});}
 async function publicJson(file,force=false){const response=await fetch(new URL('data/'+file,import.meta.url),{cache:force?'no-store':'default',credentials:'omit',signal:AbortSignal.timeout(25000)});if(!response.ok)throw Error('Published data is unavailable (HTTP '+response.status+'). Retry later.');return response.json();}
 export async function publicManifest(force=false){if(force)manifestPromise=null;return manifestPromise??=publicJson('manifest.json',force).then(m=>{if(m.format!=='longhand-public-market-data'||m.version!==1||!Array.isArray(m.histories)||!Number.isFinite(Date.parse(m.publishedAt))||!/^[a-f0-9]{64}$/.test(m.codeHash))throw Error('Invalid published market manifest.');return m;}).catch(e=>{manifestPromise=null;throw e;});}
-export async function browserMarketFetch(input){try{const url=new URL(input,location.origin),category=url.pathname.includes('flowless')?'idx':url.searchParams.get('category')||'us',symbol=url.searchParams.get('symbol'),m=await publicJson('market.json',true),item=m.quotes?.[category+':'+symbol];if(!item?.quote)throw Error(item?.error||'Ticker is not in this publication. The owner can add it through the market-data publishing workflow.');let manifest=await publicManifest();if(manifest.publishedAt!==m.publishedAt)manifest=await publicManifest(true);const history=manifest.histories.find(h=>h.ticker===symbol&&h.market===(category==='idx'?'IDX':'US'));return new Response(JSON.stringify({...item.quote,modelCutoff:history?.modelCutoff||null,modelAvailable:!!history?.modelCutoff,publicationTime:m.publishedAt}),{status:200,headers:{'Content-Type':'application/json'}});}catch(e){return new Response(JSON.stringify({error:e.message}),{status:503,headers:{'Content-Type':'application/json'}});}}
+export async function browserMarketFetch(input){
+ let kind='source-unavailable';
+ try{
+  const url=new URL(input,location.origin),category=url.pathname.includes('flowless')?'idx':url.searchParams.get('category')||'us',symbol=url.searchParams.get('symbol'),m=await publicJson('market.json',true),item=m.quotes?.[category+':'+symbol];
+  if(!item){kind='not-published';throw Error('This ticker is not in the current publication. Choose one from Browse available stocks.');}
+  if(!item.quote)throw Error(item.error||'The source did not supply this observation.');
+  kind='invalid-data';validatePublicQuote(item.quote,category,symbol,m.publishedAt);
+  let history,modelAvailabilityNote;
+  try{let manifest=await publicManifest();if(manifest.publishedAt!==m.publishedAt)manifest=await publicManifest(true);history=manifest.histories.find(h=>h.ticker===symbol&&h.market===(category==='idx'?'IDX':'US'));}
+  catch{modelAvailabilityNote='The price is available, but model coverage could not be loaded. Refresh to retry model availability.';}
+  return new Response(JSON.stringify({...item.quote,modelCutoff:history?.modelCutoff||null,modelAvailable:!!history?.modelCutoff,modelAvailabilityNote,publicationTime:m.publishedAt}),{status:200,headers:{'Content-Type':'application/json'}});
+ }catch(e){return new Response(JSON.stringify({error:e.message,kind}),{status:503,headers:{'Content-Type':'application/json'}});}
+}
 async function validateRun(r){const values=[r?.config,r?.results,r?.dataset?.observations];if(r?.config)values.push(configFor(r.config));const hashes=new Map(await Promise.all(values.map(async v=>[JSON.stringify(v),await hash(v)])));checkAnalysis(r,v=>hashes.get(JSON.stringify(v)));}
 async function references(records,runs=[]){for(const r of [...records.theses,...records.decisions])for(const ref of r.analysisRefs||[]){const j=runs.find(j=>j.id===ref.runId)||await get('jobs',ref.runId);if(!j||j.status!=='completed'||j.resultHash!==ref.resultHash||j.config.ticker!==ref.ticker||j.config.market!==ref.market||j.config.cutoff!==ref.cutoff||j.results.modelVersion!==ref.modelVersion)throw Error('Missing or mismatched immutable analysis '+ref.runId+'. Include linked runs in the backup.');}}
 async function checkRuns(runs){if(!Array.isArray(runs)||runs.length>200)throw Error('Invalid analysis backup bundle.');for(const run of runs){await validateRun(run);const existing=await get('jobs',run.id);if(existing&&existing.resultHash!==run.resultHash)throw Error('Run ID conflicts with an existing immutable result.');}}
