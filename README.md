@@ -18,7 +18,7 @@ Open [Longhand Office](http://127.0.0.1:4173/#overview). Keep the command runnin
 ## Everyday workflow
 
 1. **Markets:** inspect multiple US/IDX stocks, bond ETFs, commodity futures and indices. Source type, currency/unit, observation date and unverified real-time status stay visible. Refresh changes only the market desk.
-2. **Quant Lab:** enter a supported equity/ETF ticker, cutoff, return basis, 5/20-session horizon and seed. **Run models** opens a persistent result tab. It acquires completed daily history and runs historical risk, AR(1), Ridge, zero/mean baselines, chronological evaluation and seeded scenarios. Save an immutable link to a thesis or decision.
+2. **Quant Lab:** choose market, ticker and scenario horizon. **Run models** displays results below the controls on the same page, with a persistent analysis URL. Advanced settings retain date, price basis and seed; seed fixes random simulation draws for reproducibility. The Pages stock picker includes searchable company names and 94 tested US/IDX instruments, including ADRO. Local or browser workers run historical risk, AR(1), Ridge, zero/mean baselines, chronological evaluation and seeded scenarios. Save an immutable link to a thesis or decision.
 3. **Portfolios:** choose Paper for simulations or Real for manual actual-investment records. Record opening cash where known, purchases/sales with your prices/fees, and dated deposits, withdrawals or dividends. The app never places orders.
 4. **Valuation:** supply your own dated prices or explicitly review and confirm a matching Markets observation. Prices append to history. Cost, realized trading profit, dividends and unrealized P/L are separate. Complete value/concentration require current compatible prices and known cash. Currencies are never consolidated through invented exchange rates.
 5. **Theses/Journal:** write assumptions, evidence, horizon, invalidation conditions and review dates; link a portfolio/instrument, public report and completed Quant run. Add outcome/lessons/next action and a reasoning assessment as a separate review. Original text and prior explicit edit versions are retained.
@@ -44,7 +44,7 @@ The server binds only to 127.0.0.1, checks local Host/Origin, bounds requests/jo
 - Weighted-average cost includes fees. No shorting, automatic corporate-action trade changes, broker synchronization, tax-lot accounting or FX conversion.
 - TWR/MWR remain unavailable without complete dated boundary valuations and a documented policy. Value minus contributions is never presented as a percentage return.
 - SQLite save snapshots have no automatic retention/pruning; keep exports and monitor local disk usage. Clearing browser site data removes the vault connection marker, though the database remains. JSON restoration reconnects records to a new workspace.
-- A hosted release still needs genuine server authentication, workspace authorization, sessions, TLS, encryption, managed backups and a security review. No public deployment was added.
+- A private synchronized hosted vault still needs genuine server authentication, workspace authorization, sessions, TLS, encryption and managed backups. The public Pages edition is deployed, with computation and personal records confined to each browser profile; it does not host the private Node/SQLite vault.
 
 ## Verification and documentation
 
@@ -55,9 +55,11 @@ npm run test:api
 python scripts/reference-quant.py
 ```
 
-The follow-up audit has **152 passing automated model/storage/adapter checks**, **4 passing live local-API checks**, **34 independent Python numerical checks**, a **22-check complete browser workflow**, **11 record-safety checks**, **40 targeted audit checks**, **40 Markets checks** and **13 populated-layout checks**. Tests use isolated records/workspaces; no restore runs over the ordinary workspace.
+The current suite has **160 passing automated checks**. The latest usability release verifies **376 model configurations across 94 published instruments**, all **94 through actual browser Workers**, **105 quote entries**, **21 same-page usability assertions**, the **22-check complete records/backup workflow**, **51 browser safety checks** and **40 local audit checks**. Previous releases additionally retained independent Python verification of AAPL/BBCA results. Tests use isolated records/workspaces; no restore runs over the ordinary workspace.
 
-- [AUDIT_2026-10-13.md](AUDIT_2026-10-13.md): latest defects/fixes, complete verification, preservation evidence and remaining limits.
+- [QUANT_USABILITY_VALIDATION.md](QUANT_USABILITY_VALIDATION.md): same-page results, expanded stock coverage, seed/search fixes and current verification.
+- [WEB_RELEASE_VALIDATION.md](WEB_RELEASE_VALIDATION.md): working public browser release, data/privacy boundaries and deployment evidence.
+- [AUDIT_2026-10-13.md](AUDIT_2026-10-13.md): preceding local audit, preservation evidence and remaining limits.
 - [RELEASE_VALIDATION.md](RELEASE_VALIDATION.md): preceding release walkthrough and implementation evidence.
 - [QUANT_LAB.md](QUANT_LAB.md): formulas, leakage protections, acquisition policy, audit and Market Atlas repository/license assessment.
 - [LOCAL_VAULT.md](LOCAL_VAULT.md): actual storage paths, migration/recovery, backup policy, cash-flow and review rules.

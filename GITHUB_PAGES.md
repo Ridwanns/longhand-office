@@ -15,17 +15,21 @@ The user requested working models and data rather than the earlier read-only des
 
 ## Data and computation
 
-The default publication includes **12 US equity/ETF histories**, **8 IDX histories**, and **31 market-category quote entries**. These are real Yahoo chart observations with source timestamps, currency, adjustment definition and publication time. They are not invented prices or real-time streaming.
+The default publication includes **45 US equity/ETF histories**, **49 IDX histories**, and **105 market-category quote entries**. ADRO, AADI, ANTM, the major banks and other selected active Indonesian names are included. These are real Yahoo chart observations with source timestamps, currency, adjustment definition and publication time. They are not invented prices or real-time streaming.
+
+Quant shows six popular shortcuts, a ticker/company search and a collapsed complete coverage list. Choose market, ticker and scenario horizon, then **Run models**. Results appear below the controls on the same page. Previous analyses remain immutable and reloadable; Browser Back restores the prior analysis. Date, price basis and simulation seed are optional Advanced settings. The seed fixes the random draws: identical retained history, settings and seed reproduce identical scenarios. Changing it does not change AR/Ridge forecasts or make them more accurate.
+
+The universe is curated research coverage, not a verified current market-cap ranking or LQ45/S&P membership list. Market capitalization is unavailable in this feed. Each ticker shows a recent average **close × volume estimate**, with the available observation count over the last twenty completed source sessions. It is not exchange-reported turnover, bid/ask depth or a liquidity guarantee. See `pages/stock-universe.js` for the reproducible default list.
 
 `scripts/pages-data.mjs` reads fixed Yahoo hosts without sending portfolio or journal data. The generated `.pages-data` directory is ignored by Git. The build packages only explicitly allowed client modules and these public market files into `dist/office`. Personal records, databases, backups, validation artifacts, credentials and backend scripts are excluded.
 
-`Publish working Office` runs on `main` pushes, manually, and approximately every six hours at minute 17 UTC (about 01:17/07:17/13:17/19:17 WIB). GitHub can delay scheduled runs. Provider errors are preserved as unavailable, never substituted. A publication without any model-ready US or IDX history fails before deployment, leaving the preceding site in place.
+`Publish working Office` runs on `main` pushes, manually, and approximately every six hours at minute 17 UTC (about 01:17/07:17/13:17/19:17 WIB). GitHub can delay scheduled runs. Provider errors are preserved as unavailable, never substituted. Before deployment, every published model-ready instrument must pass both raw/adjusted bases and both 5/20-session horizons, including shared strict analysis validation. An unavailable instrument, failed model case or failed quote stops publication and leaves the preceding deployment in place.
 
 The owner can add normalized tickers using the workflow's `us_tickers`/`idx_tickers` inputs. Additional inputs apply to that publication; subsequent scheduled runs use the documented defaults unless those defaults are edited. Unlisted symbols show an availability explanation rather than fabricated data.
 
 Each run selects a ticker, cutoff, basis, horizon and seed and fits anew in a browser Worker. Web Crypto computes the same SHA-256 JSON hashes used by the Node edition. Config/history/analysis contracts are shared between both editions. There are two concurrent browser jobs with a bounded queue, cancellation, a 120-second worker limit, persisted events and leases for recovery when an owner tab closes. A lost owner can be recovered after its 20-second lease expires; no estimated progress percentages are invented.
 
-The ticker buttons display an **explicit eligible cutoff**. The source currently has a missing IDX session on 12 October; the new 13 October row cannot be joined across that missing row. For BBCA, the displayed 9 October cutoff retains 361 eligible observations. Selecting a later inadequate cutoff fails honestly. It never silently changes a requested date or forward-fills a missing price. A model-ready cutoff searches the latest 60 eligible dates and requires at least 350 contiguous observations; it is a data-availability choice, not performance-based selection.
+Selecting a new ticker supplies the **explicit tested cutoff**, visible beside its source status. Advanced settings allow a deliberate different date, which remains retained and is validated when run. Market-detail model actions label and use the same eligible cutoff. The source currently has a missing IDX session on 12 October; the new 13 October row cannot be joined across that missing row. For BBCA and ADRO, the displayed 9 October cutoff retains 361 eligible observations. Selecting a later inadequate cutoff fails honestly. It never forward-fills a missing price. A model-ready cutoff searches the latest 60 eligible dates and requires at least 350 contiguous observations; it is a data-availability choice, not performance-based selection.
 
 Yahoo-adjusted closes are retrieval-vintage proxies for splits/dividends. They differ from the owner-local Flowless split-like adjustment that excludes dividends. The local server's Flowless adapter is retained unchanged; the web edition uses explicit Yahoo provenance.
 
@@ -39,7 +43,7 @@ The local port-4173 browser data and SQLite vault were not migrated, replaced or
 
 ## Verification and remaining limits
 
-The application suite passes **157 tests**. The working browser Investment Lab passes the same **22-step full workflow** in fresh contexts, including export/restore with a linked completed analysis. AAPL and BBCA model results each pass **34 independent Python numerical checks**. All five market categories display actual source data. Additional browser storage/race/layout checks and live deployment receipts are recorded in `WEB_RELEASE_VALIDATION.md`.
+The application suite passes **160 tests**. All **94 instruments** completed through real browser Workers and IndexedDB; **376 model cases** passed the publication verification and **105 quote entries** passed the browser adapter. The working browser Investment Lab passes its **22-step full workflow** in fresh contexts, including export/restore with a linked completed analysis. AAPL and BBCA model results previously passed **34 independent Python numerical checks** each; numerical formulas are unchanged in this usability release. Details are in `QUANT_USABILITY_VALIDATION.md` and the preceding `WEB_RELEASE_VALIDATION.md`.
 
 Markets are published snapshots; refresh reloads the latest published file and does not open a streaming source. Model histories are limited to the published universe and retained five-year source window. Provider outages/rate limits can delay updates. Individual bonds/yields and a numerical macroeconomic indicator feed remain unconnected. Treasury/Governance remain planned. Forecasts/scenarios are statistical studies, not validated investment probabilities. No broker orders, automatic ledger corporate actions, FX conversion, tax lots or TWR/MWR were added.
 
@@ -47,6 +51,7 @@ Markets are published snapshots; refresh reloads the latest published file and d
 
 ```powershell
 npm run data:pages
+node scripts/verify-pages-universe.mjs
 npm run build:pages
 ```
 

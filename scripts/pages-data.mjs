@@ -7,6 +7,8 @@ import {projectMarketSnapshot} from './market-adapter.mjs';
 import {yahooHistory,dailyChange} from './quote-history.mjs';
 import {selectModelCutoff} from './select-pages-cutoff.mjs';
 import {MARKET_CATEGORIES} from '../market-catalogue.js';
+import {STOCK_UNIVERSE} from '../pages/stock-universe.js';
+import {recentLiquidity} from './pages-liquidity.mjs';
 export function projectPagesHistory(raw,config,retrievedAt=new Date().toISOString()){
  const r=raw?.chart?.result?.[0],m=r?.meta,symbol=config.ticker+(config.market==='IDX'?'.JK':'');
  if(raw?.chart?.error||!r||m?.symbol!==symbol||m.currency!==(config.market==='IDX'?'IDR':'USD')||!['EQUITY','ETF'].includes(m.instrumentType)||(config.market==='IDX'?m.exchangeName!=='JKT':!['NMS','NGM','NCM','NYQ','ASE','PCX','BTS','BATS'].includes(m.exchangeName)))throw Error('Unexpected ticker, exchange, currency or instrument type from history source.');
@@ -36,15 +38,15 @@ async function fetchChart(symbol,cutoff,history){
 export async function generatePagesData(){
  const output=path.resolve('.pages-data'),cutoff=new Date().toISOString().slice(0,10),startedAt=new Date().toISOString(),quotes={},histories=[],errors=[];
  await mkdir(path.join(output,'history'),{recursive:true});
- const parse=(market,defaults,env)=>[...new Set([...defaults,...String(env||'').split(/[\s,]+/).filter(Boolean).map(t=>configFor({market,ticker:t,cutoff,horizon:5}).ticker)])].slice(0,32);
- const us=parse('US',['AAPL','MSFT','NVDA','AMZN','GOOGL','META','SPY','QQQ','BRK-B','TLT','IEF','LQD'],process.env.OFFICE_US_TICKERS),idx=parse('IDX',['BBCA','BBRI','BMRI','BBNI','TLKM','ASII','ICBP','UNVR'],process.env.OFFICE_IDX_TICKERS);
+ const parse=(market,defaults,env)=>[...new Set([...defaults,...String(env||'').split(/[\s,]+/).filter(Boolean).map(t=>configFor({market,ticker:t,cutoff,horizon:5}).ticker)])].slice(0,80);
+ const us=parse('US',STOCK_UNIVERSE.US,process.env.OFFICE_US_TICKERS),idx=parse('IDX',STOCK_UNIVERSE.IDX,process.env.OFFICE_IDX_TICKERS);
  const tasks=[...us.map(ticker=>({category:'us',ticker,market:'US',history:true})),...idx.map(ticker=>({category:'idx',ticker,market:'IDX',history:true})),...['commodities','macro'].flatMap(category=>MARKET_CATEGORIES[category].instruments.map(i=>({category,ticker:i.symbol,history:false})))];
  let next=0;
  await Promise.all(Array.from({length:3},async()=>{while(next<tasks.length){const t=tasks[next++];try{
   const raw=await fetchChart(t.ticker+(t.market==='IDX'?'.JK':''),cutoff,t.history),retrievedAt=new Date().toISOString();
   const quote=t.category==='us'?projectUsSnapshot(raw,t.ticker,retrievedAt):t.category==='idx'?projectPagesIdxSnapshot(raw,t.ticker,retrievedAt):projectMarketSnapshot(raw,t.category,t.ticker,retrievedAt);
   quote.publishedSnapshot=true;quotes[t.category+':'+t.ticker]={quote};
-  if(t.history){const config=configFor({market:t.market,ticker:t.ticker,cutoff,horizon:5}),input=projectPagesHistory(raw,config,retrievedAt),completed=input.rows.filter(r=>r.complete),latest=completed.at(-1),lastUsable=completed.filter(r=>Number.isFinite(r.adjustedClose)&&r.adjustedClose>0).at(-1);if(!lastUsable)throw Error('No usable completed history.');const selected=selectModelCutoff(input,config),file='history/'+t.market+'-'+t.ticker+'.json';await writeFile(path.join(output,file),JSON.stringify(input));histories.push({ticker:t.ticker,market:t.market,currency:input.metadata.currency,file,rows:input.rows.length,retrievedAt,latestCompleted:latest.date,lastUsableClose:lastUsable.date,...selected,latestCompletedUsable:latest.date===lastUsable.date});}
+  if(t.history){const config=configFor({market:t.market,ticker:t.ticker,cutoff,horizon:5}),input=projectPagesHistory(raw,config,retrievedAt),completed=input.rows.filter(r=>r.complete),latest=completed.at(-1),lastUsable=completed.filter(r=>Number.isFinite(r.adjustedClose)&&r.adjustedClose>0).at(-1);if(!lastUsable)throw Error('No usable completed history.');const selected=selectModelCutoff(input,config),file='history/'+t.market+'-'+t.ticker+'.json';await writeFile(path.join(output,file),JSON.stringify(input));histories.push({ticker:t.ticker,name:quote.name,market:t.market,currency:input.metadata.currency,liquidity20:recentLiquidity(input.rows),marketCap:null,file,rows:input.rows.length,retrievedAt,latestCompleted:latest.date,lastUsableClose:lastUsable.date,...selected,latestCompletedUsable:latest.date===lastUsable.date});}
  }catch(e){quotes[t.category+':'+t.ticker]={error:e.message};errors.push({category:t.category,ticker:t.ticker,error:e.message});}}}));
  for(const instrument of MARKET_CATEGORIES.bonds.instruments)quotes['bonds:'+instrument.symbol]=quotes['us:'+instrument.symbol]?.quote?{quote:{...quotes['us:'+instrument.symbol].quote,category:'bonds',name:instrument.name,unit:instrument.unit,instrumentType:'ETF',priceKind:'source-snapshot'}}:quotes['us:'+instrument.symbol]||{error:'Snapshot unavailable.'};
  const publishedAt=new Date().toISOString(),manifest={format:'longhand-public-market-data',version:1,startedAt,publishedAt,cutoff,histories:histories.sort((a,b)=>(a.market+a.ticker).localeCompare(b.market+b.ticker)),errors,policy:'Published provider snapshots, not streaming or guaranteed real-time. New runs fit in your browser from this retrieval vintage. No portfolio records or private analyses are published.'};
