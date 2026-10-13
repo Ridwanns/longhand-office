@@ -1,0 +1,11 @@
+import {validateTickerStudy,validateTickerBackup} from './ticker-study.js';
+let opening;
+const dbName=()=> 'longhand-office.ticker-studies.'+new URL('.',location.href).pathname+(new URLSearchParams(location.search).get('test-workspace')||'');
+const request=r=>new Promise((resolve,reject)=>{r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});
+async function db(){return opening??=new Promise((resolve,reject)=>{const r=indexedDB.open(dbName(),1);r.onupgradeneeded=()=>r.result.createObjectStore('studies',{keyPath:'id'});r.onsuccess=()=>{r.result.onversionchange=()=>r.result.close();resolve(r.result);};r.onerror=()=>{opening=null;reject(r.error);};r.onblocked=()=>{opening=null;reject(Error('Ticker storage is blocked by another tab.'));};});}
+async function transaction(mode,fn){const connection=await db(),tx=connection.transaction('studies',mode),done=new Promise((resolve,reject)=>{tx.oncomplete=resolve;tx.onabort=()=>reject(tx.error||Error('Ticker storage transaction aborted.'));tx.onerror=()=>{};});try{const result=await fn(tx.objectStore('studies'));await done;return result;}catch(e){try{tx.abort();}catch{}await done.catch(()=>{});throw e;}}
+export async function listTickerStudies(){return (await transaction('readonly',s=>request(s.getAll()))).map(validateTickerStudy).sort((a,b)=>b.savedAt.localeCompare(a.savedAt));}
+async function insert(studies){return transaction('readwrite',async store=>{const existing=await request(store.getAll()),ids=new Map(existing.map(s=>[s.id,s]));if(existing.length+studies.filter(s=>!ids.has(s.id)).length>200)throw Error('Ticker archive is full (200 studies). Export your archive; existing studies remain intact.');for(const study of studies){const old=ids.get(study.id);if(old&&JSON.stringify(validateTickerStudy(old))!==JSON.stringify(study))throw Error('Study ID conflicts with an existing saved study. Nothing was replaced.');}for(const study of studies)if(!ids.has(study.id))store.add(study);return studies.length;});}
+export const saveTickerStudy=value=>insert([validateTickerStudy(value)]);
+export const restoreTickerBackup=value=>insert(validateTickerBackup(value));
+export async function tickerBackup(){return {format:'longhand-ticker-backup',version:1,exportedAt:new Date().toISOString(),studies:await listTickerStudies()};}

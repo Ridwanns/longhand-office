@@ -4,7 +4,7 @@ export async function run(original){
  const root='http://127.0.0.1:4174';
  page.on('pageerror',e=>errors.push(e.message));
  try{
-  await page.goto(root+'/#quant');await page.locator('#quant-form').waitFor();
+  await page.goto(root+'/#quant');await page.locator('.quant-custom>summary').click();await page.locator('#quant-form').waitFor();
   await page.locator('a.skip').focus();await page.keyboard.press('Enter');check('Skip link focuses the workspace without losing the active page',page.url().endsWith('#quant')&&await page.evaluate(()=>document.activeElement.id==='main')&&await page.locator('#quant-form').count()===1);
   await page.locator('[name=ticker]').fill('BAD!');check('Invalid ticker rejected before opening a tab',!await page.locator('[name=ticker]').evaluate(e=>e.checkValidity()));
   await page.locator('[name=ticker]').fill('BRK.B');check('US share-class ticker accepted',await page.locator('[name=ticker]').evaluate(e=>e.checkValidity()));
