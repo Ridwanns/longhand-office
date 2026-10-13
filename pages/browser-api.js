@@ -3,7 +3,7 @@ import {configFor,validId} from './quant-contract.js';
 import {validateAnalysis as checkAnalysis} from './analysis-contract.js';
 import {validatePublicQuote} from './public-quote-contract.js';
 const dbName='longhand-office.browser.'+new URL('.',import.meta.url).pathname,owner=crypto.randomUUID(),active=new Map(),channel=new BroadcastChannel(dbName+'.jobs');
-let dbPromise,manifestPromise,pumping=false;
+let dbPromise,manifestPromise,marketPromise,marketFetched=0,pumping=false;
 const request=r=>new Promise((resolve,reject)=>{r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});
 const hash=async v=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(JSON.stringify(v))))).map(x=>x.toString(16).padStart(2,'0')).join('');
 async function database(){return dbPromise??=new Promise((resolve,reject)=>{const r=indexedDB.open(dbName,1);r.onupgradeneeded=()=>{for(const store of ['workspaces','jobs','summaries'])r.result.createObjectStore(store,{keyPath:'id'});r.result.createObjectStore('backups',{keyPath:'id',autoIncrement:true});};r.onsuccess=()=>{r.result.onversionchange=()=>r.result.close();resolve(r.result);};r.onerror=()=>{dbPromise=null;reject(r.error);};r.onblocked=()=>reject(Error('Browser storage is blocked by another tab. Close that tab and reload.'));});}
@@ -15,15 +15,17 @@ function putJob(tx,j){tx.objectStore('jobs').put(j);tx.objectStore('summaries').
 function event(j,stage){j.stage=stage;j.updated=new Date().toISOString();(j.events??=[]).push({at:j.updated,stage});}
 async function publicJson(file,force=false){const response=await fetch(new URL('data/'+file,import.meta.url),{cache:force?'no-store':'default',credentials:'omit',signal:AbortSignal.timeout(25000)});if(!response.ok)throw Error('Published data is unavailable (HTTP '+response.status+'). Retry later.');return response.json();}
 export async function publicManifest(force=false){if(force)manifestPromise=null;return manifestPromise??=publicJson('manifest.json',force).then(m=>{if(m.format!=='longhand-public-market-data'||m.version!==1||!Array.isArray(m.histories)||!Number.isFinite(Date.parse(m.publishedAt))||!/^[a-f0-9]{64}$/.test(m.codeHash))throw Error('Invalid published market manifest.');return m;}).catch(e=>{manifestPromise=null;throw e;});}
+async function marketSnapshot(){if(marketPromise&&Date.now()-marketFetched>60000)marketPromise=null;return marketPromise??=(marketFetched=Date.now(),publicJson('market.json',true).catch(e=>{marketPromise=null;throw e;}));}
+document.addEventListener('office:market-loading',e=>{if(e.detail?.force){marketPromise=null;marketFetched=0;}});
 export async function browserMarketFetch(input){
  let kind='source-unavailable';
  try{
-  const url=new URL(input,location.origin),category=url.pathname.includes('flowless')?'idx':url.searchParams.get('category')||'us',symbol=url.searchParams.get('symbol'),m=await publicJson('market.json',true),item=m.quotes?.[category+':'+symbol];
+  const url=new URL(input,location.origin),category=url.pathname.includes('flowless')?'idx':url.searchParams.get('category')||'us',symbol=url.searchParams.get('symbol'),m=await marketSnapshot(),item=m.quotes?.[category+':'+symbol];
   if(!item){kind='not-published';throw Error('This ticker is not in the current publication. Choose one from Browse available stocks.');}
   if(!item.quote)throw Error(item.error||'The source did not supply this observation.');
   kind='invalid-data';validatePublicQuote(item.quote,category,symbol,m.publishedAt);
   let history,modelAvailabilityNote;
-  try{let manifest=await publicManifest();if(manifest.publishedAt!==m.publishedAt)manifest=await publicManifest(true);history=manifest.histories.find(h=>h.ticker===symbol&&h.market===(category==='idx'?'IDX':'US'));}
+  try{let manifest=await publicManifest();if(manifest.publishedAt!==m.publishedAt)manifest=await publicManifest(true);history=manifest.histories.find(h=>h.ticker===symbol&&h.market===(category==='idx'?'IDX':'US'));if(!history)modelAvailabilityNote='Price available. A model history is not published for this ticker. Quant currently covers the selected US histories and available IDX histories.';else if(!history.modelCutoff)modelAvailabilityNote='Price available. This history does not yet contain 350 eligible completed observations; no missing sessions are filled.';}
   catch{modelAvailabilityNote='The price is available, but model coverage could not be loaded. Refresh to retry model availability.';}
   return new Response(JSON.stringify({...item.quote,modelCutoff:history?.modelCutoff||null,modelAvailable:!!history?.modelCutoff,modelAvailabilityNote,publicationTime:m.publishedAt}),{status:200,headers:{'Content-Type':'application/json'}});
  }catch(e){return new Response(JSON.stringify({error:e.message,kind}),{status:503,headers:{'Content-Type':'application/json'}});}

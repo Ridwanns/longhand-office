@@ -14,6 +14,6 @@ export function validatePublicQuote(q,category,symbol,publishedAt){
  for(let i=0;i<q.history.length;i++){const h=q.history[i];if(!date(h.date)||h.date>latestDate||!positive(h.close)||i&&h.date<=q.history[i-1].date)throw Error('Published close history contains invalid, future or duplicate observations.');}
  const prior=q.history.filter(h=>h.date<q.marketDate).at(-1);
  if(prior){const change=q.change;if(!change||change.referenceDate!==prior.date||!close(change.referenceClose,prior.close)||!close(change.value,q.price-prior.close)||!close(change.percent,(q.price/prior.close-1)*100))throw Error('Published change does not reconcile to its recorded reference close.');}
- else if(q.change!==null)throw Error('Published change has no preceding source close.');
+ else if(q.change!==null){const change=q.change;if(change?.referenceKind!=='provider-previous-close'||change.referenceDate!==null||!positive(change.referenceClose)||!close(change.value,q.price-change.referenceClose)||!close(change.percent,(q.price/change.referenceClose-1)*100))throw Error('Published change has no valid source previous close.');}
  return q;
 }

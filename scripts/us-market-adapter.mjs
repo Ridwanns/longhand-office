@@ -2,7 +2,7 @@
 // No StockSharp source or trading engine is embedded.
 const BASE='https://query1.finance.yahoo.com/v8/finance/chart/';
 import {yahooHistory,dailyChange} from './quote-history.mjs';
-const US_EXCHANGES=new Set(['NMS','NGM','NCM','NYQ','ASE','PCX','BATS']);
+const US_EXCHANGES=new Set(['NMS','NGM','NCM','NYQ','ASE','PCX','BATS','BTS']);
 export function normalizeUsSymbol(value){
  const symbol=String(value??'').trim().toUpperCase().replace('.', '-');
  if(!/^[A-Z]{1,6}(?:-[A-Z])?$/.test(symbol))throw Error('Use a US ticker such as AAPL, MSFT, NVDA or BRK-B.');

@@ -1,4 +1,4 @@
-import {copyFile,mkdir,readdir,readFile,writeFile,stat} from 'node:fs/promises';
+import {copyFile,mkdir,readdir,readFile,writeFile,stat,unlink} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -22,5 +22,5 @@ const input=path.join(root,'.pages-data'),manifest=JSON.parse(await readFile(pat
 manifest.codeHash=createHash('sha256').update(JSON.stringify(await Promise.all(['quant-math.js','quant-contract.js','quant-history.js','pages/browser-worker.js'].map(load)))).digest('hex');
 await mkdir(path.join(dest,'data','history'),{recursive:true});await writeFile(path.join(dest,'data','manifest.json'),JSON.stringify(manifest));await copyFile(path.join(input,'market.json'),path.join(dest,'data','market.json'));
 for(const h of manifest.histories){if(!/^history\/(US|IDX)-[A-Z]{1,6}(-[A-Z])?\.json$/.test(h.file))throw Error('Invalid public history path');await copyFile(path.join(input,h.file),path.join(dest,'data',h.file));}
-const expected=new Set(manifest.histories.map(h=>path.basename(h.file)));for(const file of await readdir(path.join(dest,'data','history')))if(!expected.has(file))throw Error('Stale/unexpected history in output: '+file+'. Use a fresh output directory.');
+const expected=new Set(manifest.histories.map(h=>path.basename(h.file)));for(const file of await readdir(path.join(dest,'data','history')))if(!expected.has(file)){if(!/^(US|IDX)-[A-Z]{1,6}(-[A-Z])?\.json$/.test(file))throw Error('Unexpected history in output: '+file);await unlink(path.join(dest,'data','history',file));}
 console.log('Built working browser Office with '+manifest.histories.length+' published histories. No database, personal records, backend scripts or validation artifacts included.');

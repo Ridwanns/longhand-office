@@ -25,7 +25,7 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -35,6 +35,11 @@ jobs:
         with:
           node-version: '24'
       - run: npm test
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-data.txt
+      - run: python scripts/yahoo-stock-directory.py
       - run: node scripts/pages-data.mjs
         env:
           OFFICE_US_TICKERS: ${{ inputs.us_tickers }}

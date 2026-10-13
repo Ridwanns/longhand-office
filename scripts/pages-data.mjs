@@ -1,4 +1,4 @@
-import {mkdir,writeFile} from 'node:fs/promises';
+import {mkdir,writeFile,readFile} from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {configFor,hash,normalizeHistory} from './quant-data.mjs';
@@ -9,6 +9,7 @@ import {selectModelCutoff} from './select-pages-cutoff.mjs';
 import {MARKET_CATEGORIES} from '../market-catalogue.js';
 import {STOCK_UNIVERSE} from '../pages/stock-universe.js';
 import {recentLiquidity} from './pages-liquidity.mjs';
+import {screenerInstrument,screenerQuote} from './screener-quotes.mjs';
 export function projectPagesHistory(raw,config,retrievedAt=new Date().toISOString()){
  const r=raw?.chart?.result?.[0],m=r?.meta,symbol=config.ticker+(config.market==='IDX'?'.JK':'');
  if(raw?.chart?.error||!r||m?.symbol!==symbol||m.currency!==(config.market==='IDX'?'IDR':'USD')||!['EQUITY','ETF'].includes(m.instrumentType)||(config.market==='IDX'?m.exchangeName!=='JKT':!['NMS','NGM','NCM','NYQ','ASE','PCX','BTS','BATS'].includes(m.exchangeName)))throw Error('Unexpected ticker, exchange, currency or instrument type from history source.');
@@ -38,18 +39,22 @@ async function fetchChart(symbol,cutoff,history){
 export async function generatePagesData(){
  const output=path.resolve('.pages-data'),cutoff=new Date().toISOString().slice(0,10),startedAt=new Date().toISOString(),quotes={},histories=[],errors=[];
  await mkdir(path.join(output,'history'),{recursive:true});
- const parse=(market,defaults,env)=>[...new Set([...defaults,...String(env||'').split(/[\s,]+/).filter(Boolean).map(t=>configFor({market,ticker:t,cutoff,horizon:5}).ticker)])].slice(0,80);
+ const screener=JSON.parse(await readFile(path.join(output,'screener.json'),'utf8')),instruments=[],coverage={};
+ for(const market of ['US','IDX']){const source=screener.markets[market];if(!source?.entries?.length)throw Error('Run yahoo-stock-directory.py before generating public data.');coverage[market]={reportedTotal:source.reportedTotal,retrievedUnique:source.retrievedUnique,pages:source.pages,source:'Yahoo Finance equity screener via yfinance',query:source.query};for(const entry of source.entries){const instrument=screenerInstrument(entry,market);if(!instrument)continue;instruments.push(instrument);const category=market==='US'?'us':'idx';try{quotes[category+':'+instrument.ticker]={quote:screenerQuote(entry,market)};}catch(e){quotes[category+':'+instrument.ticker]={error:e.message};}}coverage[market].published=instruments.filter(i=>i.market===market).length;}
+ const parse=(market,defaults,env)=>[...new Set([...defaults,...instruments.filter(i=>i.market===market&&/^[A-Z]{1,6}(?:-[A-Z])?$/.test(i.ticker)).sort((a,b)=>(b.marketCap??-1)-(a.marketCap??-1)).slice(0,market==='US'?500:20000).map(i=>i.ticker),...String(env||'').split(/[\s,]+/).filter(Boolean).map(t=>configFor({market,ticker:t,cutoff,horizon:5}).ticker)])];
  const us=parse('US',STOCK_UNIVERSE.US,process.env.OFFICE_US_TICKERS),idx=parse('IDX',STOCK_UNIVERSE.IDX,process.env.OFFICE_IDX_TICKERS);
  const tasks=[...us.map(ticker=>({category:'us',ticker,market:'US',history:true})),...idx.map(ticker=>({category:'idx',ticker,market:'IDX',history:true})),...['commodities','macro'].flatMap(category=>MARKET_CATEGORIES[category].instruments.map(i=>({category,ticker:i.symbol,history:false})))];
  let next=0;
  await Promise.all(Array.from({length:3},async()=>{while(next<tasks.length){const t=tasks[next++];try{
   const raw=await fetchChart(t.ticker+(t.market==='IDX'?'.JK':''),cutoff,t.history),retrievedAt=new Date().toISOString();
   const quote=t.category==='us'?projectUsSnapshot(raw,t.ticker,retrievedAt):t.category==='idx'?projectPagesIdxSnapshot(raw,t.ticker,retrievedAt):projectMarketSnapshot(raw,t.category,t.ticker,retrievedAt);
-  quote.publishedSnapshot=true;quotes[t.category+':'+t.ticker]={quote};
+  quote.publishedSnapshot=true;const instrument=instruments.find(i=>i.ticker===t.ticker&&i.market===t.market);if(instrument){quote.marketCap=instrument.marketCap;quote.capitalizationRetrievedAt=instrument.capitalizationRetrievedAt;quote.averageDailyVolume3Month=instrument.averageDailyVolume3Month;}else if(t.history)instruments.push({ticker:t.ticker,market:t.market,name:quote.name,currency:quote.currency,marketCap:null,source:'Yahoo chart'});quotes[t.category+':'+t.ticker]={quote};
   if(t.history){const config=configFor({market:t.market,ticker:t.ticker,cutoff,horizon:5}),input=projectPagesHistory(raw,config,retrievedAt),completed=input.rows.filter(r=>r.complete),latest=completed.at(-1),lastUsable=completed.filter(r=>Number.isFinite(r.adjustedClose)&&r.adjustedClose>0).at(-1);if(!lastUsable)throw Error('No usable completed history.');const selected=selectModelCutoff(input,config),file='history/'+t.market+'-'+t.ticker+'.json';await writeFile(path.join(output,file),JSON.stringify(input));histories.push({ticker:t.ticker,name:quote.name,market:t.market,currency:input.metadata.currency,liquidity20:recentLiquidity(input.rows),marketCap:null,file,rows:input.rows.length,retrievedAt,latestCompleted:latest.date,lastUsableClose:lastUsable.date,...selected,latestCompletedUsable:latest.date===lastUsable.date});}
- }catch(e){quotes[t.category+':'+t.ticker]={error:e.message};errors.push({category:t.category,ticker:t.ticker,error:e.message});}}}));
+  }catch(e){if(!quotes[t.category+':'+t.ticker]?.quote)quotes[t.category+':'+t.ticker]={error:e.message};errors.push({category:t.category,ticker:t.ticker,error:e.message});}}}));
  for(const instrument of MARKET_CATEGORIES.bonds.instruments)quotes['bonds:'+instrument.symbol]=quotes['us:'+instrument.symbol]?.quote?{quote:{...quotes['us:'+instrument.symbol].quote,category:'bonds',name:instrument.name,unit:instrument.unit,instrumentType:'ETF',priceKind:'source-snapshot'}}:quotes['us:'+instrument.symbol]||{error:'Snapshot unavailable.'};
- const publishedAt=new Date().toISOString(),manifest={format:'longhand-public-market-data',version:1,startedAt,publishedAt,cutoff,histories:histories.sort((a,b)=>(a.market+a.ticker).localeCompare(b.market+b.ticker)),errors,policy:'Published provider snapshots, not streaming or guaranteed real-time. New runs fit in your browser from this retrieval vintage. No portfolio records or private analyses are published.'};
+ for(const instrument of instruments){const h=histories.find(h=>h.market===instrument.market&&h.ticker===instrument.ticker),item=quotes[(instrument.market==='US'?'us':'idx')+':'+instrument.ticker];instrument.priceAvailable=!!item?.quote;instrument.modelCutoff=h?.modelCutoff||null;instrument.historyPublished=!!h;}
+ for(const market of ['US','IDX']){coverage[market].coreAdditions=instruments.filter(i=>i.market===market).length-coverage[market].published;coverage[market].published=instruments.filter(i=>i.market===market).length;}
+ const publishedAt=new Date().toISOString(),manifest={format:'longhand-public-market-data',version:1,startedAt,publishedAt,cutoff,instruments:instruments.sort((a,b)=>(a.market+a.ticker).localeCompare(b.market+b.ticker)),coverage,screenerRetrievedAt:screener.retrievedAt,histories:histories.sort((a,b)=>(a.market+a.ticker).localeCompare(b.market+b.ticker)),errors,policy:'Published provider snapshots, not streaming or guaranteed real-time. New runs fit in your browser from this retrieval vintage. No portfolio records or private analyses are published.'};
  await writeFile(path.join(output,'manifest.json'),JSON.stringify(manifest));await writeFile(path.join(output,'market.json'),JSON.stringify({publishedAt,quotes}));
  if(!histories.some(h=>h.market==='US'&&h.modelObservations>=350)||!histories.some(h=>h.market==='IDX'&&h.modelObservations>=350))throw Error('Cannot publish a working US/IDX Quant release: one market has no usable history. Existing deployment is preserved.');
  console.log(JSON.stringify({histories:histories.length,quotes:Object.keys(quotes).length,providerFailures:errors.length,publishedAt}));return manifest;
