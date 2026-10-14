@@ -61,3 +61,12 @@ header{gap:22px}header nav{gap:22px}h1{letter-spacing:-1.5px}
 #comparison-form fieldset{min-width:0;border:0;padding:0;margin:18px 0}#comparison-form legend{font-size:12px;margin-bottom:14px}#comparison-form [data-comparison-choices]{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}#comparison-form .check-label{min-width:0;margin:0}#comparison-form input[type=checkbox]{width:auto;flex:0 0 auto;margin-top:4px}#comparison-form .check-label span{min-width:0;overflow-wrap:anywhere}#comparison-form .check-label small{display:block;font-size:11px;margin-top:5px}@media(max-width:650px){#comparison-form [data-comparison-choices]{grid-template-columns:1fr}}
 
 .nav-mode-shortcuts button{font-size:11px;padding:10px;width:100%;margin:12px 0}
+.encrypted-options,.backup-unlock{margin:1.5rem 0;padding:1.25rem 0;border-top:1px solid var(--line);max-width:48rem}
+.encrypted-options summary{cursor:pointer;font-weight:600}
+.official-fundamentals{margin:1.25rem 0;padding:1rem 0;border-block:1px solid var(--line)}
+.official-fundamentals summary{cursor:pointer}
+.backup-password-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:1rem 0}
+.backup-password-fields label,.backup-unlock label{display:grid;gap:.4rem;min-width:0}
+.backup-password-fields input,.backup-unlock input{width:100%;min-width:0;box-sizing:border-box}
+.backup-unlock button{margin-top:1rem}
+@media(max-width:600px){.backup-password-fields{grid-template-columns:1fr}}

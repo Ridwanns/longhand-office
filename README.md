@@ -1,5 +1,7 @@
 # Longhand Office
 
+Records now supports password-encrypted complete backup downloads and isolated restoration. The US Investment brief adds independently dated SEC annual evidence where available; annual facts never silently replace TTM or retained valuation inputs. See [FREE_DATA_AND_BACKUP_RELEASE.md](FREE_DATA_AND_BACKUP_RELEASE.md) for usage, cryptography, source availability and the distinction from active-vault encryption or account sync.
+
 The Investment Lab opens in a simpler daily view with an Investment brief, retained-stock comparison and a guided thesis → decision → Paper transaction → review workflow. Advanced keeps the complete quantitative tools. Workspace status identifies archive capacity, known save failures and backup-generation activity. See [SIMPLE_OFFICE_RELEASE.md](SIMPLE_OFFICE_RELEASE.md) for behavior, preservation fixes and current verification. Method-aware drafts, complete isolated backups and registered forecasts remain available; [CONTINUITY_RELEASE.md](CONTINUITY_RELEASE.md) preserves their earlier release receipts.
 
 A local private investment workspace with a courtyard entrance, research Library, separate Paper/Real portfolio ledgers, decision Journal, Markets desk and persistent Quant Lab. Treasury and Governance remain planned.
@@ -63,8 +65,9 @@ npm run test:api
 python scripts/reference-quant.py
 ```
 
-The current suite has **275 passing Node checks** and **4 local API checks**. The Simple Office release and subsequent security review passed **264 live browser checks** (213 workflow/regression + 51 browser safety), **5,276 core model cases / 1,319 eligible histories**, **16 representative advanced publication cases**, and validation of **8,599 quote entries** (8,573 priced; 26 explicitly unavailable). See [SIMPLE_OFFICE_RELEASE.md](SIMPLE_OFFICE_RELEASE.md) for dated deployment receipts and limitations. Restores use fresh isolated contexts; existing records are preserved. Earlier audit reports retain their original dated counts and do not imply that every stock has fundamentals or eligible history.
+The current suite has **289 passing Node checks** and **4 local API checks**. The free-data/encrypted-backup release passed **115 isolated local browser checks**; see [FREE_DATA_AND_BACKUP_RELEASE.md](FREE_DATA_AND_BACKUP_RELEASE.md) for its publication receipt. The preceding Simple Office release and security review passed **264 live browser checks** (213 workflow/regression + 51 browser safety), **5,276 core model cases / 1,319 eligible histories**, **16 representative advanced publication cases**, and validation of **8,599 quote entries** (8,573 priced; 26 explicitly unavailable). See [SIMPLE_OFFICE_RELEASE.md](SIMPLE_OFFICE_RELEASE.md) for that dated receipt. Restores use fresh isolated contexts; existing records are preserved. Historical counts do not imply that every stock has fundamentals or eligible history.
 
+- [FREE_DATA_AND_BACKUP_RELEASE.md](FREE_DATA_AND_BACKUP_RELEASE.md): encrypted complete exports, isolated unlocking/restoration, official US annual evidence and free-service boundaries.
 - [SIMPLE_OFFICE_RELEASE.md](SIMPLE_OFFICE_RELEASE.md): simpler daily navigation, investment briefs, linked Paper workflows, retained-stock comparison, workspace status and historical valuation preservation.
 - [CONTINUITY_RELEASE.md](CONTINUITY_RELEASE.md): draft recovery, one complete isolated backup, consolidated ticker overview, forward observation and shared data states.
 - [SECURITY_REPO_REVIEW.md](SECURITY_REPO_REVIEW.md): applicability of the requested Ghidra, reverse-skill and h4cker repositories, with scoped Office evidence and remaining boundaries.

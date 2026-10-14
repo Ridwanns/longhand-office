@@ -7,6 +7,7 @@ const root=fileURLToPath(new URL('../',import.meta.url)),dest=path.join(root,'di
 const advancedFiles=['investment-context.js','investment-brief.js','investment-flow.js','workspace-health.js','stock-comparison.js','quant-mode.js','manual-archive.js','workspace-preferences.js','workspace-scope.js','continuity-store.js','data-status.js','drafts.js','complete-backup.js','prediction-math.js','prediction-ui.js','ticker-summary.js','advanced-math.js','advanced-worker.js','advanced-storage.js','advanced-ui.js','quant-navigation.js'];
 const files=['official-rates.js','official-rates-contract.js','auto-valuation-math.js','auto-valuation-ui.js','ticker-study.js','ticker-storage.js','ticker-ui.js','research-math.js','research-ui.js','atlas-math.js','atlas-ui.js','atlas.css','style.css','rooms.css','theme.js','building.svg','catalogue.json','model.js','quant-math.js','quant-contract.js','quant-history.js','analysis-contract.js','research-history.js','office-workflows.js','public-quote-contract.js'];
 const generated=['index.html','app.js','office-storage.js','office-extensions.js','quant-ui.js','market-terminal.js','market-catalogue.js','browser-api.js','browser-worker.js','browser-controls.js','browser.css','market-controls.js'];
+files.push('encrypted-backup.js','sec-fundamentals-contract.js','official-fundamentals.js');
 files.push(...advancedFiles);
 await mkdir(dest,{recursive:true});const allowed=new Set([...files,...generated,'data']);
 for(const existing of await readdir(dest))if(!allowed.has(existing))throw Error('Unexpected file in Pages output: '+existing);
@@ -26,6 +27,10 @@ manifest.codeHash=createHash('sha256').update(JSON.stringify(await Promise.all([
 await mkdir(path.join(dest,'data','history'),{recursive:true});await writeFile(path.join(dest,'data','manifest.json'),JSON.stringify(manifest));await copyFile(path.join(input,'market.json'),path.join(dest,'data','market.json'));await copyFile(path.join(input,'fundamentals.json'),path.join(dest,'data','fundamentals.json'));
 validateOfficialRates(JSON.parse(await readFile(path.join(input,'official-rates.json'),'utf8')));
 await copyFile(path.join(input,'official-rates.json'),path.join(dest,'data','official-rates.json'));
+const {validateSecFeed}=await import('../sec-fundamentals-contract.js');
+const secFile=path.join(input,'sec-fundamentals.json');
+validateSecFeed(JSON.parse(await readFile(secFile,'utf8')));
+await copyFile(secFile,path.join(dest,'data','sec-fundamentals.json'));
 for(const h of manifest.histories){if(!/^history\/(US|IDX)-[A-Z]{1,6}(-[A-Z])?\.json$/.test(h.file))throw Error('Invalid public history path');await copyFile(path.join(input,h.file),path.join(dest,'data',h.file));}
 const expected=new Set(manifest.histories.map(h=>path.basename(h.file)));for(const file of await readdir(path.join(dest,'data','history')))if(!expected.has(file)){if(!/^(US|IDX)-[A-Z]{1,6}(-[A-Z])?\.json$/.test(file))throw Error('Unexpected history in output: '+file);await unlink(path.join(dest,'data','history',file));}
 console.log('Built working browser Office with '+manifest.histories.length+' published histories. No database, personal records, backend scripts or validation artifacts included.');

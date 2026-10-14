@@ -1,6 +1,7 @@
 import {dataState} from './data-status.js';
 import {tickerRisk} from './ticker-study.js';
 import {analysisReference} from './investment-context.js';
+import {secEvidence} from './sec-fundamentals-contract.js';
 const finite=n=>typeof n==='number'&&Number.isFinite(n);
 const matches=(i,x)=>x?.market===i.market&&x?.ticker===i.ticker;
 export function investmentBrief(study,{core=null,valuation=null,advanced=null,now=Date.now()}={}){
@@ -22,7 +23,7 @@ export function briefEvidence(b,{audit=false}={}){
  if(b.risk)lines.push('Adjusted-price historical annualized volatility '+pct(b.risk.annualizedVolatility)+'; maximum drawdown '+pct(b.risk.hypotheticalMaxDrawdown)+'; '+b.risk.firstDate+' to '+b.risk.lastDate+'; '+b.risk.observedReturns+' observed returns.');
  if(b.core)lines.push('Retained core model: '+b.core.config.basis+' prices; history through '+b.core.config.cutoff+'. Historical model scores are not established prospective performance.');
  if(v){lines.push('Valuation source price '+v.quote.price+' '+i.currency+' on '+v.quote.marketDate+'; fundamental retrieval '+v.fundamental.retrievedAt+'. TTM fiscal-period end is not supplied.','Assumptions: '+v.settings.years+' years; required annual return '+pct(v.settings.requiredReturn)+'; annual growth stress ±'+pct(v.settings.growthSpread)+'; exit P/E stress ±'+pct(v.settings.peSpread)+'; terminal growth '+pct(v.settings.terminalGrowth)+'; cost-of-equity stress ±'+pct(v.settings.discountSpread)+'.');if(v.fundamental.cashflow)lines.push('Annual FCFE period '+v.fundamental.cashflow.periodEnd+'; base FCFE per diluted average share '+num(v.result.baseFcfePerShare)+' '+i.currency+'.');for(const row of b.scenarioRows)lines.push(row.name+': year '+b.settings.years+' earnings price '+num(row.terminalPrice)+'; discounted earnings entry '+num(row.discountedEntry)+'; FCFE DCF '+num(row.dcf)+' '+i.currency+' per share.');lines.push(v.result.assumptionPolicy);}
- lines.push(...b.issues);if(audit){lines.push('Retained source identifiers — use with the complete Office backup.','Ticker study '+b.context.tickerStudyId,'Valuation study '+(v?.id||'unavailable'));if(b.core)lines.push('Core run '+b.core.id+'; '+b.core.results.modelVersion+'; result hash '+b.core.resultHash);}return lines.join('\n');
+ if(b.officialFacts){if(i.market!=='US'||i.currency!=='USD'||b.officialFacts.ticker!==i.ticker)throw Error('Official evidence issuer does not match this brief.');lines.push(secEvidence(b.officialFacts));}lines.push(...b.issues);if(audit){lines.push('Retained source identifiers — use with the complete Office backup.','Ticker study '+b.context.tickerStudyId,'Valuation study '+(v?.id||'unavailable'));if(b.core)lines.push('Core run '+b.core.id+'; '+b.core.results.modelVersion+'; result hash '+b.core.resultHash);}return lines.join('\n');
 }
 export function compareTickerStudies(studies){
  if(!Array.isArray(studies)||studies.length<2||studies.length>4||new Set(studies.map(s=>s.instrument.market+':'+s.instrument.ticker)).size!==studies.length)throw Error('Choose two to four distinct retained instruments.');

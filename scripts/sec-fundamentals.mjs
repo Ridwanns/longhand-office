@@ -1,0 +1,17 @@
+// Fixed official hosts; no account keys, portfolio reads or provider bypass.
+import {mkdir,writeFile} from 'node:fs/promises';
+import {fileURLToPath} from 'node:url';
+import path from 'node:path';
+import {projectSecAnnual,validateSecFeed} from '../sec-fundamentals-contract.js';
+const root=fileURLToPath(new URL('../',import.meta.url));
+const defaults=['AAPL','MSFT','NVDA','AMZN','GOOGL','META','JPM','BRK-B'];
+export async function collectSecEvidence({tickers=defaults,fetcher=fetch,userAgent=process.env.OFFICE_SEC_USER_AGENT||'LonghandOffice/1.0 (contact: https://github.com/Ridwanns/longhand-office/issues)'}={}){
+ tickers=[...new Set(tickers)];if(tickers.length>40||tickers.some(t=>!/^[A-Z]{1,6}(?:-[A-Z])?$/.test(t)))throw Error('Use up to 40 normalized US tickers.');
+ if(typeof userAgent!=='string'||userAgent.length<20||userAgent.length>300||/[\r\n]/.test(userAgent))throw Error('Invalid declared SEC User-Agent.');
+ let last=0;async function json(url){const pause=Math.max(0,1000-(Date.now()-last));if(pause)await new Promise(r=>setTimeout(r,pause));last=Date.now();const response=await fetcher(url,{headers:{'User-Agent':userAgent,'Accept':'application/json'},redirect:'error',signal:AbortSignal.timeout(15000)});if(!response.ok)throw Error('SEC request HTTP '+response.status+'. No replacement facts supplied.');const text=await response.text();if(text.length>25000000)throw Error('SEC response exceeds 25 MB.');return JSON.parse(text);}
+ let mapping,error;try{const raw=await json('https://www.sec.gov/files/company_tickers.json');mapping=Object.values(raw);if(!mapping.length||mapping.some(r=>!Number.isSafeInteger(r.cik_str)||r.cik_str<1||r.cik_str>9999999999||typeof r.ticker!=='string'))throw Error('Invalid SEC ticker-to-CIK directory.');}catch(e){error=e.message;}
+ const records=[];
+ for(const ticker of tickers){let cik=null,reason=error;try{if(error)throw Error(error);const matches=mapping.filter(r=>r.ticker.toUpperCase().replaceAll('.','-')===ticker);const ids=new Set(matches.map(r=>r.cik_str));if(ids.size!==1)throw Error('SEC ticker mapping is missing or ambiguous.');cik=String(matches[0].cik_str).padStart(10,'0');const facts=await json('https://data.sec.gov/api/xbrl/companyfacts/CIK'+cik+'.json');records.push(projectSecAnnual(facts,{ticker,cik,retrievedAt:new Date().toISOString()}));continue;}catch(e){reason=e.message;}records.push({ticker,cik,market:'US',currency:'USD',retrievedAt:new Date().toISOString(),status:'unavailable',reason:String(reason).slice(0,600),annual:null});}
+ return validateSecFeed({format:'longhand-sec-annual-facts',version:1,publishedAt:new Date().toISOString(),records,policy:'Official SEC annual evidence, independently dated. Missing or incompatible tags remain unavailable; no TTM estimates, FX or quoted-share-class conversion. Existing retained model inputs are unchanged.'});
+}
+if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){const extra=(process.env.OFFICE_US_TICKERS||'').split(/[,\s]+/).filter(Boolean).map(t=>t.toUpperCase().replaceAll('.','-'));const feed=await collectSecEvidence({tickers:[...new Set([...defaults,...extra])].slice(0,40)});await mkdir(path.join(root,'.pages-data'),{recursive:true});await writeFile(path.join(root,'.pages-data','sec-fundamentals.json'),JSON.stringify(feed));console.log(JSON.stringify({publishedAt:feed.publishedAt,available:feed.records.filter(r=>r.status==='available').length,unavailable:feed.records.filter(r=>r.status==='unavailable').map(r=>({ticker:r.ticker,reason:r.reason}))}));}

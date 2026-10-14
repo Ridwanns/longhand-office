@@ -14,12 +14,13 @@ import {restoreAtlasCalculation} from './atlas-ui.js';
 import {restoreResearchStudy} from './research-ui.js';
 import {validatePrediction,createPrediction,predictionOutcome} from './prediction-math.js';
 import {restoredScope} from './workspace-scope.js';
+import {encryptBackup,decryptBackup,validateEncryptedBackup,checkBackupPassword,ENCRYPTED_BACKUP_FORMAT,BACKUP_FILE_LIMIT} from './encrypted-backup.js';
 const stores=['analyses','tickers','valuations','advanced','drafts','manual','predictions'];
 const req=r=>new Promise((resolve,reject)=>{r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});
 let adapter;
 const stageDb=()=>new Promise((resolve,reject)=>{const r=indexedDB.open('longhand-office.complete-staging.'+new URL('.',location.href).pathname,1);r.onupgradeneeded=()=>r.result.createObjectStore('bundles',{keyPath:'id'});r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});
 async function staged(id,value){const db=await stageDb();try{const tx=db.transaction('bundles',value?'readwrite':'readonly'),done=new Promise((resolve,reject)=>{tx.oncomplete=resolve;tx.onabort=()=>reject(tx.error||Error('Backup staging aborted.'));}),store=tx.objectStore('bundles'),result=await req(value?store.put(value):store.get(id));await done;return value||result;}finally{db.close();}}
-export function completeBackupPanel(){return `<section class="complete-backup"><p class="eyebrow">RECORDS / ALL RESEARCH ARCHIVES</p><h2>Back up everything.</h2><p>One file includes Office records, every completed core run, advanced models, valuations, ticker studies, calculator drafts, saved manual studies, registered predictions, theme and watchlists. Incomplete model requests are retained as audit notes; they never restart on restore.</p><div class="toolbar"><button class="primary" type="button" data-complete-export>Back up everything ↓</button><label class="atlas-restore">Inspect complete backup<input type="file" data-complete-inspect accept=".json,application/json"></label></div><p data-complete-status role="status">Restore creates a separate workspace. Your active workspace is preserved.</p><div data-complete-preview></div><button class="secondary" type="button" data-complete-restore disabled>Restore to a new workspace</button><p class="quiet-note">Private file · no upload. Maximum 100 MB / 200 completed core runs. Public feeds and frozen Atlas reference files are reloaded from their sources; private assumptions and retained model datasets are included. Keep older individual exports too.</p></section>`;}
+export function completeBackupPanel(){return `<section class="complete-backup"><p class="eyebrow">RECORDS / ALL RESEARCH ARCHIVES</p><h2>Back up everything.</h2><p>One file includes Office records, every completed core run, advanced models, valuations, ticker studies, calculator drafts, saved manual studies, registered predictions, theme and watchlists. Incomplete model requests are retained as audit notes; they never restart on restore.</p><div class="toolbar"><button class="primary" type="button" data-complete-export>Back up everything ↓</button><label class="atlas-restore">Inspect complete backup<input type="file" data-complete-inspect accept=".json,application/json"></label></div><details class="encrypted-options"><summary>Protect your backup with a password</summary><p>Encrypt the downloaded file on this device. Use a long, unique passphrase and keep it separately; there is no password reset.</p><div class="backup-password-fields"><label>Password<input type="password" data-backup-password autocomplete="new-password" minlength="12" aria-describedby="backup-encryption-note"></label><label>Confirm password<input type="password" data-backup-confirm autocomplete="new-password" minlength="12"></label></div><button class="secondary" type="button" data-complete-encrypt>Download encrypted backup ↓</button><p class="quiet-note" id="backup-encryption-note">At least 12 characters. Only this file is encrypted. Active browser/SQLite records and earlier plain exports remain unencrypted. Your password is not stored or uploaded.</p></details><div class="backup-unlock" data-backup-unlock hidden><label>Backup password<input type="password" data-backup-unlock-password autocomplete="off" aria-describedby="backup-unlock-note"></label><button class="secondary" type="button" data-complete-unlock>Unlock & inspect</button><p class="quiet-note" id="backup-unlock-note">Unlocking does not restore or change records. A restored workspace uses ordinary unencrypted device storage.</p></div><p data-complete-status role="status">Restore creates a separate workspace. Your active workspace is preserved.</p><div data-complete-preview></div><button class="secondary" type="button" data-complete-restore disabled>Restore to a new workspace</button><p class="quiet-note">Private file · no upload. Maximum 100 MB before encryption / 200 completed core runs. Public feeds and frozen Atlas reference files are reloaded from their sources; private assumptions and retained model datasets are included. Keep older individual exports too.</p></section>`;}
 export function recoveryWorkspaceNotice(){const scope=restoredScope();if(!scope)return '';const url=new URL(location.href),previous=url.searchParams.get('return-workspace');url.searchParams.delete('restored-workspace');url.searchParams.delete('return-workspace');if(previous&&/^[0-9a-f-]{36}$/i.test(previous))url.searchParams.set('restored-workspace',previous);url.hash='records';return `<aside class="test-banner" role="note">RESTORED WORKSPACE · Separate records and research archives on this device. <a href="${url.pathname+url.search+url.hash}">Return to the original workspace ↗</a></aside>`;}
 export async function validateCompleteBundle(b,{recompute=false,onProgress=()=>{}}={}){
  if(b?.format!=='longhand-complete-backup'||b.version!==1||!Number.isFinite(Date.parse(b.exportedAt))||new TextEncoder().encode(JSON.stringify(b)).length>100000000)throw Error('Use a supported complete backup up to 100 MB.');validate(b.records);if(b.preferences)validatePreferences(b.preferences);
@@ -48,7 +49,66 @@ export async function restoreStagedBundle(storage,key){const id=restoredScope();
  let saved=await api('workspace?id='+encodeURIComponent(id));if(saved&&JSON.stringify(saved.data)!==JSON.stringify(b.records))throw Error('Staged workspace records changed. Original workspace remains intact.');if(!saved)saved=await api('workspace',{id,revision:0,data:b.records,reason:'isolated-complete-restore',analyses:b.analyses});
  if(b.preferences)restorePreferences(b.preferences);localStorage.setItem(key+'.vault',JSON.stringify({id}));try{localStorage.setItem(key,JSON.stringify(b.records));}catch{}storage.marker={id};storage.accept(saved,id);await staged(id,{id,createdAt:entry.createdAt,completedAt:new Date().toISOString(),bundle:null});
 }
-export function installCompleteBackup(value){adapter=value;let pending=null,selection=0;
- document.addEventListener('click',async e=>{const b=e.target.closest('[data-complete-export],[data-complete-restore]');if(!b||b.disabled)return;const status=document.querySelector('[data-complete-status]');b.disabled=true;try{if(b.hasAttribute('data-complete-export')){status.textContent='Collecting and validating every archive…';const bundle=await exportCompleteBackup(),url=URL.createObjectURL(new Blob([JSON.stringify(bundle)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='longhand-office-complete-'+new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Jakarta'}).format(new Date())+'.json';a.click();try{localStorage.setItem(preferenceKey('longhand-office.backup-generated'),bundle.exportedAt);}catch{}setTimeout(()=>URL.revokeObjectURL(url),1000);if(status.isConnected)status.textContent='Complete backup exported. '+bundle.analyses.length+' core runs and all seven research sections verified.';}else if(pending){status.textContent='Recomputing models and validating every section before staging…';await validateCompleteBundle(pending,{recompute:true,onProgress:text=>{if(status.isConnected)status.textContent=text;}});const id=crypto.randomUUID();await staged(id,{id,bundle:pending,createdAt:new Date().toISOString()});const url=new URL(location.href),old=restoredScope();if(old)url.searchParams.set('return-workspace',old);url.searchParams.set('restored-workspace',id);url.hash='records';location.assign(url.href);}}catch(err){if(status.isConnected)status.textContent='Complete backup operation stopped: '+err.message+' Original records remain intact.';}finally{if(b.isConnected)b.disabled=false;}});
- document.addEventListener('change',async e=>{if(!e.target.hasAttribute('data-complete-inspect'))return;const ticket=++selection,status=document.querySelector('[data-complete-status]'),button=document.querySelector('[data-complete-restore]');pending=null;button.disabled=true;try{const file=e.target.files[0];if(!file)return;if(file.size>100000000)throw Error('Complete backup exceeds 100 MB.');status.textContent='Inspecting the backup without changing records…';const value=await validateCompleteBundle(JSON.parse(await file.text()));if(ticket!==selection||!status.isConnected)return;pending=value;const el=document.querySelector('[data-complete-preview]');el.textContent=value.records.portfolios.length+' portfolios · '+value.records.theses.length+' theses · '+value.records.decisions.length+' decisions · '+stores.map(k=>value[k].length+' '+k).join(' · ');status.textContent='Inspection passed. Restore independently recomputes advanced studies and creates a separate workspace.';button.disabled=false;}catch(err){if(ticket===selection&&status.isConnected)status.textContent='Backup rejected: '+err.message;}});
+export function installCompleteBackup(value){
+ adapter=value;let pending=null,encrypted=null,selection=0,busy=null;
+ const panel=()=>document.querySelector('.complete-backup');
+ const clearSecrets=el=>el?.querySelectorAll('input[type=password]').forEach(input=>input.value='');
+ const preview=(bundle,el)=>{pending=bundle;el.querySelector('[data-complete-preview]').textContent=bundle.records.portfolios.length+' portfolios · '+bundle.records.theses.length+' theses · '+bundle.records.decisions.length+' decisions · '+stores.map(k=>bundle[k].length+' '+k).join(' · ');el.querySelector('[data-complete-restore]').disabled=false;el.querySelector('[data-complete-status]').textContent='Inspection passed. Restore independently recomputes advanced studies and creates a separate workspace.';};
+ function download(bundle,isEncrypted){const url=URL.createObjectURL(new Blob([JSON.stringify(bundle)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='longhand-office-complete-'+new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Jakarta'}).format(new Date())+(isEncrypted?'.encrypted':'')+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+ window.addEventListener('hashchange',()=>{selection++;pending=null;encrypted=null;clearSecrets(panel());});
+ document.addEventListener('click',async e=>{
+  const b=e.target.closest('[data-complete-export],[data-complete-encrypt],[data-complete-unlock],[data-complete-restore]');
+  if(!b||b.disabled||busy===selection)return;
+  const el=b.closest('.complete-backup'),status=el.querySelector('[data-complete-status]'),ticket=selection,controls=[...el.querySelectorAll('button,input[type=file]')],disabled=controls.map(c=>c.disabled);
+  busy=ticket;controls.forEach(c=>c.disabled=true);
+  try{
+   if(b.hasAttribute('data-complete-export')||b.hasAttribute('data-complete-encrypt')){
+    const secure=b.hasAttribute('data-complete-encrypt'),password=el.querySelector('[data-backup-password]').value;
+    if(secure){checkBackupPassword(password);if(password!==el.querySelector('[data-backup-confirm]').value)throw Error('Passwords do not match.');}
+    status.textContent='Collecting and validating every archive…';
+    const bundle=await exportCompleteBackup();
+    if(ticket!==selection||!el.isConnected)return;
+    if(secure)status.textContent='Encrypting the backup on this device…';
+    const output=secure?await encryptBackup(bundle,password):bundle;
+    if(ticket!==selection||!el.isConnected)return;
+    download(output,secure);
+    try{localStorage.setItem(preferenceKey('longhand-office.backup-generated'),bundle.exportedAt);}catch{}
+    status.textContent=secure?'Encrypted backup exported. Keep the password separately; active device records remain unencrypted.':'Complete backup exported. '+bundle.analyses.length+' core runs and all seven research sections verified.';
+   }else if(b.hasAttribute('data-complete-unlock')&&encrypted){
+    status.textContent='Unlocking and validating on this device…';
+    const bundle=await decryptBackup(encrypted,el.querySelector('[data-backup-unlock-password]').value);
+    await validateCompleteBundle(bundle);
+    if(ticket!==selection||!el.isConnected)return;
+    preview(bundle,el);encrypted=null;el.querySelector('[data-backup-unlock]').hidden=true;
+   }else if(b.hasAttribute('data-complete-restore')&&pending){
+    const bundle=pending;status.textContent='Recomputing models and validating every section before staging…';
+    await validateCompleteBundle(bundle,{recompute:true,onProgress:text=>{if(el.isConnected&&ticket===selection)status.textContent=text;}});
+    if(ticket!==selection||!el.isConnected)return;
+    const id=crypto.randomUUID();await staged(id,{id,bundle,createdAt:new Date().toISOString()});
+    if(ticket!==selection||!el.isConnected)return;
+    const url=new URL(location.href),old=restoredScope();if(old)url.searchParams.set('return-workspace',old);url.searchParams.set('restored-workspace',id);url.hash='records';location.assign(url.href);
+   }
+  }catch(err){if(el.isConnected&&ticket===selection)status.textContent='Complete backup operation stopped: '+err.message+' Original records remain intact.';}
+  finally{if(busy===ticket)busy=null;clearSecrets(el);if(el.isConnected){controls.forEach((c,i)=>c.disabled=disabled[i]);el.querySelector('[data-complete-restore]').disabled=!pending;}}
+ });
+ document.addEventListener('change',async e=>{
+  if(!e.target.hasAttribute('data-complete-inspect'))return;
+  const ticket=++selection,el=e.target.closest('.complete-backup'),status=el.querySelector('[data-complete-status]');
+  pending=null;encrypted=null;clearSecrets(el);el.querySelector('[data-complete-restore]').disabled=true;el.querySelector('[data-complete-preview]').textContent='';el.querySelector('[data-backup-unlock]').hidden=true;
+  try{
+   const file=e.target.files[0];if(!file){status.textContent='Select a complete backup. Your active workspace is preserved.';return;}
+   if(file.size>BACKUP_FILE_LIMIT)throw Error('Backup file exceeds the supported size.');
+   status.textContent='Inspecting the backup without changing records…';
+   const parsed=JSON.parse(await file.text());
+   if(ticket!==selection||!el.isConnected)return;
+   if(parsed?.format===ENCRYPTED_BACKUP_FORMAT){
+    validateEncryptedBackup(parsed);encrypted=parsed;el.querySelector('[data-backup-unlock]').hidden=false;
+    status.textContent='Encrypted backup detected. Enter its password to unlock and inspect; nothing has been restored.';
+    el.querySelector('[data-backup-unlock-password]').focus();
+   }else{
+    if(file.size>100000000)throw Error('Plain complete backup exceeds 100 MB.');
+    const bundle=await validateCompleteBundle(parsed);if(ticket===selection&&el.isConnected)preview(bundle,el);
+   }
+  }catch(err){if(ticket===selection&&el.isConnected)status.textContent='Backup rejected: '+err.message;}
+ });
 }
