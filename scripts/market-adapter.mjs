@@ -16,6 +16,7 @@ export function projectMarketSnapshot(body,category,symbol,retrievedAt){
  const zone=meta.exchangeTimezoneName||'America/New_York';let marketDate;try{marketDate=new Intl.DateTimeFormat('en-CA',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(timestamp));}catch{marketDate=null;}
  return {provider:'yahoo',category,symbol,name:instrument.name,price:meta.regularMarketPrice,currency:meta.currency,
   unit:instrument.unit,instrumentType:instrument.type,priceKind:'source-snapshot',timestamp,retrievedAt,marketDate,history,change:marketDate?dailyChange(history,meta.regularMarketPrice,marketDate):null,
+  historyNote:'Chart dates use the exchange calendar. Where multiple source timestamps share a date, the latest observation is retained. Current bars may be in progress; futures observations are not certified settlement prices.',
   ageSeconds:Math.max(0,Math.floor((received-stamp*1000)/1000)),realtimeVerified:false,exchange:meta.fullExchangeName||meta.exchangeName||null,
   delayMinutes:typeof meta.exchangeDataDelayedBy==='number'&&Number.isFinite(meta.exchangeDataDelayedBy)&&meta.exchangeDataDelayedBy>=0?meta.exchangeDataDelayedBy:null};
 }

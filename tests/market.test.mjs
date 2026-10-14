@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {marketInstrument,projectMarketSnapshot,readMarketSnapshot} from '../scripts/market-adapter.mjs';
+import {validatePublicQuote} from '../public-quote-contract.js';
 const retrieved='2026-10-13T00:00:00Z',stamp=1791835200;
 const body=meta=>({chart:{result:[{meta}],error:null}});
 const future={symbol:'GC=F',currency:'USD',instrumentType:'FUTURE',regularMarketPrice:1234.5,regularMarketTime:stamp};
@@ -12,3 +13,4 @@ test('wrong instrument identity, type or source currency is rejected',()=>{for(c
 test('missing price or timestamp is unavailable without substituting zero',()=>{for(const change of [{regularMarketPrice:null},{regularMarketPrice:0},{regularMarketPrice:NaN},{regularMarketTime:null},{regularMarketTime:1791999999}])assert.throws(()=>projectMarketSnapshot(body({...future,...change}),'commodities','GC=F',retrieved));});
 test('fetch encodes allowed special symbols into a fixed HTTPS GET',async()=>{let called;const q=await readMarketSnapshot('commodities','GC=F',{now:()=>retrieved,fetcher:async(url,options)=>{called={url,options};return {ok:true,json:async()=>body(future)};}});assert.ok(called.url.startsWith('https://query1.finance.yahoo.com/v8/finance/chart/GC%3DF?'));assert.equal(called.options.body,undefined);assert.equal(q.price,1234.5);});
 test('unknown instrument never triggers network fetch',async()=>{let calls=0;await assert.rejects(()=>readMarketSnapshot('macro','AAPL',{fetcher:async()=>{calls++;}}));assert.equal(calls,0);});
+test('overnight futures snapshots pass strict publication checks with one observed price per calendar date',()=>{const time='2026-10-14T03:10:00Z',data=body({...future,exchangeTimezoneName:'America/New_York',regularMarketTime:Date.parse('2026-10-14T03:00:00Z')/1000,regularMarketPrice:105});data.chart.result[0].timestamp=['2026-10-12T04:00:00Z','2026-10-13T04:00:00Z','2026-10-14T03:00:00Z'].map(s=>Date.parse(s)/1000);data.chart.result[0].indicators={quote:[{close:[100,110,105]}]};const q=projectMarketSnapshot(data,'commodities','GC=F',time);assert.equal(validatePublicQuote(q,'commodities','GC=F',time),q);assert.deepEqual(q.history,[{date:'2026-10-12',close:100},{date:'2026-10-13',close:105}]);assert.ok(Math.abs(q.change.percent-5)<1e-10);assert.match(q.historyNote,/not certified settlement/);});
