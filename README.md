@@ -30,6 +30,8 @@ Open [Longhand Office](http://127.0.0.1:4173/#overview). Keep the command runnin
 5. **Theses/Journal:** write assumptions, evidence, horizon, invalidation conditions and review dates; link a portfolio/instrument, public report and completed Quant run. Add outcome/lessons/next action and a reasoning assessment as a separate review. Original text and prior explicit edit versions are retained.
 6. **Local Records:** export a complete backup or explicitly connect the durable local vault. Migration preserves the existing browser key and a recovery copy before creating a new workspace.
 
+**Quant Lab navigation** now includes Stock overview, Registered forecasts and Saved manual studies. Calculator/toolkit drafts save by method; completed manual studies retain reproducible inputs. Quote/model dates stay separate, and shared snapshot, stale, missing-fundamental and insufficient-history labels explain availability.
+
 The public [Longhand Research](https://longhandresearch.github.io/) catalogue remains separate. Refresh reads its public JSON metadata as text, without executing its scripts or uploading private records. Disappearing report IDs stay retained.
 
 ## Persistence and privacy
@@ -38,15 +40,15 @@ Existing browser records remain in `longhand-office.v1` on port 4173 until expli
 
 Quant runs persist in `%LOCALAPPDATA%\LonghandOffice\data\office.sqlite`. After **Back up & connect local vault**, portfolios/theses/decisions persist there too, with validated atomic writes, revision checks and recoverable snapshots. Port 4174 uses `%LOCALAPPDATA%\LonghandOffice\test-data\office.sqlite`. These databases are outside the OneDrive source folder; backups saved to synced locations can still sync under your settings.
 
-New JSON exports contain all private records and every linked completed analysis, including normalized datasets/results/hashes. Analysis-bearing restores require the vault so the operation is atomic. Old browser-only record backups remain restorable. Unlinked runs can be exported individually as audit files; no standalone analysis-import screen is provided yet.
+**Records → Back up everything** now includes active Office records, all completed core analyses (linked or unlinked), advanced studies, ticker studies, valuations, calculator/toolkit drafts, saved manual studies, registered forecasts, theme and US/IDX watchlists. Inspection validates the file; restoration creates a separate scoped workspace and activates it only after verification. Incomplete requests remain audit notes and never restart. Existing individual record/analysis exports and older browser-only backups remain supported. See [CONTINUITY_RELEASE.md](CONTINUITY_RELEASE.md) for storage boundaries and capacity limits.
 
 The server binds only to 127.0.0.1, checks local Host/Origin, bounds requests/jobs and requires a same-origin request token for writes. It uses fixed data hosts, an explicit static-file allowlist and CSP. It does not send holdings/notes to data providers. Browser/SQLite data is not application-encrypted. These measures are not authentication or safe private hosting.
 
 ## Honest limits
 
-- Best-effort public Yahoo data, with no guaranteed real-time entitlement or availability. Free US histories worked for AAPL/MSFT/SPY. IDX requires sufficient owner-local history; BBCA currently has 288 completed observations, below the 350-session Quant minimum.
+- Best-effort public Yahoo data, with no guaranteed real-time entitlement or availability. Quotes and eligible histories have different coverage. Local owner-provided IDX history can be below the 350-session Quant minimum even when a price exists; published browser histories have their own dated coverage receipts.
 - Adjusted closes are retrieval-vintage proxies. Yahoo includes split/dividend adjustments; Flowless handles confirmed split-like corporate actions and excludes dividends. Raw closes exclude dividends and can show split jumps.
-- Forecasts are retrospective statistical studies, with 90% residual intervals only when at least 20 eligible errors exist. Monte Carlo bands represent an assumed process, not validated probabilities. No extra model families were added for appearance.
+- Historical model comparisons remain retrospective studies, with 90% residual intervals only when at least 20 eligible errors exist. Eligible fresh core forecasts can now be frozen separately and observed over five/twenty future source sessions. Device clocks and imported provenance are unverified; pending outcomes are never scored as zero. Advanced forecasts remain retrospective. Monte Carlo bands represent an assumed process, not validated probabilities.
 - Weighted-average cost includes fees. No shorting, automatic corporate-action trade changes, broker synchronization, tax-lot accounting or FX conversion.
 - TWR/MWR remain unavailable without complete dated boundary valuations and a documented policy. Value minus contributions is never presented as a percentage return.
 - SQLite save snapshots have no automatic retention/pruning; keep exports and monitor local disk usage. Clearing browser site data removes the vault connection marker, though the database remains. JSON restoration reconnects records to a new workspace.
@@ -61,8 +63,9 @@ npm run test:api
 python scripts/reference-quant.py
 ```
 
-The current suite has **219 passing automated checks** and **4 local API checks**. The expanded publication validates **5,260 model cases** across **1,315 eligible histories**, plus **8,534 browser quote entries** (8,514 valid and 20 explicitly unavailable). The expanded **40-check browser workflow**, **22 same-page usability checks**, **20 availability/failure/recovery checks**, **22-step records/backup workflow** and **51 browser safety checks** pass. Restores use fresh isolated contexts; existing records are preserved. Historical audit reports keep their original dated counts.
+The current suite has **261 passing automated checks** and **4 local API checks**. The 14 October release passed **126 live browser checks**, **5,272 model cases / 1,318 eligible histories**, and validation of **8,612 quote entries** (8,586 priced; 26 explicitly unavailable). See [CONTINUITY_RELEASE.md](CONTINUITY_RELEASE.md) for the latest complete-backup, draft, forward-outcome and browser verification. The earlier expanded publication validated **5,260 model cases** across **1,315 eligible histories**, plus **8,534 browser quote entries** (8,514 valid and 20 explicitly unavailable). The expanded **40-check browser workflow**, **22 same-page usability checks**, **20 availability/failure/recovery checks**, **22-step records/backup workflow** and **51 browser safety checks** pass. Restores use fresh isolated contexts; existing records are preserved. Historical audit reports keep their original dated counts.
 
+- [CONTINUITY_RELEASE.md](CONTINUITY_RELEASE.md): draft recovery, one complete isolated backup, consolidated ticker overview, forward observation, shared data states and current release receipts.
 - [AUTO_VALUATION.md](AUTO_VALUATION.md): automatic fundamental scenarios/FCFE, evaluated IDX/Yahoo Financials repositories, data coverage and backup verification.
 - [AUTOMATIC_TICKER_RESEARCH.md](AUTOMATIC_TICKER_RESEARCH.md): ticker-only source loading, automatic calculations/saving, independent checks and missing-data limits.
 - [QUANT_REPOSITORY_REVIEW.md](QUANT_REPOSITORY_REVIEW.md): four-repository review and working option/bond/portfolio-risk toolkit, source import, numerical checks and access limits.

@@ -32,3 +32,7 @@ Tests use fresh isolated contexts. Screenshots remain ignored under `validation/
 The first publication attempt stopped because Yahoo returned an empty screener page before its reported total. The previous live deployment remained intact. Push-based interface releases can now reuse normalized public JSON from the latest successful Pages artifact when that catalogue request fails. Five Python artifact tests verify preserved source dates, rejection of unsafe referenced paths/symlinks and mismatched vintages, and exclusion of scripts/databases/private files. The retrieved actual public artifact also passed fundamental and representative advanced-model verification locally.
 
 Only public manifest, market, fundamental and referenced history JSON are copied. Original publication/retrieval dates and prices stay unchanged; the build does not claim a new market refresh. All normal valuation, advanced and full core-universe gates still run before deployment. Scheduled refreshes and manual data requests do not use this interface fallback; provider failure leaves the previous live site intact.
+
+## Subsequent continuity release
+
+The 14 October continuity release adds Stock overview, Registered forecasts and Saved manual studies to this navigation, with method-aware draft persistence and a complete isolated backup. Those features supersede the earlier statement above that there is no unified backup. See [CONTINUITY_RELEASE.md](CONTINUITY_RELEASE.md) for the current behavior, verification and limits; the preceding dated test receipts remain historical evidence.
