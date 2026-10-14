@@ -1,6 +1,6 @@
 # Longhand Office
 
-The Investment Lab now has method-aware autosaved drafts, saved manual studies, a complete backup with isolated restoration, a consolidated ticker overview, a guarded forward core-forecast registry and consistent data states. See [CONTINUITY_RELEASE.md](CONTINUITY_RELEASE.md) for workflow, storage, verification and limits. The original ledger and quantitative engines are preserved.
+The Investment Lab opens in a simpler daily view with an Investment brief, retained-stock comparison and a guided thesis → decision → Paper transaction → review workflow. Advanced keeps the complete quantitative tools. Workspace status identifies archive capacity, known save failures and backup-generation activity. See [SIMPLE_OFFICE_RELEASE.md](SIMPLE_OFFICE_RELEASE.md) for behavior, preservation fixes and current verification. Method-aware drafts, complete isolated backups and registered forecasts remain available; [CONTINUITY_RELEASE.md](CONTINUITY_RELEASE.md) preserves their earlier release receipts.
 
 A local private investment workspace with a courtyard entrance, research Library, separate Paper/Real portfolio ledgers, decision Journal, Markets desk and persistent Quant Lab. Treasury and Governance remain planned.
 
@@ -63,9 +63,11 @@ npm run test:api
 python scripts/reference-quant.py
 ```
 
-The current suite has **261 passing automated checks** and **4 local API checks**. The 14 October release passed **126 live browser checks**, **5,272 model cases / 1,318 eligible histories**, and validation of **8,612 quote entries** (8,586 priced; 26 explicitly unavailable). See [CONTINUITY_RELEASE.md](CONTINUITY_RELEASE.md) for the latest complete-backup, draft, forward-outcome and browser verification. The earlier expanded publication validated **5,260 model cases** across **1,315 eligible histories**, plus **8,534 browser quote entries** (8,514 valid and 20 explicitly unavailable). The expanded **40-check browser workflow**, **22 same-page usability checks**, **20 availability/failure/recovery checks**, **22-step records/backup workflow** and **51 browser safety checks** pass. Restores use fresh isolated contexts; existing records are preserved. Historical audit reports keep their original dated counts.
+The current suite has **275 passing Node checks** and **4 local API checks**. The Simple Office release and subsequent security review passed **264 live browser checks** (213 workflow/regression + 51 browser safety), **5,276 core model cases / 1,319 eligible histories**, **16 representative advanced publication cases**, and validation of **8,599 quote entries** (8,573 priced; 26 explicitly unavailable). See [SIMPLE_OFFICE_RELEASE.md](SIMPLE_OFFICE_RELEASE.md) for dated deployment receipts and limitations. Restores use fresh isolated contexts; existing records are preserved. Earlier audit reports retain their original dated counts and do not imply that every stock has fundamentals or eligible history.
 
-- [CONTINUITY_RELEASE.md](CONTINUITY_RELEASE.md): draft recovery, one complete isolated backup, consolidated ticker overview, forward observation, shared data states and current release receipts.
+- [SIMPLE_OFFICE_RELEASE.md](SIMPLE_OFFICE_RELEASE.md): simpler daily navigation, investment briefs, linked Paper workflows, retained-stock comparison, workspace status and historical valuation preservation.
+- [CONTINUITY_RELEASE.md](CONTINUITY_RELEASE.md): draft recovery, one complete isolated backup, consolidated ticker overview, forward observation and shared data states.
+- [SECURITY_REPO_REVIEW.md](SECURITY_REPO_REVIEW.md): applicability of the requested Ghidra, reverse-skill and h4cker repositories, with scoped Office evidence and remaining boundaries.
 - [AUTO_VALUATION.md](AUTO_VALUATION.md): automatic fundamental scenarios/FCFE, evaluated IDX/Yahoo Financials repositories, data coverage and backup verification.
 - [AUTOMATIC_TICKER_RESEARCH.md](AUTOMATIC_TICKER_RESEARCH.md): ticker-only source loading, automatic calculations/saving, independent checks and missing-data limits.
 - [QUANT_REPOSITORY_REVIEW.md](QUANT_REPOSITORY_REVIEW.md): four-repository review and working option/bond/portfolio-risk toolkit, source import, numerical checks and access limits.
