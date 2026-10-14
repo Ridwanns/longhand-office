@@ -29,3 +29,5 @@ export async function flushDrafts(){await Promise.all([...controllers].map(c=>c.
 window.addEventListener('pagehide',()=>{for(const c of controllers)c.flush().catch(()=>{});});
 window.addEventListener('hashchange',()=>{for(const c of controllers)c.flush().catch(()=>{});});
 export async function retainManual(kind,artifact){const id=crypto.randomUUID(),record={id,kind,createdAt:new Date().toISOString(),artifact};const promise=saveManual(record);manualSaves.add(promise);try{await promise;document.dispatchEvent(new CustomEvent('office:manual-saved'));return record;}catch(e){manualFailures.set(id,record);throw e;}finally{manualSaves.delete(promise);}}
+
+export function draftHealth(){return {unsaved:[...controllers].filter(c=>c.indicator.textContent.includes('Not saved')||c.indicator.textContent.includes('Saving')).length,failedManual:manualFailures.size};}

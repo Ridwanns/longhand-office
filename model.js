@@ -1,3 +1,4 @@
+import {validateResearchContext,researchSymbol,checkPaperLink} from './investment-context.js';
 export const KEY = 'longhand-office.v1';
 export const empty = () => ({version:1, portfolios:[], theses:[], decisions:[]});
 const text = (x,n=20000) => typeof x==='string' && x.length<=n;
@@ -147,6 +148,7 @@ export function validate(data) {
  if(!data.theses.every(t=>base(t) && text(t.title,180) && t.title.trim() && text(t.symbol,30) && text(t.assumptions) && text(t.evidence) && text(t.risks) && date(t.reviewDate) && ['Draft','Researching','Conviction','Archived'].includes(t.status) && reports(t.reports))) throw Error('Invalid thesis data.');
  if(!data.decisions.every(d=>base(d) && text(d.title,180) && d.title.trim() && date(d.date) && date(d.reviewDate) && text(d.rationale) && text(d.expected) && text(d.outcome) && text(d.thesisId,100) && (!d.thesisId || data.theses.some(t=>t.id===d.thesisId)) && (d.portfolioId===undefined || text(d.portfolioId,100) && (!d.portfolioId || data.portfolios.some(p=>p.id===d.portfolioId))) && reports(d.reports) && ['Open','Reviewed'].includes(d.status))) throw Error('Invalid journal data or broken thesis/portfolio link.');
  for(const record of [...data.theses,...data.decisions]){
+  if(record.researchContext!==undefined){validateResearchContext(record.researchContext);if(record.symbol!==researchSymbol(record.researchContext))throw Error('Retained research belongs to another ticker. Create a separate record for another instrument.');const p=data.portfolios.find(p=>p.id===record.portfolioId);if(p&&p.currency!==record.researchContext.currency)throw Error('Research and linked portfolio currencies must match. No FX is inferred.');}
   const snapshot=x=>{if(!x||typeof x!=='object'||Array.isArray(x))throw Error('Invalid retained original entry.');for(const [k,v] of Object.entries(x)){if(k==='reports'){if(!reports(v))throw Error('Invalid original research links.');}else if(!text(v))throw Error('Invalid retained prose.');}};
   if(record.originalEntry!==undefined){snapshot(record.originalEntry);if(!text(record.originalRetainedAt,40)||Number.isNaN(Date.parse(record.originalRetainedAt)))throw Error('Invalid original retention date.');}
   if(record.entryRevisions!==undefined){if(!Array.isArray(record.entryRevisions)||record.entryRevisions.length>1000)throw Error('Invalid entry history.');for(const rev of record.entryRevisions){if(!rev||!text(rev.id,100)||!rev.id||ids.has(rev.id)||!text(rev.recordedAt,40)||Number.isNaN(Date.parse(rev.recordedAt)))throw Error('Invalid entry revision.');snapshot(rev.entry);ids.add(rev.id);}}
@@ -154,6 +156,9 @@ export function validate(data) {
   for(const k of ['horizon','invalidation','lessons','nextAction','symbol','assumptions','evidence'])if(record[k]!==undefined&&!text(record[k]))throw Error('Invalid research fields.');
   if(record.analysisRefs!==undefined){if(!Array.isArray(record.analysisRefs)||record.analysisRefs.length>100)throw Error('Invalid analysis references.');for(const r of record.analysisRefs)if(!r||!text(r.runId,100)||!r.runId||!date(r.cutoff)||!text(r.modelVersion,100)||!text(r.ticker,30)||!['US','IDX'].includes(r.market)||!text(r.resultHash,64)||!/^[a-f0-9]{64}$/.test(r.resultHash))throw Error('Invalid immutable analysis reference.');}
   if(record.reviewHistory!==undefined){if(!Array.isArray(record.reviewHistory)||record.reviewHistory.length>1000)throw Error('Invalid review history.');for(const r of record.reviewHistory){if(!r||!text(r.id,100)||!r.id||ids.has(r.id)||!date(r.date)||!text(r.outcome)||!r.outcome.trim()||!text(r.lessons)||!text(r.nextAction)||!['Held','Changed','Unclear'].includes(r.reasoningHeld)||!text(r.recordedAt,40)||Number.isNaN(Date.parse(r.recordedAt)))throw Error('Invalid outcome review.');ids.add(r.id);}}
+ }
+ for(const p of data.portfolios)for(const t of p.transactions){
+  if(t.decisionId!==undefined||t.thesisId!==undefined){const d=data.decisions.find(d=>d.id===t.decisionId),th=data.theses.find(th=>th.id===t.thesisId);if(!text(t.decisionId,100)||!text(t.thesisId,100)||!d||!th||d.thesisId!==th.id||d.portfolioId!==p.id||(p.mode||'paper')!=='paper')throw Error('Broken paper transaction decision/thesis link.');if(d.researchContext||th.researchContext)checkPaperLink(data,p.id,d.id,th.id,t.symbol);}
  }
  return data;
 }

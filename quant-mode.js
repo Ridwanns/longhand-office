@@ -1,0 +1,8 @@
+import {preferenceKey} from './workspace-scope.js';
+export function deskMode(){try{return localStorage.getItem(preferenceKey('longhand-office.quant-mode'))==='advanced'?'advanced':'simple';}catch{return 'simple';}}
+export function modeControl(){return '<div class="desk-mode" role="group" aria-label="Study detail level"><span>Study view</span><button type="button" class="secondary" data-desk-mode="simple">Simple</button><button type="button" class="secondary" data-desk-mode="advanced">Advanced</button><p data-mode-status role="status"></p></div>';}
+export function applyDeskMode(mode,{persist=false}={}){const root=document.querySelector('.quant-room');if(!root)return;root.dataset.mode=mode==='advanced'?'advanced':'simple';root.querySelectorAll('[data-desk-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.deskMode===root.dataset.mode)));if(persist){try{localStorage.setItem(preferenceKey('longhand-office.quant-mode'),root.dataset.mode);}catch{root.querySelector('[data-mode-status]').textContent='View changed for this visit; the preference could not be saved.';}}document.dispatchEvent(new CustomEvent('office:desk-mode',{detail:root.dataset.mode}));}
+export const mountDeskMode=()=>applyDeskMode(deskMode());
+document.addEventListener('click',e=>{const b=e.target.closest('[data-desk-mode],[data-mode-shortcut]');if(b){applyDeskMode(b.dataset.deskMode||b.dataset.modeShortcut,{persist:true});if(b.hasAttribute('data-mode-shortcut'))document.dispatchEvent(new Event('office:mode-shortcut'));}});
+document.addEventListener('office:preferences-restored',()=>applyDeskMode(deskMode()));
+window.addEventListener('storage',e=>{if(e.key===preferenceKey('longhand-office.quant-mode'))applyDeskMode(deskMode());});

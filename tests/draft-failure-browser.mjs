@@ -2,7 +2,7 @@ export async function run(original,base='http://127.0.0.1:4175/office/'){
  const c=await original.context().browser().newContext({reducedMotion:'reduce'}),p=await c.newPage(),checks=[],errors=[];
  p.on('pageerror',e=>errors.push(e.message));const check=(name,ok)=>{if(!ok)throw Error(name);checks.push({name,passed:true});};
  try{
- await p.goto(base+'#quant');await p.locator('[data-quant-jump=calculator]').click();
+ await p.goto(base+'#quant');await p.locator('[data-desk-mode=advanced]').click();await p.locator('[data-quant-jump=calculator]').click();
  await p.waitForFunction(()=>document.querySelector('[data-draft-state=atlas]')?.textContent.includes('Drafts save automatically'));
  const records=await p.evaluate(()=>{const saved=Object.fromEntries(Object.entries(localStorage).filter(([k])=>k.includes('records.'))),original=IDBDatabase.prototype.transaction;IDBDatabase.prototype.transaction=function(...args){if(this.name.includes('continuity.')&&args[1]==='readwrite')throw new DOMException('TEST ONLY simulated quota failure','QuotaExceededError');return original.apply(this,args);};return saved;});
  await p.locator('#atlas-form [name=asset]').fill('TEST ONLY recover after storage failure');
