@@ -11,6 +11,7 @@ const portIndex=process.argv.indexOf('--port'),port=portIndex<0?4173:Number(proc
 if(![4173,4174].includes(port))throw Error('Only local workspace port 4173 and isolated test port 4174 are supported.');
 const files = new Set(['index.html','style.css','app.js','model.js','theme.js','market-terminal.js','market-catalogue.js','building.svg','catalogue.json']);
 files.add('rooms.css');
+files.add('research-intent.js');
 files.add('idx-msn-ui.js');files.add('idx-msn-contract.js');
 files.add('encrypted-backup.js');
 files.add('sec-fundamentals-contract.js');files.add('official-fundamentals.js');

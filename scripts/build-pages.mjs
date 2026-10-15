@@ -9,6 +9,7 @@ const files=['official-rates.js','official-rates-contract.js','auto-valuation-ma
 const generated=['index.html','app.js','office-storage.js','office-extensions.js','quant-ui.js','market-terminal.js','market-catalogue.js','browser-api.js','browser-worker.js','browser-controls.js','browser.css','market-controls.js'];
 files.push('encrypted-backup.js','sec-fundamentals-contract.js','official-fundamentals.js');
 files.push('idx-msn-ui.js','idx-msn-contract.js');
+files.push('research-intent.js');
 files.push(...advancedFiles);
 await mkdir(dest,{recursive:true});const allowed=new Set([...files,...generated,'data']);
 for(const existing of await readdir(dest))if(!allowed.has(existing))throw Error('Unexpected file in Pages output: '+existing);
