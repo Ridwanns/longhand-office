@@ -2,6 +2,7 @@ import {preferenceKey} from './workspace-scope.js';
 import {dataBadge} from './data-status.js';
 import {officialRatesPanel,mountOfficialRates} from './official-rates.js';
 import {MARKET_CATEGORIES} from './market-catalogue.js';
+import {localIdxPanel,mountLocalIdx} from './idx-msn-ui.js';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const num=x=>new Intl.NumberFormat('en-GB',{maximumFractionDigits:4}).format(x);
 const pct=x=>(x>0?'+':'')+new Intl.NumberFormat('en-GB',{maximumFractionDigits:2,minimumFractionDigits:2}).format(x)+'%';
@@ -22,9 +23,9 @@ function sourceTime(q,compact=false){if(q.date)return q.date;return new Intl.Dat
 const unitFor=(category,q)=>category==='idx'?'IDR / share':category==='us'?'USD / share':q.unit;
 export function marketPage(requested='us'){
  const category=MARKET_CATEGORIES[requested]?requested:'us',c=MARKET_CATEGORIES[category],symbols=symbolsFor(category);
- return `<div class="page-heading market-page-heading"><div><p class="eyebrow">THE RESEARCH DESK</p><h1>Markets</h1><p>A view of the market. Your <a href="#portfolios" class="inline-link">Paper and Real portfolios ↗</a> remain separate.</p></div><span class="market-feed-label">${category==='idx'?'EOD / LOCAL DATA':'SOURCE SNAPSHOTS'}</span></div>
+ return `<div class="page-heading market-page-heading"><div><p class="eyebrow">THE RESEARCH DESK</p><h1>Markets</h1><p>A view of the market. Your <a href="#portfolios" class="inline-link">Paper and Real portfolios ↗</a> remain separate.</p></div><span class="market-feed-label">${category==='idx'?'IDX / SOURCE READS':'SOURCE SNAPSHOTS'}</span></div>
  <nav class="market-tabs" aria-label="Market categories">${Object.entries(MARKET_CATEGORIES).map(([name,item])=>`<a href="#market/${name}" ${name===category?'aria-current="page"':''}>${item.label}</a>`).join('')}</nav>
- <section id="market-board" data-category="${category}" data-selected="${esc(symbols[0]||'')}" aria-labelledby="market-category-title"><div class="board-heading"><div><h2 id="market-category-title">${c.title}</h2><p>${c.description}</p></div><button type="button" class="secondary" id="refresh-market">↻ Refresh prices</button></div>
+ ${category==='idx'?localIdxPanel():''}<section id="market-board" data-category="${category}" data-selected="${esc(symbols[0]||'')}" aria-labelledby="market-category-title"><div class="board-heading"><div><h2 id="market-category-title">${c.title}</h2><p>${c.description}</p></div><button type="button" class="secondary" id="refresh-market">↻ Refresh prices</button></div>
  <p class="quiet-note board-source-note">${c.source}</p>
  ${['us','idx'].includes(category)?`<form id="watchlist-form"><label class="sr-only" for="watchlist-symbol">Add ticker</label><input id="watchlist-symbol" name="symbol" required maxlength="${category==='us'?18:7}" pattern="${category==='us'?'[A-Za-z0-9]{1,12}(([.]|-)[A-Za-z0-9]{1,6})?':'[A-Za-z]{4}([.][Jj][Kk])?'}" placeholder="${category==='us'?'Add AAPL, MSFT, NVDA…':'Add BBCA, BBRI, TLKM…'}" autocomplete="off" autocapitalize="characters" spellcheck="false"><button class="primary" type="submit">＋ Add ticker</button><button class="secondary" id="reset-watchlist" type="button">Reset list</button></form>`:''}
  <div class="market-terminal"><div class="watchlist-panel"><div class="table-wrap" tabindex="0" role="region" aria-label="Market watchlist; scroll horizontally on small screens"><table class="watchlist-table"><thead><tr><th scope="col">Instrument</th><th scope="col">Last / source time</th><th scope="col">Change %</th><th scope="col">Closes</th></tr></thead><tbody id="watchlist-rows">${symbols.map(symbol=>loadingRow(category,symbol)).join('')}</tbody></table></div><p id="board-status" role="status" aria-live="polite">Loading source observations…</p><p class="quiet-note">Change uses the previous available dated chart close, or the provider previous close when its date is not supplied. Refresh is manual. No streaming connection.</p></div><section id="market-detail" class="market-detail" aria-label="Selected market instrument"><p class="quiet-note">Select an instrument to inspect its history and source.</p></section></div>
@@ -59,6 +60,7 @@ function paintDetail(board){
  if(['us','idx','bonds'].includes(category))panel.insertAdjacentHTML('beforeend',(q.modelAvailabilityNote?'<p class="quiet-note">'+esc(q.modelAvailabilityNote)+'</p>':'')+'<div class="market-actions"><button class="primary" data-market-models '+(q.modelCutoff?'data-cutoff="'+esc(q.modelCutoff)+'" ':'')+(q.modelAvailable===false?'disabled':'')+'>'+(q.modelAvailable===false?(q.modelAvailabilityNote?.includes('could not be loaded')?'Model list unavailable':'No published eligible model history'):'Run models'+(q.modelCutoff?' · through '+esc(q.modelCutoff):''))+'</button><button class="secondary" data-market-valuation>Use for valuation</button></div>');
 }
 export async function mountMarket(force=false){
+ mountLocalIdx();
  mountOfficialRates();
  const board=document.querySelector('#market-board');if(!board)return;const ticket=(board.requestTicket||0)+1;board.requestTicket=ticket;
  document.dispatchEvent(new CustomEvent('office:market-loading',{detail:{force}}));

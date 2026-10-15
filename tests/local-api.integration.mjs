@@ -4,6 +4,14 @@ import http from 'node:http';
 import {spawn} from 'node:child_process';
 // Test requests hit the real isolated loopback server; no portfolio writes.
 const base='http://127.0.0.1:4174';
+test('local MSN directory and routes enforce same origin, bounded symbols and backend file isolation',async()=>{
+ const dir=await fetch(base+'/api/market/idx-msn/symbols');assert.equal(dir.status,200);const list=await dir.json();assert.equal(list.tickers.length,896);assert.ok(list.tickers.includes('BBCA')&&list.tickers.includes('ADRO'));assert.equal(dir.headers.get('access-control-allow-origin'),null);
+ for(const headers of [{Origin:'https://foreign.example'},{'Sec-Fetch-Site':'cross-site'}])assert.equal((await fetch(base+'/api/market/idx-msn/read?symbol=BBCA',{headers})).status,403);
+ for(const symbol of ['','../secret','AAPL.US','ABC'])assert.equal((await fetch(base+'/api/market/idx-msn/read?symbol='+encodeURIComponent(symbol))).status,400);
+ assert.equal((await fetch(base+'/api/market/idx-msn/read?symbol=ZZZZ')).status,404);
+ assert.equal((await fetch(base+'/api/market/idx-msn/read?symbol=BBCA',{method:'POST'})).status,405);
+ for(const path of ['/scripts/idx-msn-adapter.mjs','/scripts/idx-msn-symbols.tsv','/.tools/idx-cli-review/quotes.json','/api/market/idx-msn/proxy?url=https://foreign.example'])assert.equal((await fetch(base+path)).status,404);
+});
 test('local API requires same origin and fresh token for mutations',async()=>{
  const status=await fetch(base+'/api/local/status');assert.equal(status.status,200);const {token}=await status.json();
  for(const headers of [{},{Origin:base},{Origin:'https://foreign.example','X-Office-Token':token},{Origin:base,'X-Office-Token':'invalid'}]){

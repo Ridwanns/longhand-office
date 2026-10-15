@@ -2,6 +2,8 @@
 
 15 October 2026 · source review and bounded, read-only endpoint evaluation.
 
+Subsequent implementation: the optional personal/local source desk is now available; see [IDX_MSN_LOCAL_RELEASE.md](IDX_MSN_LOCAL_RELEASE.md) for the implemented subset, tests and publication boundaries. The findings below describe the earlier review stage.
+
 Repository: [0xrsydn/idx-cli](https://github.com/0xrsydn/idx-cli), inspected at [`a0471127374becb95b487ed660dad88a385222e1`](https://github.com/0xrsydn/idx-cli/tree/a0471127374becb95b487ed660dad88a385222e1). The top-level/crate source is MIT licensed. This is a selective review, not a complete audit of the repository, its dependencies or all supported instruments.
 
 ## What it adds

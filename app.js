@@ -10,6 +10,7 @@ import {OfficeStorage,api} from './office-storage.js';
 import {analysisLinks,reviewHistory,reviewQueue,cashSection,todayAtOffice,mountDesk,vaultPanel,mountVault,composition,entryHistory} from './office-extensions.js';
 import {nextSequence,checkCashFlow} from './model.js';
 import {marketPage,mountMarket} from './market-terminal.js';
+import {validateMsnSnapshot,msnEvidence} from './idx-msn-contract.js';
 import {KEY as RECORD_KEY,empty,validate,holdings,ledger,checkTransaction,valuation,validateValuation,PRICE_MAX_AGE_DAYS} from './model.js';
 const $=s=>document.querySelector(s), main=$('#main'), dialog=$('#editor');
 dialog.addEventListener('cancel',e=>{if(dialog.querySelector('[aria-busy="true"]'))e.preventDefault();});
@@ -153,6 +154,7 @@ window.addEventListener('storage',e=>{if(e.key===storage.markerKey){location.rel
 const loaded=await Promise.allSettled([fetch('catalogue.json').then(r=>r.json()),fetch('building.svg').then(r=>r.text())]);if(loaded[0].status==='fulfilled')catalogue=loaded[0].value;if(loaded[1].status==='fulfilled')building=loaded[1].value;if(preview&&savedSnapshot===null&&!storageError&&!storage.marker){try{const sample=validate(await fetch(previewKind==='flowless'?'flowless-example.json':'valuation-example.json').then(r=>r.json()));await persist(sample);if(!location.hash||location.hash==='#overview')location.hash='portfolio/'+sample.portfolios[0].id;}catch{toast('Test example could not be loaded.');}}render();
 
 bindInvestmentFlow({records:()=>data,toast,open:(kind,id,seed)=>openForm(kind,id,seed?.preThesis||'','',seed)});
+document.addEventListener('office:msn-thesis',e=>{try{const source=validateMsnSnapshot(e.detail),evidence=msnEvidence(source);if(evidence.length>20000)throw Error('MSN evidence exceeds the thesis limit.');openForm('thesis','','','',{fields:{title:source.ticker+' — source notes',symbol:source.ticker+'.JK',evidence}});}catch(error){toast(error.message);}});
 bindOffice({storage,getData:()=>data,setData:value=>{data=value;},save,render,toast,dialog,download,key:KEY});
 
 

@@ -1,5 +1,7 @@
 # Longhand Office
 
+Markets → Indonesia now offers an optional **local MSN personal source** desk: enter an IDX ticker, inspect its dated IDR quote and reported ratio/EPS evidence, then prepare thesis notes for your review. No portfolio or retained model is changed automatically. [IDX_MSN_LOCAL_RELEASE.md](IDX_MSN_LOCAL_RELEASE.md) explains usage, currency/period checks, persistence, tests and why public Pages provides a local-entry link rather than redistributing MSN data.
+
 Records now supports password-encrypted complete backup downloads and isolated restoration. The US Investment brief adds independently dated SEC annual evidence where available; annual facts never silently replace TTM or retained valuation inputs. See [FREE_DATA_AND_BACKUP_RELEASE.md](FREE_DATA_AND_BACKUP_RELEASE.md) for usage, cryptography, source availability and the distinction from active-vault encryption or account sync.
 
 The Investment Lab opens in a simpler daily view with an Investment brief, retained-stock comparison and a guided thesis → decision → Paper transaction → review workflow. Advanced keeps the complete quantitative tools. Workspace status identifies archive capacity, known save failures and backup-generation activity. See [SIMPLE_OFFICE_RELEASE.md](SIMPLE_OFFICE_RELEASE.md) for behavior, preservation fixes and current verification. Method-aware drafts, complete isolated backups and registered forecasts remain available; [CONTINUITY_RELEASE.md](CONTINUITY_RELEASE.md) preserves their earlier release receipts.
