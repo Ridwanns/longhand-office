@@ -87,4 +87,6 @@ The current suite has **289 passing Node checks** and **4 local API checks**. Th
 
 See [DATA_SOURCE_REVIEW.md](DATA_SOURCE_REVIEW.md) for the additional US/IDX repository assessment, official Treasury observations, verification and provider limitations.
 
+The [idx-cli review](IDX_CLI_REVIEW.md) records successful personal/read-only MSN quote and BBCA fundamental probes, the dated ownership-manifest check, and the unit/history/data-rights boundaries required before a local IDX adapter. It does not change the running Office or republish MSN datasets.
+
 The refined entrance and differentiated rooms use the existing architectural SVG, system fonts, warm stone/ivory, forest/charcoal and copper. Both themes, reduced motion, conventional navigation, keyboard-accessible rooms/modals and responsive tables remain available.
