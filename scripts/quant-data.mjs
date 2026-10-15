@@ -1,10 +1,20 @@
 import {createHash} from 'node:crypto';
+import {readFile} from 'node:fs/promises';
 import {MODEL_VERSION} from '../quant-math.js';
 export const hash=value=>createHash('sha256').update(JSON.stringify(value)).digest('hex');
 import {configFor} from '../quant-contract.js';
 import {prepareHistory} from '../quant-history.js';
 export {configFor,validId} from '../quant-contract.js';
 export function normalizeHistory(rows,config,metadata){const d=prepareHistory(rows,config,metadata);return {...d,dataHash:hash(d.observations)};}
+export async function acquirePublishedHistory(input,read=async name=>readFile(new URL('../.pages-data/'+name,import.meta.url),'utf8')){
+ const config=configFor(input),file='history/'+config.market+'-'+config.ticker+'.json';
+ const json=async name=>{let text;try{text=await read(name);}catch{throw Error('Published Yahoo history is unavailable locally. Rebuild the public data files; no other provider was substituted.');}if(typeof text!=='string'||Buffer.byteLength(text)>12000000)throw Error('Published history file exceeds 12 MB.');return JSON.parse(text);};
+ const manifest=await json('manifest.json'),entry=manifest.histories?.find(h=>h.market===config.market&&h.ticker===config.ticker);
+ if(manifest.format!=='longhand-public-market-data'||manifest.version!==1||!Number.isFinite(Date.parse(manifest.publishedAt))||!entry||entry.file!==file)throw Error('No matching published Yahoo history directory entry.');
+ const raw=await json(file),m=raw.metadata,received=new Date().toISOString();
+ if(!m||m.ticker!==config.ticker||m.market!==config.market||m.provider!=='yahoo'||m.currency!==(config.market==='IDX'?'IDR':'USD')||!['EQUITY','ETF'].includes(m.instrumentType)||m.retrievedAt!==entry.retrievedAt||!Number.isFinite(Date.parse(m.retrievedAt))||Date.parse(m.retrievedAt)>Date.parse(received)+300000||!/^[a-f0-9]{64}$/.test(m.sourceHash)||!Array.isArray(raw.rows)||raw.rows.length>10000||raw.rows.some(r=>!r||typeof r.complete!=='boolean')||!(config.market==='IDX'?m.listing==='JKT'&&m.timezone==='Asia/Jakarta':['NMS','NGM','NCM','NYQ','ASE','PCX','BTS','BATS'].includes(m.listing)))throw Error('Published history identity, currency, acquisition vintage or schema mismatch. No substitute history was used.');
+ return normalizeHistory(raw.rows,config,{...m,source:'Yahoo Finance published daily history (local snapshot)',publishedAt:manifest.publishedAt,loadedAt:received,publishedFileHash:hash(raw),acquisitionPolicy:'Explicit published-yahoo selection; complete retained Yahoo file only. No Flowless/MSN mixing or live fallback.'});
+}
 async function boundedFetch(url,signal){
  const response=await fetch(url,{signal:AbortSignal.any([signal||new AbortController().signal,AbortSignal.timeout(25000)]),redirect:'error',headers:{'User-Agent':'LonghandOffice-local-research/1.0','Accept':'application/json'}});
  if(!response.ok)throw Error('History provider returned HTTP '+response.status+'. Retry later; no substitute observations used.');
@@ -12,6 +22,7 @@ async function boundedFetch(url,signal){
  return JSON.parse(Buffer.concat(chunks).toString('utf8'));
 }
 export async function acquireHistory(config,signal){
+ if(config.historySource==='published-yahoo')return acquirePublishedHistory(config);
  const retrievedAt=new Date().toISOString();
  if(config.market==='IDX'){
   const url='http://127.0.0.1:8000/api/ticker/'+encodeURIComponent(config.ticker),raw=await boundedFetch(url,signal);

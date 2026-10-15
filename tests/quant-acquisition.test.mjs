@@ -1,7 +1,22 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {acquireHistory,configFor} from '../scripts/quant-data.mjs';
+import {acquireHistory,acquirePublishedHistory,configFor,hash} from '../scripts/quant-data.mjs';
 const config=configFor({ticker:'AAPL',market:'US',cutoff:'2026-10-12',horizon:5});
+const publishedFixture=(market='IDX',ticker='BBCA')=>{
+ const retrievedAt='2026-10-13T10:00:00.000Z',raw={metadata:{ticker,market,provider:'yahoo',currency:market==='IDX'?'IDR':'USD',instrumentType:'EQUITY',listing:market==='IDX'?'JKT':'NMS',timezone:market==='IDX'?'Asia/Jakarta':'America/New_York',retrievedAt,sourceHash:'a'.repeat(64)},rows:Array.from({length:370},(_,i)=>({date:new Date(Date.parse('2025-01-01')+i*86400000).toISOString().slice(0,10),rawClose:100+i,adjustedClose:50+i,volume:100,complete:true}))},manifest={format:'longhand-public-market-data',version:1,publishedAt:retrievedAt,histories:[{ticker,market,file:'history/'+market+'-'+ticker+'.json',retrievedAt}]};return {raw,manifest};
+};
+test('explicit published history uses one retained Yahoo file, preserves acquisition vintage and does not query Flowless',async()=>{
+ const {raw,manifest}=publishedFixture(),files=[],d=await acquirePublishedHistory({...config,market:'IDX',ticker:'BBCA',historySource:'published-yahoo'},async name=>{files.push(name);return JSON.stringify(name==='manifest.json'?manifest:raw);});assert.deepEqual(files,['manifest.json','history/IDX-BBCA.json']);assert.equal(d.observations.length,370);assert.equal(d.observations[0].price,50);assert.equal(d.metadata.provider,'yahoo');assert.equal(d.metadata.retrievedAt,raw.metadata.retrievedAt);assert.equal(d.metadata.publishedFileHash,hash(raw));assert.match(d.metadata.priceDefinition,/splits and dividends/);assert.match(d.metadata.acquisitionPolicy,/No Flowless\/MSN mixing/);
+});
+test('published history rejects issuer, currency, vintage, completion schema and unsafe source selection',async()=>{
+ for(const edit of [r=>r.metadata.ticker='ADRO',r=>r.metadata.currency='USD',r=>r.metadata.provider='flowless',r=>r.metadata.retrievedAt='2026-10-14T00:00:00.000Z',r=>delete r.rows[0].complete,r=>r.metadata.listing='NMS']){const {raw,manifest}=publishedFixture();edit(raw);await assert.rejects(acquirePublishedHistory({...config,market:'IDX',ticker:'BBCA',historySource:'published-yahoo'},async name=>JSON.stringify(name==='manifest.json'?manifest:raw)),/mismatch/);}
+ assert.throws(()=>configFor({...config,historySource:'https://foreign.example'}));assert.equal(configFor(config).historySource,undefined);assert.deepEqual(configFor({...config,historySource:''}),configFor(config));assert.equal(configFor({...config,historySource:'published-yahoo'}).historySource,'published-yahoo');
+ await assert.rejects(acquirePublishedHistory({...config,historySource:'published-yahoo'},async()=>{throw Error('TEST ONLY missing');}),/No other provider|no other provider/);
+});
+test('published data never fills missing sessions or lowers the model minimum',async()=>{
+ const {raw,manifest}=publishedFixture();raw.rows=raw.rows.slice(-289);const d=await acquirePublishedHistory({...config,market:'IDX',ticker:'BBCA',historySource:'published-yahoo'},async name=>JSON.stringify(name==='manifest.json'?manifest:raw));assert.equal(d.observations.length,289);const {analyze}=await import('../quant-math.js');assert.throws(()=>analyze(d,config),/350 required/);
+ const {raw:us,manifest:usManifest}=publishedFixture('US','AAPL');const u=await acquirePublishedHistory({...config,historySource:'published-yahoo'},async name=>JSON.stringify(name==='manifest.json'?usManifest:us));assert.equal(u.metadata.currency,'USD');assert.equal(u.metadata.ticker,'AAPL');
+});
 test('provider failures, missing raw/adjusted prices and unsupported listings are rejected',async()=>{
  const original=globalThis.fetch,requests=[];
  try{

@@ -8,6 +8,7 @@ export function validateAnalysis(r,hash){
  if(!r||!validId(r.id)||r.status!=='completed'||!r.dataset||!r.results||r.results.modelVersion!==MODEL_VERSION||!integer(r.version)||r.version<1)bad();
  const config=configFor(r.config);if(hash(config)!==r.configHash||hash(r.config)!==r.configHash||hash(r.results)!==r.resultHash)bad();
  const d=r.dataset,m=d.metadata,o=d.observations,v=r.results;
+ if(config.historySource==='published-yahoo'&&m?.provider!=='yahoo')bad();
  if(!Array.isArray(o)||o.length<350||o.length>10000||hash(o)!==d.dataHash||!m||m.ticker!==config.ticker||m.requestedCutoff!==config.cutoff||m.basis!==config.basis||m.currency!==(config.market==='US'?'USD':'IDR')||!['EQUITY','ETF'].includes(m.instrumentType)||!text(m.listing)||!text(m.timezone)||!Array.isArray(m.omissions)||!Array.isArray(d.excludedSegment)||!text(m.source)||!text(m.priceDefinition)||!text(m.missingPolicy)||!integer(m.excludedSegmentRows)||m.excludedSegmentRows<0||!finite(Date.parse(m.retrievedAt)))bad();
  const selected=config.basis==='adjusted'?'adjustedClose':'rawClose';
  if(o.some((x,i)=>!x||!isDate(x.date)||x.date>config.cutoff||!finite(x.price)||x.price<=0||x.price!==x[selected]||i&&x.date<=o[i-1].date)||m.lastCompletedSession!==o.at(-1).date)bad();

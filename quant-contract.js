@@ -9,5 +9,6 @@ export function configFor(input){
  if(![5,20].includes(Number(input.horizon)))throw Error('Horizon must be 5 or 20 observed trading sessions.');
  const basis=input.basis||'adjusted';if(!['raw','adjusted'].includes(basis))throw Error('Choose raw or adjusted closes.');
  const seed=Number(input.seed??20261013);if(!Number.isInteger(seed)||seed<1||seed>4294967295)throw Error('Seed must be an integer from 1 through 4294967295.');
- return {ticker,market:input.market,cutoff:input.cutoff,horizon:Number(input.horizon),basis,seed,modelVersion:MODEL_VERSION};
+ if(input.historySource!==undefined&&input.historySource!==''&&input.historySource!=='published-yahoo')throw Error('Unsupported historical source selection.');
+ return {ticker,market:input.market,cutoff:input.cutoff,horizon:Number(input.horizon),basis,seed,modelVersion:MODEL_VERSION,...(input.historySource?{historySource:input.historySource}:{})};
 }

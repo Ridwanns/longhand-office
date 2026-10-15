@@ -1,5 +1,7 @@
 # Longhand Office
 
+The [15 October Quant audit](AUDIT_2026_10_15.md) fixes a local automatic-source mismatch, hidden Simple-view run failures and a late-response ticker race. Automatic models now retain their published Yahoo source; existing Flowless runs remain intact and offer an explicit separate-run recovery. Source selection, visible run status and exact rerun behavior are checked alongside the established investment/backup workflows.
+
 Markets → Indonesia now offers an optional **local MSN personal source** desk: enter an IDX ticker, inspect its dated IDR quote and reported ratio/EPS evidence, then prepare thesis notes for your review. No portfolio or retained model is changed automatically. [IDX_MSN_LOCAL_RELEASE.md](IDX_MSN_LOCAL_RELEASE.md) explains usage, currency/period checks, persistence, tests and why public Pages provides a local-entry link rather than redistributing MSN data.
 
 Records now supports password-encrypted complete backup downloads and isolated restoration. The US Investment brief adds independently dated SEC annual evidence where available; annual facts never silently replace TTM or retained valuation inputs. See [FREE_DATA_AND_BACKUP_RELEASE.md](FREE_DATA_AND_BACKUP_RELEASE.md) for usage, cryptography, source availability and the distinction from active-vault encryption or account sync.

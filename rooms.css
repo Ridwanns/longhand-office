@@ -79,3 +79,6 @@ header{gap:22px}header nav{gap:22px}h1{letter-spacing:-1.5px}
 .msn-evidence{margin:1.5rem 0}
 .msn-evidence summary{cursor:pointer;font-weight:600}
 .msn-local-note{padding:1rem 0;margin:1rem 0;border-block:1px solid var(--line)}
+.quant-run-notice{border-block:1px solid var(--line);padding:1.25rem 0;margin:1.5rem 0}
+.quant-run-notice[hidden]{display:none}
+.quant-run-notice h2{font:clamp(24px,3vw,32px) Georgia,serif;margin:.75rem 0}
