@@ -2,6 +2,8 @@ export async function run(original,base='http://127.0.0.1:4175/office/'){
  const c=await original.context().browser().newContext({viewport:{width:1440,height:1100},reducedMotion:'reduce'}),p=await c.newPage(),checks=[],errors=[];p.on('pageerror',e=>errors.push(e.message));const check=(name,ok)=>{if(!ok)throw Error(name);checks.push({name,passed:true});};
  try{
   await p.route('https://s.tradingview.com/**',r=>r.fulfill({contentType:'text/html',body:'<!doctype html><title>TEST ONLY isolated TradingView frame</title><p>TEST ONLY; live provider rendering verified separately.</p>'}));
+  for(const invalid of ['constructor','__proto__','toString','unknown']){await p.goto(base+'#market/'+invalid);check('Invalid category '+invalid+' opens a usable US market instead of a blank page',await p.locator('#market-board').getAttribute('data-category')==='us'&&await p.locator('h1').textContent()==='Markets');}
+  check('Direct chart rendering guards inherited category names',await p.evaluate(async()=>{const {marketView}=await import('./market-view.js');return marketView('constructor').includes('data-chart-category="macro"');}));
   await p.goto(base+'#market/macro');await p.locator('.macro-series-panel').first().waitFor();const before=await p.evaluate(()=>Object.fromEntries(Object.entries(localStorage).filter(([k])=>k.includes('records'))));
   check('Main overview exposes GDP bars and inflation points directly',await p.locator('.macro-chart-grid .macro-bar').count()>0&&await p.locator('.macro-chart-grid .macro-dot').count()>0);
   check('GDP graph begins inside the first desktop viewport',await p.locator('.macro-data-chart').first().evaluate(e=>e.getBoundingClientRect().top<innerHeight));

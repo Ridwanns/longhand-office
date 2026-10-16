@@ -24,7 +24,7 @@ function chart(q,large=false){
 function sourceTime(q,compact=false){if(q.date)return q.date;return new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Jakarta',...(compact?{month:'short',day:'2-digit',hour:'2-digit',minute:'2-digit'}:{dateStyle:'medium',timeStyle:'medium'})}).format(new Date(q.timestamp))+' WIB';}
 const unitFor=(category,q)=>category==='idx'?'IDR / share':category==='us'?'USD / share':q.unit;
 export function marketPage(requested='us'){
- const category=MARKET_CATEGORIES[requested]?requested:'us',c=MARKET_CATEGORIES[category],symbols=symbolsFor(category);
+ const category=Object.hasOwn(MARKET_CATEGORIES,requested)?requested:'us',c=MARKET_CATEGORIES[category],symbols=symbolsFor(category);
  const heading=`<div class="page-heading market-page-heading"><div><p class="eyebrow">THE RESEARCH DESK</p><h1>Markets</h1><p>A view of the market. Your <a href="#portfolios" class="inline-link">Paper and Real portfolios ↗</a> remain separate.</p></div><span class="market-feed-label">${category==='idx'?'IDX / SOURCE READS':'SOURCE SNAPSHOTS'}</span></div>
  <nav class="market-tabs" aria-label="Market categories">${Object.entries(MARKET_CATEGORIES).map(([name,item])=>`<a href="#market/${name}" ${name===category?'aria-current="page"':''}>${item.label}</a>`).join('')}</nav>`;
  const board=`<section id="market-board" data-category="${category}" data-selected="${esc(symbols[0]||'')}" aria-labelledby="market-category-title"><div class="board-heading"><div><h2 id="market-category-title">${c.title}</h2><p>${c.description}</p></div><button type="button" class="secondary" id="refresh-market">↻ Refresh prices</button></div>

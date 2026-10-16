@@ -24,9 +24,11 @@ Office's local and Pages content policies allow only the observed official chart
 ## Validation
 
 - **343 Node checks** and **5 API integration checks** passed. Four new independent plotting tests cover zero baselines/negative GDP, missing observation gaps, annual cadence and map coverage without fabricated zero values.
-- **268 local browser assertions** passed: Macro 86, chart/name/privacy/layout checks 51, workspace navigation/persistence 99, official rates 19, automatic-refresh behavior 13.
-- **382 static browser assertions** passed: the same five suites, plus 74 scientific Quant plot assertions and 40 complete investment workflow/isolated backup restore assertions. No Office JavaScript errors were reported in these suites.
-- The 51 chart-desk checks isolate external HTML with a clearly labelled test response to make keyboard, privacy and layout checks reproducible. Provider rendering was also checked independently against the real TradingView service for the nine supported and ten restricted symbols above. A successful canvas render alone was not counted as available: the source chart had to contain the original instrument and a numerical quote, without the provider's restricted-symbol message.
+- **273 local browser assertions** passed: Macro 86, chart/name/privacy/layout checks 56, workspace navigation/persistence 99, official rates 19, automatic-refresh behavior 13.
+- **387 static browser assertions** passed: the same five suites, plus 74 scientific Quant plot assertions and 40 complete investment workflow/isolated backup restore assertions. No Office JavaScript errors were reported in these suites.
+- The 56 chart-desk checks isolate external HTML with a clearly labelled test response to make keyboard, privacy and layout checks reproducible. Provider rendering was also checked independently against the real TradingView service for the nine supported and ten restricted symbols above. A successful canvas render alone was not counted as available: the source chart had to contain the original instrument and a numerical quote, without the provider's restricted-symbol message.
 - A transient ECB HTTP 504 was observed during acquisition. The app withheld its CPI value and directional classification; a subsequent official collection returned valid observations. External providers and future releases can fail, so the checks do not guarantee permanent data availability or absence of every possible bug.
 
 Tests use new browser contexts, local test port 4174 or the generated static build. Owner records on port 4173 were not edited. Public Research was not changed. Personal backups, databases and validation screenshots are excluded from the public artifact.
+
+Invalid market categories, including inherited object-property names, now open the US market fallback instead of producing a blank screen. Five browser assertions per edition cover this verified navigation defect.
