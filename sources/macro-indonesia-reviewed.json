@@ -1,0 +1,14 @@
+{
+  "reviewedAt": "2026-10-16T08:08:00Z",
+  "note": "Transcribed from official BPS release abstracts opened in the local browser on 16 October 2026. Automated HTTP acquisition returned 403. Reviewed snapshot only; collection does not refresh this review date or these values.",
+  "series": [
+    {"id":"id-gdp","observations":[
+      {"period":"2026-Q1","value":5.61,"releasedAt":"2026-05-05","status":"reported","sourceUrl":"https://www.bps.go.id/en/pressrelease/2026/05/05/2575/indonesia-s-economic-growth-in-q1-2026-was-5-61-percent--y-on-y-.html"},
+      {"period":"2026-Q2","value":5.29,"releasedAt":"2026-08-05","status":"reported","sourceUrl":"https://www.bps.go.id/en/pressrelease/2026/08/05/2605/indonesia-s-economic-in-q2-2026-was-5-29-percent--y-on-y-.html"}
+    ]},
+    {"id":"id-cpi","observations":[
+      {"period":"2026-08","value":3.19,"releasedAt":"2026-09-01","status":"reported","sourceUrl":"https://www.bps.go.id/en/pressrelease/2026/09/01/2611/the-year-on-year--y-on-y--headline-inflation-in-august-2026-was-recorded-at-3-19-percent-.html"},
+      {"period":"2026-09","value":3.28,"releasedAt":"2026-10-01","status":"reported","sourceUrl":"https://www.bps.go.id/en/pressrelease/2026/10/01/2623/the-year-on-year--y-on-y--headline-inflation-in-september-2026-was-recorded-at-3-28-percent-.html"}
+    ]}
+  ]
+}

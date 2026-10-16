@@ -29,6 +29,14 @@ npm start
 
 Open [Longhand Office](http://127.0.0.1:4173/#overview). Keep the command running. For the separate test environment use `npm run start:test` and port 4174. Your existing Flowless data service on port 8000 is optional for IDX and is neither started nor changed by Office.
 
+## Macro and workspace refresh · 16 October 2026
+
+The reference-led sidebar now connects all Office spaces, with a Ctrl+K page finder, mobile navigation drawer, and consistent light/dark surfaces. Macro has regional GDP/inflation readings, exact source/period evidence, a descriptive direction map and a **Prepare thesis note** bridge to the existing Investment Lab. Quant plots use precise axes, units, restrained scenario bands, pointer/keyboard inspection and exact tables.
+
+Automatic checks do **not** establish real-time data: local price boards check every 60 seconds while visible/idle; Macro checks every five minutes with acquisition bounded to fifteen minutes. Public Pages still depends on dated publication files. BPS is explicitly a reviewed snapshot; annual ASEAN/World coverage is labelled annual. Missing policy/FX/flow/calendar/consensus inputs remain unavailable.
+
+The latest receipt is **339 Node checks, 5 local API checks and 687 isolated browser checks**. See [MACRO_WORKSPACE_RELEASE.md](MACRO_WORKSPACE_RELEASE.md) for sources, transformations, refresh boundaries, preservation evidence and limitations, and [ARTHARA_REFERENCE_REVIEW.md](ARTHARA_REFERENCE_REVIEW.md) for what could actually be inspected on the reference site. Earlier counts below are historical release receipts.
+
 ## Everyday workflow
 
 1. **Markets:** inspect multiple US/IDX stocks, bond ETFs, commodity futures and indices. Source type, currency/unit, observation date and unverified real-time status stay visible. Refresh changes only the market desk.
@@ -71,7 +79,7 @@ npm run test:api
 python scripts/reference-quant.py
 ```
 
-The current suite has **289 passing Node checks** and **4 local API checks**. The free-data/encrypted-backup release passed **115 isolated local browser checks**; see [FREE_DATA_AND_BACKUP_RELEASE.md](FREE_DATA_AND_BACKUP_RELEASE.md) for its publication receipt. The preceding Simple Office release and security review passed **264 live browser checks** (213 workflow/regression + 51 browser safety), **5,276 core model cases / 1,319 eligible histories**, **16 representative advanced publication cases**, and validation of **8,599 quote entries** (8,573 priced; 26 explicitly unavailable). See [SIMPLE_OFFICE_RELEASE.md](SIMPLE_OFFICE_RELEASE.md) for that dated receipt. Restores use fresh isolated contexts; existing records are preserved. Historical counts do not imply that every stock has fundamentals or eligible history.
+The earlier free-data release suite had **289 passing Node checks** and **4 local API checks**. The free-data/encrypted-backup release passed **115 isolated local browser checks**; see [FREE_DATA_AND_BACKUP_RELEASE.md](FREE_DATA_AND_BACKUP_RELEASE.md) for its publication receipt. The preceding Simple Office release and security review passed **264 live browser checks** (213 workflow/regression + 51 browser safety), **5,276 core model cases / 1,319 eligible histories**, **16 representative advanced publication cases**, and validation of **8,599 quote entries** (8,573 priced; 26 explicitly unavailable). See [SIMPLE_OFFICE_RELEASE.md](SIMPLE_OFFICE_RELEASE.md) for that dated receipt. Restores use fresh isolated contexts; existing records are preserved. Historical counts do not imply that every stock has fundamentals or eligible history.
 
 - [FREE_DATA_AND_BACKUP_RELEASE.md](FREE_DATA_AND_BACKUP_RELEASE.md): encrypted complete exports, isolated unlocking/restoration, official US annual evidence and free-service boundaries.
 - [SIMPLE_OFFICE_RELEASE.md](SIMPLE_OFFICE_RELEASE.md): simpler daily navigation, investment briefs, linked Paper workflows, retained-stock comparison, workspace status and historical valuation preservation.
