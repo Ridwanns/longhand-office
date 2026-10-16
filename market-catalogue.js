@@ -1,10 +1,10 @@
 export const MARKET_CATEGORIES={
  us:{label:'US',title:'US stocks & ETFs',description:'Look up US stocks and ETFs by ticker.',source:'Yahoo Finance · regular-session snapshots · real-time unverified.',examples:['AAPL','MSFT','NVDA','BRK-B']},
  idx:{label:'Indonesia',title:'Indonesian stocks',description:'IDX stocks from your local Flowless data.',source:'Local Flowless · daily closing prices (EOD).',examples:['BBCA','BBRI','TLKM','ASII']},
- bonds:{label:'Bonds',title:'Bonds',description:'US bond ETFs for an initial fixed-income view.',source:'ETF prices per share in USD. Official US Treasury par yields appear below. Individual bond prices and Indonesian government bond yields are not connected.',instruments:[
-  {symbol:'TLT',name:'US Treasury 20+ years · ETF',type:'ETF',currency:'USD',unit:'USD / ETF share'},
-  {symbol:'IEF',name:'US Treasury 7–10 years · ETF',type:'ETF',currency:'USD',unit:'USD / ETF share'},
-  {symbol:'LQD',name:'Investment-grade corporate bonds · ETF',type:'ETF',currency:'USD',unit:'USD / ETF share'}]},
+ bonds:{label:'Bonds',title:'Bond ETFs · separate from Treasury yields',description:'Exchange-traded funds holding bonds. These are fund share prices, not individual bonds or government yields.',source:'ETF prices per share in USD. Official US Treasury par yields appear above. Individual bond prices and Indonesian government bond yields are not connected.',instruments:[
+  {symbol:'TLT',name:'iShares 20+ Year Treasury Bond ETF',type:'ETF',currency:'USD',unit:'USD / ETF share'},
+  {symbol:'IEF',name:'iShares 7–10 Year Treasury Bond ETF',type:'ETF',currency:'USD',unit:'USD / ETF share'},
+  {symbol:'LQD',name:'iShares iBoxx $ Investment Grade Corporate Bond ETF',type:'ETF',currency:'USD',unit:'USD / ETF share'}]},
  commodities:{label:'Commodities',title:'Commodities',description:'Futures quotes from Yahoo, with explicit units and source times.',source:'Futures quotes, not spot prices. Contract series may roll; real-time is unverified.',instruments:[
   {symbol:'GC=F',name:'Gold · futures',type:'FUTURE',currency:'USD',unit:'USD / troy ounce'},
   {symbol:'SI=F',name:'Silver · futures',type:'FUTURE',currency:'USD',unit:'USD / troy ounce'},

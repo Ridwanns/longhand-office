@@ -13,7 +13,7 @@ if(![4173,4174].includes(port))throw Error('Only local workspace port 4173 and i
 const files = new Set(['index.html','style.css','app.js','model.js','theme.js','market-terminal.js','market-catalogue.js','building.svg','catalogue.json']);
 files.add('rooms.css');
 files.add('research-intent.js');files.add('quant-charts.js');files.add('workspace-shell.js');files.add('workspace-shell.css');
-['macro-ui.js','macro-contract.js','macro.css'].forEach(f=>files.add(f));
+['macro-ui.js','macro-contract.js','macro.css','macro-visuals.js','macro-map-data.js','market-view.js'].forEach(f=>files.add(f));
 files.add('idx-msn-ui.js');files.add('idx-msn-contract.js');
 files.add('encrypted-backup.js');
 files.add('sec-fundamentals-contract.js');files.add('official-fundamentals.js');
@@ -55,7 +55,7 @@ const server=http.createServer(async(req,res)=>{
   }
   const name = url.pathname.slice(1) || 'index.html';
   if (!files.has(name)) {res.writeHead(404);return res.end('Not found');}
-  try {const body=await readFile(path.join(root,name));res.writeHead(200,{'Content-Type':types[path.extname(name)],'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','Content-Security-Policy':"default-src 'self'; connect-src 'self' https://raw.githubusercontent.com; style-src 'self'; script-src 'self'; img-src 'self' data:; frame-ancestors 'none'; base-uri 'none'; form-action 'self'"});res.end(body);}catch{res.writeHead(500);res.end('Unable to read app file');}
+  try {const body=await readFile(path.join(root,name));res.writeHead(200,{'Content-Type':types[path.extname(name)],'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','Content-Security-Policy':"default-src 'self'; connect-src 'self' https://raw.githubusercontent.com; frame-src https://s.tradingview.com https://www.tradingview-widget.com; style-src 'self'; script-src 'self'; img-src 'self' data:; frame-ancestors 'none'; base-uri 'none'; form-action 'self'"});res.end(body);}catch{res.writeHead(500);res.end('Unable to read app file');}
 });
 server.on('error',error=>{console.error(error.code==='EADDRINUSE'?'Longhand Office is already running on port '+port+'. Existing records and jobs were not reopened.':error.message);process.exitCode=1;});
 server.listen(port,'127.0.0.1',()=>{

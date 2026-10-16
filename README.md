@@ -1,5 +1,7 @@
 # Longhand Office
 
+The [16 October market visual update](MARKET_VISUALS_RELEASE.md) adds GDP bars, inflation history, a sourced six-country GDP map/comparison and an official Treasury yield curve. Original instrument names lead market tables; bond ETFs are explicitly separate from yields. Optional isolated TradingView charts provide verified US/IDX instruments with explicit delayed/end-of-day status, and original direct links for symbols restricted from embedding. A neutral graphite dark palette replaces the blue-green surfaces. Personal records and numerical model contracts are preserved.
+
 The [16 October retained-research audit](AUDIT_2026_10_16.md) prevents delayed archive reads, old errors and import callbacks from replacing a newer ticker or view. Valuation, ticker, advanced-model and manual-calculation archives now share the same interaction guard; normal saved-study calculations and additive restoration remain intact.
 
 The [15 October Quant audit](AUDIT_2026_10_15.md) fixes a local automatic-source mismatch, hidden Simple-view run failures and a late-response ticker race. Automatic models now retain their published Yahoo source; existing Flowless runs remain intact and offer an explicit separate-run recovery. Source selection, visible run status and exact rerun behavior are checked alongside the established investment/backup workflows.
