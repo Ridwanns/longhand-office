@@ -35,7 +35,7 @@ The reference-led sidebar now connects all Office spaces, with a Ctrl+K page fin
 
 Automatic checks do **not** establish real-time data: local price boards check every 60 seconds while visible/idle; Macro checks every five minutes with acquisition bounded to fifteen minutes. Public Pages still depends on dated publication files. BPS is explicitly a reviewed snapshot; annual ASEAN/World coverage is labelled annual. Missing policy/FX/flow/calendar/consensus inputs remain unavailable.
 
-The latest receipt is **339 Node checks, 5 local API checks and 687 isolated browser checks**. See [MACRO_WORKSPACE_RELEASE.md](MACRO_WORKSPACE_RELEASE.md) for sources, transformations, refresh boundaries, preservation evidence and limitations, and [ARTHARA_REFERENCE_REVIEW.md](ARTHARA_REFERENCE_REVIEW.md) for what could actually be inspected on the reference site. Earlier counts below are historical release receipts.
+The latest receipt is **339 Node checks, 5 local API checks and 761 isolated browser checks**. See [MACRO_WORKSPACE_RELEASE.md](MACRO_WORKSPACE_RELEASE.md) for sources, transformations, refresh boundaries, preservation evidence and limitations, and [ARTHARA_REFERENCE_REVIEW.md](ARTHARA_REFERENCE_REVIEW.md) for what could actually be inspected on the reference site. Earlier counts below are historical release receipts.
 
 ## Everyday workflow
 

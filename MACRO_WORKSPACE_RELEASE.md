@@ -58,3 +58,11 @@ Verified defects fixed during this work: a failed Macro series attempted to read
 Tests establish the documented cases, not the absence of every possible bug. Application-level encryption at rest, authenticated private hosting, device synchronization and verified streaming market data remain outside this release.
 
 See [ARTHARA_REFERENCE_REVIEW.md](ARTHARA_REFERENCE_REVIEW.md) for the public-site review and the boundary between visible product descriptions, working Office features and unverified proprietary content.
+
+## Publication receipt
+
+Application commit `a5ec602e7ded62b5773dcb678b53d76758f5ea18` is deployed at [Longhand Office](https://ridwanns.github.io/longhand-office/#market/macro). [CI 38878238944](https://github.com/Ridwanns/longhand-office/actions/runs/38878238944) and [Pages 38878239217](https://github.com/Ridwanns/longhand-office/actions/runs/38878239217) completed successfully.
+
+The publication independently passed **5,272 model cases across 1,346 histories**, with 28 histories explicitly price-only, plus validation of 8,421 quote entries. The verifier reported no model failures, missing required core histories, invalid quote objects or failed required core quotes. These publication checks are additional to the local checks above; they do not establish complete fundamental coverage or verified streaming prices.
+
+The deployed page was inspected in a fresh browser context: thirteen navigation destinations; twenty Macro series without acquisition errors; correct static-only data URL (no local Macro endpoint); Macro assembly `2026-10-16T09:14:35.028Z`; market publication `2026-10-16T09:09:10.644Z`. A further **74 scientific-chart checks passed on the actual hosted site**, including retained-value inspection, responsiveness, unchanged study data and zero CSP/JavaScript errors. This brings the recorded browser assertions to **761** (687 local/static + 74 hosted), with the separate hosted Macro smoke inspection.
