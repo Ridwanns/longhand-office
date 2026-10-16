@@ -71,6 +71,7 @@ jobs:
       - run: node scripts/verify-advanced-publication.mjs
       - run: node scripts/verify-pages-universe.mjs
       - run: node scripts/official-rates-data.mjs
+      - run: node scripts/market-history-data.mjs
       - run: node scripts/macro-data.mjs
       - run: node scripts/sec-fundamentals.mjs
         env:

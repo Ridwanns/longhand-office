@@ -1,4 +1,4 @@
-import {marketView} from './market-view.js';
+import {marketView,mountMarketViews,configureMarketView,syncMarketView} from './market-view.js';
 import {macroPage,mountMacro} from './macro-ui.js';
 import {preferenceKey} from './workspace-scope.js';
 import {dataBadge} from './data-status.js';
@@ -56,6 +56,7 @@ function paintDetail(board){
  if(!entry){panel.innerHTML=`<h3>${esc(symbol)}</h3><p class="quiet-note">Loading source observations…</p>`;return;}
  if(!entry.quote){panel.innerHTML=`<h3>${esc(symbol)}</h3><p class="form-error">${esc(entry.error)}</p><p class="quiet-note">${entry.errorKind==='not-published'?'This saved watchlist entry is retained. Choose a published ticker from Browse available stocks; refreshing cannot add an unpublished instrument.':'No zero or substitute price was used. Refresh to try again.'}</p>`;return;}
  const q=entry.quote,category=board.dataset.category,history=historyFor(q);
+ if(board._syncChartSymbol===symbol){delete board._syncChartSymbol;syncMarketView(category,symbol,q);}
  panel.dataset.eligible=String(['us','idx','bonds'].includes(category));
  panel.innerHTML=`<p class="eyebrow">${category==='idx'?'FLOWLESS / DAILY CLOSE':'YAHOO FINANCE / SNAPSHOT'}</p><h3>${esc(MARKET_CATEGORIES[category].instruments?.find(i=>i.symbol===symbol)?.name||q.name||symbol)}</h3><p class="detail-symbol">${esc(symbol)}${q.exchange?' · '+esc(q.exchange):''}</p><div class="detail-price">${num(q.price)}<small>${esc(unitFor(category,q))}</small></div><p class="detail-change ${tone(q)}">${q.change?`${q.change.value>0?'+':''}${num(q.change.value)} (${pct(q.change.percent)})<small> vs ${esc(q.change.referenceDate||"provider previous close (date not supplied)")}</small>`:'Change unavailable: no previous source close.'}</p>${dataBadge({observedAt:q.timestamp||q.date,modelReady:q.modelAvailable!==false})}${chart(q,true)}<dl class="market-provenance"><div><dt>Source ${category==='idx'?'session':'time'}</dt><dd>${esc(sourceTime(q))}</dd></div><div><dt>Data type</dt><dd>${category==='idx'?'Daily close (EOD)':category==='commodities'?'Futures snapshot':category==='bonds'?'Bond ETF snapshot':category==='macro'?'Index level snapshot':'Regular-session snapshot'}</dd></div></dl><p class="quiet-note">${category==='idx'?'Daily data, not real-time.':`Real-time is unverified. ${q.delayMinutes===null?'Delay unknown.':'Source-reported delay: '+num(q.delayMinutes)+' minutes.'} ${(q.timestamp?(Date.now()-Date.parse(q.timestamp))/1000:q.ageSeconds)>86400?'Observation is over 24 hours old.':''}`} Market observations do not update portfolio valuations automatically.</p><details class="source-observations"><summary>View source closes (${history.length})</summary><div class="table-wrap" tabindex="0"><table><thead><tr><th>Date</th><th>Recorded close</th></tr></thead><tbody>${history.map(p=>`<tr><td>${p.date}</td><td>${num(p.close)}</td></tr>`).join('')}</tbody></table></div></details>`;
  if(Number.isFinite(q.marketCap)||Number.isFinite(q.averageDailyVolume3Month))panel.insertAdjacentHTML('beforeend','<p class="quiet-note">'+(Number.isFinite(q.marketCap)?'Source-reported market cap: '+num(q.marketCap)+' '+esc(q.currency)+'. ':'')+(Number.isFinite(q.averageDailyVolume3Month)?'Source average daily volume, 3 months: '+num(q.averageDailyVolume3Month)+' shares. ':'')+'These source estimates are not an execution or liquidity guarantee.</p>');
@@ -63,7 +64,7 @@ function paintDetail(board){
  if(['us','idx','bonds'].includes(category))panel.insertAdjacentHTML('beforeend',(q.modelAvailabilityNote?'<p class="quiet-note">'+esc(q.modelAvailabilityNote)+'</p>':'')+'<div class="market-actions"><button class="primary" data-market-models '+(q.modelCutoff?'data-cutoff="'+esc(q.modelCutoff)+'" ':'')+(q.modelAvailable===false?'disabled':'')+'>'+(q.modelAvailable===false?(q.modelAvailabilityNote?.includes('could not be loaded')?'Model list unavailable':'No published eligible model history'):'Run models'+(q.modelCutoff?' · through '+esc(q.modelCutoff):''))+'</button><button class="secondary" data-market-valuation>Use for valuation</button></div>');
 }
 export async function mountMarket(force=false,quiet=false){
- if(!quiet){mountMacro();mountLocalIdx();mountOfficialRates();}
+ if(!quiet){mountMacro();mountLocalIdx();mountOfficialRates();mountMarketViews();}
  const board=document.querySelector('#market-board');if(!board)return;const ticket=(board.requestTicket||0)+1;board.requestTicket=ticket;
  document.dispatchEvent(new CustomEvent('office:market-loading',{detail:{force}}));
  const category=board.dataset.category,symbols=symbolsFor(category),refresh=board.querySelector('#refresh-market');refresh.disabled=true;
@@ -79,16 +80,18 @@ document.addEventListener('click',event=>{
  if(event.target.closest('#refresh-market')){mountMarket(true);return;}
  if(event.target.closest('#reset-watchlist')){const board=document.querySelector('#market-board');delete savedLists[board.dataset.category];persistLists();board.dataset.selected=symbolsFor(board.dataset.category)[0]||'';mountMarket();return;}
  const remove=event.target.closest('[data-remove]');if(remove){const board=remove.closest('#market-board'),category=board.dataset.category;savedLists[category]=symbolsFor(category).filter(s=>s!==remove.dataset.remove);persistLists();if(board.dataset.selected===remove.dataset.remove)board.dataset.selected=savedLists[category][0]||'';mountMarket();return;}
- const button=event.target.closest('[data-inspect]');if(button){const board=button.closest('#market-board');board.dataset.selected=button.dataset.inspect;paintDetail(board);}
+ const button=event.target.closest('[data-inspect]');if(button){const board=button.closest('#market-board');board.dataset.selected=button.dataset.inspect;board._syncChartSymbol=button.dataset.inspect;paintDetail(board);}
 });
 document.addEventListener('submit',event=>{
  const form=event.target;if(form.id!=='watchlist-form')return;event.preventDefault();const board=form.closest('#market-board'),category=board.dataset.category;
  const symbol=form.elements.symbol.value.trim().toUpperCase(),normalized=category==='idx'?symbol.replace(/\.JK$/,''):symbol.replace('.','-'),current=symbolsFor(category);
- if(current.includes(normalized)){board.dataset.selected=normalized;paintDetail(board);form.reset();return;}
+ if(current.includes(normalized)){board.dataset.selected=normalized;board._syncChartSymbol=normalized;paintDetail(board);form.reset();return;}
  if(current.length>=12){board.querySelector('#board-status').textContent='This watchlist supports up to 12 tickers.';return;}
- savedLists[category]=[...current,normalized];persistLists();board.dataset.selected=normalized;form.reset();mountMarket();
+ savedLists[category]=[...current,normalized];persistLists();board.dataset.selected=normalized;board._syncChartSymbol=normalized;form.reset();mountMarket();
 });
 import {openRun} from './quant-ui.js';
 
 document.addEventListener('office:preferences-restored',e=>{savedLists=structuredClone(e.detail.watchlists);});
 setInterval(()=>{const board=document.querySelector('#market-board');if(!document.hidden&&board?.querySelector('#market-auto-refresh')?.checked&&!board.querySelector('#refresh-market').disabled&&!board.contains(document.activeElement)&&!document.querySelector('dialog[open]'))mountMarket(true,true);},60000);
+
+configureMarketView((category,symbol,force)=>getQuote(category,symbol,force));

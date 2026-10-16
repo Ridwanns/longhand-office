@@ -4,6 +4,15 @@ import http from 'node:http';
 import {spawn} from 'node:child_process';
 // Test requests hit the real isolated loopback server; no portfolio writes.
 const base='http://127.0.0.1:4174';
+
+test('long market histories expose only bounded public observations with the same origin gates',async()=>{
+ for(const headers of [{Origin:'https://foreign.example'},{'Sec-Fetch-Site':'cross-site'}])assert.equal((await fetch(base+'/api/market/history',{headers})).status,403);
+ assert.equal((await fetch(base+'/api/market/history',{method:'POST'})).status,405);
+ assert.equal((await fetch(base+'/scripts/market-history-data.mjs')).status,404);
+ const response=await fetch(base+'/api/market/history');assert.equal(response.status,200);assert.equal(response.headers.get('access-control-allow-origin'),null);
+ const {validateMarketHistories}=await import('../market-history-contract.js'),feed=validateMarketHistories(await response.json());assert.equal(feed.entries.length,11);assert.equal(Object.hasOwn(feed,'portfolios'),false);assert.equal(Object.hasOwn(feed,'token'),false);
+ for(const e of feed.entries)if(e.quote)assert.ok(e.quote.history.length<=6000);
+});
 test('local MSN directory and routes enforce same origin, bounded symbols and backend file isolation',async()=>{
  const dir=await fetch(base+'/api/market/idx-msn/symbols');assert.equal(dir.status,200);const list=await dir.json();assert.equal(list.tickers.length,896);assert.ok(list.tickers.includes('BBCA')&&list.tickers.includes('ADRO'));assert.equal(dir.headers.get('access-control-allow-origin'),null);
  for(const headers of [{Origin:'https://foreign.example'},{'Sec-Fetch-Site':'cross-site'}])assert.equal((await fetch(base+'/api/market/idx-msn/read?symbol=BBCA',{headers})).status,403);

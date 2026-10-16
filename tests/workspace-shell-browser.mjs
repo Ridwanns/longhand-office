@@ -1,7 +1,7 @@
 export async function run(original,base='http://127.0.0.1:4175/office/'){
  const c=await original.context().browser().newContext({viewport:{width:1600,height:1050},colorScheme:'light',reducedMotion:'reduce'}),p=await c.newPage(),checks=[],errors=[];const check=(name,ok)=>{if(!ok)throw Error(name);checks.push({name,passed:true});};p.on('pageerror',e=>errors.push(e.message));
  const ready=async route=>{await p.goto(base+route);await p.locator('#main h1').first().waitFor();if(route.includes('macro'))await p.locator('.macro-summary').waitFor();};
- try{
+ try{await p.route('https://s.tradingview.com/**',r=>r.fulfill({contentType:'text/html',body:'<!doctype html><p>TEST ONLY external chart frame</p>'}));
   await ready('#portfolios');const originalRecords=await p.evaluate(()=>Object.fromEntries(Object.entries(localStorage).filter(([k])=>k.includes('records'))));
   check('Desktop uses a fixed labelled sidebar with thirteen actual destinations',await p.locator('#office-navigation a').count()===13&&await p.locator('#office-sidebar').evaluate(e=>getComputedStyle(e).position==='fixed'));
   check('Paper and Real are separate first-class navigation destinations',await p.locator('#office-navigation a[href="#portfolios"]').innerText()==='Paper portfolios'&&await p.locator('#office-navigation a[href="#portfolios/real"]').innerText()==='Real portfolios');

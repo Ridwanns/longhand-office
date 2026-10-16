@@ -25,9 +25,10 @@ export function projectUsSnapshot(body,symbol,retrievedAt){
   ageSeconds:Math.max(0,Math.floor((received-stamp*1000)/1000)),delayMinutes:delayed,realtimeVerified:false,
   sourceUrl:'https://finance.yahoo.com/quote/'+symbol+'/',volume:typeof meta.regularMarketVolume==='number'&&Number.isFinite(meta.regularMarketVolume)&&meta.regularMarketVolume>=0?meta.regularMarketVolume:null};
 }
-export async function fetchYahooChart(symbol,fetcher=fetch){
+export async function fetchYahooChart(symbol,fetcher=fetch,range='5d'){
+ if(!['5d','10y'].includes(range))throw Error('Unsupported source history range.');
  let response;
- try{response=await fetcher(BASE+encodeURIComponent(symbol)+'?interval=1d&range=5d',{redirect:'error',signal:AbortSignal.timeout(15000),headers:{accept:'application/json'}});}
+ try{response=await fetcher(BASE+encodeURIComponent(symbol)+'?interval=1d&range='+range,{redirect:'error',signal:AbortSignal.timeout(15000),headers:{accept:'application/json'}});}
  catch(error){throw Error(error.name==='TimeoutError'?'The Yahoo source timed out. Try again.':'The Yahoo source could not be reached. Try again.');}
  if(!response.ok)throw Error(response.status===429?'The Yahoo request limit was reached. Wait before trying again.':response.status===404?'Ticker not found at Yahoo.':'The Yahoo source is unavailable.');
  let body;try{body=await response.json();}catch{throw Error('Invalid response from Yahoo.');}
