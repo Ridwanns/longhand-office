@@ -1,0 +1,62 @@
+/* Six focused views over the existing, mounted research desks. */
+body .research-lab .quant-layout{display:block}
+body .research-lab{padding:28px;min-width:0}
+body .research-lab .quant-content>.quant-head{margin:0;padding-bottom:14px;border-bottom:0}
+body .research-lab .quant-content>.quant-head>p:last-child{margin:12px 0 16px}
+body .research-lab .desk-mode [data-mode-status]:empty{display:none}
+body .research-lab .quant-content>.quant-head h1{font-family:Georgia,'Times New Roman',serif;font-size:36px;font-weight:400}
+body .research-lab .quant-content>.quant-head>.eyebrow{display:none}
+body .research-lab .desk-mode{margin:12px 0}
+.lab-context{padding:14px 0 18px;border-top:1px solid var(--line);color:var(--ink)}
+.lab-context strong{font-size:16px;font-weight:550;overflow-wrap:anywhere}
+.lab-context p{margin:7px 0 0;font-size:11px;color:var(--muted);line-height:1.7;overflow-wrap:anywhere}
+.lab-context [data-lab-job]:empty{display:none}
+.research-views{display:flex;flex-wrap:wrap;gap:0 24px;margin:0 0 24px;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:12;background:var(--white)}
+body .research-lab .research-views a{display:block;font-size:12px;color:var(--muted);padding:14px 0;border-bottom:2px solid transparent;line-height:1.5;text-decoration:none}
+body .research-lab .research-views a[aria-current=page]{color:var(--olive);border-bottom-color:var(--olive);font-weight:600}
+.research-mobile-view{display:none}
+.lab-section-title{font-size:24px;margin:0 0 18px;line-height:1.4;scroll-margin-top:110px}
+.research-lab [data-lab-pane]{min-width:0}
+.research-lab [data-lab-pane][hidden]{display:none!important}
+body .research-lab[data-mode=simple] #lab-models .quant-custom,body .research-lab[data-mode=simple] #lab-models #quant-results:not([hidden]),body .research-lab[data-mode=simple] #lab-valuation #atlas-desk,body .research-lab[data-mode=simple] #lab-tools #research-desk,body .research-lab[data-mode=simple] #lab-saved .quant-archive-section,body .research-lab[data-mode=simple] #lab-saved .ticker-retained,body .research-lab[data-mode=simple] #lab-saved #manual-archive{display:block!important}
+body .research-lab .lab-section-title:focus{outline-offset:5px}
+body .research-lab .ticker-desk{margin-top:0;padding-top:0;border-top:0}
+body .research-lab #lab-valuation #atlas-desk{margin-top:0}
+body .research-lab .atlas-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0}
+body .research-lab .atlas-tabs [data-atlas-view=automatic]{display:none}
+.lab-model-controls,.lab-tool-links{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 24px}
+.lab-saved-controls{display:flex;align-items:end;flex-wrap:wrap;gap:14px;margin:24px 0}
+.lab-saved-controls label{flex:1;min-width:160px;display:grid;gap:8px;font-size:11px;color:var(--muted)}
+.lab-saved-controls input,.lab-saved-controls select{width:100%;min-height:42px}
+#research-saved-index td{font-size:11px;padding:14px 12px;font-variant-numeric:tabular-nums}
+#research-saved-index td small{display:block;color:var(--muted);font-size:10px;margin-top:6px}
+.lab-original-archives,.lab-precision{border-top:1px solid var(--line);margin-top:28px;padding-top:12px;font-size:11px;color:var(--muted)}
+.lab-original-archives>summary,.lab-precision>summary{padding:14px 0;cursor:pointer;min-height:44px}
+body .research-lab .lab-precision .quant-sidebar{position:static;max-height:none;border:0;padding:16px 0}
+body .research-lab .lab-precision .quant-nav-list{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+body .research-lab .lab-precision .quant-office-links,body .research-lab .lab-precision .quant-sidebar>.eyebrow,body .research-lab .lab-precision .quant-nav-asset,body .research-lab .lab-precision .nav-mode-shortcuts{display:none}
+body:has(.research-lab) #office-navigation .office-context{display:none}
+@media(max-width:760px){body .research-lab{padding:20px 14px}.research-views{display:none}.research-mobile-view{display:grid;gap:8px;font-size:11px;color:var(--muted);margin-bottom:24px;position:sticky;top:0;z-index:12;background:var(--white);padding:10px 0;border-bottom:1px solid var(--line)}.research-mobile-view select{width:100%;min-height:44px}.lab-context strong{font-size:15px}.lab-section-title{font-size:22px}.lab-saved-controls{display:grid;grid-template-columns:1fr}.lab-saved-controls label{min-width:0}.lab-tool-links>*{flex:1 1 180px}body .research-lab .lab-precision .quant-sidebar{display:none}body .research-lab .lab-precision .quant-mobile-nav{display:block;position:static;margin:12px 0}.research-lab .table-wrap{max-width:100%}}
+
+/* Reading hierarchy replaces long strings of technical separators. */
+body .research-lab [data-lab-source]{display:flex;flex-wrap:wrap;gap:12px 32px;margin:14px 0;color:var(--muted);font-size:13px;line-height:1.6}
+.lab-fact{display:grid;gap:2px;min-width:100px}
+body .lab-fact b{font-size:11px;font-weight:400;color:var(--muted)}
+body .lab-fact>span{color:var(--ink);font-variant-numeric:tabular-nums}
+body .research-lab .lab-source-audit{margin:12px 0;font-size:12px}
+body .research-lab .lab-source-audit summary{min-height:36px;padding:6px 0;cursor:pointer}
+body .research-lab .lab-source-audit p{font-size:12px;overflow-wrap:anywhere;max-width:85ch}
+body .research-lab .lab-model-coverage{margin:12px 0;font-size:12px;line-height:1.7;color:var(--muted)}
+body .research-lab .lab-model-coverage summary{min-height:36px;cursor:pointer;padding:6px 0}
+body .research-lab .lab-model-controls{margin:14px 0 24px}
+body .research-lab .lab-reading-facts{display:flex;flex-wrap:wrap;gap:18px 36px;margin:18px 0}
+.lab-reading-facts>div{display:grid;gap:5px;min-width:0}
+body .lab-reading-facts dt{font-size:11px;color:var(--muted)}
+body .lab-reading-facts dd{margin:0;font-size:13px;line-height:1.6;font-variant-numeric:tabular-nums}
+body .research-lab .advanced-brief{padding:20px 0;background:none;border:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:24px 0}
+body .research-lab .advanced-brief p{max-width:80ch;font-size:13px;line-height:1.8;margin:18px 0}
+body .research-lab .advanced-brief strong{display:block;font-size:12px;font-weight:600;margin-bottom:5px;color:var(--ink)}
+body .research-lab .quant-values dd small{display:block;font-family:'Segoe UI',Arial,sans-serif;font-size:11px;font-weight:400;line-height:1.5;margin:4px 0 12px;color:var(--muted)}
+body .research-lab #quant-run .quant-result-title{color:var(--ink);font-size:28px;letter-spacing:-.4px;line-height:1.3}
+body .research-lab .scientific-plot text{font-size:inherit!important}
+@media(max-width:760px){body .research-lab [data-lab-source]{gap:12px 20px}body .research-lab .lab-reading-facts{display:grid;gap:16px}.lab-reading-facts dd{overflow-wrap:anywhere}}

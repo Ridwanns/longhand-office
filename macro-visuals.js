@@ -1,11 +1,12 @@
 import {MACRO_SERIES,ASEAN_COUNTRIES,periodIndex} from './macro-contract.js';
+import {researchPeriod} from './research-layout.js';
 import {MAP_COUNTRIES} from './macro-map-data.js';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const num=n=>new Intl.NumberFormat('en-GB',{maximumFractionDigits:2,minimumFractionDigits:2}).format(n);
-export function macroChart(s,kind='line'){
- const spec=MACRO_SERIES[s.id],obs=s.observations.slice(-16),valid=obs.filter(o=>Number.isFinite(o.value));
+export function macroChart(s,kind='line',limit=16,{renderWidth=600}={}){
+ const spec=MACRO_SERIES[s.id],obs=s.observations.slice(-Math.max(1,limit)),valid=obs.filter(o=>Number.isFinite(o.value));
  if(!valid.length)return '<p class="macro-warning">No reported observations to plot.</p>';
- const w=600,h=260,left=65,right=575,top=25,bottom=215;
+ const w=720,h=300,left=64,right=700,top=24,bottom=248,font=12*w/Math.max(240,renderWidth);
  let lo=Math.min(0,...valid.map(o=>o.value)),hi=Math.max(0,...valid.map(o=>o.value));
  const step=Math.max(1,Math.ceil((hi-lo||1)/4));lo=Math.floor(lo/step)*step;hi=Math.ceil(hi/step)*step;if(hi===lo)hi=lo+step;
  const y=v=>bottom-(v-lo)/(hi-lo)*(bottom-top),serial=o=>periodIndex(o.period,spec.frequency),first=serial(obs[0]),last=serial(obs.at(-1)),x=o=>left+25+(serial(o)-first)/(last-first||1)*(right-left-50);
@@ -16,7 +17,7 @@ export function macroChart(s,kind='line'){
   previous=o;
  }
  const labels=obs.filter((_,i)=>i===0||i===obs.length-1||i===Math.floor((obs.length-1)/2));
- return `<svg class="macro-data-chart" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(spec.scope+' '+spec.title)}: ${kind==='bar'?'bars':'line'}, ${valid.length} reported observations. Percent year on year. Exact data in the table below.">${Array.from({length:5},(_,i)=>{const v=lo+(hi-lo)*i/4;return `<path class="macro-grid" d="M${left},${y(v)}H${right}"/><text x="${left-9}" y="${y(v)+4}" text-anchor="end">${num(v)}%</text>`;}).join('')}<path class="macro-zero" d="M${left},${y(0)}H${right}"/>${marks}${labels.map(o=>`<text class="macro-period-label" x="${x(o)}" y="242" text-anchor="middle">${esc(o.period)}</text>`).join('')}</svg>`;
+ return `<svg class="macro-data-chart" font-size="${font}" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(spec.scope+' '+spec.title)}: ${kind==='bar'?'bars':'line'}, ${valid.length} reported observations. Percent year on year. Exact data in the table below.">${Array.from({length:5},(_,i)=>{const v=lo+(hi-lo)*i/4;return `<path class="macro-grid" d="M${left},${y(v)}H${right}"/><text x="${left-9}" y="${y(v)+4}" font-size="${font}" text-anchor="end">${new Intl.NumberFormat('en-GB',{maximumFractionDigits:1}).format(v)}%</text>`;}).join('')}<path class="macro-zero" d="M${left},${y(0)}H${right}"/>${marks}${labels.map(o=>`<text class="macro-period-label" font-size="${font}" x="${x(o)}" y="280" text-anchor="middle">${esc(researchPeriod(o.period))}</text>`).join('')}</svg>`;
 }
 export function macroFigure(s,kind='line',title=null){
  const spec=MACRO_SERIES[s.id],obs=s.observations.slice(-16);return `<figure class="macro-data-figure"><figcaption><strong>${esc(title||spec.title)}</strong><span>${esc(spec.scope)} · ${{A:'Annual',Q:'Quarterly',M:'Monthly'}[spec.frequency]} · % YoY</span></figcaption>${macroChart(s,kind)}<div class="macro-chart-foot"><span>${esc(spec.source)}</span><span>${obs.filter(o=>o.value!==null).length} reported observations</span></div><details><summary>Values & method</summary><p class="quiet-note">${esc(spec.method)} Missing periods are not interpolated. Latest vintage; past values may be revised.</p><div class="table-wrap" tabindex="0"><table><thead><tr><th>Period</th><th>% YoY</th><th>Status</th></tr></thead><tbody>${obs.map(o=>`<tr><th scope="row">${esc(o.period)}</th><td>${o.value===null?'Unavailable':num(o.value)}</td><td>${esc(o.status)}</td></tr>`).join('')}</tbody></table></div></details></figure>`;

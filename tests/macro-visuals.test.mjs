@@ -6,9 +6,9 @@ const s=(id,values)=>({id,observations:values.map(([period,value])=>({period,val
 test('GDP bars use a zero baseline, retain negative values and omit missing observations',()=>{
  const input=s('annual-IDN-gdp',[['2020',-2],['2021',null],['2022',4]]),copy=structuredClone(input),html=macroChart(input,'bar');
  assert.equal((html.match(/<rect /g)||[]).length,2);assert.match(html,/2020: -2.00% YoY/);assert.match(html,/2022: 4.00% YoY/);assert.ok(!html.includes('2021: 0'));
- // Independent axis: -2..4%, plot top25/bottom215 => zero y151.6667.
+ // Independent axis: -2..4%, plot top24/bottom248 => zero y173.3333.
  const bars=[...html.matchAll(/<rect[^>]*y="([\d.]+)"[^>]*height="([\d.]+)"/g)];
- assert.ok(Math.abs(Number(bars[0][1])-151.6666666667)<1e-8);assert.ok(Math.abs(Number(bars[0][2])-63.3333333333)<1e-8);assert.equal(Number(bars[1][1]),25);assert.deepEqual(input,copy);
+ assert.ok(Math.abs(Number(bars[0][1])-173.3333333333)<1e-8);assert.ok(Math.abs(Number(bars[0][2])-74.6666666667)<1e-8);assert.equal(Number(bars[1][1]),24);assert.deepEqual(input,copy);
 });
 test('Inflation line never bridges a missing calendar period or null observation',()=>{
  for(const rows of [[['2026-01',2],['2026-03',3]],[['2026-01',2],['2026-02',null],['2026-03',3]]]){const html=macroChart(s('us-cpi',rows));assert.equal((html.match(/class="macro-dot"/g)||[]).length,2);assert.ok(!html.includes('class="macro-line"'));}

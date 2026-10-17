@@ -82,3 +82,7 @@ header{gap:22px}header nav{gap:22px}h1{letter-spacing:-1.5px}
 .quant-run-notice{border-block:1px solid var(--line);padding:1.25rem 0;margin:1.5rem 0}
 .quant-run-notice[hidden]{display:none}
 .quant-run-notice h2{font:clamp(24px,3vw,32px) Georgia,serif;margin:.75rem 0}
+
+/* Optional record continuity, using existing typography and color tokens. */
+.workflow-links{display:flex;flex-wrap:wrap;gap:10px 18px;margin:16px 0;font-size:12px;line-height:1.8;overflow-wrap:anywhere}.workflow-links .secondary{font-size:12px}.workflow-reviews{margin:20px 0;scroll-margin-top:90px}.workflow-reviews h3{font-size:16px}.workflow-provenance{overflow-wrap:anywhere}[data-record-id]:focus,.workflow-reviews:focus{outline:2px solid var(--olive);outline-offset:5px}.investment-flow .flow-controls{gap:12px}.lab-context .workflow-links a{font-size:12px}
+@media(max-width:650px){.workflow-links{gap:12px}.workflow-links .secondary{flex:1 1 180px}}

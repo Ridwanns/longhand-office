@@ -7,10 +7,14 @@ const root=fileURLToPath(new URL('../',import.meta.url)),dest=path.join(root,'di
 const advancedFiles=['investment-context.js','investment-brief.js','investment-flow.js','workspace-health.js','stock-comparison.js','quant-mode.js','manual-archive.js','workspace-preferences.js','workspace-scope.js','continuity-store.js','data-status.js','drafts.js','complete-backup.js','prediction-math.js','prediction-ui.js','ticker-summary.js','advanced-math.js','advanced-worker.js','advanced-storage.js','advanced-ui.js','quant-navigation.js'];
 const files=['official-rates.js','official-rates-contract.js','auto-valuation-math.js','auto-valuation-ui.js','ticker-study.js','ticker-storage.js','ticker-ui.js','research-math.js','research-ui.js','atlas-math.js','atlas-ui.js','atlas.css','style.css','rooms.css','theme.js','building.svg','catalogue.json','model.js','quant-math.js','quant-contract.js','quant-history.js','analysis-contract.js','research-history.js','office-workflows.js','public-quote-contract.js'];
 const generated=['market-view.js','index.html','app.js','office-storage.js','office-extensions.js','quant-ui.js','market-terminal.js','market-catalogue.js','browser-api.js','browser-worker.js','browser-controls.js','browser.css','market-controls.js'];
+files.push('macro-atlas.js','macro-atlas-data.js','macro-atlas-labels.js','macro-atlas.css','office-visual-system.css','motion-system.js');
+['market-data-contract.js','market-data-adapters.js','market-data-research.js','market-data-worker.js','market-data-storage.js','market-data-service.js','market-data-ui.js','market-data.css'].forEach(f=>files.push(f));
+files.push('workflow-continuity.js');
 files.push('encrypted-backup.js','sec-fundamentals-contract.js','official-fundamentals.js');
 files.push('idx-msn-ui.js','idx-msn-contract.js');
 files.push('market-history-contract.js');
 files.push('macro-visuals.js','macro-map-data.js');
+files.push('workspace-navigation.js','research-layout.js','research-lab.js','research-lab.css');
 files.push('quant-charts.js','research-intent.js','macro-ui.js','macro-contract.js','macro.css','workspace-shell.js','workspace-shell.css');
 files.push(...advancedFiles);
 await mkdir(dest,{recursive:true});const allowed=new Set([...files,...generated,'data']);

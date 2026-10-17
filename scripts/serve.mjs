@@ -12,7 +12,10 @@ const root = process.cwd();
 const portIndex=process.argv.indexOf('--port'),port=portIndex<0?4173:Number(process.argv[portIndex+1]);
 if(![4173,4174].includes(port))throw Error('Only local workspace port 4173 and isolated test port 4174 are supported.');
 const files = new Set(['index.html','style.css','app.js','model.js','theme.js','market-terminal.js','market-catalogue.js','building.svg','catalogue.json']);
-files.add('rooms.css');
+['macro-atlas.js','macro-atlas-data.js','macro-atlas-labels.js','macro-atlas.css','office-visual-system.css','motion-system.js'].forEach(f=>files.add(f));
+files.add('rooms.css');files.add('workflow-continuity.js');
+files.add('workspace-navigation.js');
+['research-layout.js','research-lab.js','research-lab.css'].forEach(f=>files.add(f));
 files.add('research-intent.js');files.add('quant-charts.js');files.add('workspace-shell.js');files.add('workspace-shell.css');
 ['macro-ui.js','macro-contract.js','macro.css','macro-visuals.js','macro-map-data.js','market-view.js','market-history-contract.js'].forEach(f=>files.add(f));
 files.add('idx-msn-ui.js');files.add('idx-msn-contract.js');
@@ -26,6 +29,7 @@ files.add('research-history.js');
 ['auto-valuation-math.js','auto-valuation-ui.js','public-quote-contract.js','ticker-study.js','ticker-storage.js','ticker-ui.js','research-math.js','research-ui.js','atlas-math.js','atlas-ui.js','atlas.css','quant-math.js','quant-contract.js','quant-history.js','analysis-contract.js','quant-ui.js','office-storage.js','office-extensions.js','office-workflows.js'].forEach(f=>files.add(f));
 let local;
 if(port===4174){files.add('valuation-example.json');files.add('flowless-example.json');}
+['market-data-contract.js','market-data-adapters.js','market-data-research.js','market-data-worker.js','market-data-storage.js','market-data-service.js','market-data-ui.js','market-data.css'].forEach(f=>files.add(f));
 const types = {'.html':'text/html','.css':'text/css','.js':'text/javascript','.svg':'image/svg+xml','.json':'application/json'};
 const server=http.createServer(async(req,res)=>{
   let url;try{if(!req.url?.startsWith('/')||req.url.startsWith('//'))throw Error('Invalid local path');url=new URL(req.url,'http://localhost');}catch{res.writeHead(400);return res.end('Invalid request path');}

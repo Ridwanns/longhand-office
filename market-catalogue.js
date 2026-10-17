@@ -9,7 +9,7 @@ export const MARKET_CATEGORIES={
   {symbol:'GC=F',name:'Gold · futures',type:'FUTURE',currency:'USD',unit:'USD / troy ounce'},
   {symbol:'SI=F',name:'Silver · futures',type:'FUTURE',currency:'USD',unit:'USD / troy ounce'},
   {symbol:'CL=F',name:'WTI crude oil · futures',type:'FUTURE',currency:'USD',unit:'USD / barrel'}]},
- macro:{label:'Macro / Indices',title:'Global index context',description:'Major index levels from separate market snapshots.',source:'Index levels in points, not macroeconomic growth rates. Each quote has its own timestamp. These global instruments do not represent a complete regional market or capital-flow feed.',instruments:[
+ macro:{label:'Macro and indices',title:'Global index context',description:'Major index levels from separate market snapshots.',source:'Index levels in points, not macroeconomic growth rates. Each quote has its own timestamp. These global instruments do not represent a complete regional market or capital-flow feed.',instruments:[
   {symbol:'^GSPC',name:'S&P 500',type:'INDEX',currency:'USD',unit:'index points'},
   {symbol:'^IXIC',name:'Nasdaq Composite',type:'INDEX',currency:'USD',unit:'index points'},
   {symbol:'^DJI',name:'Dow Jones Industrial Average',type:'INDEX',currency:'USD',unit:'index points'},
