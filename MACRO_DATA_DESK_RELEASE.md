@@ -73,7 +73,7 @@ No portfolio, thesis, decision, review, valuation, saved-study, IndexedDB or SQL
 
 Completed locally:
 
-- All 484 Node tests passed, including 31 new macro-context tests.
+- All 489 Node tests passed, including 31 new macro-context tests and five asset-versioning tests.
 - All six local API integration tests passed on isolated port 4174.
 - The independent source audit passed 314 checks and compared all 57,943 stored dated observations against fresh public-source projections. It separately checked all aligned liquidity and yield-spread results.
 - Macro UI: 150 checks passed over all 46 economy selections, six country indicators, all 25 legacy region/section routes, public export, keyboard, dark mode, reduced motion and widths 320, 390, 768, 1280 and 1440 px.
@@ -84,9 +84,11 @@ Completed locally:
 - End-to-end investment workflow, original relationships and isolated complete-backup restoration: 53 checks passed.
 - Static Pages artifact builds successfully with the public context file and no personal databases or validation artifacts.
 
-The updated Quant precision-navigation harness passed 59 checks. Ten local-edition smoke checks passed, including the native IHSG chart and source history before 2018. Together the browser suites above passed 367 checks.
+The updated Quant precision-navigation harness passed 59 checks. Ten local-edition smoke checks passed, including the native IHSG chart and source history before 2018. Together with six browser checks of the versioned entrypoint, consistent module versions, public data paths and unchanged record addresses, the browser suites passed 373 checks.
 
 Full published-universe verification passed 6,072 model combinations across 1,518 eligible histories, with no missing core instrument or invalid quote. There are 1,547 retained history files and 29 price-only or insufficient-history entries. These remain explicitly gated. This is a rerun against the retained public acquisition, not a claim of live prices or future model accuracy.
+
+GitHub Pages was verified to serve UI files with `Cache-Control: max-age=600`. The build now versions the changed macro dependency graph, entrypoint and styles so a new page does not reuse the previous macro UI from the browser cache. Six browser checks passed with this graph. Ten financial/worker files remain byte-for-byte identical to their source, the manifest code hash matches the compiled mathematical files, and public macro data is unchanged by the versioning step. No page path or storage key changes.
 
 The publication workflow and live site must be checked after push; pre-publication checks do not by themselves establish a deployed release. Those results are recorded in the final delivery and local validation artifacts. Unrun checks are not counted as passing.
 
@@ -100,8 +102,8 @@ UI: `macro-atlas.js`, `macro-ui.js`, `market-view.js`, `index.html`, `macro-cont
 
 Public-data acquisition and calculation: `macro-context-contract.js`, `macro-context-math.js`, `scripts/macro-context-data.mjs`, `scripts/audit-macro-context.mjs`.
 
-Edition/publication wiring: `scripts/serve.mjs`, `scripts/build-pages.mjs`, `.github/workflows/pages.yml`.
+Edition/publication wiring: `scripts/serve.mjs`, `scripts/build-pages.mjs`, `scripts/pages-asset-version.mjs`, `.github/workflows/pages.yml`.
 
-Tests: `tests/macro-context.test.mjs`, `tests/macro-context-browser.mjs`, `tests/macro-context-errors-browser.mjs`, `tests/quant-navigation-browser.mjs`.
+Tests: `tests/macro-context.test.mjs`, `tests/macro-context-browser.mjs`, `tests/macro-context-errors-browser.mjs`, `tests/macro-cache-browser.mjs`, `tests/pages-asset-version.test.mjs`, `tests/quant-navigation-browser.mjs`.
 
 This release report: `MACRO_DATA_DESK_RELEASE.md`. Generated public snapshots and validation screenshots are excluded from source commits and personal record stores.

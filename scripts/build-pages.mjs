@@ -1,3 +1,4 @@
+import {versionMacroAssets} from './pages-asset-version.mjs';
 import {copyFile,mkdir,readdir,readFile,writeFile,stat,unlink} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import path from 'node:path';
@@ -54,4 +55,8 @@ validateSecFeed(JSON.parse(await readFile(secFile,'utf8')));
 await copyFile(secFile,path.join(dest,'data','sec-fundamentals.json'));
 for(const h of manifest.histories){if(!/^history\/(US|IDX)-[A-Z]{1,6}(-[A-Z])?\.json$/.test(h.file))throw Error('Invalid public history path');await copyFile(path.join(input,h.file),path.join(dest,'data',h.file));}
 const expected=new Set(manifest.histories.map(h=>path.basename(h.file)));for(const file of await readdir(path.join(dest,'data','history')))if(!expected.has(file)){if(!/^(US|IDX)-[A-Z]{1,6}(-[A-Z])?\.json$/.test(file))throw Error('Unexpected history in output: '+file);await unlink(path.join(dest,'data','history',file));}
+const uiFiles=[...new Set([...files,...generated])].filter(f=>f==='index.html'||/\.(?:js|css)$/.test(f));
+const versioned=versionMacroAssets(Object.fromEntries(await Promise.all(uiFiles.map(async file=>[file,await readFile(path.join(dest,file),'utf8')]))));
+for(const [file,source]of Object.entries(versioned.assets))await writeFile(path.join(dest,file),source);
+console.log('Macro interface asset version: '+versioned.version);
 console.log('Built working browser Office with '+manifest.histories.length+' published histories. No database, personal records, backend scripts or validation artifacts included.');
