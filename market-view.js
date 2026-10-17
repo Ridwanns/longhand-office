@@ -15,7 +15,7 @@ export const CHART_INSTRUMENTS={
 };
 // Optional provider frames remain available, but do not occupy the primary chart.
 const EMBED_SYMBOLS=new Set(['IDX:COMPOSITE','NASDAQ:AAPL','NASDAQ:MSFT','NASDAQ:NVDA','NYSE:BRK.B','IDX:BBCA','IDX:BBRI','IDX:TLKM','IDX:ADRO','FX_IDC:USDIDR','FX:EURUSD']);
-const SNAPSHOT_SYMBOLS={'OFFICE:TLT':['bonds','TLT'],'OFFICE:IEF':['bonds','IEF'],'OFFICE:LQD':['bonds','LQD'],'SP:SPX':['macro','^GSPC'],'NASDAQ:IXIC':['macro','^IXIC'],'DJ:DJI':['macro','^DJI'],'CBOE:VIX':['macro','^VIX'],'COMEX:GC1!':['commodities','GC=F'],'COMEX:SI1!':['commodities','SI=F'],'NYMEX:CL1!':['commodities','CL=F']};
+const SNAPSHOT_SYMBOLS={'IDX:COMPOSITE':['macro','^JKSE'],'OFFICE:TLT':['bonds','TLT'],'OFFICE:IEF':['bonds','IEF'],'OFFICE:LQD':['bonds','LQD'],'SP:SPX':['macro','^GSPC'],'NASDAQ:IXIC':['macro','^IXIC'],'DJ:DJI':['macro','^DJI'],'CBOE:VIX':['macro','^VIX'],'COMEX:GC1!':['commodities','GC=F'],'COMEX:SI1!':['commodities','SI=F'],'NYMEX:CL1!':['commodities','CL=F']};
 export function configureMarketView(reader){readSnapshot=reader;}
 export function marketView(category='macro'){
  category=Object.hasOwn(CHART_INSTRUMENTS,category)?category:'macro';const list=CHART_INSTRUMENTS[category],region=typeof location==='undefined'?'id':location.hash.split('/')[2],selected=category==='macro'&&['us','eu','global'].includes(region)?'SP:SPX':category==='fx'&&['us','eu','global'].includes(region)?'FX:EURUSD':list[0][0];

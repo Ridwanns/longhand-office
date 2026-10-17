@@ -13,6 +13,7 @@ const portIndex=process.argv.indexOf('--port'),port=portIndex<0?4173:Number(proc
 if(![4173,4174].includes(port))throw Error('Only local workspace port 4173 and isolated test port 4174 are supported.');
 const files = new Set(['index.html','style.css','app.js','model.js','theme.js','market-terminal.js','market-catalogue.js','building.svg','catalogue.json']);
 ['macro-atlas.js','macro-atlas-data.js','macro-atlas-labels.js','macro-atlas.css','office-visual-system.css','motion-system.js'].forEach(f=>files.add(f));
+['macro-context-contract.js','macro-context-math.js','macro-context-ui.js','macro-context.css'].forEach(f=>files.add(f));
 files.add('rooms.css');files.add('workflow-continuity.js');
 files.add('workspace-navigation.js');
 ['research-layout.js','research-lab.js','research-lab.css'].forEach(f=>files.add(f));
@@ -57,7 +58,7 @@ const server=http.createServer(async(req,res)=>{
       if(url.pathname==='/api/market/macro/snapshot'){res.writeHead(502);return res.end(JSON.stringify({error:'Macro collection unavailable. No substitute observations were used.'}));}if(url.pathname.startsWith('/api/market/idx-msn/')){res.writeHead(error.status||502);return res.end(JSON.stringify({error:error.message}));}res.writeHead(502);return res.end(JSON.stringify({error:error.name==='TimeoutError'?'Flowless read timed out. Keep its local server running on port 8000.':error.name==='TypeError'?'Flowless is unavailable. Start its existing local server on port 8000; no ingestion is triggered by Longhand Office.':error.message}));}
   }
   // Only generated public data is readable here; workspace/vault files remain outside this allowlist.
-  if(/^\/data\/(manifest\.json|market\.json|fundamentals\.json|sec-fundamentals\.json|official-rates\.json|macro\.json|market-history\.json|history\/(US|IDX)-[A-Z]{1,6}(-[A-Z])?\.json)$/.test(url.pathname)){
+  if(/^\/data\/(manifest\.json|market\.json|fundamentals\.json|sec-fundamentals\.json|official-rates\.json|macro\.json|macro-context\.json|market-history\.json|history\/(US|IDX)-[A-Z]{1,6}(-[A-Z])?\.json)$/.test(url.pathname)){
     try{const body=await readFile(path.join(root,'.pages-data',url.pathname.slice(6)));res.writeHead(200,{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});return res.end(body);}catch{res.writeHead(404);return res.end('Public snapshot unavailable.');}
   }
   const name = url.pathname.slice(1) || 'index.html';
