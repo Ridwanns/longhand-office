@@ -5,7 +5,14 @@ import {analyze} from '../quant-math.js';
 import {validateAnalysis} from './analysis-backup.mjs';
 import {validatePublicQuote} from '../public-quote-contract.js';
 import {STOCK_UNIVERSE} from '../pages/stock-universe.js';
+import {PLUANG_ETF_CATALOGUE,pluangCatalogueCoverage} from './pluang-etf-catalogue.mjs';
 const manifest=JSON.parse(await readFile('.pages-data/manifest.json','utf8')),cases=[],unavailable=[];
+const catalogueMissing=PLUANG_ETF_CATALOGUE.records.filter(r=>!manifest.instruments?.some(i=>i.market==='US'&&i.ticker===r.ticker&&i.pluangListed));
+if(catalogueMissing.length)throw Error('Pluang catalogue listings disappeared from publication: '+catalogueMissing.map(r=>r.ticker).join(', '));
+const catalogueCoverage=pluangCatalogueCoverage(manifest.instruments);
+if(JSON.stringify(catalogueCoverage)!==JSON.stringify(manifest.coverage?.pluangEtfs))throw Error('Pluang catalogue coverage totals do not reconcile.');
+for(const i of manifest.instruments.filter(i=>i.pluangListed))if(i.priceAvailable&&i.instrumentType!=='ETF')throw Error('A priced Pluang fund has no verified ETF type: '+i.ticker);
+console.log(JSON.stringify({pluangCatalogue:catalogueCoverage}));
 for(const h of manifest.histories){if(!h.modelCutoff){unavailable.push({ticker:h.ticker,market:h.market,reason:'No eligible contiguous 350-observation cutoff.'});continue;}const input=JSON.parse(await readFile('.pages-data/'+h.file,'utf8'));
  for(const basis of ['raw','adjusted'])for(const horizon of [5,20]){const config=configFor({ticker:h.ticker,market:h.market,cutoff:h.modelCutoff,basis,horizon,seed:20261013});try{const dataset=normalizeHistory(input.rows,config,input.metadata),results=analyze(dataset,config),run={id:randomUUID(),status:'completed',version:1,config,configHash:hash(config),dataset,results,resultHash:hash(results),codeHash:'offline-public-universe-verification'};validateAnalysis(run);cases.push({ticker:h.ticker,market:h.market,basis,horizon,observations:dataset.observations.length,cutoff:h.modelCutoff,passed:true});}catch(e){cases.push({ticker:h.ticker,market:h.market,basis,horizon,passed:false,error:e.message});}}
 }

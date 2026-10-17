@@ -1,0 +1,2999 @@
+{
+  "format": "longhand-pluang-etf-catalogue",
+  "version": 1,
+  "source": "Pluang MCP search_assets",
+  "retrievedAt": "2026-10-17T21:19:30.317Z",
+  "scope": "US-listed ETF and exchange-traded fund candidates returned by Pluang. Price and instrument type are independently checked against Yahoo. No account or trading data.",
+  "completeness": "Search discovery only. Pluang search limits results to 50 and provides no full-catalogue pagination or total ETF count; exhaustive coverage cannot be certified.",
+  "queries": [
+    {
+      "query": "iShares",
+      "success": true,
+      "count": 50,
+      "possiblyTruncated": true
+    },
+    {
+      "query": "Vanguard",
+      "success": true,
+      "count": 22,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "ETF",
+      "success": true,
+      "count": 50,
+      "possiblyTruncated": true
+    },
+    {
+      "query": "SPDR",
+      "success": true,
+      "count": 17,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "ProShares",
+      "success": true,
+      "count": 11,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "Invesco",
+      "success": true,
+      "count": 13,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "Global X",
+      "success": true,
+      "count": 16,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "VanEck",
+      "success": true,
+      "count": 9,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "ARK",
+      "success": true,
+      "count": 22,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "YieldMax",
+      "success": true,
+      "count": 10,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "Schwab",
+      "success": true,
+      "count": 3,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "Direxion",
+      "success": true,
+      "count": 8,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "JPMorgan",
+      "success": true,
+      "count": 6,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "First Trust",
+      "success": true,
+      "count": 5,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "WisdomTree",
+      "success": true,
+      "count": 1,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "State Street",
+      "success": true,
+      "count": 10,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "PIMCO",
+      "success": true,
+      "count": 0,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "Franklin",
+      "success": true,
+      "count": 2,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "Fidelity",
+      "success": true,
+      "count": 1,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "Goldman",
+      "success": true,
+      "count": 2,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "REX",
+      "success": true,
+      "count": 13,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "Defiance",
+      "success": true,
+      "count": 1,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "Roundhill",
+      "success": true,
+      "count": 5,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "GraniteShares",
+      "success": true,
+      "count": 2,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "Amplify",
+      "success": true,
+      "count": 2,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "Avantis",
+      "success": true,
+      "count": 2,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "Bitwise",
+      "success": true,
+      "count": 1,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "Trust",
+      "success": true,
+      "count": 15,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "Select Sector",
+      "success": true,
+      "count": 9,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "Daily",
+      "success": true,
+      "count": 11,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "2x",
+      "success": true,
+      "count": 6,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "3x",
+      "success": true,
+      "count": 6,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "fund",
+      "success": true,
+      "count": 34,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "index",
+      "success": true,
+      "count": 19,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "ETN",
+      "success": true,
+      "count": 5,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "iShares MSCI",
+      "success": true,
+      "count": 20,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "iShares Core",
+      "success": true,
+      "count": 6,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "Semiconductor",
+      "success": true,
+      "count": 11,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "Nasdaq",
+      "success": true,
+      "count": 11,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "500",
+      "success": true,
+      "count": 13,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "Ultra",
+      "success": true,
+      "count": 13,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "Gold",
+      "success": true,
+      "count": 22,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "silver",
+      "success": true,
+      "count": 9,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "USO",
+      "success": true,
+      "count": 3,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "QQQ",
+      "success": true,
+      "count": 6,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "KraneShares",
+      "success": true,
+      "count": 3,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "Teucrium",
+      "success": true,
+      "count": 3,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "NEOS",
+      "success": true,
+      "count": 1,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "ABRDN",
+      "success": true,
+      "count": 4,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "S&P",
+      "success": true,
+      "count": 17,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "Dividend",
+      "success": true,
+      "count": 6,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "Income",
+      "success": true,
+      "count": 17,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "Oil",
+      "success": true,
+      "count": 7,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "Bond",
+      "success": true,
+      "count": 20,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "Shares",
+      "success": true,
+      "count": 50,
+      "possiblyTruncated": true
+    },
+    {
+      "query": "Wisdom",
+      "success": true,
+      "count": 1,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "BlackRock",
+      "success": true,
+      "count": 2,
+      "possiblyTruncated": false
+    },
+    {
+      "query": "Fidelity ETF",
+      "success": true,
+      "count": 0,
+      "possiblyTruncated": false
+    }
+  ],
+  "records": [
+    {
+      "ticker": "AAAU",
+      "name": "Goldman Sachs Physical Gold ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "Goldman",
+        "Gold"
+      ]
+    },
+    {
+      "ticker": "ACWI",
+      "name": "iShares MSCI ACWI ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "ETF",
+        "iShares MSCI",
+        "Shares"
+      ]
+    },
+    {
+      "ticker": "AGG",
+      "name": "iShares Core US Aggregate Bond ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "ETF",
+        "iShares Core",
+        "Bond",
+        "Shares"
+      ]
+    },
+    {
+      "ticker": "AGQ",
+      "name": "ProShares Ultra Silver ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "ProShares",
+        "Ultra",
+        "silver",
+        "Shares"
+      ]
+    },
+    {
+      "ticker": "AIPI",
+      "name": "REX AI Equity Premium Income ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "REX",
+        "Income"
+      ]
+    },
+    {
+      "ticker": "AIPO",
+      "name": "Defiance AI & Power Infrastructure ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "Defiance"
+      ]
+    },
+    {
+      "ticker": "AIQ",
+      "name": "Global X Artificial Intelligence & Technology ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "Global X"
+      ]
+    },
+    {
+      "ticker": "AMDY",
+      "name": "YieldMax AMD Option Income Strategy ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "YieldMax",
+        "Income"
+      ]
+    },
+    {
+      "ticker": "AMZY",
+      "name": "YieldMax AMZN Option Income Strategy ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "YieldMax",
+        "Income"
+      ]
+    },
+    {
+      "ticker": "AOR",
+      "name": "iShares Core Growth Allocation ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "ETF",
+        "iShares Core",
+        "Shares"
+      ]
+    },
+    {
+      "ticker": "ARGT",
+      "name": "Global X MSCI Argentina ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "Global X"
+      ]
+    },
+    {
+      "ticker": "ARKF",
+      "name": "ARK Fintech Innovation ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "ARK"
+      ]
+    },
+    {
+      "ticker": "ARKG",
+      "name": "ARK Genomic Revolution ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "ARK"
+      ]
+    },
+    {
+      "ticker": "ARKK",
+      "name": "ARK Innovation ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "ARK"
+      ]
+    },
+    {
+      "ticker": "ARKQ",
+      "name": "ARK Autonomous Technology & Robotics ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "ARK"
+      ]
+    },
+    {
+      "ticker": "ARKW",
+      "name": "ARK Next Generation Internet ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "ARK"
+      ]
+    },
+    {
+      "ticker": "ARKX",
+      "name": "ARK Space & Defense Innovation ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "ARK"
+      ]
+    },
+    {
+      "ticker": "ASEA",
+      "name": "Global X FTSE Southeast Asia ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "Global X"
+      ]
+    },
+    {
+      "ticker": "AVDV",
+      "name": "Avantis International Small Cap Value ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "Avantis"
+      ]
+    },
+    {
+      "ticker": "AVUV",
+      "name": "Avantis US Small Cap Value ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "Avantis"
+      ]
+    },
+    {
+      "ticker": "BIL",
+      "name": "State Street SPDR Bloomberg 1-3 Month T-Bill ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "SPDR",
+        "State Street"
+      ]
+    },
+    {
+      "ticker": "BITO",
+      "name": "ProShares Bitcoin ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "ProShares",
+        "Shares"
+      ]
+    },
+    {
+      "ticker": "BITQ",
+      "name": "Bitwise Crypto Industry Innovators ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "Bitwise"
+      ]
+    },
+    {
+      "ticker": "BITU",
+      "name": "ProShares Ultra Bitcoin ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "ProShares",
+        "Ultra",
+        "Shares"
+      ]
+    },
+    {
+      "ticker": "BLOK",
+      "name": "Amplify Transformational Data Sharing ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "Amplify"
+      ]
+    },
+    {
+      "ticker": "BND",
+      "name": "Vanguard Total Bond Market Index Fund ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Vanguard",
+        "ETF",
+        "ARK",
+        "fund",
+        "index",
+        "Bond"
+      ]
+    },
+    {
+      "ticker": "BNDX",
+      "name": "Vanguard Total International Bond Index Fund ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Vanguard",
+        "ETF",
+        "fund",
+        "index",
+        "Bond"
+      ]
+    },
+    {
+      "ticker": "BNO",
+      "name": "United States Brent Oil Fund LP",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "fund",
+        "Oil"
+      ]
+    },
+    {
+      "ticker": "BOIL",
+      "name": "ProShares Ultra Bloomberg Natural Gas ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "ProShares",
+        "Ultra",
+        "Oil",
+        "Shares"
+      ]
+    },
+    {
+      "ticker": "BOTZ",
+      "name": "Global X Robotics and Artificial Intelligence ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "Global X"
+      ]
+    },
+    {
+      "ticker": "BTCO",
+      "name": "Invesco Galaxy Bitcoin ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "Invesco"
+      ]
+    },
+    {
+      "ticker": "BUG",
+      "name": "Global X Cybersecurity",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Global X"
+      ]
+    },
+    {
+      "ticker": "CIBR",
+      "name": "First Trust NASDAQ Cybersecurity ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "First Trust",
+        "Trust",
+        "Nasdaq"
+      ]
+    },
+    {
+      "ticker": "CLOU",
+      "name": "Global X Cloud Computing ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "Global X"
+      ]
+    },
+    {
+      "ticker": "CONL",
+      "name": "GraniteShares 2x Long COIN Daily ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "GraniteShares",
+        "Daily",
+        "2x",
+        "Shares"
+      ]
+    },
+    {
+      "ticker": "CONY",
+      "name": "YieldMax COIN Option Income Strategy ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "YieldMax",
+        "Income"
+      ]
+    },
+    {
+      "ticker": "COPX",
+      "name": "Global X Copper Miners ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "Global X"
+      ]
+    },
+    {
+      "ticker": "CORN",
+      "name": "Teucrium Corn Fund",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "fund",
+        "Teucrium"
+      ]
+    },
+    {
+      "ticker": "CPER",
+      "name": "United States Copper Index Fund",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "fund",
+        "index"
+      ]
+    },
+    {
+      "ticker": "CTEC",
+      "name": "Global X CleanTech",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Global X"
+      ]
+    },
+    {
+      "ticker": "CWEB",
+      "name": "Direxion Daily CSI China Internet Bull 2X Shares",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Direxion",
+        "REX",
+        "Daily",
+        "2x",
+        "Shares"
+      ]
+    },
+    {
+      "ticker": "DBA",
+      "name": "Invesco DB Agriculture Fund",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Invesco",
+        "fund"
+      ]
+    },
+    {
+      "ticker": "DBC",
+      "name": "Invesco DB Commodity Index Tracking Fund",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Invesco",
+        "fund",
+        "index"
+      ]
+    },
+    {
+      "ticker": "DBO",
+      "name": "Invesco DB Oil Fund",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Invesco",
+        "fund",
+        "Oil"
+      ]
+    },
+    {
+      "ticker": "DIA",
+      "name": "Dow Jones Industrial Average ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF"
+      ]
+    },
+    {
+      "ticker": "DRIV",
+      "name": "Global X Autonomous & Electric Vehicles",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Global X"
+      ]
+    },
+    {
+      "ticker": "DTCR",
+      "name": "Global X Data Center & Digital Infra ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "Global X"
+      ]
+    },
+    {
+      "ticker": "EIDO",
+      "name": "iShares MSCI Indonesia ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "ETF",
+        "iShares MSCI",
+        "Shares"
+      ]
+    },
+    {
+      "ticker": "EMB",
+      "name": "iShares JPMorgan USD Emerging Markets Bond ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "ETF",
+        "ARK",
+        "JPMorgan",
+        "Bond",
+        "Shares"
+      ]
+    },
+    {
+      "ticker": "EMLC",
+      "name": "VanEck JP Morgan EM Local Currency Bond ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "VanEck",
+        "Bond"
+      ]
+    },
+    {
+      "ticker": "ESPO",
+      "name": "VanEck Video Gaming and eSports ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ETF",
+        "VanEck"
+      ]
+    },
+    {
+      "ticker": "EWA",
+      "name": "iShares MSCI Australia ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "ETF",
+        "iShares MSCI",
+        "Shares"
+      ]
+    },
+    {
+      "ticker": "EWC",
+      "name": "iShares MSCI Canada (TSX)",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "iShares MSCI",
+        "Shares"
+      ]
+    },
+    {
+      "ticker": "EWG",
+      "name": "iShares MSCI Germany (DAX)",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "iShares MSCI",
+        "Shares"
+      ]
+    },
+    {
+      "ticker": "EWH",
+      "name": "iShares MSCI Hong Kong ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "ETF",
+        "iShares MSCI",
+        "Shares"
+      ]
+    },
+    {
+      "ticker": "EWI",
+      "name": "Ishares Msci Italy ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "ETF",
+        "iShares MSCI",
+        "Shares"
+      ]
+    },
+    {
+      "ticker": "EWJ",
+      "name": "iShares MSCI Japan ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "ETF",
+        "iShares MSCI",
+        "Shares"
+      ]
+    },
+    {
+      "ticker": "EWM",
+      "name": "iShares MSCI Malaysia ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "ETF",
+        "iShares MSCI",
+        "Shares"
+      ]
+    },
+    {
+      "ticker": "EWP",
+      "name": "Ishares Msci Spain ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "ETF",
+        "iShares MSCI"
+      ]
+    },
+    {
+      "ticker": "EWQ",
+      "name": "iShares MSCI France ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "ETF",
+        "iShares MSCI"
+      ]
+    },
+    {
+      "ticker": "EWS",
+      "name": "iShares MSCI Singapore ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "ETF",
+        "iShares MSCI"
+      ]
+    },
+    {
+      "ticker": "EWT",
+      "name": "iShares MSCI Taiwan ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "ETF",
+        "iShares MSCI"
+      ]
+    },
+    {
+      "ticker": "EWU",
+      "name": "iShares MSCI United Kingdom (FTSE)",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "iShares MSCI"
+      ]
+    },
+    {
+      "ticker": "EWY",
+      "name": "iShares MSCI South Korea ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "iShares MSCI"
+      ]
+    },
+    {
+      "ticker": "EWZ",
+      "name": "Ishares Msci Brazil ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "iShares MSCI"
+      ]
+    },
+    {
+      "ticker": "EZA",
+      "name": "iShares MSCI South Africa ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "iShares MSCI"
+      ]
+    },
+    {
+      "ticker": "FEPI",
+      "name": "Rex Fang & Innovation Equity Premium Income ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "REX",
+        "Income"
+      ]
+    },
+    {
+      "ticker": "FLKR",
+      "name": "Franklin FTSE South Korea ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Franklin"
+      ]
+    },
+    {
+      "ticker": "FLOT",
+      "name": "VanEck Australian Floating Rate ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "VanEck"
+      ]
+    },
+    {
+      "ticker": "FLRN",
+      "name": "State Street SPDR Bloomberg Invstmt Gr Fltg Rt ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "SPDR",
+        "State Street"
+      ]
+    },
+    {
+      "ticker": "FXI",
+      "name": "iShares China Large-Cap ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares"
+      ]
+    },
+    {
+      "ticker": "GDX",
+      "name": "VanEck Gold Miners ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "VanEck",
+        "Gold"
+      ]
+    },
+    {
+      "ticker": "GDXJ",
+      "name": "VanEck Junior Gold Miners",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "VanEck",
+        "Gold"
+      ]
+    },
+    {
+      "ticker": "GLD",
+      "name": "SPDR Gold Trust",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "SPDR",
+        "Trust",
+        "Gold"
+      ]
+    },
+    {
+      "ticker": "GPTY",
+      "name": "YieldMax AI & Tech Portfolio Option Income ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "YieldMax",
+        "Income"
+      ]
+    },
+    {
+      "ticker": "GRID",
+      "name": "First Trust NASDAQ Smart Grid ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "First Trust",
+        "Trust",
+        "Nasdaq"
+      ]
+    },
+    {
+      "ticker": "GSG",
+      "name": "iShares S&P GSCI Commodity-Indexed Trust ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "Trust",
+        "index",
+        "S&P"
+      ]
+    },
+    {
+      "ticker": "HACK",
+      "name": "Amplify Cybersecurity ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Amplify"
+      ]
+    },
+    {
+      "ticker": "HDV",
+      "name": "iShares Core High Dividend ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "iShares Core",
+        "Dividend"
+      ]
+    },
+    {
+      "ticker": "HYG",
+      "name": "iShares iBoxx $ High Yield Corporate Bond ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "Bond"
+      ]
+    },
+    {
+      "ticker": "IAU",
+      "name": "iShares Gold Trust",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "Trust",
+        "Gold"
+      ]
+    },
+    {
+      "ticker": "IBIT",
+      "name": "iShares Bitcoin Trust",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "Trust"
+      ]
+    },
+    {
+      "ticker": "ICLN",
+      "name": "iShares Global Clean Energy ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares"
+      ]
+    },
+    {
+      "ticker": "IDRV",
+      "name": "iShares Self-Driving EV and Tech",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares"
+      ]
+    },
+    {
+      "ticker": "IEF",
+      "name": "iShares 7-10 Year Treasury Bond ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "Bond"
+      ]
+    },
+    {
+      "ticker": "IEFA",
+      "name": "iShares Core MSCI EAFE ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "iShares Core"
+      ]
+    },
+    {
+      "ticker": "IEI",
+      "name": "iShares 3 7 Year Treasury Bond ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "Bond"
+      ]
+    },
+    {
+      "ticker": "IEMG",
+      "name": "iShares Core MSCI Emerging Markets ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "ARK",
+        "iShares Core"
+      ]
+    },
+    {
+      "ticker": "IGOV",
+      "name": "iShares International Treasury Bond ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "Bond"
+      ]
+    },
+    {
+      "ticker": "INDA",
+      "name": "iShares MSCI India ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "iShares MSCI"
+      ]
+    },
+    {
+      "ticker": "ITA",
+      "name": "iShares US Aerospace & Defense ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares"
+      ]
+    },
+    {
+      "ticker": "IVV",
+      "name": "iShares Core S&P 500 ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "iShares Core",
+        "500",
+        "S&P"
+      ]
+    },
+    {
+      "ticker": "IWM",
+      "name": "iShares Russell 2000 ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares"
+      ]
+    },
+    {
+      "ticker": "IXN",
+      "name": "iShares Global Tech ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares"
+      ]
+    },
+    {
+      "ticker": "JEPI",
+      "name": "JPMorgan Equity Premium Income ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "JPMorgan",
+        "Income"
+      ]
+    },
+    {
+      "ticker": "JEPQ",
+      "name": "JPMorgan Nasdaq Equity Premium Income ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "JPMorgan",
+        "Nasdaq",
+        "Income"
+      ]
+    },
+    {
+      "ticker": "JNK",
+      "name": "State Street SPDR Bloomberg High Yield Bond ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "SPDR",
+        "State Street",
+        "Bond"
+      ]
+    },
+    {
+      "ticker": "JPIN",
+      "name": "JPMorgan Diversified Return International Eqty ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "JPMorgan"
+      ]
+    },
+    {
+      "ticker": "JPST",
+      "name": "JPMorgan Ultra Short Income ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "JPMorgan",
+        "Ultra",
+        "Income"
+      ]
+    },
+    {
+      "ticker": "KARS",
+      "name": "KraneShares Electric Vehicles and Future Mobility",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "KraneShares"
+      ]
+    },
+    {
+      "ticker": "KOLD",
+      "name": "ProShares UltraShort Bloomberg Natural Gas ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ProShares",
+        "Ultra"
+      ]
+    },
+    {
+      "ticker": "KTEC",
+      "name": "KraneShares Hang Seng TECH Index ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "index",
+        "KraneShares"
+      ]
+    },
+    {
+      "ticker": "KWEB",
+      "name": "KraneShares CSI China Internet ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "KraneShares"
+      ]
+    },
+    {
+      "ticker": "LIT",
+      "name": "Global X Lithium & Battery Tech ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Global X"
+      ]
+    },
+    {
+      "ticker": "LQD",
+      "name": "iShares iBoxx $ Inv Grade Corporate Bond ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "Bond"
+      ]
+    },
+    {
+      "ticker": "MAGS",
+      "name": "Roundhill Magnificent Seven ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Roundhill"
+      ]
+    },
+    {
+      "ticker": "MBB",
+      "name": "iShares MBS ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares"
+      ]
+    },
+    {
+      "ticker": "MCHI",
+      "name": "iShares MSCI China ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "iShares MSCI"
+      ]
+    },
+    {
+      "ticker": "MGK",
+      "name": "Vanguard Mega Cap Growth ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Vanguard"
+      ]
+    },
+    {
+      "ticker": "MSTU",
+      "name": "T-Rex 2X Long MSTR Daily Target ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "REX",
+        "Daily",
+        "2x"
+      ]
+    },
+    {
+      "ticker": "MSTY",
+      "name": "YieldMax MSTR Option Income Strategy ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "YieldMax",
+        "Income"
+      ]
+    },
+    {
+      "ticker": "MSTZ",
+      "name": "T-Rex 2X Inverse MSTR Daily Target ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "REX",
+        "Daily",
+        "2x"
+      ]
+    },
+    {
+      "ticker": "NLR",
+      "name": "VanEck Uranium & Nuclear ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "VanEck"
+      ]
+    },
+    {
+      "ticker": "NVDL",
+      "name": "GraniteShares 2x Long NVDA Daily ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "GraniteShares",
+        "Daily",
+        "2x"
+      ]
+    },
+    {
+      "ticker": "NVDW",
+      "name": "Roundhill NVDA WeeklyPay ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Roundhill"
+      ]
+    },
+    {
+      "ticker": "NVDY",
+      "name": "YieldMax NVDA Option Income Strategy ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "YieldMax",
+        "Income"
+      ]
+    },
+    {
+      "ticker": "PALL",
+      "name": "abrdn Physical Palladium Shares ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ABRDN"
+      ]
+    },
+    {
+      "ticker": "PBW",
+      "name": "Invesco WilderHill Clean Energy ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Invesco"
+      ]
+    },
+    {
+      "ticker": "PDBC",
+      "name": "Invesco Optimum Yld Dvsfd Cmd Str No K 1 ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Invesco"
+      ]
+    },
+    {
+      "ticker": "PGX",
+      "name": "Invesco Preferred ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Invesco"
+      ]
+    },
+    {
+      "ticker": "POWR",
+      "name": "iShares US Power Infrastructure ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares"
+      ]
+    },
+    {
+      "ticker": "PPLT",
+      "name": "Abrdn Physical Platinum Shares ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ABRDN"
+      ]
+    },
+    {
+      "ticker": "QCLN",
+      "name": "First Trust NASDAQ Clean Edge Green Energy Idx Fd",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "First Trust",
+        "Trust",
+        "Nasdaq"
+      ]
+    },
+    {
+      "ticker": "QDTE",
+      "name": "Roundhill Innov-100 0DTE Covered Call Strat ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Roundhill"
+      ]
+    },
+    {
+      "ticker": "QDTY",
+      "name": "YieldMax Nasdaq 100 0DTE Covered Call Strategy ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "YieldMax",
+        "Nasdaq"
+      ]
+    },
+    {
+      "ticker": "QLD",
+      "name": "ProShares Ultra QQQ ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ProShares",
+        "Ultra",
+        "QQQ"
+      ]
+    },
+    {
+      "ticker": "QQQ",
+      "name": "Nasdaq100 ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Nasdaq",
+        "QQQ"
+      ]
+    },
+    {
+      "ticker": "QQQE",
+      "name": "Direxion NASDAQ 100 Equal Weighted Index Shares",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Direxion",
+        "REX",
+        "index",
+        "Nasdaq",
+        "QQQ"
+      ]
+    },
+    {
+      "ticker": "QQQM",
+      "name": "Invesco NASDAQ 100 ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Invesco",
+        "Nasdaq",
+        "QQQ"
+      ]
+    },
+    {
+      "ticker": "QTEC",
+      "name": "First Trust NASDAQ 100 Technology Index Fund",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "First Trust",
+        "Trust",
+        "fund",
+        "index",
+        "Nasdaq"
+      ]
+    },
+    {
+      "ticker": "QYLD",
+      "name": "Global X NASDAQ 100 Covered Call ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Global X",
+        "Nasdaq"
+      ]
+    },
+    {
+      "ticker": "RDTE",
+      "name": "Roundhill Russell 2000 0DTE Covered Call Strat ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Roundhill"
+      ]
+    },
+    {
+      "ticker": "REMX",
+      "name": "VanEck Rare Earth/Strategic Metals",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "VanEck"
+      ]
+    },
+    {
+      "ticker": "ROBO",
+      "name": "Global X Robo Global Robotics & Automation ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Global X"
+      ]
+    },
+    {
+      "ticker": "ROKT",
+      "name": "SPDR Kensho Final Frontiers ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "SPDR"
+      ]
+    },
+    {
+      "ticker": "SCHD",
+      "name": "Schwab US Dividend Equity ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Schwab",
+        "Dividend"
+      ]
+    },
+    {
+      "ticker": "SCHG",
+      "name": "Schwab US Large Cap Growth ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Schwab"
+      ]
+    },
+    {
+      "ticker": "SDIV",
+      "name": "Global X SuperDividend ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Global X",
+        "Dividend"
+      ]
+    },
+    {
+      "ticker": "SGOL",
+      "name": "ABRDN Physical Gold Shares ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Gold",
+        "ABRDN"
+      ]
+    },
+    {
+      "ticker": "SGOV",
+      "name": "iShares 0 3 Month Treasury Bond ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "Bond"
+      ]
+    },
+    {
+      "ticker": "SHLD",
+      "name": "Global X Defense Tech ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Global X"
+      ]
+    },
+    {
+      "ticker": "SHY",
+      "name": "iShares 1 3 Year Treasury Bond ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "Bond"
+      ]
+    },
+    {
+      "ticker": "SJNK",
+      "name": "State Street SPDR Bloomberg Shrt Trm Hg Yld Bd ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "SPDR",
+        "State Street"
+      ]
+    },
+    {
+      "ticker": "SKYY",
+      "name": "First Trust Cloud Computing ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "First Trust",
+        "Trust"
+      ]
+    },
+    {
+      "ticker": "SLV",
+      "name": "iShares Silver Trust",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "Trust",
+        "silver"
+      ]
+    },
+    {
+      "ticker": "SMH",
+      "name": "VanEck Semiconductor ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "VanEck",
+        "Semiconductor"
+      ]
+    },
+    {
+      "ticker": "SOXL",
+      "name": "Direxion Daily Semiconductor Bull 3X Shares",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Direxion",
+        "REX",
+        "Daily",
+        "3x",
+        "Semiconductor"
+      ]
+    },
+    {
+      "ticker": "SOXS",
+      "name": "Direxion Daily Semiconductor Bear 3X Shares",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Direxion",
+        "REX",
+        "Daily",
+        "3x",
+        "Semiconductor"
+      ]
+    },
+    {
+      "ticker": "SOXX",
+      "name": "iShares Semiconductor ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "Semiconductor"
+      ]
+    },
+    {
+      "ticker": "SOYB",
+      "name": "Teucrium Soybean Fund",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "fund",
+        "Teucrium"
+      ]
+    },
+    {
+      "ticker": "SPHD",
+      "name": "Invesco S&P 500 High Div Low Volatility ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Invesco",
+        "500",
+        "S&P"
+      ]
+    },
+    {
+      "ticker": "SPLV",
+      "name": "Invesco S&P 500 Low Volatility ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Invesco",
+        "500",
+        "S&P"
+      ]
+    },
+    {
+      "ticker": "SPMO",
+      "name": "Invesco S&P 500 Momentum ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Invesco",
+        "500",
+        "S&P"
+      ]
+    },
+    {
+      "ticker": "SPUS",
+      "name": "SP Funds S&P 500 Sharia Industry Exclusions ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "fund",
+        "500",
+        "S&P"
+      ]
+    },
+    {
+      "ticker": "SPXL",
+      "name": "Direxion Daily S&P 500 Bull 3X Shares",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Direxion",
+        "REX",
+        "Daily",
+        "3x",
+        "500",
+        "S&P"
+      ]
+    },
+    {
+      "ticker": "SPY",
+      "name": "S&P500 ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "500",
+        "S&P"
+      ]
+    },
+    {
+      "ticker": "SPYI",
+      "name": "NEOS S&P 500 High Income ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "500",
+        "NEOS",
+        "S&P",
+        "Income"
+      ]
+    },
+    {
+      "ticker": "SQQQ",
+      "name": "ProShares UltraPro Short QQQ ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ProShares",
+        "Ultra",
+        "QQQ"
+      ]
+    },
+    {
+      "ticker": "TAN",
+      "name": "Invesco Solar ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Invesco"
+      ]
+    },
+    {
+      "ticker": "THD",
+      "name": "Ishares Msci Thailand Etf",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "iShares MSCI"
+      ]
+    },
+    {
+      "ticker": "TIP",
+      "name": "iShares TIPS Bond ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "Bond"
+      ]
+    },
+    {
+      "ticker": "TLH",
+      "name": "iShares 10 20 Year Treasury Bond ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "Bond"
+      ]
+    },
+    {
+      "ticker": "TLT",
+      "name": "iShares 20 Plus Year Treasury Bond ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "iShares",
+        "Bond"
+      ]
+    },
+    {
+      "ticker": "TMF",
+      "name": "Direxion Daily 20 Year Treasury Bull 3X Shares",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Direxion",
+        "REX",
+        "Daily",
+        "3x"
+      ]
+    },
+    {
+      "ticker": "TQQQ",
+      "name": "ProShares UltraPro QQQ ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ProShares",
+        "Ultra",
+        "QQQ"
+      ]
+    },
+    {
+      "ticker": "TSLL",
+      "name": "Direxion Daily TSLA Bull 2X Shares",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Direxion",
+        "REX",
+        "Daily",
+        "2x"
+      ]
+    },
+    {
+      "ticker": "TSLY",
+      "name": "YieldMax TSLA Option Income Strategy ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "YieldMax",
+        "Income"
+      ]
+    },
+    {
+      "ticker": "UGL",
+      "name": "ProShares Ultra Gold ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ProShares",
+        "Ultra",
+        "Gold"
+      ]
+    },
+    {
+      "ticker": "UNG",
+      "name": "United States Natural Gas Fund",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "fund"
+      ]
+    },
+    {
+      "ticker": "UPRO",
+      "name": "ProShares UltraPro S&P500",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ProShares",
+        "500",
+        "Ultra",
+        "S&P"
+      ]
+    },
+    {
+      "ticker": "URA",
+      "name": "Global X Uranium ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Global X"
+      ]
+    },
+    {
+      "ticker": "USD",
+      "name": "ProShares Ultra Semiconductors",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "ProShares",
+        "Semiconductor",
+        "Ultra"
+      ]
+    },
+    {
+      "ticker": "USIG",
+      "name": "iShares Broad USD Investment Grade Corporate Bond",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Bond"
+      ]
+    },
+    {
+      "ticker": "USO",
+      "name": "United States Oil ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "USO",
+        "Oil"
+      ]
+    },
+    {
+      "ticker": "VCIT",
+      "name": "Vanguard Intermediate Term Corporate Bond ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Vanguard",
+        "Bond"
+      ]
+    },
+    {
+      "ticker": "VCSH",
+      "name": "Vanguard Short Term Corporate Bond ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Vanguard",
+        "Bond"
+      ]
+    },
+    {
+      "ticker": "VEA",
+      "name": "Vanguard Tax Managed Fund FTSE Developed Markets ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Vanguard",
+        "ARK",
+        "fund"
+      ]
+    },
+    {
+      "ticker": "VGT",
+      "name": "Vanguard Information Technology Index Fund ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Vanguard",
+        "fund",
+        "index"
+      ]
+    },
+    {
+      "ticker": "VIG",
+      "name": "Vanguard Dividend Appreciation Index Fund ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Vanguard",
+        "fund",
+        "index",
+        "Dividend"
+      ]
+    },
+    {
+      "ticker": "VNM",
+      "name": "VanEck Vietnam ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "VanEck",
+        "ETN"
+      ]
+    },
+    {
+      "ticker": "VNQ",
+      "name": "Vanguard Real Estate Index Fund ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Vanguard",
+        "fund",
+        "index"
+      ]
+    },
+    {
+      "ticker": "VNQI",
+      "name": "Vanguard Global ex-US Real Estate Index Fd ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Vanguard",
+        "index"
+      ]
+    },
+    {
+      "ticker": "VOO",
+      "name": "Vanguard S&P 500 ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Vanguard",
+        "500",
+        "S&P"
+      ]
+    },
+    {
+      "ticker": "VOOG",
+      "name": "Vanguard S&P 500 Growth Index Fund ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Vanguard",
+        "fund",
+        "index",
+        "500",
+        "S&P"
+      ]
+    },
+    {
+      "ticker": "VT",
+      "name": "Vanguard Total World Stock Index Fund ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Vanguard",
+        "fund",
+        "index"
+      ]
+    },
+    {
+      "ticker": "VTI",
+      "name": "Vanguard Total Stock Market Index Fund ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Vanguard",
+        "ARK",
+        "fund",
+        "index"
+      ]
+    },
+    {
+      "ticker": "VTIP",
+      "name": "Vanguard Sht-Term Inflation-Protected Sec Idx ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Vanguard"
+      ]
+    },
+    {
+      "ticker": "VTV",
+      "name": "Vanguard Value Index Fund ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Vanguard",
+        "fund",
+        "index"
+      ]
+    },
+    {
+      "ticker": "VUG",
+      "name": "Vanguard Growth Index Fund ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Vanguard",
+        "fund",
+        "index"
+      ]
+    },
+    {
+      "ticker": "VUSB",
+      "name": "Vanguard Ultra Short Bond ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Vanguard",
+        "Ultra",
+        "Bond"
+      ]
+    },
+    {
+      "ticker": "VWO",
+      "name": "Vanguard Emerging Markets Stock Index Fund ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Vanguard",
+        "ARK",
+        "fund",
+        "index"
+      ]
+    },
+    {
+      "ticker": "VXUS",
+      "name": "Vanguard Total International Stock Index Fund ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Vanguard",
+        "fund",
+        "index"
+      ]
+    },
+    {
+      "ticker": "VYM",
+      "name": "Vanguard High Dividend Yield ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Vanguard",
+        "Dividend"
+      ]
+    },
+    {
+      "ticker": "VYMI",
+      "name": "Vanguard International High Dividend Yield ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Vanguard",
+        "Dividend"
+      ]
+    },
+    {
+      "ticker": "WEAT",
+      "name": "Teucrium Wheat Fund",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "fund",
+        "Teucrium"
+      ]
+    },
+    {
+      "ticker": "XBI",
+      "name": "State Street SPDR S&P Biotech ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "SPDR",
+        "State Street",
+        "S&P"
+      ]
+    },
+    {
+      "ticker": "XDTE",
+      "name": "Roundhill S&P 500 0DTE Covered Call Strategy ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Roundhill",
+        "500",
+        "S&P"
+      ]
+    },
+    {
+      "ticker": "XHB",
+      "name": "State Street SPDR S&P Homebuilders ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "SPDR",
+        "State Street",
+        "S&P"
+      ]
+    },
+    {
+      "ticker": "XLB",
+      "name": "Materials Select Sector SPDR Fund",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "SPDR",
+        "Select Sector",
+        "fund"
+      ]
+    },
+    {
+      "ticker": "XLE",
+      "name": "Energy Select Sector SPDR Fund",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "SPDR",
+        "Select Sector",
+        "fund"
+      ]
+    },
+    {
+      "ticker": "XLF",
+      "name": "Financial Select Sector SPDR Fund",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "SPDR",
+        "Select Sector",
+        "fund"
+      ]
+    },
+    {
+      "ticker": "XLK",
+      "name": "State Street Technology Select Sector SPDR ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "SPDR",
+        "State Street",
+        "Select Sector"
+      ]
+    },
+    {
+      "ticker": "XLP",
+      "name": "Consumer Staples Select Sector SPDR Fund",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "SPDR",
+        "Select Sector",
+        "fund"
+      ]
+    },
+    {
+      "ticker": "XLRE",
+      "name": "State Street Real Estate Select Sector SPDR ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "SPDR",
+        "State Street",
+        "Select Sector"
+      ]
+    },
+    {
+      "ticker": "XLU",
+      "name": "Utilities Select Sector SPDR Fund",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "SPDR",
+        "Select Sector",
+        "fund"
+      ]
+    },
+    {
+      "ticker": "XLV",
+      "name": "Health Care Select Sector SPDR Fund",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "SPDR",
+        "Select Sector",
+        "fund"
+      ]
+    },
+    {
+      "ticker": "XLY",
+      "name": "Consumer Discretionary Select Sector SPDR Fund",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "SPDR",
+        "Select Sector",
+        "fund"
+      ]
+    },
+    {
+      "ticker": "XRT",
+      "name": "State Street PDR S&P Retail ETF",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "State Street",
+        "S&P"
+      ]
+    },
+    {
+      "ticker": "YINN",
+      "name": "Direxion Daily FTSE China Bull 3x Shares",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "Direxion",
+        "REX",
+        "Daily",
+        "3x"
+      ]
+    },
+    {
+      "ticker": "YMAG",
+      "name": "YieldMax Magnificent 7 Fund of Option Income ETFs",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "YieldMax",
+        "fund",
+        "Income"
+      ]
+    },
+    {
+      "ticker": "YMAX",
+      "name": "YieldMax Universe Fund of Option Income ETFs",
+      "market": "US",
+      "source": "Pluang catalogue",
+      "instrumentType": null,
+      "classification": "catalogue-candidate",
+      "queries": [
+        "YieldMax",
+        "fund",
+        "Income"
+      ]
+    }
+  ]
+}
