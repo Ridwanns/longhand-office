@@ -97,3 +97,5 @@ body .macro-research-desk .macro-layout{display:block;padding:0;border:0}body .m
 .macro-research-desk [data-macro-chart] svg{max-height:300px}.macro-research-desk .briefing-charts [data-macro-chart] svg{max-height:260px}
 
 :root[data-theme] body .macro-research-desk :is(.macro-value,.context-indicator-strip strong,.context-history-brief strong,.market-number){font-size:20px;line-height:1.3;letter-spacing:0}
+
+.macro-research-desk .macro-map-shortcut{margin-left:auto;align-self:center;min-height:44px;padding:8px 14px;font:12px Arial,sans-serif;background:transparent;border:1px solid var(--line);border-radius:4px;color:var(--ink);cursor:pointer}.macro-map-shortcut:focus-visible{outline:2px solid var(--ink);outline-offset:3px}#macro-world-map{scroll-margin-top:24px}
