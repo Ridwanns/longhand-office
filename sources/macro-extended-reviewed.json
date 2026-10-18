@@ -1,0 +1,275 @@
+{
+  "format": "longhand-extended-reviewed",
+  "version": 1,
+  "reviewedAt": "2026-10-18T13:40:02Z",
+  "reviewNote": "Fixed manual review of official public pages. Source dates are not inferred where absent. Original reviewed series in macro-regional-reviewed.json retain their own earlier review dates.",
+  "series": [
+    {
+      "id": "review-KOR-inflation",
+      "sourceUrl": "https://mods.go.kr/board.es?act=view&bid=11751&list_no=447323&mid=a20109020000",
+      "reviewedAt": "2026-10-18T13:58:20Z",
+      "observations": [{"date": "2026-09-01", "value": 2.9, "status": "reported", "releasedAt": "2026-10-02"}],
+      "sourceNotes": "Official national headline CPI annual change for September. Not the 0.3% monthly change, the 2.8% excluding-food-and-energy annual change, or the 120.43 index level (2020=100)."
+    },
+    {
+      "id": "review-CHN-inflation",
+      "sourceUrl": "https://www.stats.gov.cn/english/PressRelease/202610/t20261015_1965500.html",
+      "observations": [
+        {
+          "date": "2026-09-01",
+          "value": 0.9,
+          "status": "reported",
+          "releasedAt": "2026-10-15"
+        }
+      ],
+      "sourceNotes": "Headline national CPI, not January-September average or monthly change."
+    },
+    {
+      "id": "review-IND-inflation",
+      "sourceUrl": "https://esankhyiki.mospi.gov.in/",
+      "observations": [
+        {
+          "date": "2026-09-01",
+          "value": 5.54,
+          "status": "provisional",
+          "releasedAt": "2026-10-12"
+        }
+      ],
+      "sourceNotes": "All India combined, base 2024. September provisional rate; previous-base history is kept separate. Official dashboard and 12 October release-calendar entry checked."
+    },
+    {
+      "id": "review-THA-inflation",
+      "sourceUrl": "https://www.bot.or.th/en/thai-economy.html",
+      "observations": [
+        {
+          "date": "2026-08-01",
+          "value": 2.53,
+          "status": "reported"
+        }
+      ],
+      "sourceNotes": "Official Bank of Thailand economy page labels August headline inflation 2.53%; the BIS August vintage differs and is kept separate."
+    },
+    {
+      "id": "review-IDN-yield",
+      "sourceUrl": "https://www.kemenkeu.go.id/APBNKitaSeptember2026",
+      "observations": [
+        {
+          "date": "2026-09-15",
+          "value": 7.17,
+          "status": "reported"
+        }
+      ],
+      "sourceNotes": "End-of-period value through 15 September, not the 6.80% year-to-date average. This is an older observation and must be flagged."
+    },
+    {
+      "id": "review-MYS-yield",
+      "sourceUrl": "https://financialmarkets.bnm.gov.my/benchmark-yields?form=MG0AV3",
+      "observations": [
+        {
+          "date": "2026-10-16",
+          "value": 3.83,
+          "status": "reported"
+        }
+      ],
+      "sourceNotes": "Conventional MGS 10Y Close column, not 3.48 coupon, MGII Islamic 3.90 close or a 3Y/5Y yield. Trading date 16 October."
+    },
+    {
+      "id": "review-SGP-yield",
+      "sourceUrl": "https://data.gov.sg/datasets/d_5fe5a4bb4a1ecc4d8a56a095832e2b24/view",
+      "observations": [
+        {
+          "date": "2026-08-01",
+          "value": 2.35,
+          "status": "reported"
+        }
+      ],
+      "sourceNotes": "Row Government Securities - 10-Year Bond Yield, column 2026 Aug. End-of-period monthly value. The official API returned HTTP 403 during acquisition; this row was manually checked on the official dataset page."
+    },
+    {
+      "id": "review-AUS-inflation",
+      "reviewedAt": "2026-10-18T13:44:28Z",
+      "sourceUrl": "https://www.abs.gov.au/statistics/economy/price-indexes-and-inflation/consumer-price-index-australia/latest-release",
+      "observations": [
+        {
+          "date": "2025-04-01",
+          "value": 2.4,
+          "status": "reported"
+        },
+        {
+          "date": "2025-05-01",
+          "value": 2.1,
+          "status": "reported"
+        },
+        {
+          "date": "2025-06-01",
+          "value": 1.9,
+          "status": "reported"
+        },
+        {
+          "date": "2025-07-01",
+          "value": 3,
+          "status": "reported"
+        },
+        {
+          "date": "2025-08-01",
+          "value": 3.2,
+          "status": "reported"
+        },
+        {
+          "date": "2025-09-01",
+          "value": 3.6,
+          "status": "reported"
+        },
+        {
+          "date": "2025-10-01",
+          "value": 3.8,
+          "status": "reported"
+        },
+        {
+          "date": "2025-11-01",
+          "value": 3.4,
+          "status": "reported"
+        },
+        {
+          "date": "2025-12-01",
+          "value": 3.8,
+          "status": "reported"
+        },
+        {
+          "date": "2026-01-01",
+          "value": 3.8,
+          "status": "reported"
+        },
+        {
+          "date": "2026-02-01",
+          "value": 3.7,
+          "status": "reported"
+        },
+        {
+          "date": "2026-03-01",
+          "value": 4.6,
+          "status": "reported"
+        },
+        {
+          "date": "2026-04-01",
+          "value": 4.2,
+          "status": "reported"
+        },
+        {
+          "date": "2026-05-01",
+          "value": 4,
+          "status": "reported"
+        },
+        {
+          "date": "2026-06-01",
+          "value": 3.8,
+          "status": "reported"
+        },
+        {
+          "date": "2026-07-01",
+          "value": 3.5,
+          "status": "reported"
+        },
+        {
+          "date": "2026-08-01",
+          "value": 4,
+          "status": "reported"
+        }
+      ],
+      "sourceNotes": "Original ABS annual-change column, April 2025 through August 2026. Last release 30 September; next release 28 October 2026. Not trimmed mean or monthly movement."
+    },
+    {
+      "id": "review-NZL-inflation",
+      "reviewedAt": "2026-10-18T13:44:28Z",
+      "sourceUrl": "https://www.stats.govt.nz/information-releases/consumers-price-index-june-2026-quarter/",
+      "observations": [
+        {
+          "date": "2022-04-01",
+          "value": 7.3,
+          "status": "reported"
+        },
+        {
+          "date": "2022-07-01",
+          "value": 7.2,
+          "status": "reported"
+        },
+        {
+          "date": "2022-10-01",
+          "value": 7.2,
+          "status": "reported"
+        },
+        {
+          "date": "2023-01-01",
+          "value": 6.7,
+          "status": "reported"
+        },
+        {
+          "date": "2023-04-01",
+          "value": 6,
+          "status": "reported"
+        },
+        {
+          "date": "2023-07-01",
+          "value": 5.6,
+          "status": "reported"
+        },
+        {
+          "date": "2023-10-01",
+          "value": 4.7,
+          "status": "reported"
+        },
+        {
+          "date": "2024-01-01",
+          "value": 4,
+          "status": "reported"
+        },
+        {
+          "date": "2024-04-01",
+          "value": 3.3,
+          "status": "reported"
+        },
+        {
+          "date": "2024-07-01",
+          "value": 2.2,
+          "status": "reported"
+        },
+        {
+          "date": "2024-10-01",
+          "value": 2.2,
+          "status": "reported"
+        },
+        {
+          "date": "2025-01-01",
+          "value": 2.5,
+          "status": "reported"
+        },
+        {
+          "date": "2025-04-01",
+          "value": 2.7,
+          "status": "reported"
+        },
+        {
+          "date": "2025-07-01",
+          "value": 3,
+          "status": "reported"
+        },
+        {
+          "date": "2025-10-01",
+          "value": 3.1,
+          "status": "reported"
+        },
+        {
+          "date": "2026-01-01",
+          "value": 3.1,
+          "status": "reported"
+        },
+        {
+          "date": "2026-04-01",
+          "value": 4.1,
+          "status": "reported"
+        }
+      ],
+      "sourceNotes": "Original Stats NZ all-groups annual-change column, Q2 2022 through Q2 2026. Last 4.1% YoY, not 1.5% QoQ. Q3 scheduled 22 October 2026. No monthly NZ CPI is supplied."
+    }
+  ]
+}

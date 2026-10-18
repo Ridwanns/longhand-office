@@ -1,7 +1,7 @@
 // Source failure, integrity and async guards in a fresh browser profile only.
 export async function run(original,base='http://127.0.0.1:4175/office/'){
  const c=await original.context().browser().newContext({viewport:{width:1280,height:1000},reducedMotion:'reduce'}),p=await c.newPage(),checks=[],errors=[];p.setDefaultTimeout(20000);p.on('pageerror',e=>errors.push(e.message));const check=(name,ok)=>{if(!ok)throw Error(name);checks.push({name,passed:true});};
- const openReferences=async()=>{const panel=p.locator('.context-rates-reference');if(await panel.count()&&!await panel.evaluate(e=>e.open))await panel.locator('summary').first().click();};
+ const openReferences=async()=>{if(await p.locator('[data-context-view=rates]').count()&&!await p.locator('.context-rates-reference').count())await p.locator('[data-context-view=rates]').click();const panel=p.locator('.context-rates-reference');if(await panel.count()&&!await panel.evaluate(e=>e.open))await panel.locator('summary').first().click();};
  const pattern='**/data/macro-context.json',ready=async(path='id/rates')=>{await p.goto(base+'#market/macro/'+path);await p.locator('#macro-context[data-ready=true]').waitFor();await openReferences();};
  try{
   await p.route('https://s.tradingview.com/**',r=>r.fulfill({contentType:'text/html',body:'<p>TEST ONLY external frame</p>'}));await ready();const feed=await p.evaluate(()=>document.querySelector('#macro-content')._macroContext),stored=await p.evaluate(()=>JSON.stringify(localStorage));const fixing=new Intl.NumberFormat('en-GB',{maximumFractionDigits:2,minimumFractionDigits:1}).format(feed.series.find(s=>s.id==='id-jisdor').observations.at(-1).value);let variant=structuredClone(feed),status=200;
