@@ -39,3 +39,15 @@ No providers, collectors, financial formulas, saved-model hashes, database schem
 ## Remaining gaps
 
 No nowcasting, consensus surprise feed, GDP sector/expenditure decomposition, Indonesia fiscal/credit/housing/PMI feed, comprehensive international release calendar or market-implied policy path was added. Adding those requires separately verified source acquisition, definitions, frequency alignment and, for models, independent validation. More source names or empty dashboard cards would not close those gaps.
+
+## Detailed placement review, 19 October 2026
+
+The reference Indonesia Overview and Economy pages were inspected visually from the header through the quad, sensitivity and external-balance sections. Its useful placement patterns are: a compact title/date row; stable subject navigation; related information in two columns; latest reading beside its chart; quad state, frequency counts and chronological path together; and definitions/backtest detail on demand. The reference itself contains substantial scrolling, so Office adopts its grouping rather than copying its entire page length or oversized headline values.
+
+Applied to Office:
+- One Macro title and one shared country filter on the same desktop header row.
+- World map remains first, with four actual sourced readings adjacent on desktop rather than pushed below a full-width map. Mobile stacks the same content.
+- Four named annual quadrants, a selected-year inspector, observed-state counts, and a selectable annual path are one analytical section. Counts describe the last twelve valid annual observations, not probabilities or quarterly forecasts. Exact zero changes remain unclassified on an axis.
+- All previous sources, mathematical inputs, legacy routes and detailed views remain accessible. No projection, consensus, nowcast or forward signal was added.
+
+Placement regression checks cover a single heading, aligned desktop header, map/readings adjacency, all four quad names, year-label clicks, state counts, responsive widths 1440/1180/1024/768/390/320, and browser errors. Existing economic-explorer, navigation, exact-source and cycle-value checks were rerun.
