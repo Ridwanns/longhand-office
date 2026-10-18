@@ -32,3 +32,6 @@ test('Annual pre-2000 collection is bounded and 10/20-year views leave records u
 test('Untrusted source text cannot inject chart markup or inspector attributes',()=>{
  const html=nativeMacroChart([row('2025-12-31',3)],{title:'<script>TEST</script>',unit:'" onmouseover="TEST',frequency:'A'});assert.doesNotMatch(html,/<script>|unit="" onmouseover/);assert.match(html,/&lt;script&gt;/);
 });
+test('Exact observations preserve source precision while headline chart labels remain readable',()=>{
+ const value=1.2345678901234567,html=nativeMacroChart([row('2025-12-31',value)],{title:'TEST ONLY precision',frequency:'A'});assert.ok(html.includes('<td>'+String(value)+'</td>'));assert.match(html,/2025 · 1\.23/);
+});

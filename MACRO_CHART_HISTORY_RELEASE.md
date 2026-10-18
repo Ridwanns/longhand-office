@@ -5,6 +5,7 @@ This change adapts the useful information hierarchy observed in Arthara's Macro 
 ## What changed
 
 - The economic observatory presents six selectable annual indicators for 46 economies. World and euro area remain aggregates, not countries.
+- Exact observation tables retain the full canonical source precision; only chart labels are rounded for readability. Six browser checks compared every annual table cell against its source array.
 - A dedicated macro chart renderer uses calendar-based horizontal positions, rounded axis ticks, lighter grids, consistent typography, distinct negative GDP bars and explicit missing observations. Monthly, quarterly, annual and decision-date series keep their own cadence. Decision-date rates use steps between connected reported decisions.
 - Mouse inspection, a keyboard/touch history slider, exact observation tables, and visible date coverage replace the generic Quant plotting interface in the additional macro desk. Quant's own plotting engine and calculations are unchanged.
 - History controls offer 1, 5, 10 and 20 years plus all available observations. Ten years is the initial view. Opening all economic histories reveals separate plots and independent scales; it does not combine unlike units.
@@ -48,7 +49,7 @@ Tests: `tests/macro-chart.test.mjs`, `tests/macro-chart-browser.mjs`, `tests/mac
 
 All browser tests use fresh isolated contexts and TEST ONLY records. Personal browser data is not opened or restored. Generated audit logs and screenshots remain under ignored `validation/` rather than the public application artifact.
 
-- 496 Node tests passed.
+- 497 Node tests passed.
 - 6 isolated local API tests passed.
 - Existing macro navigation/coverage/responsive suite: 150 checks passed.
 - Macro failure/retry/refresh suite: 14 checks passed.
