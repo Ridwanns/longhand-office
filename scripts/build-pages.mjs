@@ -10,7 +10,7 @@ const files=['official-rates.js','official-rates-contract.js','auto-valuation-ma
 const generated=['market-view.js','index.html','app.js','office-storage.js','office-extensions.js','quant-ui.js','market-terminal.js','market-catalogue.js','browser-api.js','browser-worker.js','browser-controls.js','browser.css','market-controls.js','market-coverage.js'];
 files.push('macro-atlas.js','macro-atlas-data.js','macro-atlas-labels.js','macro-atlas.css','office-visual-system.css','motion-system.js');
 ['market-data-contract.js','market-data-adapters.js','market-data-research.js','market-data-worker.js','market-data-storage.js','market-data-service.js','market-data-ui.js','market-data.css'].forEach(f=>files.push(f));
-files.push('macro-context-contract.js','macro-context-math.js','macro-context-ui.js','macro-context.css');
+files.push('macro-chart.js','macro-context-contract.js','macro-context-math.js','macro-context-ui.js','macro-context.css');
 files.push('workflow-continuity.js');
 files.push('encrypted-backup.js','sec-fundamentals-contract.js','official-fundamentals.js');
 files.push('idx-msn-ui.js','idx-msn-contract.js');

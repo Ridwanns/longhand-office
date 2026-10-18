@@ -28,7 +28,7 @@ export function previousChange(series){
  return {value:latest.value-prior.value,priorDate:prior.date,latestDate:latest.date};
 }
 export function contextWindow(rows,range){
- if(range==='all'||!rows.length)return rows.slice();const end=rows.at(-1).date,year=Number(end.slice(0,4))-(range==='5y'?5:range==='3y'?3:1),cutoff=year+end.slice(4);return rows.filter(o=>o.date>=cutoff);
+ if(range==='all'||!rows.length)return rows.slice();const end=rows.at(-1).date,year=Number(end.slice(0,4))-(range==='20y'?20:range==='10y'?10:range==='5y'?5:range==='3y'?3:1),cutoff=year+end.slice(4);return rows.filter(o=>o.date>=cutoff);
 }
 export function sampleContextRows(rows,target=600){
  if(rows.length<=target)return rows.slice();const indices=new Set([0,rows.length-1]),size=Math.ceil(rows.length/(target/4));

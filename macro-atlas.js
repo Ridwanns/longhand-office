@@ -1,3 +1,4 @@
+import {mountMacroChartInspectors} from './macro-chart.js';
 import {CONTEXT_COUNTRIES,CONTEXT_SERIES} from './macro-context-contract.js';
 import {contextAtlasDatum,contextWindow} from './macro-context-math.js';
 import {contextChart} from './macro-context-ui.js';
@@ -18,6 +19,7 @@ let lastUI={indicator:'gdp',range:'all',mode:'map',zoom:1,x:0,y:0};
 export const macroAtlasSection=()=>'<section id="macro-atlas" class="macro-atlas" aria-label="Interactive Global Macro atlas"><p class="quiet-note" role="status">Reading the existing macro coverage…</p></section>';
 export function mountMacroAtlas(root,feed,selection){
  if(!root?.isConnected)return;const renderStarted=performance.now();
+ if(!root._chartInspectors){mountMacroChartInspectors(root);root._chartInspectors=true;}
  let context=null,compare=['USA','EMU','IDN','MYS','SGP','THA','PHL','VNM','WLD','CHN','JPN'];
  let saved=history.state?.macroAtlas?.route===location.hash?history.state.macroAtlas:null;
  let tooltipKey='',inspectedCountry=null,state={...lastUI,country:atlasCountry(selection),...(saved||{})},rates=null,rateError='',ratesLoading=true,drag=null,ignoreClick=false;
