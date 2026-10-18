@@ -5,9 +5,9 @@ export async function run(original){
  try{
   await p.goto('http://127.0.0.1:4175/office/#market/macro/id/overview');await p.locator('#macro-context[data-ready=true]').waitFor({state:'attached'});
   check('Map is first and open',await p.locator('#macro-world-map').evaluate(e=>e.open&&e.parentElement.firstElementChild===e));
-  for(const selector of ['.macro-map-history','.macro-briefing-panel','.macro-monitor-tools'])check(selector+' is folded by default',await p.locator(selector).evaluate(e=>!e.open));
+  for(const selector of ['.macro-map-history','.macro-monitor-tools'])check(selector+' is folded by default',await p.locator(selector).evaluate(e=>!e.open));
   await p.locator('.macro-map-history>summary').click();check('Historical map charts remain accessible',await p.locator('[data-atlas-history] svg').first().isVisible());await p.locator('.macro-map-history>summary').click();
-  await p.locator('.macro-briefing-panel>summary').click();check('Briefing charts remain accessible',await p.locator('.briefing-charts svg').first().isVisible());
+  check('Primary monitor is visible without opening a briefing panel',await p.locator('.macro-direct-monitor').isVisible());await p.locator('.macro-research-tools>summary').click();await p.locator('[data-context-view=briefing]').click();check('Original briefing charts remain accessible',await p.locator('.briefing-charts svg').first().isVisible());
   check('Interpretation is folded',await p.locator('.macro-observation-notes').evaluate(e=>!e.open));await p.locator('.macro-observation-notes>summary').click();check('Interpretation remains accessible',await p.locator('.briefing-release-notes').isVisible());
   await p.locator('[data-macro-destination=economy]').click();await p.locator('#macro-context[data-ready=true]').waitFor();await p.locator('#macro-country').selectOption('BRA');
   check('Country selection retains the Economy route',p.url().endsWith('/global/economy/BRA'));

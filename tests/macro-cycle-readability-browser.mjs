@@ -1,7 +1,7 @@
 export async function run(original){
  const c=await original.context().browser().newContext({viewport:{width:1440,height:1000},reducedMotion:'reduce'}),p=await c.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));
  try{
- await p.goto('http://127.0.0.1:4175/office/#market/macro/id/economy');await p.locator('#macro-context[data-ready=true]').waitFor();await p.locator('[data-context-view=cycle]').click();await p.locator('.cycle-quadrant-desk svg').first().waitFor();
+ await p.goto('http://127.0.0.1:4175/office/#market/macro/id/economy');await p.locator('#macro-context[data-ready=true]').waitFor();await p.locator('.context-more-views>summary').click();await p.locator('[data-context-view=cycle]').click();await p.locator('.cycle-quadrant-desk svg').first().waitFor();
  const quadrant=await p.locator('[data-cycle-observations]').evaluate(e=>JSON.parse(e.dataset.cycleObservations));if(await p.locator('.cycle-year-chip').count()!==quadrant.length)throw Error('Annual year trail missing');
  const counts=await p.locator('[data-cycle-regime]').evaluateAll(ns=>ns.map(e=>Number(e.querySelector('small').textContent.split(' ')[0])));const expected=[1,2,3,4].map(q=>quadrant.filter(o=>o.growthChange!==0&&o.inflationChange!==0&&(o.growthChange>0?(o.inflationChange<0?1:2):(o.inflationChange>0?3:4))===q).length);if(JSON.stringify(counts)!==JSON.stringify(expected))throw Error('Annual state counts mismatch');
  if(await p.locator('.cycle-quadrant-fill').count()!==4||await p.locator('.cycle-link:visible').count()>1)throw Error('Quadrant layout or initial links');

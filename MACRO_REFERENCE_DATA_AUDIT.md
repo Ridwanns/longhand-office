@@ -51,3 +51,13 @@ Applied to Office:
 - All previous sources, mathematical inputs, legacy routes and detailed views remain accessible. No projection, consensus, nowcast or forward signal was added.
 
 Placement regression checks cover a single heading, aligned desktop header, map/readings adjacency, all four quad names, year-label clicks, state counts, responsive widths 1440/1180/1024/768/390/320, and browser errors. Existing economic-explorer, navigation, exact-source and cycle-value checks were rerun.
+
+## Direct-view revision
+
+User feedback: primary macro data must be visible immediately, rather than hidden inside panels. Economy now opens Monitor by default. The overview also shows the monitor directly below the first-position world map.
+
+The direct view places four dated sourced readings above a two-column analysis layout: the existing observed annual quad on the left, GDP and CPI history on the right. Country headings update with the shared filter. Regular internal navigation is reduced to Monitor and Economic data; prior specialist views remain available in Other views. Method tables remain secondary. Missing coverage, old acquisition/period flags and separate historical sources stay explicit.
+
+The palette now uses a neutral navy page, blue-grey data surfaces, restrained blue/teal chart accents and coral for negative bars. Headline text uses clear sans-serif hierarchy while the Office identity remains in its header/sidebar. Primary values remain 20 px and native chart axes retain the existing screen-size fitting.
+
+Verification: the direct-view browser suite checks immediate visibility without opening disclosures, four readings, both historical charts and the annual quad, two desktop columns, country switching, legacy source selection, inline year interaction, detailed indicator access, seven responsive widths, both themes, unchanged source arrays, and an immediately visible overview monitor. Existing source, navigation, quad and advanced-access suites were rerun.
