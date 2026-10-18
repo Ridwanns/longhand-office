@@ -4,7 +4,7 @@ export async function run(original,base='http://127.0.0.1:4175/office/'){
  const check=(name,ok)=>{if(!ok)throw Error(name);checks.push({name,passed:true});};
  const fmt=n=>new Intl.NumberFormat('en-GB',{minimumFractionDigits:1,maximumFractionDigits:2}).format(n);
  try{
-  await p.goto(base+'#market/macro/asean/overview/MYS');await p.locator('#macro-atlas[data-releases-ready=true]').waitFor();await p.locator('#macro-context[data-ready=true]').waitFor();
+  await p.goto(base+'#market/macro/asean/overview/MYS');await p.locator('#macro-atlas[data-releases-ready=true]').waitFor({state:'attached'});await p.locator('#macro-context[data-ready=true]').waitFor();await p.locator('.macro-geographic-exploration>summary').click();
   const before=await p.evaluate(()=>JSON.stringify({releases:document.querySelector('#macro-content')._macroReleases,context:document.querySelector('#macro-content')._macroContext,legacy:document.querySelector('#macro-content')._macroFeed}));
   check('Overview map exposes the actual Malaysia Q3 advance release',await p.locator('[data-atlas-metric=gdp]').innerText().then(t=>t.includes('5.3%')&&t.includes('2026-Q3')&&t.includes('estimate')));
   check('A one-release source does not invent a comparison to another source',await p.locator('[data-atlas-metric=gdp]').innerText().then(t=>t.includes('Previous consecutive observation unavailable')));

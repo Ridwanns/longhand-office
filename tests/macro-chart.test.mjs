@@ -63,3 +63,8 @@ test('Chart comparisons never skip a missing period or compare across a source g
  assert.equal(macroPointChange([row('2026-04-01',-1),row('2026-07-01',0)],1,'Q','% YoY'),'Up 1.0 percentage points vs Q2 2026');
  assert.equal(macroPointChange([row('2026-04-01',0),row('2026-07-01',0)],1,'Q','% YoY'),'Unchanged vs Q2 2026');
 });
+
+test('Compact chart height changes presentation only, retaining every original observation',()=>{
+ const rows=[row('2026-01-01',5.61),row('2026-04-01',5.29)],before=JSON.stringify(rows),compact=nativeMacroChart(rows,{width:560,height:240,frequency:'Q',unit:'% YoY',bars:true}),normal=nativeMacroChart(rows,{width:560,frequency:'Q',unit:'% YoY',bars:true});
+ assert.match(compact,/viewBox="0 0 560 240"/);assert.match(normal,/viewBox="0 0 560 300"/);assert.equal(compact.match(/data-macro-points="([^"]+)"/)[1],normal.match(/data-macro-points="([^"]+)"/)[1]);assert.equal(JSON.stringify(rows),before);
+});

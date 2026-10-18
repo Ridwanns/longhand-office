@@ -3,7 +3,7 @@ import {MACRO_SERIES,ASEAN_COUNTRIES,periodIndex,seriesSummary} from './macro-co
 export const ATLAS_INDICATORS={gdp:'GDP growth',cpi:'Inflation',policy:'Policy rate',yield:'10Y yield'};
 export const ATLAS_GROUPS={EMU:'Euro area',WLD:'World'};
 export const ATLAS_COUNTRIES={USA:'United States',IDN:'Indonesia',...Object.fromEntries(Object.entries(ASEAN_COUNTRIES).filter(([id])=>id!=='IDN'))};
-export function atlasCountry(selection){return selection.region==='us'?'USA':selection.region==='eu'?'EMU':selection.region==='global'?'WLD':selection.region==='asean'?selection.country:'IDN';}
+export function atlasCountry(selection){if(selection.economy)return selection.economy;return selection.region==='us'?'USA':selection.region==='eu'?'EMU':selection.region==='global'?'WLD':selection.region==='asean'?selection.country:'IDN';}
 export function atlasRoute(country,view='overview'){
  const region=country==='USA'?'us':country==='IDN'?'id':country==='EMU'?'eu':country==='WLD'?'global':Object.hasOwn(ASEAN_COUNTRIES,country)?'asean':null;
  return region?'#market/macro/'+region+'/'+view+(region==='asean'?'/'+country:''):null;
