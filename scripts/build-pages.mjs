@@ -11,6 +11,7 @@ const generated=['market-view.js','index.html','app.js','office-storage.js','off
 files.push('macro-atlas.js','macro-atlas-data.js','macro-atlas-labels.js','macro-atlas.css','office-visual-system.css','motion-system.js');
 ['market-data-contract.js','market-data-adapters.js','market-data-research.js','market-data-worker.js','market-data-storage.js','market-data-service.js','market-data-ui.js','market-data.css'].forEach(f=>files.push(f));
 files.push('macro-chart.js','macro-context-contract.js','macro-context-math.js','macro-context-ui.js','macro-context.css');
+files.push('macro-releases-contract.js','macro-releases-ui.js');
 files.push('workflow-continuity.js');
 files.push('encrypted-backup.js','sec-fundamentals-contract.js','official-fundamentals.js');
 files.push('idx-msn-ui.js','idx-msn-contract.js');
@@ -49,6 +50,9 @@ await copyFile(path.join(input,'macro.json'),path.join(dest,'data','macro.json')
 const {validateMacroContext}=await import('../macro-context-contract.js');
 validateMacroContext(JSON.parse(await readFile(path.join(input,'macro-context.json'),'utf8')));
 await copyFile(path.join(input,'macro-context.json'),path.join(dest,'data','macro-context.json'));
+const {validateMacroReleases}=await import('../macro-releases-contract.js');
+validateMacroReleases(JSON.parse(await readFile(path.join(input,'macro-releases.json'),'utf8')));
+await copyFile(path.join(input,'macro-releases.json'),path.join(dest,'data','macro-releases.json'));
 const {validateSecFeed}=await import('../sec-fundamentals-contract.js');
 const secFile=path.join(input,'sec-fundamentals.json');
 validateSecFeed(JSON.parse(await readFile(secFile,'utf8')));

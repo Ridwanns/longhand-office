@@ -1,0 +1,13 @@
+{
+  "format": "longhand-regional-reviewed",
+  "version": 1,
+  "reviewedAt": "2026-10-18T08:42:00Z",
+  "reviewNote": "Official DOSM, SingStat, Vietnam NSO and Philippine Statistics Authority releases reviewed on 18 October 2026. These are manually reviewed public release observations, not automatic feeds. Assembly does not renew this review date. Automatic historical sources remain separate. A release date is null where it could not be confirmed on the reviewed page. No original publication date is inferred for revised past quarters.",
+  "series": [
+    {"id":"review-SGP-gdp","sourceUrl":"https://www.singstat.gov.sg/news/advance-gdp-estimate-3q2026","observations":[{"date":"2026-07-01","value":5.4,"status":"estimate","releasedAt":"2026-10-14"}]},
+    {"id":"review-MYS-gdp","sourceUrl":"https://www.dosm.gov.my/uploads/release-content/file_20261016103547.pdf","observations":[{"date":"2026-07-01","value":5.3,"status":"estimate","releasedAt":"2026-10-16"}]},
+    {"id":"review-VNM-gdp","sourceUrl":"https://www.nso.gov.vn/du-lieu-va-so-lieu-thong-ke/2026/10/thong-cao-bao-chi-tinh-hinh-kinh-te-xa-hoi-quy-iii-va-9-thang-nam-2026/","observations":[{"date":"2026-07-01","value":9.95,"status":"estimate","releasedAt":null}]},
+    {"id":"review-VNM-inflation","sourceUrl":"https://www.nso.gov.vn/du-lieu-va-so-lieu-thong-ke/2026/10/thong-cao-bao-chi-tinh-hinh-kinh-te-xa-hoi-quy-iii-va-9-thang-nam-2026/","observations":[{"date":"2026-09-01","value":5.08,"status":"reported","releasedAt":null}]},
+    {"id":"review-PHL-inflation","sourceUrl":"https://psa.gov.ph/price-indices/cpi-ir","observations":[{"date":"2026-09-01","value":7.2,"status":"reported","releasedAt":"2026-10-06"}]}
+  ]
+}
