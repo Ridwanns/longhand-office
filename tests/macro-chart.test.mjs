@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {macroPeriodRows,macroScale,macroSegments,macroTimeTicks,nativeMacroChart} from '../macro-chart.js';
+import {macroPointChange,macroPeriodRows,macroScale,macroSegments,macroTimeTicks,nativeMacroChart} from '../macro-chart.js';
 import {contextWindow} from '../macro-context-math.js';
 import {CONTEXT_WDI_URL} from '../macro-context-contract.js';
 const row=(date,value)=>({date,value});
@@ -48,4 +48,18 @@ test('Macro percentage charts retain a zero reference instead of exaggerating a 
 });
 test('Long-horizon time axes never repeat an endpoint year as an interior label',()=>{
  const ticks=macroTimeTicks('2016-10-16','2026-10-16',10);assert.equal(new Set(ticks.map(t=>t.label)).size,ticks.length);assert.equal(ticks[0].label,'2016');assert.equal(ticks.at(-1).label,'2026');
+});
+
+test('Displayed change is an independently checked rate difference with explicit percentage-point units',()=>{
+ const rows=[row('2026-01-01',5.61),row('2026-04-01',5.29)],before=JSON.stringify(rows);
+ assert.equal(macroPointChange(rows,1,'Q','% YoY'),'Down 0.32 percentage points vs Q1 2026');
+ assert.equal(macroPointChange([row('2026-08-01',3.19),row('2026-09-01',3.28)],1,'M','% YoY'),'Up 0.09 percentage points vs Aug 2026');
+ assert.equal(JSON.stringify(rows),before);
+});
+test('Chart comparisons never skip a missing period or compare across a source gap',()=>{
+ for(const rows of [[row('2026-01-01',5),row('2026-07-01',6)],[row('2026-04-01',null),row('2026-07-01',6)]])assert.equal(macroPointChange(rows,1,'Q','% YoY'),'Previous consecutive observation unavailable');
+ assert.equal(macroPointChange([row('2026-07-01',6)],0,'Q','% YoY'),'Previous consecutive observation unavailable');
+ assert.equal(macroPointChange([row('2026-04-01',6),row('2026-07-01',null)],1,'Q','% YoY'),'No reported value for this period');
+ assert.equal(macroPointChange([row('2026-04-01',-1),row('2026-07-01',0)],1,'Q','% YoY'),'Up 1.0 percentage points vs Q2 2026');
+ assert.equal(macroPointChange([row('2026-04-01',0),row('2026-07-01',0)],1,'Q','% YoY'),'Unchanged vs Q2 2026');
 });

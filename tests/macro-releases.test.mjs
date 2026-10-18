@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {RELEASE_SERIES,RELEASE_COUNTRIES,RELEASE_GROUPS,releasePeriodEnd,validateMacroReleases} from '../macro-releases-contract.js';
 import {releaseYoY,projectReleaseGem,projectReleaseDosm,projectReleaseSingstat,projectReleaseEuro,projectReleaseFred,projectReleaseOns} from '../scripts/macro-releases-data.mjs';
-import {releaseCandidates,releaseHistory,releaseSummary,renderReleaseDesk} from '../macro-releases-ui.js';
+import {releaseAtlasDatum,releaseCandidates,releaseHistory,releaseSummary,renderReleaseDesk} from '../macro-releases-ui.js';
 const stamp='2026-10-18T08:42:00Z',now=Date.parse(stamp),hash='a'.repeat(64);
 const item=(id,observations=[],error)=>({id,unit:'% YoY',frequency:RELEASE_SERIES[id].frequency,sourceUrl:RELEASE_SERIES[id].sourceUrl,retrievedAt:stamp,sourceHash:hash,observations,...(error?{error}:{})});
 const fixture=()=>({format:'longhand-macro-releases',version:1,generatedAt:stamp,series:Object.keys(RELEASE_SERIES).map(id=>item(id,[],'TEST ONLY unavailable'))});
@@ -29,3 +29,9 @@ test('No quarterly coverage or annual observations produces an honest empty stat
 test('Official source text is escaped in presentation and does not become executable markup',()=>{const s=item('review-MYS-gdp',[row('2026-07-01',5.3,'estimate')]);s.error='<script>TEST ONLY</script>';const html=renderReleaseDesk({series:[s]},null,'MYS',{error:s.error});assert.doesNotMatch(html,/<script>/);assert.match(html,/&lt;script&gt;/);});
 
 test('ONS uses quarterly IHYR and monthly D7G7, with the release vintage in London calendar time',()=>{const d={description:{cdid:'IHYR',datasetId:'QNA',unit:'%',releaseDate:'2026-09-29T23:00:00.000Z'},years:[{date:'2025',value:'99'}],quarters:[{date:'2026 Q2',value:'1.4',sourceDataset:'QNA'}],months:[]};const r=projectReleaseOns(d,'ons-GBR-gdp');assert.equal(r.observations[0].date,'2026-04-01');assert.equal(r.observations[0].value,1.4);assert.equal(r.sourceUpdated,'2026-09-30');d.description.cdid='IHYP';assert.throws(()=>projectReleaseOns(d,'ons-GBR-gdp'));});
+
+test('Geographic overview prefers actual quarterly releases and preserves separate historical sources',()=>{
+ const feed={series:[item('review-MYS-gdp',[row('2026-07-01',5.3,'estimate')]),item('dosm-MYS-gdp',[row('2026-01-01',5.4),row('2026-04-01',6)])]},before=JSON.stringify(feed),datum=releaseAtlasDatum(feed,null,'MYS','gdp',now);
+ assert.equal(datum.value,5.3);assert.equal(datum.period,'2026-Q3');assert.equal(datum.frequency,'Q');assert.equal(datum.status,'estimate');assert.equal(datum.change,'Previous consecutive observation unavailable');assert.equal(releaseHistory(datum.releaseItems).id,'dosm-MYS-gdp');assert.equal(JSON.stringify(feed),before);
+ assert.equal(releaseAtlasDatum(feed,null,'TLS','gdp',now),null);assert.equal(releaseAtlasDatum(feed,null,'MYS','policy',now),null);assert.equal(releaseAtlasDatum(null,null,'MYS','gdp',now),null);
+});
