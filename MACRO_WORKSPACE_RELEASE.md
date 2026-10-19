@@ -57,7 +57,7 @@ Verified defects fixed during this work: a failed Macro series attempted to read
 
 Tests establish the documented cases, not the absence of every possible bug. Application-level encryption at rest, authenticated private hosting, device synchronization and verified streaming market data remain outside this release.
 
-See [ARTHARA_REFERENCE_REVIEW.md](ARTHARA_REFERENCE_REVIEW.md) for the public-site review and the boundary between visible product descriptions, working Office features and unverified proprietary content.
+See [EXTERNAL_MACRO_REFERENCE_REVIEW.md](EXTERNAL_MACRO_REFERENCE_REVIEW.md) for the public-site review and the boundary between visible product descriptions, working Office features and unverified proprietary content.
 
 ## Publication receipt
 
