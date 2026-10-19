@@ -17,3 +17,11 @@ test('Workspace UI imports share the release identity while model code stays unc
  assert.equal(assets['quant-math.js'],input['quant-math.js']);
  assert.equal(assets['market-data-ui.js'],input['market-data-ui.js']);
 });
+
+test('The application versions the Markets bridge so a cached bridge cannot pin an older macro graph',()=>{
+ const input={...fixture(),'market-terminal.js':"import './macro-ui.js';import './market-view.js';import './market-catalogue.js';"};
+ input['app.js']+="\nimport './market-terminal.js';";
+ const {version,assets}=versionMacroAssets(input);
+ assert.ok(assets['app.js'].includes("'./market-terminal.js?office="+version+"'"));
+ for(const name of ['macro-ui','market-view','market-catalogue'])assert.ok(assets['market-terminal.js'].includes("'./"+name+".js?office="+version+"'"));
+});
