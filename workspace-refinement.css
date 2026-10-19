@@ -1,0 +1,120 @@
+/* Working-desk refinement: readable controls, one navigation layer and compact context. */
+.latest-cycle{--cycle-color:#946241;--cycle-q1:#428b78;--cycle-q2:#b59044;--cycle-q3:#bb7664;--cycle-q4:#718da8;min-width:0}
+.latest-cycle.regime-1{--cycle-color:var(--cycle-q1)}.latest-cycle.regime-2{--cycle-color:var(--cycle-q2)}.latest-cycle.regime-3{--cycle-color:var(--cycle-q3)}.latest-cycle.regime-4{--cycle-color:var(--cycle-q4)}
+.latest-cycle-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0!important;background:none!important;border:0!important}
+body .latest-cycle-heading h3{font:600 22px/1.25 'Segoe UI',Arial,sans-serif;letter-spacing:-.5px;margin:4px 0 0}
+.latest-cycle-heading .eyebrow{font-size:10px;margin:0;color:var(--muted)}
+.latest-cycle-badge{font:650 25px/1.3 'Segoe UI',Arial,sans-serif;padding:8px 14px;border-radius:9px;background:color-mix(in srgb,var(--cycle-color) 18%,var(--white));border:1px solid color-mix(in srgb,var(--cycle-color) 60%,var(--line));white-space:nowrap;color:var(--ink)}
+body .latest-cycle-state{font-size:15px;font-weight:550;margin:14px 0 6px;color:var(--ink)}
+body .latest-cycle-timing{font-size:12px;color:var(--muted);line-height:1.7;margin:0 0 12px}
+.latest-cycle-plot{margin:12px 0;container-type:inline-size}.latest-cycle-plot svg{display:block;width:100%;height:auto!important;max-height:none!important;background:none!important;padding:0!important;border:0!important}
+body .macro-context .latest-cycle-plot svg text{font-family:'Segoe UI',Arial,sans-serif;font-size:13px;fill:var(--muted)}
+.cycle-zone-compact{display:none}
+@container(max-width:400px){body .macro-context .latest-cycle-plot svg text{font-size:20px}.cycle-zone-full{display:none}.cycle-zone-compact{display:block}}
+@container(max-width:320px){body .macro-context .latest-cycle-plot svg text{font-size:24px}}
+.latest-cycle-zone rect{fill:var(--zone);fill-opacity:.07;stroke:transparent;stroke-width:1}
+.latest-cycle-zone.quad-1{--zone:var(--cycle-q1)}.latest-cycle-zone.quad-2{--zone:var(--cycle-q2)}.latest-cycle-zone.quad-3{--zone:var(--cycle-q3)}.latest-cycle-zone.quad-4{--zone:var(--cycle-q4)}
+.latest-cycle-zone.is-active rect{fill-opacity:.19;stroke:var(--zone);stroke-opacity:.65;vector-effect:non-scaling-stroke}
+.latest-cycle-axes{stroke:var(--muted);stroke-width:1;opacity:.55;vector-effect:non-scaling-stroke}.latest-cycle-vector{stroke:var(--cycle-color);stroke-width:2;stroke-dasharray:4 4;vector-effect:non-scaling-stroke}.latest-cycle-halo{fill:var(--cycle-color);fill-opacity:.2}.latest-cycle-point{fill:var(--cycle-color);stroke:var(--ink);stroke-width:1.5;vector-effect:non-scaling-stroke}
+body .latest-cycle-plot figcaption{font:12px/1.7 'Segoe UI',Arial,sans-serif;color:var(--muted);margin:4px 0 0}
+.latest-cycle-evidence{display:grid;grid-template-columns:1fr 1fr;gap:12px}.latest-cycle-evidence article{padding:14px;background:var(--paper);border:1px solid var(--line);border-radius:7px;min-width:0}
+.latest-cycle-evidence article header{display:flex;align-items:center;justify-content:space-between;gap:8px;background:none!important;border:0!important;padding:0!important;position:static!important;height:auto!important}
+.latest-cycle-evidence article header span{font-size:12px;color:var(--muted)}.latest-cycle-evidence article header strong{font-size:17px;font-variant-numeric:tabular-nums}.latest-cycle-evidence small{font-size:11px;font-weight:400}
+body .latest-cycle-evidence p{font-size:11px;line-height:1.6;color:var(--muted);margin:7px 0 0}.latest-cycle-evidence b{font-size:17px;color:var(--ink);font-variant-numeric:tabular-nums}.latest-cycle-evidence p span{display:block}
+.latest-cycle-method{margin-top:14px;border-top:1px solid var(--line)}.latest-cycle-method summary,.cycle-annual-archive>summary{font-size:12px;padding:13px 0;min-height:44px;cursor:pointer}.latest-cycle-method p,.latest-cycle-method li{font-size:12px;line-height:1.8;color:var(--muted)}.latest-cycle-method li{margin-block:12px;overflow-wrap:anywhere}
+.cycle-annual-archive{margin-top:10px;border-top:1px solid var(--line)}
+.treasury-history{border-top:1px solid var(--line);margin:24px 0;padding:20px 0;min-width:0}.treasury-history-controls{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0}.treasury-history-controls label{display:grid;gap:6px;font-size:12px;color:var(--muted);flex:1;min-width:100px}.treasury-history-controls select{width:100%;min-height:44px}.market-sector-filter{display:grid;gap:7px;font-size:12px;padding:12px}.market-sector-filter select{width:100%}#market-board:is([data-category=commodities],[data-category=bonds]) .watchlist-panel>.table-wrap{max-height:650px;overflow:auto}#market-board:is([data-category=commodities],[data-category=bonds]) thead{position:sticky;top:0;z-index:1}body .watchlist-table tr[hidden]{display:none!important}
+@media(max-width:480px){.latest-cycle-evidence{gap:8px}.latest-cycle-evidence article{padding:10px}.latest-cycle-evidence article header{display:block}.latest-cycle-evidence article header strong{display:block;margin-top:5px}.latest-cycle-badge{font-size:22px;padding:7px 10px}body .latest-cycle-heading h3{font-size:20px}}
+:root{--app-accent:#27685f;--olive:var(--app-accent);--desk-radius:9px;--desk-shadow:0 3px 14px #182d2510}
+:root[data-theme=dark]{--app-accent:#96cabb;--olive:var(--app-accent);--desk-shadow:0 3px 14px #00000020}
+body{font-size:14px}
+body .eyebrow{font-size:11px;letter-spacing:1.2px}
+body .quiet-note,body .page-heading p:last-child,body .macro-page-title>p:last-child{font-size:12px;line-height:1.75}
+body .page-heading{margin-bottom:24px}
+body .office-breadcrumb,body .office-search,body .theme-toggle{font-size:12px}
+body header.office-topbar #office-navigation a{font-size:13px;border-radius:6px;min-height:42px}
+body header.office-topbar #office-navigation a:hover{background:color-mix(in srgb,var(--olive) 8%,var(--white))}
+body .office-nav-group{font-size:10px;letter-spacing:1.1px}
+body .office-sidebar-foot small{font-size:11px;line-height:1.6}
+body :is(.primary,.secondary){border-radius:7px;font-size:13px;min-height:44px;align-content:center}
+body :is(input:not([type=checkbox]):not([type=range]):not([type=radio]),select,textarea){font-size:14px;border-radius:7px}
+body input::placeholder,body textarea::placeholder{color:var(--muted);opacity:1}
+body :is(.empty-state,.record-list article,.vault-panel,.workspace-health,.today-office,.review-queue,.market-detail,.official-rates,.watchlist-panel,.market-chart-desk){border-radius:var(--desk-radius)}
+body .table-wrap{border-radius:7px}
+body th{font-size:11px;line-height:1.5}
+body td{font-size:13px}
+body .empty-state{background:linear-gradient(135deg,color-mix(in srgb,var(--olive) 5%,var(--white)),var(--white));padding:36px 24px}
+body .empty-state p{font-size:14px;max-width:65ch;margin-inline:auto}
+body .empty-state h2{font-size:28px}
+body .overview .desk-summary{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;border:0;padding:0;margin:0 0 24px}
+body .overview .desk-summary>div{grid-column:1/-1;padding:0}
+body .overview .desk-summary>div h2{font-family:inherit;font-size:14px;letter-spacing:0;color:var(--muted);margin:0}
+body .overview .desk-summary>div .eyebrow{display:none}
+body .overview .desk-summary>a{display:grid;align-content:start;gap:8px;padding:20px 22px;border:1px solid var(--line);border-radius:var(--desk-radius);background:var(--white);font-size:13px;transition:border-color 140ms,box-shadow 140ms}
+body .overview .desk-summary>a:hover{border-color:var(--olive);box-shadow:var(--desk-shadow)}
+body .overview .desk-summary>a strong{font-size:32px;font-family:inherit;font-weight:550;font-variant-numeric:tabular-nums;color:var(--olive);line-height:1.2}
+body .overview .today-office{border-top:3px solid var(--olive);padding:24px}
+body .overview .today-columns p,body .overview .today-columns a{font-size:13px}
+body .overview .today-columns h3{font-size:20px;margin-top:0}
+body .overview .review-queue{padding:24px}
+body .overview .office-strip{grid-template-columns:repeat(3,minmax(0,1fr))}
+/* Unbuilt spaces have no working destination; the courtyard drawing retains their labels. */
+body .overview .office-strip>div{display:none}
+/* Desktop already has the same destinations in the sidebar. Mobile keeps its local tabs. */
+@media(min-width:1001px){body main>.market-tabs{display:none}}
+body .watchlist-panel-heading{font-size:11px;letter-spacing:.8px}
+body .watchlist-table small{font-size:11px}
+body .watch-symbol{font-size:14px}
+body #board-status{font-size:12px;line-height:1.7}
+body .research-lab .quant-content>.quant-head{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;column-gap:24px;padding-bottom:8px}
+body .research-lab .quant-content>.quant-head h1{margin:0}
+body .research-lab .quant-content>.quant-head>p:last-child{grid-column:1/-1;margin:10px 0 14px;font-size:13px}
+body .research-lab .desk-mode{margin:0;gap:7px}
+body .research-lab[data-has-instrument=false][data-lab-view=overview] .lab-context{display:none}
+body .research-lab .lab-context{background:var(--white);border:1px solid var(--line);border-left:3px solid var(--olive);border-radius:var(--desk-radius);padding:16px 20px;margin-bottom:16px}
+body .research-lab .lab-context .workflow-links{margin:12px 0 0;gap:10px}
+body .research-lab .lab-context .workflow-links a{font-size:12px}
+body .research-lab .research-views{gap:0 20px;background:var(--paper);margin-bottom:20px;top:66px}
+body .research-lab .research-views a{font-size:13px;padding:12px 0;min-height:44px;background:transparent;border-radius:0}
+body .research-lab .research-views a[aria-current=page]{background:transparent;color:var(--olive);border-bottom:2px solid var(--olive)}
+body .research-lab #lab-title-overview:not(:focus){position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;margin:0;padding:0}
+body .research-lab #lab-overview .ticker-desk{padding:24px;border:1px solid var(--line);border-top:3px solid var(--olive);border-radius:var(--desk-radius);background:var(--white)}
+body .research-lab .ticker-desk h2{font-size:28px;margin:8px 0 12px}
+body .research-lab .ticker-desk>p{font-size:14px;max-width:78ch}
+body .research-lab .ticker-desk .quiet-note{font-size:12px}
+body .research-lab[data-has-instrument=false] .ticker-archive-actions>button:disabled{display:none}
+body .research-lab .source-workspace-link{font-size:12px}
+body .research-lab .research-mobile-view{font-size:12px}
+body .source-workspace .source-controls label{font-size:13px}
+body .source-workspace>details{border:1px solid var(--line);border-radius:var(--desk-radius);padding:4px 18px;margin:14px 0;background:var(--white)}
+body .source-workspace>details>summary{min-height:48px;align-content:center;font-size:13px;cursor:pointer}
+.official-source-directory>summary>span{display:block;color:var(--muted);font-size:12px;margin:4px 0 10px}
+.official-source-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:18px 0}
+.official-source-grid article{padding:18px;background:var(--paper);border:1px solid var(--line);border-radius:7px;min-width:0}
+.official-source-grid article>span{font-size:10px;letter-spacing:1px;color:var(--olive);font-weight:600}
+.official-source-grid h3{font-family:inherit;font-size:16px;font-weight:600;letter-spacing:0;margin:10px 0}
+.official-source-grid p{font-size:13px;color:var(--muted);line-height:1.7}
+.official-source-grid a{display:block;font-size:12px;padding:9px 0;min-height:40px;overflow-wrap:anywhere}
+body .macro-monitor .macro-scope>label,body .macro-monitor .macro-geographic-exploration>summary,body .macro-monitor .context-toolbar label{font-size:12px}
+body .macro-monitor .atlas-key-figures h4,body .macro-monitor .atlas-key-figures small{font-size:12px;line-height:1.6}
+body .macro-monitor .atlas-country-heading p{font-size:12px}
+body .macro-monitor .atlas-coverage{font-size:12px;line-height:1.7;max-width:110ch}
+body .macro-monitor .atlas-key-figures>section{padding:14px 0;border-top:1px solid var(--line)}
+@media(max-width:1100px){.official-source-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){
+ body .overview .desk-summary{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+ body .overview .desk-summary>a{padding:16px 10px;font-size:12px;gap:8px}
+ body .overview .desk-summary>a:last-child{grid-column:auto}
+ body .overview .desk-summary>a strong{font-size:28px}
+ body .overview .today-office,body .overview .review-queue{padding:20px 16px}
+ body .overview .office-strip{grid-template-columns:1fr}
+ body .research-lab .quant-content>.quant-head{display:block}
+ body .research-lab .desk-mode{margin:12px 0}
+ body .research-lab #lab-overview .ticker-desk{padding:20px 16px}
+ body .research-lab .lab-context{padding:16px 12px}
+ body .research-lab .lab-context .workflow-links>*{max-width:100%}
+ body .research-lab .research-views{top:60px}
+ .official-source-grid{grid-template-columns:1fr}
+ body .source-workspace>details{padding-inline:12px}
+ body .macro-monitor .atlas-key-figures h4,body .macro-monitor .atlas-key-figures small{font-size:12px}
+}

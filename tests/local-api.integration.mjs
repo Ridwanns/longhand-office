@@ -17,7 +17,7 @@ test('long market histories expose only bounded public observations with the sam
  assert.equal((await fetch(base+'/api/market/history',{method:'POST'})).status,405);
  assert.equal((await fetch(base+'/scripts/market-history-data.mjs')).status,404);
  const response=await fetch(base+'/api/market/history');assert.equal(response.status,200);assert.equal(response.headers.get('access-control-allow-origin'),null);
- const {validateMarketHistories}=await import('../market-history-contract.js'),feed=validateMarketHistories(await response.json());assert.equal(feed.entries.length,11);assert.equal(Object.hasOwn(feed,'portfolios'),false);assert.equal(Object.hasOwn(feed,'token'),false);
+ const {validateMarketHistories}=await import('../market-history-contract.js'),feed=validateMarketHistories(await response.json());assert.equal(feed.entries.length,(await import('../market-history-contract.js')).HISTORY_INSTRUMENTS.length);assert.equal(Object.hasOwn(feed,'portfolios'),false);assert.equal(Object.hasOwn(feed,'token'),false);
  for(const e of feed.entries)if(e.quote)assert.ok(e.quote.history.length<=6000);
 });
 test('local MSN directory and routes enforce same origin, bounded symbols and backend file isolation',async()=>{

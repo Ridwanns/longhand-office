@@ -7,3 +7,13 @@ test('The entrypoint and every shared macro dependency use the same release quer
 test('Financial module bytes, acquisition URLs and personal storage addresses are preserved',()=>{const input=fixture(),{assets}=versionMacroAssets(input);for(const file of ['quant-math.js','quant-contract.js'])assert.equal(assets[file],input[file]);assert.ok(assets['app.js'].includes("const KEY='longhand-office.browser.records.'+new URL('.',location.href).pathname+'v1';"));assert.ok(assets['macro-context-ui.js'].includes("new URL('./data/macro-context.json',import.meta.url)"));const base='https://example.com/longhand-office/';assert.equal(new URL('./data/macro-context.json',new URL('macro-context-ui.js?office=123',base)).href,base+'data/macro-context.json');});
 test('A code or style change creates a new asset identity while identical releases keep it',()=>{const input=fixture(),first=versionMacroAssets(input);input['macro-context.css']+='\nbody{color:red}';assert.notEqual(versionMacroAssets(input).version,first.version);assert.equal(versionMacroAssets(fixture()).version,first.version);});
 test('Missing entrypoint rejects rather than silently shipping a mixed cached release',()=>{assert.throws(()=>versionMacroAssets({...fixture(),'index.html':'<head></head>'}));});
+
+test('Workspace UI imports share the release identity while model code stays unchanged',()=>{
+ const input={...fixture(),'research-lab.js':"import './workspace-shell.js';import './market-data-ui.js';",'workspace-shell.js':"import './workspace-navigation.js';",'workspace-navigation.js':'export const pages=[];','market-data-ui.js':"import './quant-math.js';"};
+ input['app.js']+="\nimport './research-lab.js';import './workspace-shell.js';import './market-data-ui.js';";
+ const {version,assets}=versionMacroAssets(input);
+ for(const file of ['app.js','research-lab.js','workspace-shell.js'])assert.doesNotMatch(assets[file],/(?:workspace-shell|workspace-navigation|research-lab|market-data-ui)\.js['"]/);
+ assert.ok(assets['research-lab.js'].includes('workspace-shell.js?office='+version));
+ assert.equal(assets['quant-math.js'],input['quant-math.js']);
+ assert.equal(assets['market-data-ui.js'],input['market-data-ui.js']);
+});

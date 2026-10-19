@@ -17,7 +17,7 @@ const files = new Set(['index.html','style.css','app.js','model.js','theme.js','
 ['macro-chart.js','macro-context-contract.js','macro-context-math.js','macro-context-ui.js','macro-context.css'].forEach(f=>files.add(f));
 ['macro-releases-contract.js','macro-releases-ui.js','macro-extended-contract.js','macro-extended-ui.js','macro-navigation.js','macro-briefing.js'].forEach(f=>files.add(f));
 files.add('fx-history-contract.js');files.add('rooms.css');files.add('workflow-continuity.js');
-files.add('workspace-navigation.js');
+files.add('macro-cycle.js');files.add('workspace-navigation.js');files.add('workspace-refinement.css');
 ['research-layout.js','research-lab.js','research-lab.css'].forEach(f=>files.add(f));
 files.add('research-intent.js');files.add('quant-charts.js');files.add('workspace-shell.js');files.add('workspace-shell.css');
 ['macro-ui.js','macro-contract.js','macro.css','macro-visuals.js','macro-map-data.js','market-view.js','market-history-contract.js'].forEach(f=>files.add(f));

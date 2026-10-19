@@ -80,6 +80,7 @@ function contextFacts(facts,audit=[]){
 function drawContext(){
  if(!root?.isConnected)return;
  if(root.dataset.marketSourceHash&&root._sourceRecord){
+  root.dataset.hasInstrument='true';
   const d=root._sourceRecord;
   root.querySelector('[data-lab-instrument]').textContent=d.instrument.symbol+' research';
   contextFacts([['Market',d.instrument.market],['Source',d.provider],['Observed',researchDate(d.quote?.observedAt)],['Retrieved',researchDate(d.source.retrievedAt,{time:true})]],[
@@ -94,6 +95,7 @@ function drawContext(){
  const ticker=root.querySelector('#ticker-output'),study=ticker.hasChildNodes()?ticker._study:null,run=root.querySelector('#quant-run')?._run,valuation=root.querySelector('#auto-value-output'),v=valuation.hasChildNodes()?valuation._study:null;
  const target=root._studyTarget,preferred=target?.kind==='valuations'&&v?.id===target.id?v.fundamental:target?.kind==='advanced'&&root.querySelector('#advanced-output')?._study?.id===target.id?root.querySelector('#advanced-output')._study.source:null;
  const i=preferred||study?.instrument||(run?{ticker:run.config.ticker,market:run.config.market,name:run.dataset?.metadata?.listing||'',currency:run.dataset?.metadata?.currency||''}:null);
+ root.dataset.hasInstrument=String(Boolean(i));
  root.querySelector('[data-lab-instrument]').textContent=i?i.ticker+(i.name?' '+i.name:''):'No instrument selected';
  const dates=preferred?'Retained '+labels[target.kind]+' for '+i.ticker+'. Source date '+researchDate(i.cutoff||v?.quote?.marketDate)+'. Other panels may retain separate studies.':study?'Price observed '+researchDate(study.quote?.marketDate||study.quote?.date)+'. Model history through '+researchDate(study.modelCutoff)+'.':run?'Retained run through '+researchDate(run.config.cutoff)+'. '+run.config.basis+' prices.':'Choose a ticker in Research overview, or open a retained study.';
  const advanced=root.querySelector('#advanced-output')?._study,origin=root._marketOrigin;

@@ -1,5 +1,23 @@
 [
   {
+    "id": "ihsg-weekly-2026-10-16",
+    "title": "Trust Has a Price. The Market Is Paying.",
+    "date": "2026-10-19",
+    "category": "Update",
+    "ticker": "IHSG",
+    "blurb": "IHSG fell 14.91%. MSCI proposed standalone status, and a new 7% downside limit raises questions about executable liquidity.",
+    "page": "ihsg-weekly.html?week=2026-10-16"
+  },
+  {
+    "id": "more-nickel-2026-10-15",
+    "title": "More Nickel. Who Makes the Money?",
+    "date": "2026-10-15",
+    "category": "Sector",
+    "ticker": "",
+    "blurb": "Indonesia has moved past ore. Mine expansion, export customers and battery chemistry show why greater output does not settle how much value the country keeps.",
+    "page": "more-nickel.html"
+  },
+  {
     "id": "ihsg-weekly-2026-10-09",
     "title": "Prices Recovered. Foreign Selling Persisted.",
     "date": "2026-10-11",
@@ -32,8 +50,7 @@
     "date": "2026-10-08",
     "category": "Macro",
     "ticker": "",
-    "blurb": "Treasury yields and mortgage rates have risen, while spending, business equipment and housing show a mixed economic picture.",
-    "page": null
+    "blurb": "Treasury yields and mortgage rates have risen, while spending, business equipment and housing show a mixed economic picture."
   },
   {
     "id": "indonesia-ai-power-water-2026-10-05",
@@ -50,8 +67,7 @@
     "date": "2026-09-27",
     "category": "Initiation",
     "ticker": "INET",
-    "blurb": "Initiating at SELL, target Rp175. Revenue rose twenty times on acquisitions, but the internet EBITDA the price assumes does not exist yet.",
-    "page": null
+    "blurb": "Initiating at SELL, target Rp175. Revenue rose twenty times on acquisitions, but the internet EBITDA the price assumes does not exist yet."
   },
   {
     "id": "ihsg-weekly-2026-10-02",
@@ -85,18 +101,14 @@
     "title": "Dovish or Hawkish?",
     "date": "2026-09-24",
     "category": "Macro",
-    "ticker": "",
-    "blurb": null,
-    "page": null
+    "ticker": ""
   },
   {
     "id": "sector-2026-09-24",
     "title": "The Memory War",
     "date": "2026-09-24",
     "category": "Sector",
-    "ticker": "",
-    "blurb": null,
-    "page": null
+    "ticker": ""
   },
   {
     "id": "adro-2026-09-03",
@@ -104,7 +116,6 @@
     "date": "2026-09-03",
     "category": "Initiation",
     "ticker": "ADRO",
-    "blurb": "Initiating at BUY, fair value IDR 3,354. FY2025 was the trough on price alone; the 500 ktpa aluminium smelter is the re-rating case.",
-    "page": null
+    "blurb": "Initiating at BUY, fair value IDR 3,354. FY2025 was the trough on price alone; the 500 ktpa aluminium smelter is the re-rating case."
   }
 ]

@@ -13,7 +13,7 @@ files.push('macro-atlas.js','macro-atlas-data.js','macro-atlas-labels.js','macro
 files.push('fx-history-contract.js');
 files.push('macro-chart.js','macro-context-contract.js','macro-context-math.js','macro-context-ui.js','macro-context.css');
 files.push('macro-releases-contract.js','macro-releases-ui.js','macro-extended-contract.js','macro-extended-ui.js','macro-navigation.js','macro-briefing.js');
-files.push('workflow-continuity.js');
+files.push('workflow-continuity.js','workspace-refinement.css','macro-cycle.js');
 files.push('encrypted-backup.js','sec-fundamentals-contract.js','official-fundamentals.js');
 files.push('idx-msn-ui.js','idx-msn-contract.js');
 files.push('market-history-contract.js');
