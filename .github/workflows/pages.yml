@@ -71,7 +71,20 @@ jobs:
       - run: node scripts/verify-advanced-publication.mjs
       - run: node scripts/verify-pages-universe.mjs
       - run: node scripts/official-rates-data.mjs
+      - name: Retain complete public market histories before refreshing
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for officeRunId in $(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/pages.yml/runs?status=success&per_page=5" --jq '.workflow_runs[].id'); do
+            officeCacheDir=".tools/market-history-cache/$officeRunId"
+            if gh run download "$officeRunId" --repo "$GITHUB_REPOSITORY" --name github-pages --dir "$officeCacheDir" && python scripts/retain-market-history.py "$officeCacheDir/artifact.tar"; then
+              echo "Retained complete public history from run $officeRunId with its original source dates."
+              break
+            fi
+          done
       - run: node scripts/market-history-data.mjs
+        env:
+          OFFICE_REQUIRE_COMPLETE_HISTORY: '1'
       - run: node scripts/fx-history-data.mjs
       - run: node scripts/macro-data.mjs
       - run: node scripts/macro-context-data.mjs
