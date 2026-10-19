@@ -259,3 +259,17 @@ body .macro-research-desk>.macro-section-nav{background:var(--paper)!important;i
 .fx-source p,.rates-extra-grid .market-chart-notes p{font-size:11px;line-height:1.7}
 @media(max-width:760px){.rates-workbench .context-history-chart{padding:12px}.rates-extra-grid .market-chart-controls{grid-template-columns:1fr 1fr}.rates-extra-grid .market-chart-controls label:first-child{grid-column:1/-1}.macro-calendar .context-release-list li{grid-template-columns:62px minmax(0,1fr);gap:10px}.rates-workbench .context-reading{flex-wrap:wrap}.rates-workbench .context-chart-reading{flex-wrap:wrap;gap:3px}}
 @media(max-width:760px){body .macro-research-desk>.macro-section-nav{display:flex;gap:12px!important;flex-wrap:wrap}.macro-evidence-menu{margin-left:0}.macro-monitor .monitor-provenance>div{grid-template-columns:1fr}.macro-monitor .monitor-history .context-exact>summary{min-height:44px}}
+
+/* Source-backed quarter-end reference: restrained white/neutral disclosure, closed by default. */
+.latest-cycle .latest-cycle-quarter-reference{margin-top:12px;border-top:1px solid var(--line);padding:4px 0 0;min-width:0}
+.latest-cycle .latest-cycle-quarter-reference>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;cursor:pointer;color:var(--ink);font:600 12px/1.5 'Segoe UI',Arial,sans-serif}
+.latest-cycle .latest-cycle-quarter-reference>summary span{display:block;min-width:0}
+.latest-cycle .latest-cycle-quarter-reference>summary small{display:block;font-size:11px;font-weight:400;color:var(--muted)}
+.latest-cycle .latest-cycle-quarter-reference>summary strong{white-space:nowrap;font-size:13px}
+.latest-cycle .quarter-reference-readings{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:8px 0 12px}
+.latest-cycle .quarter-reference-readings>div{border:1px solid var(--line);border-radius:4px;padding:10px 12px;min-width:0;background:var(--white)}
+.latest-cycle .quarter-reference-readings span,.latest-cycle .quarter-reference-readings small{display:block;font-size:11px;color:var(--muted)}
+.latest-cycle .quarter-reference-readings strong{display:block;font:600 19px/1.5 'Segoe UI',Arial,sans-serif;color:var(--ink);font-variant-numeric:tabular-nums}
+.latest-cycle .latest-cycle-quarter-reference p{font-size:11px;line-height:1.65;color:var(--muted);margin:8px 0}
+.latest-cycle .quarter-reference-sources a{color:var(--ink);text-decoration:underline;text-underline-offset:2px}
+@media(max-width:440px){.latest-cycle .quarter-reference-readings{grid-template-columns:minmax(0,1fr)}}

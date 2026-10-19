@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {latestReleaseCycle} from '../macro-cycle.js';
+import {latestReleaseCycle,indonesiaQuarterEndReference2026,renderLatestCycle} from '../macro-cycle.js';
 const now=Date.parse('2026-10-20T00:00:00Z');
 const item=(key,frequency,observations)=>({key,summary:{},item:{id:key,spec:{frequency,source:'TEST ONLY',sourceUrl:'https://example.com'},observations,latest:observations.at(-1),retrievedAt:'2026-10-19T00:00:00Z'}});
 const fixture=()=>[item('gdp','Q',[{date:'2026-01-01',value:5.61},{date:'2026-04-01',value:5.29}]),item('inflation','M',[{date:'2026-08-01',value:3.19},{date:'2026-09-01',value:3.28}])];
@@ -7,3 +7,29 @@ test('Latest releases give Quad 3 while retaining distinct GDP and CPI periods a
 test('Missing/null prior values and gaps never borrow a prior release from another provider',()=>{for(const mutate of [r=>r[0].item.observations.shift(),r=>r[0].item.observations[0].value=null,r=>r[1].item.observations[0].date='2026-07-01',r=>r[0].item.spec.frequency='A',r=>r[1].item.error='unavailable']){const r=fixture();mutate(r);assert.equal(latestReleaseCycle(r,now).available,false);}});
 test('Zero, future releases and future acquisitions do not become a confident regime',()=>{const r=fixture();r[0].item.observations[0].value=5.29;assert.equal(latestReleaseCycle(r,now).quad,null);for(const mutate of [r=>r[0].item.latest.releasedAt='2026-11-05',r=>r[1].item.retrievedAt='2026-11-01T00:00:00Z']){const r=fixture();mutate(r);assert.equal(latestReleaseCycle(r,now).available,false);}});
 test('Invalid release dates and future prior releases cannot support a quadrant',()=>{for(const mutate of [r=>r[0].item.latest.releasedAt='unknown',r=>r[1].item.observations[0].releasedAt='unknown',r=>r[0].item.observations[0].releasedAt='2026-11-05']){const r=fixture();mutate(r);assert.equal(latestReleaseCycle(r,now).available,false);}});
+
+test('Indonesia fixed quarter-end CPI comparison is sourced and correctly classified',()=>{
+ const r=indonesiaQuarterEndReference2026();
+ assert.equal(r.period,'2026 Q2');assert.equal(r.quad,4);
+ assert.equal(r.growthChange,-.32);assert.equal(r.inflationChange,-.14);
+ assert.equal(r.gdp.prior.value,5.61);assert.equal(r.gdp.latest.value,5.29);
+ assert.equal(r.cpi.prior.value,3.48);assert.equal(r.cpi.latest.value,3.34);
+ assert.match(r.sources.gdp,/^https:\/\/www\.bi\.go\.id\//);
+ assert.match(r.sources.march,/^https:\/\/www\.bps\.go\.id\//);
+ assert.match(r.sources.june,/^https:\/\/www\.bps\.go\.id\//);
+});
+test('Quarter-end historical reference does not overwrite current mixed-cadence Quad 3',()=>{
+ const r=fixture(),before=JSON.stringify(r);
+ assert.equal(latestReleaseCycle(r,now).quad,3);
+ assert.equal(indonesiaQuarterEndReference2026().quad,4);
+ assert.equal(JSON.stringify(r),before);
+});
+test('Comparator is collapsed native disclosure and only shown for Indonesia',()=>{
+ const idn=renderLatestCycle(fixture(),{country:'Indonesia',width:600,now});
+ const usa=renderLatestCycle(fixture(),{country:'United States',width:600,now});
+ assert.match(idn,/Quarter-aligned historical check/);
+ assert.match(idn,/data-quarter-end-reference/);
+ assert.match(idn,/not comparable across economies/);
+ assert.match(idn,/March CPI, BPS/);
+ assert.doesNotMatch(usa,/Quarter-aligned historical check/);
+});
