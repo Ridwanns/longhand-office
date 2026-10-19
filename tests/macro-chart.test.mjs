@@ -68,3 +68,5 @@ test('Compact chart height changes presentation only, retaining every original o
  const rows=[row('2026-01-01',5.61),row('2026-04-01',5.29)],before=JSON.stringify(rows),compact=nativeMacroChart(rows,{width:560,height:240,frequency:'Q',unit:'% YoY',bars:true}),normal=nativeMacroChart(rows,{width:560,frequency:'Q',unit:'% YoY',bars:true});
  assert.match(compact,/viewBox="0 0 560 240"/);assert.match(normal,/viewBox="0 0 560 300"/);assert.equal(compact.match(/data-macro-points="([^"]+)"/)[1],normal.match(/data-macro-points="([^"]+)"/)[1]);assert.equal(JSON.stringify(rows),before);
 });
+
+test('Optional FX readout precision preserves all exact source values and existing default rounding',()=>{const rows=[row('2026-10-15',1.123456)];const fx=nativeMacroChart(rows,{precision:4,unit:'USD per EUR'});assert.match(fx,/1\.1235 USD per EUR/);assert.match(fx,/1\.123456/);assert.match(fx,/data-macro-precision="4"/);assert.match(nativeMacroChart(rows),/1\.12/);});

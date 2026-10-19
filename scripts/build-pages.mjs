@@ -10,6 +10,7 @@ const files=['official-rates.js','official-rates-contract.js','auto-valuation-ma
 const generated=['market-view.js','index.html','app.js','office-storage.js','office-extensions.js','quant-ui.js','market-terminal.js','market-catalogue.js','browser-api.js','browser-worker.js','browser-controls.js','browser.css','market-controls.js','market-coverage.js'];
 files.push('macro-atlas.js','macro-atlas-data.js','macro-atlas-labels.js','macro-atlas.css','office-visual-system.css','motion-system.js');
 ['market-data-contract.js','market-data-adapters.js','market-data-research.js','market-data-worker.js','market-data-storage.js','market-data-service.js','market-data-ui.js','market-data.css'].forEach(f=>files.push(f));
+files.push('fx-history-contract.js');
 files.push('macro-chart.js','macro-context-contract.js','macro-context-math.js','macro-context-ui.js','macro-context.css');
 files.push('macro-releases-contract.js','macro-releases-ui.js','macro-extended-contract.js','macro-extended-ui.js','macro-navigation.js','macro-briefing.js');
 files.push('workflow-continuity.js');
@@ -39,6 +40,9 @@ let catalogue=await load('market-catalogue.js');catalogue=catalogue.replaceAll('
 const input=path.join(root,'.pages-data'),manifest=JSON.parse(await readFile(path.join(input,'manifest.json'),'utf8'));if(manifest.format!=='longhand-public-market-data'||!Array.isArray(manifest.histories))throw Error('Generate public market data before building Pages.');
 manifest.codeHash=createHash('sha256').update(JSON.stringify(await Promise.all(['quant-math.js','quant-contract.js','quant-history.js','pages/browser-worker.js'].map(load)))).digest('hex');
 await mkdir(path.join(dest,'data','history'),{recursive:true});await writeFile(path.join(dest,'data','manifest.json'),JSON.stringify(manifest));await copyFile(path.join(input,'market.json'),path.join(dest,'data','market.json'));await copyFile(path.join(input,'fundamentals.json'),path.join(dest,'data','fundamentals.json'));
+const {validateFxHistory}=await import('../fx-history-contract.js');
+validateFxHistory(JSON.parse(await readFile(path.join(input,'fx-history.json'),'utf8')));
+await copyFile(path.join(input,'fx-history.json'),path.join(dest,'data','fx-history.json'));
 const {validateMarketHistories}=await import('../market-history-contract.js');
 validateMarketHistories(JSON.parse(await readFile(path.join(input,'market-history.json'),'utf8')));
 await copyFile(path.join(input,'market-history.json'),path.join(dest,'data','market-history.json'));

@@ -11,7 +11,7 @@ export async function run(original){
   check('Interpretation is folded',await p.locator('.macro-observation-notes').evaluate(e=>!e.open));await p.locator('.macro-observation-notes>summary').click();check('Interpretation remains accessible',await p.locator('.briefing-release-notes').isVisible());
   await p.locator('[data-macro-destination=economy]').click();await p.locator('#macro-context[data-ready=true]').waitFor();await p.locator('#macro-country').selectOption('BRA');
   check('Country selection retains the Economy route',p.url().endsWith('/global/economy/BRA'));
-  await p.locator('.macro-monitor-tools>summary').click();check('Legacy note and refresh controls remain accessible',await p.locator('#macro-refresh').isVisible()&&await p.locator('#macro-thesis-note').count()===1);
+  await p.locator('.macro-evidence-menu>summary').click();await p.locator('[data-macro-open-archive]').click();await p.locator('.macro-monitor-tools>summary').click();check('Legacy note and refresh controls remain accessible',await p.locator('#macro-refresh').isVisible()&&await p.locator('#macro-thesis-note').count()===1);await p.keyboard.press('Escape');
   for(const width of [1440,768,390,320]){await p.setViewportSize({width,height:1000});await p.waitForTimeout(180);check('No horizontal overflow at '+width,await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));check('Section navigation stays available at '+width,await p.locator('.macro-section-nav').evaluate(e=>getComputedStyle(e).position==='sticky'));}
   check('No browser errors',errors.length===0);return {checks,errors};
  }finally{await c.close();}

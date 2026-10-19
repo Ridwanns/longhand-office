@@ -5,6 +5,13 @@ import {spawn} from 'node:child_process';
 // Test requests hit the real isolated loopback server; no portfolio writes.
 const base='http://127.0.0.1:4174';
 
+test('Native currency history is read-only, source-validated and same-origin gated',async()=>{
+ for(const headers of [{Origin:'https://foreign.example'},{'Sec-Fetch-Site':'cross-site'}])assert.equal((await fetch(base+'/data/fx-history.json',{headers})).status,403);
+ assert.equal((await fetch(base+'/data/fx-history.json',{method:'POST'})).status,405);
+ const response=await fetch(base+'/data/fx-history.json',{signal:AbortSignal.timeout(60000)});assert.equal(response.status,200);assert.equal(response.headers.get('access-control-allow-origin'),null);
+ const {validateFxHistory}=await import('../fx-history-contract.js'),data=validateFxHistory(await response.json());assert.equal(data.entries.length,2);assert.ok(data.entries.every(e=>e.error||e.observations.length>0));assert.equal(Object.hasOwn(data,'portfolios'),false);
+});
+
 test('long market histories expose only bounded public observations with the same origin gates',async()=>{
  for(const headers of [{Origin:'https://foreign.example'},{'Sec-Fetch-Site':'cross-site'}])assert.equal((await fetch(base+'/api/market/history',{headers})).status,403);
  assert.equal((await fetch(base+'/api/market/history',{method:'POST'})).status,405);

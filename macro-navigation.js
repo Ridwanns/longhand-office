@@ -13,7 +13,7 @@ export function macroDeskRoute(country,view='overview'){
 }
 export function syncMacroScope(parent,country){
  const monitor=parent.closest('.macro-monitor');if(!monitor||!Object.hasOwn(CONTEXT_COUNTRIES,country))return;
- monitor.dataset.economy=country;const heading=monitor.querySelector('.macro-page-title h1');if(heading&&parent.dataset.view==='economy')heading.textContent=CONTEXT_COUNTRIES[country]+' macro';
+ monitor.dataset.economy=country;const heading=monitor.querySelector('.macro-page-title h1');if(heading&&parent.dataset.view==='economy')heading.textContent=CONTEXT_COUNTRIES[country]+' macro';if(heading&&parent.dataset.view==='rates')heading.textContent=CONTEXT_COUNTRIES[country]+' rates';
  const control=monitor.querySelector('[data-macro-scope] select');if(control&&[...control.options].some(option=>option.value===country))control.value=country;
  monitor.querySelectorAll('[data-macro-destination]').forEach(link=>link.href=macroDeskRoute(country,link.dataset.macroDestination));
  const evidence=monitor.querySelector('.context-heading>a');if(evidence)evidence.href=macroDeskRoute(country,'sources');

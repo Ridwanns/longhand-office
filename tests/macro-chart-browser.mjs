@@ -2,7 +2,7 @@
 export async function run(original,base='http://127.0.0.1:4175/office/'){
  const c=await original.context().browser().newContext({viewport:{width:1440,height:1050},reducedMotion:'reduce',hasTouch:true}),p=await c.newPage(),checks=[],errors=[];p.on('pageerror',e=>errors.push(e.message));
  const check=(name,ok)=>{if(!ok)throw Error(name);checks.push({name,passed:true});};
- try{await p.goto(base+'#market/macro/eu/economy');await p.locator('#macro-context[data-ready=true]').waitFor();await p.locator('[data-context-view=economy]').click();
+ try{await p.goto(base+'#market/macro/eu/economy');await p.locator('#macro-context[data-ready=true]').waitFor();await p.locator('.context-more-views>summary').click();await p.locator('[data-context-view=economy]').click();
   const feed=await p.evaluate(()=>document.querySelector('#macro-content')._macroContext),before=JSON.stringify(feed),key='longhand-office.browser.records.'+new URL(base).pathname+'v1',seed=JSON.stringify({version:1,portfolios:[{id:'TEST-ONLY-HISTORY',name:'TEST ONLY chart preservation',mode:'paper',currency:'USD',openingCash:1500,transactions:[]}],theses:[],decisions:[]});await p.evaluate(({key,seed})=>localStorage.setItem(key,seed),{key,seed});
   check('All six actual indicators are directly selectable',await p.locator('[data-context-indicator]').count()===6);
   check('Original release-monitor tables remain accessible in a collapsed section',await p.locator('.macro-legacy-history>summary').count()===1);

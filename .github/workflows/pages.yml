@@ -72,6 +72,7 @@ jobs:
       - run: node scripts/verify-pages-universe.mjs
       - run: node scripts/official-rates-data.mjs
       - run: node scripts/market-history-data.mjs
+      - run: node scripts/fx-history-data.mjs
       - run: node scripts/macro-data.mjs
       - run: node scripts/macro-context-data.mjs
       - run: node scripts/macro-releases-data.mjs

@@ -8,6 +8,7 @@ import {createLocalAPI} from './local-api.mjs';
 import {readLocalMsn,localMsnSymbols} from './idx-msn-adapter.mjs';
 import {readMarketHistories} from './market-history-data.mjs';
 import {readMacroSnapshot} from './macro-adapter.mjs';
+import {readFxHistory} from './fx-history-data.mjs';
 const root = process.cwd();
 const portIndex=process.argv.indexOf('--port'),port=portIndex<0?4173:Number(process.argv[portIndex+1]);
 if(![4173,4174].includes(port))throw Error('Only local workspace port 4173 and isolated test port 4174 are supported.');
@@ -15,7 +16,7 @@ const files = new Set(['index.html','style.css','app.js','model.js','theme.js','
 ['macro-atlas.js','macro-atlas-data.js','macro-atlas-labels.js','macro-atlas.css','office-visual-system.css','motion-system.js'].forEach(f=>files.add(f));
 ['macro-chart.js','macro-context-contract.js','macro-context-math.js','macro-context-ui.js','macro-context.css'].forEach(f=>files.add(f));
 ['macro-releases-contract.js','macro-releases-ui.js','macro-extended-contract.js','macro-extended-ui.js','macro-navigation.js','macro-briefing.js'].forEach(f=>files.add(f));
-files.add('rooms.css');files.add('workflow-continuity.js');
+files.add('fx-history-contract.js');files.add('rooms.css');files.add('workflow-continuity.js');
 files.add('workspace-navigation.js');
 ['research-layout.js','research-lab.js','research-lab.css'].forEach(f=>files.add(f));
 files.add('research-intent.js');files.add('quant-charts.js');files.add('workspace-shell.js');files.add('workspace-shell.css');
@@ -58,8 +59,12 @@ const server=http.createServer(async(req,res)=>{
     }catch(error){if(url.pathname==='/api/market/history'){res.writeHead(502);return res.end(JSON.stringify({error:'Historical collection unavailable. No substitute observations were used.'}));}
       if(url.pathname==='/api/market/macro/snapshot'){res.writeHead(502);return res.end(JSON.stringify({error:'Macro collection unavailable. No substitute observations were used.'}));}if(url.pathname.startsWith('/api/market/idx-msn/')){res.writeHead(error.status||502);return res.end(JSON.stringify({error:error.message}));}res.writeHead(502);return res.end(JSON.stringify({error:error.name==='TimeoutError'?'Flowless read timed out. Keep its local server running on port 8000.':error.name==='TypeError'?'Flowless is unavailable. Start its existing local server on port 8000; no ingestion is triggered by Longhand Office.':error.message}));}
   }
+  if(url.pathname==='/data/fx-history.json'){
+    if(req.headers['sec-fetch-site']==='cross-site'||req.headers.origin&&![`http://127.0.0.1:${port}`,`http://localhost:${port}`].includes(req.headers.origin)){res.writeHead(403);return res.end('Use the local office page for market reads.');}
+    try{const value=await readFxHistory();res.writeHead(200,{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});return res.end(JSON.stringify(value));}catch{res.writeHead(503);return res.end('Currency history unavailable.');}
+  }
   // Only generated public data is readable here; workspace/vault files remain outside this allowlist.
-  if(/^\/data\/(manifest\.json|market\.json|fundamentals\.json|sec-fundamentals\.json|official-rates\.json|macro\.json|macro-context\.json|macro-releases\.json|macro-extended\.json|market-history\.json|history\/(US|IDX)-[A-Z]{1,6}(-[A-Z])?\.json)$/.test(url.pathname)){
+  if(/^\/data\/(manifest\.json|market\.json|fundamentals\.json|sec-fundamentals\.json|official-rates\.json|macro\.json|macro-context\.json|macro-releases\.json|macro-extended\.json|fx-history\.json|market-history\.json|history\/(US|IDX)-[A-Z]{1,6}(-[A-Z])?\.json)$/.test(url.pathname)){
     try{const body=await readFile(path.join(root,'.pages-data',url.pathname.slice(6)));res.writeHead(200,{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});return res.end(body);}catch{res.writeHead(404);return res.end('Public snapshot unavailable.');}
   }
   const name = url.pathname.slice(1) || 'index.html';
