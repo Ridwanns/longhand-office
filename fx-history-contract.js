@@ -1,4 +1,4 @@
-// Public provider FX observations only. Never used to convert private portfolio records.
+// Public provider FX references. Portfolio use requires explicit dated input review.
 export const FX_SERIES={
  'FX_IDC:USDIDR':{symbol:'IDR=X',currency:'IDR',unit:'IDR per USD',name:'US dollar to Indonesian rupiah'},
  'FX:EURUSD':{symbol:'EURUSD=X',currency:'USD',unit:'USD per EUR',name:'Euro to US dollar'}

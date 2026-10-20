@@ -1,3 +1,4 @@
+import {writeCoverageReport} from './data-coverage.mjs';
 import {versionMacroAssets} from './pages-asset-version.mjs';
 import {copyFile,mkdir,readdir,readFile,writeFile,stat,unlink} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
@@ -21,6 +22,7 @@ files.push('macro-visuals.js','macro-map-data.js');
 files.push('workspace-navigation.js','research-layout.js','research-lab.js','research-lab.css');
 files.push('quant-charts.js','research-intent.js','macro-ui.js','macro-contract.js','macro.css','workspace-shell.js','workspace-shell.css');
 files.push('model-accountability.js','portfolio-performance.js','performance-ui.js','research-workspace.css','quarterly-regime.js','private-vault-client.js','private-vault-ui.js');
+files.push('data-coverage.js','data-coverage-ui.js','portfolio-close-prices.js','portfolio-prices-ui.js','data-workflows.css');
 files.push(...advancedFiles);
 await mkdir(dest,{recursive:true});const allowed=new Set([...files,...generated,'data']);
 for(const existing of await readdir(dest))if(!allowed.has(existing))throw Error('Unexpected file in Pages output: '+existing);
@@ -67,6 +69,7 @@ validateSecFeed(JSON.parse(await readFile(secFile,'utf8')));
 await copyFile(secFile,path.join(dest,'data','sec-fundamentals.json'));
 for(const h of manifest.histories){if(!/^history\/(US|IDX)-[A-Z]{1,6}(-[A-Z])?\.json$/.test(h.file))throw Error('Invalid public history path');await copyFile(path.join(input,h.file),path.join(dest,'data',h.file));}
 const expected=new Set(manifest.histories.map(h=>path.basename(h.file)));for(const file of await readdir(path.join(dest,'data','history')))if(!expected.has(file)){if(!/^(US|IDX)-[A-Z]{1,6}(-[A-Z])?\.json$/.test(file))throw Error('Unexpected history in output: '+file);await unlink(path.join(dest,'data','history',file));}
+await writeCoverageReport(dest+'/data');
 const uiFiles=[...new Set([...files,...generated])].filter(f=>f==='index.html'||/\.(?:js|css)$/.test(f));
 const versioned=versionMacroAssets(Object.fromEntries(await Promise.all(uiFiles.map(async file=>[file,await readFile(path.join(dest,file),'utf8')]))));
 for(const [file,source]of Object.entries(versioned.assets))await writeFile(path.join(dest,file),source);

@@ -31,6 +31,7 @@ files.add('quant-navigation.js');
 files.add('research-history.js');
 ['auto-valuation-math.js','auto-valuation-ui.js','public-quote-contract.js','ticker-study.js','ticker-storage.js','ticker-ui.js','research-math.js','research-ui.js','atlas-math.js','atlas-ui.js','atlas.css','quant-math.js','quant-contract.js','quant-history.js','analysis-contract.js','quant-ui.js','office-storage.js','office-extensions.js','office-workflows.js'].forEach(f=>files.add(f));
 ['model-accountability.js','portfolio-performance.js','performance-ui.js','research-workspace.css','quarterly-regime.js','private-vault-client.js','private-vault-ui.js'].forEach(f=>files.add(f));
+['data-coverage.js','data-coverage-ui.js','portfolio-close-prices.js','portfolio-prices-ui.js','data-workflows.css'].forEach(f=>files.add(f));
 let local;
 if(port===4174){files.add('valuation-example.json');files.add('flowless-example.json');}
 ['market-data-contract.js','market-data-adapters.js','market-data-research.js','market-data-worker.js','market-data-storage.js','market-data-service.js','market-data-ui.js','market-data.css'].forEach(f=>files.add(f));
@@ -65,7 +66,7 @@ const server=http.createServer(async(req,res)=>{
     try{const value=await readFxHistory();res.writeHead(200,{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});return res.end(JSON.stringify(value));}catch{res.writeHead(503);return res.end('Currency history unavailable.');}
   }
   // Only generated public data is readable here; workspace/vault files remain outside this allowlist.
-  if(/^\/data\/(manifest\.json|market\.json|fundamentals\.json|sec-fundamentals\.json|official-rates\.json|macro\.json|macro-context\.json|macro-releases\.json|macro-extended\.json|fx-history\.json|market-history\.json|history\/(US|IDX)-[A-Z]{1,6}(-[A-Z])?\.json)$/.test(url.pathname)){
+  if(/^\/data\/(data-coverage\.json|manifest\.json|market\.json|fundamentals\.json|sec-fundamentals\.json|official-rates\.json|macro\.json|macro-context\.json|macro-releases\.json|macro-extended\.json|fx-history\.json|market-history\.json|history\/(US|IDX)-[A-Z]{1,6}(-[A-Z])?\.json)$/.test(url.pathname)){
     try{const body=await readFile(path.join(root,'.pages-data',url.pathname.slice(6)));res.writeHead(200,{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});return res.end(body);}catch{res.writeHead(404);return res.end('Public snapshot unavailable.');}
   }
   const name = url.pathname.slice(1) || 'index.html';

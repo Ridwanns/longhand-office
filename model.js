@@ -92,6 +92,7 @@ export function validateValuation(record,portfolio,symbols){
  if(record.origin!==undefined&&!['manual','flowless','market'].includes(record.origin))throw Error('Unknown price origin.');
  if(record.origin==='market'&&(!['US','IDX'].includes(record.market)||record.price<=0||!text(record.retrievedAt,40)||Number.isNaN(Date.parse(record.retrievedAt))||!text(record.provider,100)||!text(record.priceKind,100)||record.currency!==portfolio.currency))throw Error('Invalid market observation provenance or incompatible currency.');
  if(record.origin==='flowless'&&(record.currency!=='IDR'||record.price<=0||record.market!=='IDX'||record.priceKind!=='daily-close'||!text(record.sourceSymbol,4)||!/^[A-Z]{4}$/.test(record.sourceSymbol)||record.sourceSymbol!==record.symbol.toUpperCase().replace(/\.JK$/,'')||!text(record.retrievedAt,40)||Number.isNaN(Date.parse(record.retrievedAt))))throw Error('Invalid Flowless daily-close provenance.');
+ if(record.priceKind==='published-completed-close'&&(record.origin!=='market'||!Number.isFinite(record.sourcePrice)||record.sourcePrice<=0||record.price!==Number(record.sourcePrice.toFixed(6))||!/^[a-f0-9]{64}$/.test(record.sourceHash)||record.provider!=='Yahoo Finance'||record.sourceUrl!=='https://finance.yahoo.com/quote/'+record.symbol.trim().toUpperCase().replace(record.market==='IDX'?/\.JK$/:/[.]/g,record.market==='IDX'?'':'-')+(record.market==='IDX'?'.JK/':'/')))throw Error('Published closing price does not reconcile to its retained source value and listing.');
  return record;
 }
 
