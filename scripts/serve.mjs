@@ -31,7 +31,7 @@ files.add('quant-navigation.js');
 files.add('research-history.js');
 ['auto-valuation-math.js','auto-valuation-ui.js','public-quote-contract.js','ticker-study.js','ticker-storage.js','ticker-ui.js','research-math.js','research-ui.js','atlas-math.js','atlas-ui.js','atlas.css','quant-math.js','quant-contract.js','quant-history.js','analysis-contract.js','quant-ui.js','office-storage.js','office-extensions.js','office-workflows.js'].forEach(f=>files.add(f));
 ['model-accountability.js','portfolio-performance.js','performance-ui.js','research-workspace.css','quarterly-regime.js','private-vault-client.js','private-vault-ui.js'].forEach(f=>files.add(f));
-['data-coverage.js','data-coverage-ui.js','portfolio-close-prices.js','portfolio-prices-ui.js','data-workflows.css'].forEach(f=>files.add(f));
+['portfolio-events.js','portfolio-reconciliation.js','prediction-review.js','data-coverage.js','data-coverage-ui.js','portfolio-close-prices.js','portfolio-prices-ui.js','data-workflows.css'].forEach(f=>files.add(f));
 let local;
 if(port===4174){files.add('valuation-example.json');files.add('flowless-example.json');}
 ['market-data-contract.js','market-data-adapters.js','market-data-research.js','market-data-worker.js','market-data-storage.js','market-data-service.js','market-data-ui.js','market-data.css'].forEach(f=>files.add(f));

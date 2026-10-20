@@ -1,4 +1,5 @@
 import {validatePerformanceWorkbook} from './portfolio-performance.js';
+import {validateSplit,validateExecutionFx,validateStatement} from './portfolio-events.js';
 import {validateResearchContext,researchSymbol,checkPaperLink} from './investment-context.js';
 export const KEY = 'longhand-office.v1';
 export const empty = () => ({version:1, portfolios:[], theses:[], decisions:[]});
@@ -36,19 +37,20 @@ function validTransaction(t,ids) {
 
 export function ledger(portfolio,{referenceTransactions=portfolio.transactions}={}) {
  // Preserve older higher-precision records without rewriting their original values.
- const precision=portfolio.transactions.reduce((n,t)=>Math.max(n,decimals(t.quantity),decimals(t.price),decimals(t.fee)),(portfolio.cashFlows||[]).reduce((n,f)=>Math.max(n,decimals(f.amount)),Math.max(6,decimals(portfolio.openingCash??0))));
+ const precision=portfolio.transactions.reduce((n,t)=>Math.max(n,decimals(t.quantity),decimals(t.price),decimals(t.fee)),(portfolio.cashFlows||[]).reduce((n,f)=>Math.max(n,decimals(f.amount)),Math.max(portfolio.corporateActions?.length?12:6,decimals(portfolio.openingCash??0))));
  const scale=10n**BigInt(precision),toUnits=(v,l)=>units(v,l,scale),toAmount=v=>amount(v,scale);
  const positions=new Map();
  const referenceSymbols=new Set(referenceTransactions.map(t=>t?.symbol));
  const funded=portfolio.openingCash!==undefined && portfolio.openingCash!==null;
  const initial=funded?toUnits(portfolio.openingCash,'Opening cash'):0n;
- let cash=initial, fees=0n, realized=0n, outlay=0n,dividends=0n,contributions=0n;
+ let cash=initial, fees=0n, taxes=0n, realized=0n, outlay=0n,dividends=0n,contributions=0n;
  const entries=[];
  // Stable sorting preserves recorded order for transactions on the same date.
- const events=[...portfolio.transactions.map((t,i)=>({...t,_kind:'transaction',_order:t.sequence??i+1})),...(portfolio.cashFlows||[]).map((t,i)=>({...t,_kind:'cashflow',_order:t.sequence??portfolio.transactions.length+i+1}))].sort((a,b)=>a.date.localeCompare(b.date)||a._order-b._order);
+ const events=[...portfolio.transactions.map((t,i)=>({...t,_kind:'transaction',_order:t.sequence??i+1})),...(portfolio.cashFlows||[]).map((t,i)=>({...t,_kind:'cashflow',_order:t.sequence??portfolio.transactions.length+i+1})),...(portfolio.corporateActions||[]).map(t=>({...t,_kind:'split',_order:t.sequence}))].sort((a,b)=>a.date.localeCompare(b.date)||a._order-b._order);
  for(const t of events) {
   if(t.sequence!==undefined&&(!Number.isSafeInteger(t.sequence)||t.sequence<1))throw Error('Invalid event ordering.');
-  if(t._kind==='cashflow'){validateCashFlow(t,portfolio,referenceSymbols);const value=toUnits(t.amount,'Cash flow'),flow=t.type==='Withdrawal'?-value:value;cash+=flow;if(t.type==='Dividend')dividends+=value;else contributions+=flow;if(funded&&cash<0n)throw Error('Insufficient recorded cash on this date, including cash flows.');entries.push({id:t.id,cashFlow:toAmount(flow),cashBalance:funded?toAmount(cash):null,realized:0,gross:0});continue;}
+  if(t._kind==='split'){validateSplit(t,portfolio);const held=positions.get(t.symbol);if(!held||held.quantity<=0n)throw Error('A split needs a positive holding immediately before its recorded sequence.');const product=held.quantity*BigInt(t.numerator),denominator=BigInt(t.denominator);if(product%denominator!==0n)throw Error('Split creates fractional shares beyond ledger precision. Reconcile cash-in-lieu and broker share treatment separately; no shares are rounded away.');held.quantity=product/denominator;entries.push({id:t.id,cashFlow:0,cashBalance:funded?toAmount(cash):null,realized:0,gross:0});continue;}
+  if(t._kind==='cashflow'){validateCashFlow(t,portfolio,referenceSymbols);const value=toUnits(t.amount,'Cash flow'),flow=['Withdrawal','Fee','Tax'].includes(t.type)?-value:value;cash+=flow;if(t.type==='Dividend')dividends+=value;else if(t.type==='Fee')fees+=value;else if(t.type==='Tax')taxes+=value;else contributions+=flow;if(funded&&cash<0n)throw Error('Insufficient recorded cash on this date, including cash flows.');entries.push({id:t.id,cashFlow:toAmount(flow),cashBalance:funded?toAmount(cash):null,realized:0,gross:0});continue;}
   validTransaction(t);
   const quantity=toUnits(t.quantity,'Quantity'),price=toUnits(t.price,'Price'),fee=toUnits(t.fee,'Fee');
   const gross=roundedDivide(quantity*price,scale);
@@ -67,17 +69,18 @@ export function ledger(portfolio,{referenceTransactions=portfolio.transactions}=
   positions.set(t.symbol,p);
   entries.push({id:t.id,gross:toAmount(gross),cashFlow:toAmount(flow),realized:toAmount(profit),cashBalance:funded?toAmount(cash):null});
  }
- return {openingCash:funded?toAmount(initial):null,cashBalance:funded?toAmount(cash):null,netCashFlow:toAmount(-outlay),dividendIncome:toAmount(dividends),netContributions:toAmount(contributions),fees:toAmount(fees),realized:toAmount(realized),entries,holdings:[...positions.values()].map(p=>({symbol:p.symbol,quantity:toAmount(p.quantity),outlay:toAmount(p.outlay),cost:toAmount(p.cost),averageCost:p.quantity?toAmount(roundedDivide(p.cost*scale,p.quantity)):0,fees:toAmount(p.fees),realized:toAmount(p.realized)}))};
+ return {openingCash:funded?toAmount(initial):null,cashBalance:funded?toAmount(cash):null,netCashFlow:toAmount(-outlay),dividendIncome:toAmount(dividends),netContributions:toAmount(contributions),fees:toAmount(fees),taxes:toAmount(taxes),realized:toAmount(realized),entries,holdings:[...positions.values()].map(p=>({symbol:p.symbol,quantity:toAmount(p.quantity),outlay:toAmount(p.outlay),cost:toAmount(p.cost),averageCost:p.quantity?toAmount(roundedDivide(p.cost*scale,p.quantity)):0,fees:toAmount(p.fees),realized:toAmount(p.realized)}))};
 }
 export const holdings = p => ledger(p).holdings;
-export const nextSequence=p=>Math.max(p.transactions.length+(p.cashFlows||[]).length,...[...p.transactions,...(p.cashFlows||[])].map(t=>t.sequence||0))+1;
+export const nextSequence=p=>Math.max(p.transactions.length+(p.cashFlows||[]).length+(p.corporateActions||[]).length,...[...p.transactions,...(p.cashFlows||[]),...(p.corporateActions||[])].map(t=>t.sequence||0))+1;
 export function validateCashFlow(f,p,symbols){
- if(!f||!text(f.id,100)||!f.id||!date(f.date)||!['Deposit','Withdrawal','Dividend'].includes(f.type)||f.currency!==p.currency||!text(f.note)||!(f.symbol===undefined||text(f.symbol,30)))throw Error('Invalid cash flow: choose a date, type, note and the portfolio currency. No FX conversion is supported.');
+ if(!f||!text(f.id,100)||!f.id||!date(f.date)||!['Deposit','Withdrawal','Dividend','Fee','Tax'].includes(f.type)||f.currency!==p.currency||!text(f.note)||!(f.symbol===undefined||text(f.symbol,30)))throw Error('Invalid cash flow: choose a date, type, note and the portfolio currency. Foreign execution evidence requires an explicit matching native cash leg.');
  units(f.amount,'Cash-flow amount');if(f.amount<=0||f.amount>Number.MAX_SAFE_INTEGER/1e6)throw Error('Cash-flow amount must be positive and within the supported range.');
  if(f.symbol&&!(symbols?symbols.has(f.symbol):p.transactions.some(t=>t.symbol===f.symbol)))throw Error('Cash-flow instrument must be a recorded portfolio instrument.');
- return f;
+ validateExecutionFx(f,p);return f;
 }
 export function checkCashFlow(p,f){validateCashFlow(f,p);return ledger({...p,cashFlows:[...(p.cashFlows||[]),f]});}
+export function checkSplit(p,a){validateSplit(a,p);return ledger({...p,corporateActions:[...(p.corporateActions||[]),a]});}
 export function checkTransaction(portfolio,transaction) {
  validTransaction(transaction);
  if(transaction.price<=0) throw Error('Transaction price must be greater than zero.');
@@ -98,7 +101,7 @@ export function validateValuation(record,portfolio,symbols){
 
 export function valuation(portfolio,asOf,maxAgeDays=PRICE_MAX_AGE_DAYS){
  if(!date(asOf)||!Number.isInteger(maxAgeDays)||maxAgeDays<0)throw Error('Choose a valid assessment date and price-age threshold.');
- const recorded=ledger({...portfolio,transactions:portfolio.transactions.map((t,i)=>({...t,sequence:t.sequence??i+1})).filter(t=>t.date<=asOf),cashFlows:(portfolio.cashFlows||[]).map((f,i)=>({...f,sequence:f.sequence??portfolio.transactions.length+i+1})).filter(t=>t.date<=asOf)},{referenceTransactions:portfolio.transactions});
+ const recorded=ledger({...portfolio,transactions:portfolio.transactions.map((t,i)=>({...t,sequence:t.sequence??i+1})).filter(t=>t.date<=asOf),cashFlows:(portfolio.cashFlows||[]).map((f,i)=>({...f,sequence:f.sequence??portfolio.transactions.length+i+1})).filter(t=>t.date<=asOf),corporateActions:(portfolio.corporateActions||[]).filter(a=>a.date<=asOf)},{referenceTransactions:portfolio.transactions});
  const quotes=portfolio.valuations||[],held=recorded.holdings.filter(h=>h.quantity>0);
  const selected=new Map(),quotedSymbols=new Set();for(const q of quotes){quotedSymbols.add(q.symbol);if(q.date<=asOf){const previous=selected.get(q.symbol);if(!previous||q.date>=previous.date)selected.set(q.symbol,q);}}
  const precision=quotes.reduce((n,q)=>Math.max(n,decimals(q.price)),held.reduce((n,h)=>Math.max(n,decimals(h.quantity),decimals(h.cost)),Math.max(6,decimals(recorded.cashBalance??0))));
@@ -141,8 +144,10 @@ export function validate(data) {
   const symbols=new Set(p.transactions.map(t=>t?.symbol));
   if(p.mode!==undefined&&!['paper','real'].includes(p.mode))throw Error('Invalid portfolio mode: choose paper or real.');
   if(p.cashFlows!==undefined){if(!Array.isArray(p.cashFlows)||p.cashFlows.length>50000)throw Error('Invalid cash-flow history.');for(const f of p.cashFlows){validateCashFlow(f,p,symbols);if(ids.has(f.id))throw Error('Duplicate cash-flow ID.');ids.add(f.id);}}
+  if(p.corporateActions!==undefined){if(!Array.isArray(p.corporateActions)||p.corporateActions.length>10000)throw Error('Invalid split history.');for(const a of p.corporateActions){validateSplit(a,p);if(ids.has(a.id))throw Error('Duplicate corporate-action ID.');ids.add(a.id);}}
   for(const t of p.transactions)validTransaction(t,ids);ledger(p);
   if(p.performanceWorkbook!==undefined)validatePerformanceWorkbook(p.performanceWorkbook,p,{checkLedger:false});
+  if(p.reconciliations!==undefined){if(!Array.isArray(p.reconciliations)||p.reconciliations.length>500)throw Error('Statement review archive is full or invalid.');for(const s of p.reconciliations){validateStatement(s,p);if(ids.has(s.id))throw Error('Duplicate statement review ID.');ids.add(s.id);}}
   if(p.valuations!==undefined){
    if(!Array.isArray(p.valuations)||p.valuations.length>50000)throw Error('Invalid valuation history.');
    for(const q of p.valuations){validateValuation(q,p,symbols);if(ids.has(q.id))throw Error('Duplicate valuation record ID.');ids.add(q.id);}

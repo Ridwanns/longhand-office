@@ -22,7 +22,7 @@ files.push('macro-visuals.js','macro-map-data.js');
 files.push('workspace-navigation.js','research-layout.js','research-lab.js','research-lab.css');
 files.push('quant-charts.js','research-intent.js','macro-ui.js','macro-contract.js','macro.css','workspace-shell.js','workspace-shell.css');
 files.push('model-accountability.js','portfolio-performance.js','performance-ui.js','research-workspace.css','quarterly-regime.js','private-vault-client.js','private-vault-ui.js');
-files.push('data-coverage.js','data-coverage-ui.js','portfolio-close-prices.js','portfolio-prices-ui.js','data-workflows.css');
+files.push('portfolio-events.js','portfolio-reconciliation.js','prediction-review.js','data-coverage.js','data-coverage-ui.js','portfolio-close-prices.js','portfolio-prices-ui.js','data-workflows.css');
 files.push(...advancedFiles);
 await mkdir(dest,{recursive:true});const allowed=new Set([...files,...generated,'data']);
 for(const existing of await readdir(dest))if(!allowed.has(existing))throw Error('Unexpected file in Pages output: '+existing);

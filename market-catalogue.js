@@ -19,3 +19,6 @@ export const MARKET_CATEGORIES={
   {symbol:'^JKSE',name:'IHSG / IDX Composite',type:'INDEX',currency:'IDR',unit:'index points'},
   {symbol:'^VIX',name:'CBOE VIX',type:'INDEX',currency:'USD',unit:'index points'}]}
 };
+// Yahoo now labels its same NYMEX TTF=F / EUR contract as ALTSYMBOL. Keep
+// the contract class separate from that provider label; no currency conversion.
+export const marketProviderTypeMatches=(instrument,type,exchange)=>type===instrument.type||instrument.symbol==='TTF=F'&&instrument.type==='FUTURE'&&type==='ALTSYMBOL'&&exchange==='NYM';

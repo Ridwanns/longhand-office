@@ -1,4 +1,4 @@
-import {MARKET_CATEGORIES} from './market-catalogue.js';
+import {MARKET_CATEGORIES,marketProviderTypeMatches} from './market-catalogue.js';
 const positive=x=>typeof x==='number'&&Number.isFinite(x)&&x>0;
 const date=x=>typeof x==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(x)&&Number.isFinite(Date.parse(x))&&new Date(x+'T00:00:00Z').toISOString().slice(0,10)===x;
 const close=(a,b)=>Number.isFinite(a)&&Number.isFinite(b)&&Math.abs(a-b)<=1e-9*Math.max(1,Math.abs(a),Math.abs(b));
@@ -8,6 +8,7 @@ export function validatePublicQuote(q,category,symbol,publishedAt){
  if(!MARKET_CATEGORIES[category]||q?.symbol!==symbol||q?.provider!=='yahoo'||q?.realtimeVerified!==false||!validPrice(q?.price))throw Error('Published quote has an invalid instrument, source or price.');
  const currency=category==='idx'?'IDR':category==='us'?'USD':instrument?.currency;
  if(!currency||q.currency!==currency||instrument&&(q.instrumentType!==instrument.type||q.unit!==instrument.unit))throw Error('Published quote has an incompatible currency, type or unit.');
+ if(q.sourceInstrumentType!==undefined&&(!instrument||!marketProviderTypeMatches(instrument,q.sourceInstrumentType,q.sourceExchange)))throw Error('Published provider classification does not match this verified contract/listing.');
  if(!Number.isFinite(publication)||!Number.isFinite(received)||!Number.isFinite(stamp)||stamp<=0||stamp>received+300000||received>publication+300000||!date(q.marketDate))throw Error('Published quote has an invalid source or publication time.');
  const zone=category==='idx'||symbol==='^JKSE'?'Asia/Jakarta':'America/New_York',format=new Intl.DateTimeFormat('en-CA',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit'}),latestDate=format.format(new Date(received));
  if(['us','idx','bonds'].includes(category)&&q.marketDate!==format.format(new Date(stamp)))throw Error('Published market date does not match the source timestamp.');

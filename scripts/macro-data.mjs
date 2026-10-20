@@ -5,7 +5,7 @@ import {fileURLToPath} from 'node:url';
 import {MACRO_SERIES,WORLD_BANK_URL,EURO_GDP_URL,EURO_CPI_URL,periodIndex,periodEnd,validateMacroFeed} from '../macro-contract.js';
 const hash=text=>createHash('sha256').update(text).digest('hex');
 const numeric=text=>{if(!/^-?\d+(?:\.\d+)?$/.test(text))throw Error('Non-numeric source value.');return Number(text);};
-export function csvRows(text){
+export function csvRows(text,{ragged=false}={}){
  if(typeof text!=='string'||text.length>1000000)throw Error('Invalid CSV size.');
  const rows=[];let row=[],cell='',quoted=false;
  for(let j=0;j<text.length;j++){const c=text[j];if(c==='"'){if(quoted&&text[j+1]==='"'){cell+='"';j++;}else if(!quoted&&cell.length)throw Error('Malformed CSV quoting.');else quoted=!quoted;}
@@ -13,7 +13,7 @@ export function csvRows(text){
   else cell+=c;
  }
  if(quoted)throw Error('Unclosed CSV field.');if(cell.length||row.length){row.push(cell.replace(/\r$/,''));if(row.some(v=>v!==''))rows.push(row);}
- if(rows.length<2||new Set(rows[0]).size!==rows[0].length||rows.slice(1).some(r=>r.length!==rows[0].length))throw Error('Malformed CSV table.');return rows;
+ if(rows.length<2||new Set(rows[0]).size!==rows[0].length||!ragged&&rows.slice(1).some(r=>r.length!==rows[0].length))throw Error('Malformed CSV table.');return rows;
 }
 export function projectFred(text,id){
  const code=id==='us-gdp'?'GDPC1':id==='us-cpi'?'CPIAUCSL':null;if(!code)throw Error('Unexpected FRED series.');
