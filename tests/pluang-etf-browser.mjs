@@ -4,10 +4,12 @@ export async function run(original,base='http://127.0.0.1:4175/office/'){
  const check=(name,ok)=>{if(!ok)throw Error(name);checks.push({name,passed:true});};p.setDefaultTimeout(25000);p.on('pageerror',e=>errors.push(e.message));
  const settled=()=>p.waitForFunction(()=>document.querySelector('#refresh-market')&&!document.querySelector('#refresh-market').disabled);
  try{
+  await p.route('**/data/native-prices/*.json*',r=>r.fulfill({status:503,body:'TEST ONLY isolate full-publication ETF observations; native refresh tested separately'}));
   await p.goto(base+'#market/us');await p.waitForFunction(()=>/^[1-9][0-9]* published/.test(document.querySelector('#market-coverage-status')?.textContent||''));await settled();
   const m=await p.evaluate(()=>fetch('./data/manifest.json',{cache:'no-store'}).then(r=>r.json())),entries=m.instruments.filter(i=>i.pluangListed);
   check('Every discovered Pluang fund is published',entries.length===m.coverage.pluangEtfs.discovered&&entries.length>=211);
   const key='longhand-office.browser.records.'+new URL(base).pathname+'v1',seed=JSON.stringify({version:1,portfolios:[{id:'TEST-ETF-RECHECK',mode:'paper',name:'TEST ONLY ETF record preservation',currency:'USD',openingCash:1000,transactions:[]}],theses:[],decisions:[]});await p.evaluate(({key,seed})=>localStorage.setItem(key,seed),{key,seed});
+  await p.locator('#market-coverage .stock-coverage>summary').click();
   await p.locator('#market-instrument-kind').selectOption('pluang');check('Catalogue filter opens the instrument browser',await p.locator('#market-coverage details').evaluate(e=>e.open));
   const failures=await p.evaluate(list=>{const search=document.querySelector('#market-stock-search'),fail=[];for(const i of list){search.value=i.ticker;search.dispatchEvent(new Event('input',{bubbles:true}));const first=document.querySelector('[data-market-ticker]');if(first?.dataset.marketTicker!==i.ticker)fail.push(i.ticker);}return fail;},entries);
   check('Every catalogue ticker is discoverable and exact matches appear first',failures.length===0);
@@ -20,6 +22,7 @@ export async function run(original,base='http://127.0.0.1:4175/office/'){
   for(const width of [1440,768,390,320]){await p.setViewportSize({width,height:1000});check('ETF filters fit '+width+'px',await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));check('ETF catalogue remains outside the clipped watchlist at '+width+'px',await p.locator('#market-coverage').evaluate(e=>!e.closest('.watchlist-panel')&&e.getBoundingClientRect().bottom<=document.querySelector('.market-terminal').getBoundingClientRect().top));}
   await p.locator('#market-instrument-kind').selectOption('pluang');await p.locator('#market-stock-search').fill('SOXX');await p.evaluate(()=>scrollTo(0,0));await p.screenshot({path:'C:/Users/user/OneDrive/Documents/Longhand Office/validation/etf-catalogue-mobile.png',fullPage:true});await p.setViewportSize({width:1440,height:1000});await p.evaluate(()=>scrollTo(0,0));await p.screenshot({path:'C:/Users/user/OneDrive/Documents/Longhand Office/validation/etf-catalogue-desktop.png',fullPage:true});
   await p.reload();await settled();check('New ETF watchlist entries survive reload',await p.locator('tr[data-symbol="VT"]').count()===1&&await p.locator('tr[data-symbol="SOXX"]').count()===1);
+  await p.locator('#market-coverage .stock-coverage>summary').click();
   await p.locator('#market-instrument-kind').focus();await p.keyboard.press('End');await p.keyboard.press('Enter');check('Catalogue filter is keyboard accessible',await p.locator('#market-instrument-kind').evaluate(e=>document.activeElement===e));
   check('Private record bytes remain identical',await p.evaluate(key=>localStorage.getItem(key),key)===seed);check('Reduced motion is respected',await p.evaluate(()=>matchMedia('(prefers-reduced-motion: reduce)').matches));check('No application exceptions',errors.length===0);
   return {publication:m.publishedAt,coverage:m.coverage.pluangEtfs,checks,errors};

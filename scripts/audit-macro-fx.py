@@ -71,9 +71,14 @@ for stored in fx['entries']:
         result=json.loads(raw)['chart']['result'][0];meta=result['meta']
         assert meta['symbol']==stored['symbol'] and meta['currency']==stored['currency'] and meta['instrumentType']=='CURRENCY'
         zone=ZoneInfo(meta['exchangeTimezoneName']);expected={}
+        acquired=dt.datetime.fromisoformat(stored['retrievedAt'].replace('Z','+00:00'))
+        cutoff=min(acquired.date().isoformat(),acquired.astimezone(zone).date().isoformat())
         for stamp,value in zip(result['timestamp'],result['indicators']['quote'][0]['close']):
             date=dt.datetime.fromtimestamp(stamp,zone).date().isoformat()
-            assert date not in expected,'Duplicate provider date'
+            # Current-day provider bars can repeat while the market is open.
+            # They were never admitted to the completed historical series.
+            if date>=cutoff:continue
+            assert date not in expected,'Duplicate completed provider date'
             expected[date]=value
         for row in stored['observations']:
             assert row['date'] in expected and same(row['value'],expected[row['date']]),stored['id']+' '+row['date']

@@ -2,14 +2,15 @@
 import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {RELEASE_SERIES} from '../macro-releases-contract.js';
+import {auditCsv} from './audit-csv.mjs';
 const publicUrl=process.argv.find(s=>s.startsWith('--url='))?.slice(6),feed=JSON.parse(publicUrl?await (await fetch(publicUrl,{cache:'no-store'})).text():await readFile('.pages-data/macro-releases.json','utf8'));
 const checks=[],failures=[],responses=new Map(),sha=s=>createHash('sha256').update(s).digest('hex'),today=new Date().toISOString().slice(0,10);
-const csv=s=>s.trim().split(/\r?\n/).map(line=>line.split(',')),numeric=v=>v===''||v==='.'||v===null?null:Number(v);
+const csv=auditCsv,numeric=v=>v===''||v==='.'||v===null?null:Number(v);
 function date(p,f){return f==='Q'?p.slice(0,4)+'-'+String((Number(p.at(-1))-1)*3+1).padStart(2,'0')+'-01':p.slice(0,4)+'-'+p.slice(-2)+'-01';}
 function end(d,f){return new Date(Date.UTC(Number(d.slice(0,4)),Number(d.slice(5,7))+(f==='Q'?2:0),0)).toISOString().slice(0,10);}
 function derived(rows){const m=new Map(rows.map(o=>[o.date,o.value]));return rows.map(o=>{const p=m.get((Number(o.date.slice(0,4))-1)+o.date.slice(4));return {...o,value:o.value!==null&&p!=null&&p>0?(o.value-p)*100/p:null};});}
 const urls=[...new Set(Object.values(RELEASE_SERIES).filter(s=>s.provider!=='reviewed').map(s=>s.url))];let next=0;
-await Promise.all(Array.from({length:4},async()=>{while(next<urls.length){const u=urls[next++];try{const r=await fetch(u,{signal:AbortSignal.timeout(25000)});if(!r.ok)throw Error('HTTP '+r.status);responses.set(u,await r.text());}catch(e){responses.set(u,e);}}}));
+await Promise.all(Array.from({length:4},async()=>{while(next<urls.length){const u=urls[next++];try{const r=await fetch(u,{signal:AbortSignal.timeout(25000)});if(!r.ok)throw Error('HTTP '+r.status);responses.set(u,Buffer.from(await r.arrayBuffer()).toString('utf8'));}catch(e){responses.set(u,e);}}}));
 const reviewed=await readFile('sources/macro-regional-reviewed.json','utf8');let compared=0;
 for(const stored of feed.series){const spec=RELEASE_SERIES[stored.id];try{if(!spec)throw Error('Unregistered series');if(stored.error)throw Error('Collected source unavailable: '+stored.error);const raw=spec.provider==='reviewed'?reviewed:responses.get(spec.url);if(raw instanceof Error)throw raw;if(sha(raw)!==stored.sourceHash)throw Error('Source vintage changed since collection; recollect and reconcile');let rows;
  if(spec.provider==='reviewed')rows=JSON.parse(raw).series.find(s=>s.id===stored.id).observations;
@@ -17,6 +18,11 @@ for(const stored of feed.series){const spec=RELEASE_SERIES[stored.id];try{if(!sp
  else if(spec.provider==='fred')rows=derived(csv(raw).slice(1).map(([date,value])=>({date,value:numeric(value)})));
  else if(spec.provider==='dosm'){rows=csv(raw).slice(1).filter(o=>o[spec.metric==='gdp'?0:1]===(spec.metric==='gdp'?'growth_yoy':'overall')).map(o=>({date:o[spec.metric==='gdp'?1:0],value:numeric(o[2])}));if(spec.metric!=='gdp')rows=derived(rows);}
  else if(spec.provider==='singstat'){const d=JSON.parse(raw).Data,series=d.row.find(r=>r.rowText===(spec.metric==='gdp'?'GDP In Chained (2015) Dollars':'All Items'));rows=series.columns.map(o=>({date:spec.metric==='gdp'?date(o.key.slice(0,4)+'Q'+o.key[5],'Q'):new Date(o.key+' 01 00:00:00 UTC').toISOString().slice(0,10),value:['na','n.a.','-',''].includes(o.value)?null:Number(o.value)}));if(spec.metric!=='gdp')rows=derived(rows);}
+ else if(spec.provider==='rba'){
+  const cells=csv(raw),field=name=>cells.find(r=>r[0]===name),ids=field('Series ID'),column=ids?.indexOf(spec.code);
+  if(cells[0]?.[0]!=='G4 CONSUMER PRICE INFLATION – MONTHLY COLLECTION'||!column||ids.filter(v=>v===spec.code).length!==1||field('Units')?.[column]!=='Per cent'||field('Frequency')?.[column]!=='Monthly'||field('Type')?.[column]!=='Original'||field('Source')?.[column]!=='ABS'||field('Description')?.[column]!=='Consumer price index; All groups; Year-ended change (in per cent)')throw Error('RBA source identity, unit or frequency mismatch');
+  rows=cells.filter(r=>/^\d{2}\/\d{2}\/\d{4}$/.test(r[0])).map(r=>{const [day,month,year]=r[0].split('/'),date=year+'-'+month+'-01',value=r[column]===undefined?null:numeric(r[column]);if(end(date,'M')!==year+'-'+month+'-'+day||value!==null&&!Number.isFinite(value))throw Error('Invalid RBA calendar period or value');return {date,value};});
+ }
  else if(spec.provider==='ons'){rows=JSON.parse(raw)[spec.frequency==='Q'?'quarters':'months'].map(o=>({date:spec.frequency==='Q'?date(o.date.replace(' ',''),'Q'):new Date(o.date+' 01 00:00:00 UTC').toISOString().slice(0,10),value:numeric(o.value)}));}
  else {const d=JSON.parse(raw),geo=d.dimension.geo.category.index[spec.geo],time=d.dimension.time.category.index,geoDimension=d.id.indexOf('geo'),timeDimension=d.id.indexOf('time'),stride=i=>d.size.slice(i+1).reduce((a,b)=>a*b,1);rows=Object.entries(time).map(([p,i])=>{const n=geo*stride(geoDimension)+i*stride(timeDimension);return {date:date(p,spec.frequency),value:d.value[n]??null,sourceFlag:d.status?.[n]||''};});}
  rows=rows.filter(o=>o.date>='2000-01-01'&&end(o.date,spec.frequency)<=stored.retrievedAt.slice(0,10)).sort((a,b)=>a.date.localeCompare(b.date));if(rows.length!==stored.observations.length)throw Error('Observation count differs: '+rows.length+' vs '+stored.observations.length);
