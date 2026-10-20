@@ -168,6 +168,33 @@ body .macro-research-desk>.macro-section-nav{background:var(--paper)!important;i
 .monitor-history .context-chart-reading>span{color:var(--muted);font-size:10px}
 .monitor-history .context-chart-actions>span{font-size:10px}
 .monitor-history .context-chart-change{font-size:11px;min-height:18px}
+
+/* Additional dated evidence occupies the space beneath the two primary charts. */
+.monitor-history-column{align-content:start}
+.monitor-supporting{min-width:0;background:var(--white);border:1px solid var(--line);border-radius:5px;padding:16px}
+.monitor-supporting>header{display:block;height:auto;background:transparent;border:0;padding:0 0 8px}
+.monitor-supporting .eyebrow{font:9px/1.6 Arial,sans-serif;letter-spacing:1.1px;color:var(--muted);margin:0 0 5px}
+.monitor-supporting h3{font:600 17px/1.5 'Segoe UI',Arial,sans-serif;margin:0 0 6px;color:var(--ink)}
+.monitor-supporting h3 small{display:inline-block;font:10px/1.5 Arial,sans-serif;color:var(--muted);margin-left:10px}
+.monitor-supporting>header>p:last-child,.monitor-supporting-note{font:10px/1.7 Arial,sans-serif;color:var(--muted);margin:4px 0}
+.monitor-supporting-list{display:grid;min-width:0}
+.monitor-indicator{min-width:0;border-top:1px solid var(--line);padding:13px 0 0}
+.monitor-indicator-reading{display:grid;grid-template-columns:minmax(0,1fr) minmax(90px,140px);align-items:center;gap:14px}
+.monitor-indicator h4{font:500 12px/1.6 'Segoe UI',Arial,sans-serif;color:var(--ink);margin:0 0 5px}
+.monitor-indicator-value{font:600 19px/1.4 'Segoe UI',Arial,sans-serif;font-variant-numeric:tabular-nums;margin:0 0 3px;color:var(--ink)}
+.monitor-indicator-value small{font:10px/1.6 Arial,sans-serif;color:var(--muted);white-space:normal}
+.monitor-indicator-period{font:10px/1.6 Arial,sans-serif;color:var(--muted);margin:0}
+.macro-monitor .monitor-mini-trend{margin:0}
+.macro-monitor .monitor-indicator-evidence{padding:0;border:0;margin:0}
+.monitor-mini-trend{margin:0;min-width:0}.monitor-mini-trend svg{display:block;width:100%;height:56px;overflow:visible}.monitor-mini-trend path{fill:none;stroke:var(--plot-teal,var(--context-accent));stroke-width:1.5;vector-effect:non-scaling-stroke}.monitor-mini-trend circle{fill:var(--plot-teal,var(--context-accent));stroke:none}.monitor-mini-trend line{stroke:var(--line);stroke-width:1;vector-effect:non-scaling-stroke}.monitor-mini-trend figcaption{font:9px/1.7 Arial,sans-serif;color:var(--muted);text-align:right;margin:3px 0 0;overflow-wrap:anywhere}
+.monitor-trend-empty{font:10px/1.7 Arial,sans-serif;color:var(--muted)}
+.monitor-indicator-evidence>summary{cursor:pointer;min-height:36px;padding:8px 0;font:10px/1.7 Arial,sans-serif;color:var(--context-accent)}
+.monitor-indicator-evidence>summary span{margin-left:10px;color:var(--muted)}
+.monitor-indicator-evidence>p,.monitor-indicator-evidence>a,.monitor-indicator>.macro-warning{font:10px/1.7 Arial,sans-serif;overflow-wrap:anywhere}
+.monitor-indicator-evidence .context-history-chart{background:transparent!important;border:0!important;padding:0!important;margin:8px 0!important}
+.monitor-supporting-note{border-top:1px solid var(--line);padding-top:10px;margin-top:0}
+@container(max-width:949px) and (min-width:600px){.monitor-supporting-list{grid-template-columns:1fr 1fr;gap:0 22px}}
+@media(max-width:760px){.monitor-supporting{padding:13px}.monitor-indicator-evidence>summary{min-height:44px}.monitor-indicator-evidence>summary span{display:block;margin-left:0}.monitor-indicator-reading{grid-template-columns:minmax(0,1fr) minmax(78px,110px);gap:10px}}
 .monitor-history .context-chart-plot svg:focus-visible{outline:1px solid var(--context-accent);outline-offset:2px}
 .monitor-history .context-chart-coverage{font-size:10px}
 .monitor-history .monitor-history-basis{font-size:10px;color:var(--muted);margin:6px 0 0;line-height:1.6}
