@@ -33,6 +33,10 @@ export async function run(original,base='http://127.0.0.1:4175/office/'){
   await p.locator('[data-macro-destination=economy]').click();await p.locator('.macro-scorecard').waitFor();
   check('Scorecard uses accessible indicator cards instead of a table',await p.locator('.pulse-card').count()===31&&await p.locator('.macro-scorecard table').count()===0);
   check('Expanded scorecard has 31 labelled source records including 20 new connections',await p.locator('[data-scorecard-row]').count()===31&&await p.locator('.macro-scorecard>header').innerText().then(t=>t.includes('30 of 31')));
+  check('Only six priority indicators show by default, with all other sources collapsed',await p.locator('.pulse-card:visible').count()===6&&!await p.locator('.scorecard-more').evaluate(e=>e.open));
+  await p.locator('.scorecard-more>summary').click();
+  await p.locator('[data-scorecard-indicator=id-cci]').locator('xpath=ancestor::article[1]').locator('.pulse-detail').evaluate(e=>e.open=true);
+  await p.locator('[data-scorecard-indicator=inflation]').locator('xpath=ancestor::article[1]').locator('.pulse-detail').evaluate(e=>e.open=true);
   check('Short reviewed histories have no fabricated ten-year range',await p.locator('[data-scorecard-indicator=id-cci]').locator('xpath=ancestor::article[1]').innerText().then(t=>t.includes('118.1')&&t.includes('Sept 2026')&&t.includes('Short / unavailable history')));
   check('The newest CPI comparison uses its own BPS August and September releases',await p.locator('[data-scorecard-indicator=inflation]').locator('xpath=ancestor::article[1]').innerText().then(t=>t.includes('Up 0.09 percentage points')&&t.includes('Short / unavailable history')));
   check('PMI-BI is quarterly and cannot be labelled S&P monthly PMI',await p.locator('[data-scorecard-indicator=id-pmi-bi]').locator('xpath=ancestor::article[1]').innerText().then(t=>t.includes('Quarterly')&&t.includes('Q3 2026')&&t.includes('52.28')));

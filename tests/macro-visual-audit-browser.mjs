@@ -18,10 +18,11 @@ export async function run(original,base='http://127.0.0.1:4175/office/'){
   const economies=await page.locator('#macro-country option').evaluateAll(ns=>ns.map(e=>e.value));
   for(const id of economies){
    await page.locator('#macro-country').selectOption(id);
-   check(id+' renders four honest readings without an exposed source ledger',await page.locator('[data-monitor-metric]').count()===4&&await page.locator('.context-source:visible').count()===0);
+   check(id+' renders a compact country focus without an exposed source ledger',await page.locator('.focus-group .pulse-card').count()<=6&&await page.locator('.focus-disclosure').innerText().then(t=>t.includes('not verified provider ratings'))&&await page.locator('.context-source:visible').count()===0);
    check(id+' has finite, dated chart observations where connected',await page.locator('.monitor-history [data-macro-chart]').evaluateAll(ns=>ns.every(e=>JSON.parse(e.dataset.macroPoints).every(([date,value])=>/^\d{4}-\d{2}-\d{2}$/.test(date)&&(value===null||Number.isFinite(value))))));
   }
   await page.locator('#macro-country').selectOption('USA');
+  await page.locator('.monitor-source-histories>summary').click();
   const chart=page.locator('[data-monitor-history=inflation]'),surface=chart.locator('[data-macro-surface]');
   const rows=await chart.locator('[data-macro-chart]').getAttribute('data-macro-points').then(JSON.parse);
   await surface.focus();await surface.press('Home');

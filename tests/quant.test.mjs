@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {historical,fitRidge,fitAR,forecast,simulate,analyze} from '../quant-math.js';
+import {historical,fitRidge,fitAR,forecast,simulate,coreScenarioDisplayPaths,analyze} from '../quant-math.js';
 import {configFor,normalizeHistory,hash} from '../scripts/quant-data.mjs';
 import {fixture} from './quant-fixture.mjs';
 const ds=fixture(),prices=ds.observations.map(x=>x.price),r=historical(prices).returns,config=configFor({ticker:'AAPL',market:'US',cutoff:'2026-10-12',horizon:5});
@@ -35,3 +35,5 @@ test('cutoff excludes later and incomplete sessions without substituting missing
 test('material >10-calendar-day gap starts a new segment and duplicate dates reject',()=>{const rows=[{date:'2026-01-01',rawClose:1},{date:'2026-02-01',rawClose:2}];const d=normalizeHistory(rows,{...config,basis:'raw'},{});assert.equal(d.observations.length,1);assert.throws(()=>normalizeHistory([rows[0],rows[0]],{...config,basis:'raw'},{}),/Duplicate/);});
 test('missing latest completed close does not silently shift the analysis to an older session',()=>{assert.throws(()=>normalizeHistory([{date:'2026-10-01',rawClose:100},{date:'2026-10-02',rawClose:null}],{...config,basis:'raw'},{}),/Latest completed session 2026-10-02/);});
 test('same dataset/config yields identical analysis hash and parameters',()=>assert.equal(hash(analyze(ds,config)),hash(analyze(ds,config))));
+
+test('Core Monte Carlo display replay preserves retained paths, both horizons and immutable results',()=>{for(const h of [5,20]){const sim=simulate(prices,h,42),before=JSON.stringify(sim),paths=coreScenarioDisplayPaths(prices,h,42);assert.equal(paths.length,120);assert.deepEqual(paths.slice(0,12),sim.selectedPaths);assert.equal(JSON.stringify(sim),before);}assert.throws(()=>coreScenarioDisplayPaths(prices,20,0));});

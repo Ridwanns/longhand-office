@@ -51,11 +51,18 @@ export function forecast(r,h){
  const ranking=[...models].filter(m=>m.count).sort((a,b)=>a.rmse-b.rmse).map(m=>m.name);
  return {horizon:h,firstEvaluationOrigin:first,lastEvaluationOrigin:audit.at(-1)?.origin??null,models,audit,ranking,selection:'Ranking is retrospective on this evaluation sample. It is not an unbiased test of a selected strategy or a validated trading edge.',directionConvention:'Three signs: negative, zero (absolute log return <= 1e-12), positive. A zero forecast matches only a zero realized return.',intervalConvention:'90% empirical residual interval using matured expanding-origin out-of-sample errors from this retrospective sample; at least 20 errors. No coverage guarantee or prospective calibration.'};
 }
-export function simulate(prices,h,seed,paths=1000){
+function gaussianScenarioDraws(prices,h,seed,paths){
  const r=prices.slice(1).map((p,i)=>Math.log(p/prices[i])),mu=mean(r),sigma=Math.sqrt(variance(r));let state=seed>>>0||1;
  const uniform=()=>{state^=state<<13;state^=state>>>17;state^=state<<5;return ((state>>>0)+.5)/4294967296;};
  const normal=()=>Math.sqrt(-2*Math.log(uniform()))*Math.cos(2*Math.PI*uniform());
  const all=Array.from({length:paths},()=>{const a=[prices.at(-1)];for(let i=0;i<h;i++){const next=a.at(-1)*Math.exp(mu+sigma*normal());if(!Number.isFinite(next)||next<=0)throw Error('Scenario prices exceed the supported numerical range. Inspect history and adjustment basis.');a.push(next);}return a;});
+ return {all,mu,sigma};
+}
+export function coreScenarioDisplayPaths(prices,h,seed,count=120){
+ if(![5,20].includes(h)||!Number.isInteger(seed)||seed<1||seed>4294967295||!Number.isInteger(count)||count<1||count>1000)throw Error('Invalid core scenario replay.');return gaussianScenarioDraws(prices,h,seed,count).all;
+}
+export function simulate(prices,h,seed,paths=1000){
+ const {all,mu,sigma}=gaussianScenarioDraws(prices,h,seed,paths);
  const terminal=all.map(p=>p.at(-1)),lo=Math.min(...terminal),hi=Math.max(...terminal),width=(hi-lo)/30||1;
  const bins=Array.from({length:30},(_,i)=>({lower:lo+i*width,upper:lo+(i+1)*width,count:0}));terminal.forEach(x=>bins[Math.min(29,Math.floor((x-lo)/width))].count++);
  return {seed,paths,horizon:h,dailyMean:mu,dailySigma:sigma,process:'IID Gaussian daily log returns; sample mean and sample standard deviation over all eligible observations. No jumps, serial dependence, regime changes or parameter uncertainty.',interpretation:'Percentiles describe this assumed simulation, not validated forecast probabilities.',bands:Array.from({length:h+1},(_,i)=>({session:i,p05:quantile(all.map(p=>p[i]),.05),p25:quantile(all.map(p=>p[i]),.25),p50:quantile(all.map(p=>p[i]),.5),p75:quantile(all.map(p=>p[i]),.75),p95:quantile(all.map(p=>p[i]),.95)})),selectedPaths:all.slice(0,12),terminal:{p05:quantile(terminal,.05),p50:quantile(terminal,.5),p95:quantile(terminal,.95),bins}};
