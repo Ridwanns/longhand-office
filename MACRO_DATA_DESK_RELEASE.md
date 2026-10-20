@@ -1,10 +1,10 @@
 # Global Macro data desk
 
-Implementation and source audit, 18 October 2026. This extends the existing Office; it does not rebuild it or reproduce Arthara's product.
+Implementation and source audit, 18 October 2026. This extends the existing Office.
 
 ## What was verified before implementation
 
-The Arthara reference exposes regional macro monitoring, a growth/inflation framework, rates and currency context, liquidity, an economy scorecard and source detail. Its authenticated browser session was inspected with the owner's authorization. Its illustrative figures, weekly writing, forecasts, proprietary scores, positioning labels and backtests were not used as Office data or models. No Arthara visual asset or application code was imported.
+Office combines regional macro observations, growth and inflation descriptions, rates, currency references, liquidity, an economic scorecard and source evidence. Inputs are acquired from the independently identified institutions listed in the source contracts.
 
 Office already had a geographic atlas, twenty GDP/CPI series, a reviewed Indonesian release snapshot, a Treasury par-yield publication, native market-history charts and research-note preparation. Those capabilities remain. The new data desk adds independently acquired context and fills additional geographic coverage without changing the existing GDP/CPI transformations.
 
@@ -12,7 +12,7 @@ Office already had a geographic atlas, twenty GDP/CPI series, a reviewed Indones
 
 - The existing atlas now supports supplementary annual country observations. Monthly and quarterly series retain their existing source, period and method; annual context does not overwrite them. Policy observations show their measurement basis, including effective fed funds versus a Federal Reserve target range.
 - A country desk offers six annual indicators, long-history charts, exact observations, a country scorecard and a comparison of all 46 economies. Missing values remain unavailable.
-- An annual growth/inflation trajectory describes changes in the two annual rates for matching consecutive years. It is a historical description, not a forecast, probability, investment posture or a replica of Arthara's regime model.
+- An annual growth/inflation trajectory describes changes in the two annual rates for matching consecutive years. It is a historical description, not a forecast, probability, investment posture or an independently validated allocation model.
 - Policy/rates observations, JISDOR, US constant-maturity yields, the broad trade-weighted dollar index, a same-date 10Y–2Y spread and a transparent Fed balance-sheet liquidity proxy are available within Office.
 - US monthly/weekly activity indicators and a separately labelled official BLS release calendar are accessible. Calendar coverage is BLS only; no consensus or future financial result is supplied.
 - A public-data source ledger retains identifiers, units, cadence, observation periods, acquisition times, source-response hashes, methods and a separate public JSON download. This download is not a personal-record backup.

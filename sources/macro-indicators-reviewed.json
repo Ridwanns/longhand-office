@@ -1,0 +1,288 @@
+{
+  "reviewedAt": "2026-10-20T12:50:07.847Z",
+  "note": "Manually reviewed official Bank Indonesia releases on 20 October 2026. Realisations only. Survey projections and expectations about future production are not appended as realised observations. Review date is fixed; collection does not renew this vintage.",
+  "series": [
+    {
+      "id": "id-cci",
+      "observations": [
+        {
+          "date": "2026-09-01",
+          "value": 118.1,
+          "status": "reported",
+          "releasedAt": "2026-10-08",
+          "sourceUrl": "https://www.bi.go.id/en/publikasi/ruang-media/news-release/Pages/sp_2821626.aspx"
+        }
+      ]
+    },
+    {
+      "id": "id-cei",
+      "observations": [
+        {
+          "date": "2026-08-01",
+          "value": 127.6,
+          "status": "reported",
+          "releasedAt": "2026-10-08",
+          "sourceUrl": "https://www.bi.go.id/en/publikasi/ruang-media/news-release/Pages/sp_2821626.aspx"
+        },
+        {
+          "date": "2026-09-01",
+          "value": 128.7,
+          "status": "reported",
+          "releasedAt": "2026-10-08",
+          "sourceUrl": "https://www.bi.go.id/en/publikasi/ruang-media/news-release/Pages/sp_2821626.aspx"
+        }
+      ]
+    },
+    {
+      "id": "id-ceci",
+      "observations": [
+        {
+          "date": "2026-08-01",
+          "value": 109.4,
+          "status": "reported",
+          "releasedAt": "2026-10-08",
+          "sourceUrl": "https://www.bi.go.id/en/publikasi/ruang-media/news-release/Pages/sp_2821626.aspx"
+        },
+        {
+          "date": "2026-09-01",
+          "value": 107.5,
+          "status": "reported",
+          "releasedAt": "2026-10-08",
+          "sourceUrl": "https://www.bi.go.id/en/publikasi/ruang-media/news-release/Pages/sp_2821626.aspx"
+        }
+      ]
+    },
+    {
+      "id": "id-retail",
+      "observations": [
+        {
+          "date": "2026-07-01",
+          "value": 1.1,
+          "status": "reported",
+          "releasedAt": "2026-10-09",
+          "sourceUrl": "https://www.bi.go.id/en/publikasi/ruang-media/news-release/Pages/sp_2821726.aspx"
+        },
+        {
+          "date": "2026-08-01",
+          "value": 1.3,
+          "status": "reported",
+          "releasedAt": "2026-10-09",
+          "sourceUrl": "https://www.bi.go.id/en/publikasi/ruang-media/news-release/Pages/sp_2821726.aspx"
+        }
+      ]
+    },
+    {
+      "id": "id-pmi-bi",
+      "observations": [
+        {
+          "date": "2026-04-01",
+          "value": 51.43,
+          "status": "reported",
+          "releasedAt": "2026-10-19",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2823126.aspx"
+        },
+        {
+          "date": "2026-07-01",
+          "value": 52.28,
+          "status": "reported",
+          "releasedAt": "2026-10-19",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2823126.aspx"
+        }
+      ]
+    },
+    {
+      "id": "id-business",
+      "observations": [
+        {
+          "date": "2026-04-01",
+          "value": 12.97,
+          "status": "reported",
+          "releasedAt": "2026-07-17",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2813826.aspx"
+        },
+        {
+          "date": "2026-07-01",
+          "value": 11.46,
+          "status": "reported",
+          "releasedAt": "2026-10-19",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2823026.aspx"
+        }
+      ]
+    },
+    {
+      "id": "id-capacity",
+      "observations": [
+        {
+          "date": "2026-04-01",
+          "value": 73.8,
+          "status": "reported",
+          "releasedAt": "2026-07-17",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2813826.aspx"
+        },
+        {
+          "date": "2026-07-01",
+          "value": 73.75,
+          "status": "reported",
+          "releasedAt": "2026-10-19",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2823026.aspx"
+        }
+      ]
+    },
+    {
+      "id": "id-m2",
+      "observations": [
+        {
+          "date": "2026-08-01",
+          "value": 10448.1,
+          "status": "reported",
+          "releasedAt": "2026-09-24",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2819526.aspx"
+        }
+      ]
+    },
+    {
+      "id": "id-m2-growth",
+      "observations": [
+        {
+          "date": "2026-07-01",
+          "value": 8.3,
+          "status": "reported",
+          "releasedAt": "2026-09-24",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2819526.aspx"
+        },
+        {
+          "date": "2026-08-01",
+          "value": 8.2,
+          "status": "reported",
+          "releasedAt": "2026-09-24",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2819526.aspx"
+        }
+      ]
+    },
+    {
+      "id": "id-credit",
+      "observations": [
+        {
+          "date": "2026-07-01",
+          "value": 13,
+          "status": "reported",
+          "releasedAt": "2026-09-24",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2819526.aspx"
+        },
+        {
+          "date": "2026-08-01",
+          "value": 13.3,
+          "status": "reported",
+          "releasedAt": "2026-09-24",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2819526.aspx"
+        }
+      ]
+    },
+    {
+      "id": "id-reserves-monthly",
+      "observations": [
+        {
+          "date": "2026-08-01",
+          "value": 146.5,
+          "status": "reported",
+          "releasedAt": "2026-10-07",
+          "sourceUrl": "https://www.bi.go.id/en/publikasi/ruang-media/news-release/Pages/sp_2821426.aspx"
+        },
+        {
+          "date": "2026-09-01",
+          "value": 146.3,
+          "status": "reported",
+          "releasedAt": "2026-10-07",
+          "sourceUrl": "https://www.bi.go.id/en/publikasi/ruang-media/news-release/Pages/sp_2821426.aspx"
+        }
+      ]
+    },
+    {
+      "id": "id-import-cover",
+      "observations": [
+        {
+          "date": "2026-09-01",
+          "value": 5.3,
+          "status": "reported",
+          "releasedAt": "2026-10-07",
+          "sourceUrl": "https://www.bi.go.id/en/publikasi/ruang-media/news-release/Pages/sp_2821426.aspx"
+        }
+      ]
+    },
+    {
+      "id": "id-core",
+      "observations": [
+        {
+          "date": "2026-08-01",
+          "value": 2.92,
+          "status": "reported",
+          "releasedAt": "2026-10-01",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2820926.aspx"
+        },
+        {
+          "date": "2026-09-01",
+          "value": 2.84,
+          "status": "reported",
+          "releasedAt": "2026-10-01",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2820926.aspx"
+        }
+      ]
+    },
+    {
+      "id": "id-food",
+      "observations": [
+        {
+          "date": "2026-08-01",
+          "value": 4.06,
+          "status": "reported",
+          "releasedAt": "2026-10-01",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2820926.aspx"
+        },
+        {
+          "date": "2026-09-01",
+          "value": 5.03,
+          "status": "reported",
+          "releasedAt": "2026-10-01",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2820926.aspx"
+        }
+      ]
+    },
+    {
+      "id": "id-admin",
+      "observations": [
+        {
+          "date": "2026-08-01",
+          "value": 3.32,
+          "status": "reported",
+          "releasedAt": "2026-10-01",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2820926.aspx"
+        },
+        {
+          "date": "2026-09-01",
+          "value": 3.25,
+          "status": "reported",
+          "releasedAt": "2026-10-01",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2820926.aspx"
+        }
+      ]
+    }
+  ],
+  "expectations": [
+    {
+      "id": "id-pmi-bi",
+      "date": "2026-10-01",
+      "value": 52.37,
+      "releasedAt": "2026-10-19",
+      "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2823126.aspx",
+      "status": "survey-expectation"
+    },
+    {
+      "id": "id-business",
+      "date": "2026-10-01",
+      "value": 10.77,
+      "releasedAt": "2026-10-19",
+      "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2823026.aspx",
+      "status": "survey-expectation"
+    }
+  ]
+}

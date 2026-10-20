@@ -118,3 +118,13 @@ body .macro-monitor .atlas-key-figures>section{padding:14px 0;border-top:1px sol
  body .source-workspace>details{padding-inline:12px}
  body .macro-monitor .atlas-key-figures h4,body .macro-monitor .atlas-key-figures small{font-size:12px}
 }
+/* Shared chart reading hierarchy; SVG labels are fitted to 11 screen pixels. */
+body :is(.scientific-plot,.context-chart-plot,.latest-cycle-plot,.context-cycle,.outlook-chart,.treasury-curve) svg text{font-family:'Segoe UI',Arial,sans-serif;font-weight:400;font-variant-numeric:tabular-nums;letter-spacing:0;fill:var(--muted)}
+body .research-lab .scientific-plot{padding:18px 18px 14px;margin:18px 0 24px;border-radius:8px}
+body .research-lab .scientific-plot>figcaption{font:600 16px/1.5 'Segoe UI',Arial,sans-serif;margin-bottom:12px}
+body .research-lab .scientific-plot>figcaption>span{font:400 11px/1.7 'Segoe UI',Arial,sans-serif;margin-top:5px}
+body .plot-grid{stroke-dasharray:none;opacity:.5;stroke-width:.7;vector-effect:non-scaling-stroke}
+body .plot-grid-vertical{opacity:.24}
+body .plot-axis{opacity:.6;stroke-width:.8}
+body .scientific-plot>svg{display:block;width:100%;height:auto}
+@media(max-width:760px){body .research-lab .scientific-plot{padding:14px 10px 10px}body .research-lab .scientific-plot>figcaption{font-size:15px}}

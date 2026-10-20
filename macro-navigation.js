@@ -1,7 +1,7 @@
 import {CONTEXT_COUNTRIES} from './macro-context-contract.js';
 import {ASEAN_COUNTRIES} from './macro-contract.js';
 
-export const MACRO_DESK_SECTIONS={overview:'Briefing',economy:'Economy',rates:'Rates',markets:'Cross market',sources:'Evidence'};
+export const MACRO_DESK_SECTIONS={overview:'Briefing',outlook:'Outlook',economy:'Economy',rates:'Rates',markets:'Cross market',sources:'Evidence'};
 export function macroEconomy(selection){
  if(Object.hasOwn(CONTEXT_COUNTRIES,selection.economy))return selection.economy;
  return selection.region==='us'?'USA':selection.region==='eu'?'EMU':selection.region==='global'?'WLD':selection.region==='asean'?(Object.hasOwn(ASEAN_COUNTRIES,selection.country)?selection.country:'IDN'):'IDN';
@@ -16,7 +16,7 @@ export function syncMacroScope(parent,country){
  // navigated elsewhere. The mounted desk owns only its current route.
  if(!parent.isConnected||!location.hash.startsWith('#market/macro')||parent._scopeRoute&&parent._scopeRoute!==location.hash)return;
  const monitor=parent.closest('.macro-monitor');if(!monitor||!Object.hasOwn(CONTEXT_COUNTRIES,country))return;
- monitor.dataset.economy=country;const heading=monitor.querySelector('.macro-page-title h1');if(heading&&parent.dataset.view==='economy')heading.textContent=CONTEXT_COUNTRIES[country]+' macro';if(heading&&parent.dataset.view==='rates')heading.textContent=CONTEXT_COUNTRIES[country]+' rates';
+ monitor.dataset.economy=country;const heading=monitor.querySelector('.macro-page-title h1');if(heading&&parent.dataset.view==='economy')heading.textContent=CONTEXT_COUNTRIES[country]+' macro';if(heading&&parent.dataset.view==='rates')heading.textContent=CONTEXT_COUNTRIES[country]+' rates';if(heading&&parent.dataset.view==='outlook')heading.textContent=CONTEXT_COUNTRIES[country]+' outlook';
  const control=monitor.querySelector('[data-macro-scope] select');if(control&&[...control.options].some(option=>option.value===country))control.value=country;
  monitor.querySelectorAll('[data-macro-destination]').forEach(link=>link.href=macroDeskRoute(country,link.dataset.macroDestination));
  const evidence=monitor.querySelector('.context-heading>a');if(evidence)evidence.href=macroDeskRoute(country,'sources');

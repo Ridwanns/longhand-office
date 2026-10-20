@@ -1,5 +1,6 @@
 // Presentation only. Source observations, analytical inputs and saved studies are never changed.
 import {sampleContextRows} from './macro-context-math.js';
+import {fitChartTypography} from './chart-typography.js';
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const number=(n,digits=2,minimumFractionDigits=0)=>Number.isFinite(n)?new Intl.NumberFormat('en-GB',{maximumFractionDigits:digits,minimumFractionDigits}).format(n):'Not reported';
 export function macroPeriodRows(rows,frequency){
@@ -67,10 +68,10 @@ export function mountMacroChartInspectors(parent,signal){
  // Keep labels and markers at screen-pixel size even while a responsive layout is being redrawn.
  // Only presentation changes here; source observations, scales and inspection indices are untouched.
  const observed=new Set();let stopped=false;
- const fit=svg=>{if(!svg.isConnected||svg.getBoundingClientRect().width<=0)return;const scale=Math.abs(svg.getScreenCTM()?.a||0);if(!Number.isFinite(scale)||scale<=0)return;svg.querySelectorAll('text').forEach(text=>text.style.fontSize=(11/scale)+'px');svg.querySelectorAll('[data-macro-point],.context-history-dot').forEach(point=>point.setAttribute('r',String((point.hasAttribute('data-macro-point')?3:2.5)/scale)));};
+ const fit=svg=>{if(!svg.isConnected||svg.getBoundingClientRect().width<=0)return;const scale=Math.abs(svg.getScreenCTM()?.a||0);if(!Number.isFinite(scale)||scale<=0)return;fitChartTypography(svg);svg.querySelectorAll('[data-macro-point],.context-history-dot').forEach(point=>point.setAttribute('r',String((point.hasAttribute('data-macro-point')?3:2.5)/scale)));};
  const cleanup=()=>{if(stopped)return;stopped=true;sizing.disconnect();tree.disconnect();observed.clear();};
  const sizing=new ResizeObserver(entries=>{if(!parent.isConnected){cleanup();return;}entries.forEach(entry=>fit(entry.target));});
- const discover=()=>{if(stopped)return;if(!parent.isConnected){cleanup();return;}for(const svg of observed)if(!parent.contains(svg)){sizing.unobserve(svg);observed.delete(svg);}parent.querySelectorAll('[data-macro-chart] svg').forEach(svg=>{if(!observed.has(svg)){observed.add(svg);sizing.observe(svg);}fit(svg);});};
+ const discover=()=>{if(stopped)return;if(!parent.isConnected){cleanup();return;}for(const svg of observed)if(!parent.contains(svg)){sizing.unobserve(svg);observed.delete(svg);}parent.querySelectorAll('[data-macro-chart] svg,.outlook-chart svg').forEach(svg=>{if(!observed.has(svg)){observed.add(svg);sizing.observe(svg);}fit(svg);});};
  const tree=new MutationObserver(discover);tree.observe(parent,{subtree:true,childList:true});const workspace=parent.closest('main');if(workspace&&workspace!==parent)tree.observe(workspace,{childList:true});discover();signal?.addEventListener('abort',cleanup,{once:true});
  const update=(figure,index,{tooltip=false}={})=>{const points=JSON.parse(figure.dataset.macroPoints),rows=points.map(([date,value])=>({date,value})),row=points[index],unit=figure.dataset.macroUnit,frequency=figure.dataset.macroFrequency;if(!row)return;
   const digits=Number(figure.dataset.macroPrecision)||2;

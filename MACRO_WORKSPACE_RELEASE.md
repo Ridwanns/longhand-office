@@ -41,7 +41,7 @@ Freshness prompts use observation age above 75 days monthly / 210 quarterly / 55
 
 Core and advanced line charts share an original native-SVG presentation: aligned axes, five horizontal grid references, explicit units, responsive ticks, consistent legends, a stronger median and restrained sample paths, clear 5–95% shading, and a zero reference where relevant. HMM probability is bounded from zero to one and displayed as percent; volatility percentages are explicitly annualized. Error bars display RMSE in log-return percentage points; original numerical outputs remain unchanged.
 
-Pointer inspection and a native keyboard/touch observation slider report the retained values. Exact-value tables remain accessible. Histograms show counts per actual source bin rather than a probability density. Session-zero replay shows observed starting points. Missing line values break the path; there is no smoothing, synthetic observation, refit or new random draw. Model data, output hashes and backups are unchanged by presentation interactions. These are MATLAB-inspired plotting conventions, not a claim to use MATLAB or proprietary Arthara mathematics.
+Pointer inspection and a native keyboard/touch observation slider report the retained values. Exact-value tables remain accessible. Histograms show counts per actual source bin rather than a probability density. Session-zero replay shows observed starting points. Missing line values break the path; there is no smoothing, synthetic observation, refit or new random draw. Model data, output hashes and backups are unchanged by presentation interactions. The plotting conventions use the existing SVG implementation and preserve the independently tested model mathematics.
 
 ## Verification receipt
 

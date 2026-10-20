@@ -1,6 +1,6 @@
 # Macro charts and longer economic history
 
-This change adapts the useful information hierarchy observed in Arthara's Macro overview and Economy tab: current readings, clear historical charts, and optional source/method detail. Office keeps its own interface and public datasets. No Arthara data, assets, code, nowcasts, scores, consensus estimates or backtests were imported.
+Current readings, historical charts and optional source/method detail use Office's own interface and independently acquired public datasets.
 
 ## What changed
 

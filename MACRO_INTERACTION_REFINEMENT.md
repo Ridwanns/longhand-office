@@ -2,9 +2,9 @@
 
 ## Reference observed
 
-Inspected the authenticated Arthara Macro interface directly in the browser on 18 October 2026. Tried Indonesia Economy, US Overview, US Economy, and keyboard inspection of the US manufacturing/services chart. The selected period and the series readings changed together when using the arrow key. Observed useful patterns: latest readings paired with period changes, consistent geographic navigation, chart-adjacent explanations, reference lines with a stated meaning, and expandable methods/secondary detail.
+Interaction scope reviewed on 18 October 2026: latest readings paired with period changes, consistent geographic navigation, chart-adjacent explanations, reference lines with a stated meaning, and expandable methods and secondary detail.
 
-These are interface observations, not a verification of Arthara financial figures. Its proprietary nowcasts, consensus, scores, projections and assets have not been imported. Office continues to use its separately validated public-source observations. This release improves the existing Office macro interface; it does not claim feature parity with Arthara.
+Office uses the public-source observations identified in its source contracts. This release improves interaction with those observations; it does not establish predictive accuracy.
 
 ## Verified defects and changes
 

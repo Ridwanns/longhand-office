@@ -109,6 +109,8 @@ The earlier free-data release suite had **289 passing Node checks** and **4 loca
 
 See [DATA_SOURCE_REVIEW.md](DATA_SOURCE_REVIEW.md) for the additional US/IDX repository assessment, official Treasury observations, verification and provider limitations.
 
+See [MACRO_OUTLOOK_2026_10_20.md](MACRO_OUTLOOK_2026_10_20.md) for the four-quarter macro outlook, additional independently sourced indicators, chart readability fixes, validation and remaining nowcast limits.
+
 The [idx-cli review](IDX_CLI_REVIEW.md) records successful personal/read-only MSN quote and BBCA fundamental probes, the dated ownership-manifest check, and the unit/history/data-rights boundaries required before a local IDX adapter. It does not change the running Office or republish MSN datasets.
 
 The refined entrance and differentiated rooms use the existing architectural SVG, system fonts, warm stone/ivory, forest/charcoal and copper. Both themes, reduced motion, conventional navigation, keyboard-accessible rooms/modals and responsive tables remain available.

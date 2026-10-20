@@ -1,6 +1,7 @@
 import {CONTEXT_SERIES,CONTEXT_COUNTRIES} from './macro-context-contract.js';
 import {RELEASE_SERIES} from './macro-releases-contract.js';
 import {EXTENDED_SERIES} from './macro-extended-contract.js';
+import {MACRO_INDICATORS} from './macro-indicators-contract.js';
 import {MACRO_SERIES} from './macro-contract.js';
 import {autoValuation} from './auto-valuation-math.js';
 const periodDate=p=>/^\d{4}-Q[1-4]$/.test(p)?p.slice(0,4)+'-'+String((Number(p.at(-1))-1)*3+1).padStart(2,'0')+'-01':/^\d{4}-\d{2}$/.test(p)?p+'-01':/^\d{4}$/.test(p)?p+'-01-01':p;
@@ -16,8 +17,8 @@ export function coverageFreshness(r,now=Date.now()){
 export function buildCoverageReport(s,{now=Date.now()}={}){
  const records=[],publications=[];
  const add=(file,label,feed)=>publications.push({file,label,publishedAt:feed.generatedAt||feed.publishedAt||feed.retrievedAt});
- for(const [file,label,specs]of [['macro-context','Economic context',CONTEXT_SERIES],['macro-releases','GDP & CPI releases',RELEASE_SERIES],['macro-extended','Extended indicators',EXTENDED_SERIES],['macro','Reviewed / primary monitor',MACRO_SERIES]]){
-  const feed=s[file];add(file,label,feed);for(const row of feed.series){const spec=specs[row.id];if(!spec)throw Error('Coverage encountered an unregistered source series.');const supplied=row.observations||[],latest=supplied.findLast(o=>finite(o.value)),country=(file==='macro'?{id:'IDN',us:'USA',eu:'EMU'}[row.id.split('-')[0]]:spec.country||spec.scope)||'',region=CONTEXT_COUNTRIES[country]||country;
+ for(const [file,label,specs]of [['macro-indicators','Supplementary economic indicators',MACRO_INDICATORS],['macro-context','Economic context',CONTEXT_SERIES],['macro-releases','GDP & CPI releases',RELEASE_SERIES],['macro-extended','Extended indicators',EXTENDED_SERIES],['macro','Reviewed / primary monitor',MACRO_SERIES]]){
+  const feed=s[file];if(file==='macro-indicators'&&!feed)continue;add(file,label,feed);for(const row of feed.series){const spec=specs[row.id];if(!spec)throw Error('Coverage encountered an unregistered source series.');const supplied=row.observations||[],latest=supplied.findLast(o=>finite(o.value)),country=(file==='macro'?{id:'IDN',us:'USA',eu:'EMU'}[row.id.split('-')[0]]:spec.country||spec.scope)||'',region=CONTEXT_COUNTRIES[country]||country;
    records.push({id:file+':'+row.id,group:'Macro',label:spec.title||row.id,scope:region,scopeId:country,metric:spec.metric||(row.id.startsWith('wdi-')?row.id.split('-').at(-1):file==='macro'&&row.id.endsWith('-gdp')?'gdp':file==='macro'&&row.id.endsWith('-cpi')?'inflation':row.id),frequency:spec.frequency,unit:spec.unit||'% YoY',count:supplied.filter(o=>finite(o.value)).length,available:!row.error&&!!latest,observedAt:latest?periodDate(latest.date||latest.period):null,retrievedAt:row.retrievedAt||feed.generatedAt||feed.retrievedAt,source:spec.source||'Published source',sourceUrl:spec.sourceUrl||spec.url,reason:row.error||(!latest?'No numeric observation supplied.':supplied.at(-1)?.date>latest.date?'Later supplied period has no reported value.':null),route:country?'#market/macro/'+({IDN:'id',USA:'us',EMU:'eu',WLD:'global'}[country]||'global')+'/sources'+(['IDN','USA','EMU','WLD'].includes(country)?'':'/'+country):'#market/macro',latestValue:latest?.value??null,observationStatus:latest?.status||null});
   }
  }

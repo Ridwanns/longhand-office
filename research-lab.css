@@ -58,5 +58,5 @@ body .research-lab .advanced-brief p{max-width:80ch;font-size:13px;line-height:1
 body .research-lab .advanced-brief strong{display:block;font-size:12px;font-weight:600;margin-bottom:5px;color:var(--ink)}
 body .research-lab .quant-values dd small{display:block;font-family:'Segoe UI',Arial,sans-serif;font-size:11px;font-weight:400;line-height:1.5;margin:4px 0 12px;color:var(--muted)}
 body .research-lab #quant-run .quant-result-title{color:var(--ink);font-size:28px;letter-spacing:-.4px;line-height:1.3}
-body .research-lab .scientific-plot text{font-size:inherit!important}
+body .research-lab .scientific-plot text{font-size:inherit}
 @media(max-width:760px){body .research-lab [data-lab-source]{gap:12px 20px}body .research-lab .lab-reading-facts{display:grid;gap:16px}.lab-reading-facts dd{overflow-wrap:anywhere}}

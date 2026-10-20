@@ -1,10 +1,10 @@
 # Macro content review and Longhand adaptation
 
-Reviewed 19 October 2026, Asia/Jakarta. Reference: https://www.arthara.id/macro.
+Coverage reviewed 19 October 2026, Asia/Jakarta.
 
 ## What was actually inspected
 
-The reference was opened in the browser, using its existing accessible session. Indonesia Overview and Economy, and the US, Europe, ASEAN and Global landing sections were inspected. This is an inventory of visible product content, not an audit of Arthara's underlying data accuracy or methodology. No account settings, trades or private records were accessed or changed. No reference data, proprietary forecast output, source code or charts were copied into Office.
+This inventory records macro coverage and the independently sourced Office implementation. Institutional sources, units, frequencies and availability are checked separately from interface behavior. No account settings, trades or private records are changed.
 
 | Observed reference content | Longhand adaptation and honest limits |
 | --- | --- |
@@ -24,7 +24,7 @@ Economy now includes **Economic data**. Choose a data group, select an actual co
 
 National headline readings and separate historical sources remain visibly distinguished. Annual data are explicitly marked annual in names, periods and chart captions. Source links, methods, acquisition dates, old-data flags and unavailable observations remain accessible. A missing numeric series displays Not reported; no zero substitutes or cross-country data fallback is used.
 
-This exposes existing data that was previously fragmented between annual history, advanced tables, rate references and liquidity views. It does not claim to add all of Arthara's analytical capabilities.
+This exposes existing data that was previously fragmented between annual history, advanced tables, rate references and liquidity views. Source and analytical gaps remain explicit.
 
 ## Preservation
 

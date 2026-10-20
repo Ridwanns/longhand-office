@@ -11,7 +11,8 @@ const files=['official-rates.js','official-rates-contract.js','auto-valuation-ma
 const generated=['market-view.js','index.html','app.js','office-storage.js','office-extensions.js','quant-ui.js','market-terminal.js','market-catalogue.js','browser-api.js','browser-worker.js','browser-controls.js','browser.css','market-controls.js','market-coverage.js'];
 files.push('macro-atlas.js','macro-atlas-data.js','macro-atlas-labels.js','macro-atlas.css','office-visual-system.css','motion-system.js');
 ['market-data-contract.js','market-data-adapters.js','market-data-research.js','market-data-worker.js','market-data-storage.js','market-data-service.js','market-data-ui.js','market-data.css'].forEach(f=>files.push(f));
-files.push('fx-history-contract.js');
+files.push('fx-history-contract.js','chart-typography.js');
+files.push('macro-forecast.js','macro-forecast-ui.js','macro-indicators-contract.js','macro-indicators-ui.js');
 files.push('macro-chart.js','macro-context-contract.js','macro-context-math.js','macro-context-ui.js','macro-context.css');
 files.push('macro-releases-contract.js','macro-releases-ui.js','macro-extended-contract.js','macro-extended-ui.js','macro-navigation.js','macro-briefing.js');
 files.push('workflow-continuity.js','workspace-refinement.css','macro-cycle.js');
@@ -63,6 +64,9 @@ await copyFile(path.join(input,'macro-releases.json'),path.join(dest,'data','mac
 const {validateMacroExtended}=await import('../macro-extended-contract.js');
 validateMacroExtended(JSON.parse(await readFile(path.join(input,'macro-extended.json'),'utf8')));
 await copyFile(path.join(input,'macro-extended.json'),path.join(dest,'data','macro-extended.json'));
+const {validateMacroIndicators}=await import('../macro-indicators-contract.js');
+validateMacroIndicators(JSON.parse(await readFile(path.join(input,'macro-indicators.json'),'utf8')));
+await copyFile(path.join(input,'macro-indicators.json'),path.join(dest,'data','macro-indicators.json'));
 const {validateSecFeed}=await import('../sec-fundamentals-contract.js');
 const secFile=path.join(input,'sec-fundamentals.json');
 validateSecFeed(JSON.parse(await readFile(secFile,'utf8')));

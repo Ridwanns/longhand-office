@@ -89,8 +89,11 @@ jobs:
       - run: node scripts/macro-data.mjs
       - run: node scripts/macro-context-data.mjs
       - run: node scripts/macro-releases-data.mjs
+      - run: node scripts/macro-indicators-data.mjs
       - run: node scripts/macro-extended-data.mjs
       - run: python scripts/audit-macro-extended.py
+      - run: node scripts/verify-macro-outlook.mjs
+      - run: python scripts/audit-macro-outlook.py
       - run: node scripts/sec-fundamentals.mjs
         env:
           OFFICE_US_TICKERS: ${{ inputs.us_tickers }}

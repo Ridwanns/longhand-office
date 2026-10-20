@@ -14,7 +14,7 @@ const portIndex=process.argv.indexOf('--port'),port=portIndex<0?4173:Number(proc
 if(![4173,4174].includes(port))throw Error('Only local workspace port 4173 and isolated test port 4174 are supported.');
 const files = new Set(['index.html','style.css','app.js','model.js','theme.js','market-terminal.js','market-catalogue.js','building.svg','catalogue.json']);
 ['macro-atlas.js','macro-atlas-data.js','macro-atlas-labels.js','macro-atlas.css','office-visual-system.css','motion-system.js'].forEach(f=>files.add(f));
-['macro-chart.js','macro-context-contract.js','macro-context-math.js','macro-context-ui.js','macro-context.css'].forEach(f=>files.add(f));
+['chart-typography.js','macro-forecast.js','macro-forecast-ui.js','macro-indicators-contract.js','macro-indicators-ui.js','macro-chart.js','macro-context-contract.js','macro-context-math.js','macro-context-ui.js','macro-context.css'].forEach(f=>files.add(f));
 ['macro-releases-contract.js','macro-releases-ui.js','macro-extended-contract.js','macro-extended-ui.js','macro-navigation.js','macro-briefing.js'].forEach(f=>files.add(f));
 files.add('fx-history-contract.js');files.add('rooms.css');files.add('workflow-continuity.js');
 files.add('macro-cycle.js');files.add('workspace-navigation.js');files.add('workspace-refinement.css');
@@ -66,7 +66,7 @@ const server=http.createServer(async(req,res)=>{
     try{const value=await readFxHistory();res.writeHead(200,{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});return res.end(JSON.stringify(value));}catch{res.writeHead(503);return res.end('Currency history unavailable.');}
   }
   // Only generated public data is readable here; workspace/vault files remain outside this allowlist.
-  if(/^\/data\/(data-coverage\.json|manifest\.json|market\.json|fundamentals\.json|sec-fundamentals\.json|official-rates\.json|macro\.json|macro-context\.json|macro-releases\.json|macro-extended\.json|fx-history\.json|market-history\.json|history\/(US|IDX)-[A-Z]{1,6}(-[A-Z])?\.json)$/.test(url.pathname)){
+  if(/^\/data\/(data-coverage\.json|manifest\.json|market\.json|fundamentals\.json|sec-fundamentals\.json|official-rates\.json|macro\.json|macro-context\.json|macro-releases\.json|macro-extended\.json|macro-indicators\.json|fx-history\.json|market-history\.json|history\/(US|IDX)-[A-Z]{1,6}(-[A-Z])?\.json)$/.test(url.pathname)){
     try{const body=await readFile(path.join(root,'.pages-data',url.pathname.slice(6)));res.writeHead(200,{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});return res.end(body);}catch{res.writeHead(404);return res.end('Public snapshot unavailable.');}
   }
   const name = url.pathname.slice(1) || 'index.html';

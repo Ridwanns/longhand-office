@@ -1,3 +1,4 @@
+import {mountChartTypography} from './chart-typography.js';
 import {reconciliationSection,mountReconciliation} from './portfolio-reconciliation.js';
 import {publishedPricesPanel,mountPublishedPrices} from './portfolio-prices-ui.js';
 import {performanceLedgerFingerprint} from './portfolio-performance.js';
@@ -181,6 +182,7 @@ bindOffice({storage,getData:()=>data,setData:value=>{data=value;},save,render,to
 
 
 installPrivateVault();
+mountChartTypography(document.querySelector('main'));
 installCompleteBackup({records:()=>{if(storageError)throw Error(storageError);return data;},exportRecords:()=>storage.backup(data)});
 
 // Research handoff opens the existing editor; only its explicit Save writes records.
