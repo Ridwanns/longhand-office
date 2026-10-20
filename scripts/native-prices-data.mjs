@@ -39,6 +39,11 @@ export async function collectNativePrices(base,previous=null,{fetcher=fetch,now=
    const raw=mapped.get(sourceSymbol);if(!raw)throw Error('Yahoo supplied no observation for this instrument.');
    const quote=projectNativePrice(raw,category,symbol,retrievedAt),old=quotes[key]?.quote;
    if(old&&Date.parse(quote.timestamp)<Date.parse(old.timestamp))throw Error('Yahoo returned an older observation; the newer recorded observation is retained.');
+   // Price refreshes do not erase separately dated public fundamentals or
+   // reinterpret an old market cap as a live calculation from the new price.
+   const reference=base.quotes[key]?.quote;
+   if(Number.isFinite(reference?.marketCap)&&Number.isFinite(Date.parse(reference.capitalizationRetrievedAt))){quote.marketCap=reference.marketCap;quote.capitalizationRetrievedAt=reference.capitalizationRetrievedAt;}
+   if(Number.isFinite(reference?.averageDailyVolume3Month))quote.averageDailyVolume3Month=reference.averageDailyVolume3Month;
    quotes[key]={quote,sourceHash:createHash('sha256').update(JSON.stringify(raw)).digest('hex')};summary.refreshed++;
   }catch(error){quotes[key]={...quotes[key],error:error.message.slice(0,240)};summary.failures++;}}
  }catch(error){failure(batch,error.message.slice(0,240));}await pause(250);}}));
