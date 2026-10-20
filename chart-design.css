@@ -1,0 +1,18 @@
+/* Shared native chart language. All marks retain their original numerical scales. */
+:root{--chart-cyan:#167b9d;--chart-violet:#7963b8;--chart-teal:#278579;--chart-amber:#b07a25;--pulse-card-padding:18px;--pulse-card-radius:12px}
+:root[data-theme=dark]{--chart-cyan:#71c2de;--chart-violet:#b3a0ec;--chart-teal:#75cbb8;--chart-amber:#e3bd79}
+body .quant-room,body .research-workspace{--plot-blue:var(--chart-cyan);--plot-teal:var(--chart-teal);--plot-purple:var(--chart-violet);--plot-orange:var(--chart-amber)}
+body :is(.scientific-plot,.outlook-chart,.macro-data-figure,.context-history-chart){border-radius:12px;box-shadow:0 3px 12px #00000003}
+body .scientific-plot{padding:20px;min-width:0;border:1px solid var(--line);background:var(--white)}
+body .scientific-plot figcaption{font:600 14px/1.5 'Segoe UI',Arial,sans-serif;letter-spacing:-.15px;margin-bottom:12px;color:var(--ink)}
+body .scientific-plot figcaption>span{display:block;font:11px/1.7 'Segoe UI',Arial,sans-serif;letter-spacing:0;color:var(--muted);margin-top:5px;max-width:90ch}
+body .scientific-plot .plot-grid{stroke-dasharray:none;stroke-width:.65;opacity:.65}body .scientific-plot .plot-grid-vertical{stroke-dasharray:2 5;opacity:.35}
+body .scientific-plot .plot-axis{stroke:var(--line);stroke-width:1}.scientific-plot .error-stem{opacity:.38}.scientific-plot .error-dot{stroke:var(--white);stroke-width:1.5;vector-effect:non-scaling-stroke}
+body .plot-legend{gap:10px 20px;font-size:11px;line-height:1.7;margin:12px 0 4px}.plot-legend i{border-radius:2px}
+body .plot-readout{padding:10px 12px;border-radius:7px;background:var(--surface);color:var(--ink);min-height:40px;font:11px/1.7 'Segoe UI',Arial,sans-serif;overflow-wrap:anywhere}
+body .probability-tiles>svg{width:100%;height:auto;max-height:none;display:block;margin:12px 0}.probability-tiles .probability-tile{stroke:var(--line);stroke-width:.4;vector-effect:non-scaling-stroke}.probability-tiles .probability-tile.missing{stroke-dasharray:2 2}
+.probability-legend{display:flex;align-items:center;justify-content:flex-end;gap:8px;font:10px/1.6 'Segoe UI',Arial,sans-serif;color:var(--muted);margin:8px 0 14px}.probability-legend i{display:block;width:100px;height:7px;border-radius:4px;background:linear-gradient(90deg,color-mix(in srgb,var(--plot-purple) 12%,var(--white)),var(--plot-purple))}
+.macro-scorecard .pulse-grid{gap:16px}.macro-scorecard .pulse-card{padding:var(--pulse-card-padding) var(--pulse-card-padding) 0;border-radius:var(--pulse-card-radius)}
+body .macro-scorecard .pulse-trend{background:transparent}.pulse-card button:focus-visible{outline-offset:4px}.pulse-card:focus-within{border-color:var(--pulse-accent)}
+.macro-scorecard .scorecard-group[data-pulse-group="0"]{--pulse-accent:var(--chart-cyan)}.macro-scorecard .scorecard-group[data-pulse-group="1"]{--pulse-accent:var(--chart-violet)}.macro-scorecard .scorecard-group[data-pulse-group="2"]{--pulse-accent:var(--chart-teal)}.macro-scorecard .scorecard-group[data-pulse-group="3"]{--pulse-accent:var(--chart-amber)}
+@media(max-width:600px){body .scientific-plot{padding:12px}body .scientific-plot figcaption{font-size:13px}.probability-legend{justify-content:flex-start}body .plot-legend{gap:6px 14px}}

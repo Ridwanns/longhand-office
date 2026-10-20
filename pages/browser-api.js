@@ -1,3 +1,4 @@
+import {readNativePrices,selectNativePrice} from './native-prices.js';
 import {restoredScope} from './workspace-scope.js';
 import {validate} from './model.js';
 import {configFor,validId} from './quant-contract.js';
@@ -21,14 +22,14 @@ document.addEventListener('office:market-loading',e=>{if(e.detail?.force){market
 export async function browserMarketFetch(input){
  let kind='source-unavailable';
  try{
-  const url=new URL(input,location.origin),category=url.pathname.includes('flowless')?'idx':url.searchParams.get('category')||'us',symbol=url.searchParams.get('symbol'),m=await marketSnapshot(),item=m.quotes?.[category+':'+symbol];
+  const url=new URL(input,location.origin),category=url.pathname.includes('flowless')?'idx':url.searchParams.get('category')||'us',symbol=url.searchParams.get('symbol'),[m,feed]=await Promise.all([marketSnapshot(),readNativePrices(category,symbol)]),selection=selectNativePrice(m.quotes?.[category+':'+symbol],feed,category,symbol),item=selection.item;
   if(!item){kind='not-published';throw Error('This ticker is not in the current publication. Choose one from Browse available stocks.');}
   if(!item.quote)throw Error(item.error||'The source did not supply this observation.');
-  kind='invalid-data';validatePublicQuote(item.quote,category,symbol,m.publishedAt);
+  kind='invalid-data';validatePublicQuote(item.quote,category,symbol,selection.publicationTime||m.publishedAt);
   let history,modelAvailabilityNote;
   try{let manifest=await publicManifest();if(manifest.publishedAt!==m.publishedAt)manifest=await publicManifest(true);history=manifest.histories.find(h=>h.ticker===symbol&&h.market===(category==='idx'?'IDX':'US'));if(!history)modelAvailabilityNote='Price available. A model history is not published for this ticker. Quant currently covers the selected US histories and available IDX histories.';else if(!history.modelCutoff)modelAvailabilityNote='Price available. This history does not yet contain 350 eligible completed observations; no missing sessions are filled.';}
   catch{modelAvailabilityNote='The price is available, but model coverage could not be loaded. Refresh to retry model availability.';}
-  return new Response(JSON.stringify({...item.quote,modelCutoff:history?.modelCutoff||null,modelAvailable:!!history?.modelCutoff,modelAvailabilityNote,publicationTime:m.publishedAt}),{status:200,headers:{'Content-Type':'application/json'}});
+  return new Response(JSON.stringify({...item.quote,modelCutoff:history?.modelCutoff||null,modelAvailable:!!history?.modelCutoff,modelAvailabilityNote,publicationTime:selection.publicationTime||m.publishedAt,priceRefreshNote:feed?selection.note:'Price-refresh feed unavailable; retaining the dated research publication.',priceRefreshPublishedAt:feed?.generatedAt||null}),{status:200,headers:{'Content-Type':'application/json'}});
  }catch(e){return new Response(JSON.stringify({error:e.message,kind}),{status:503,headers:{'Content-Type':'application/json'}});}
 }
 async function validateRun(r){const values=[r?.config,r?.results,r?.dataset?.observations];if(r?.config)values.push(configFor(r.config));const hashes=new Map(await Promise.all(values.map(async v=>[JSON.stringify(v),await hash(v)])));checkAnalysis(r,v=>hashes.get(JSON.stringify(v)));}

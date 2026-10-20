@@ -1,0 +1,71 @@
+name: Refresh native market prices
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: [Publish working Office]
+    types: [completed]
+    branches: [main]
+  schedule:
+    - cron: '3-59/5 * * * *'
+permissions:
+  contents: read
+  actions: read
+  pages: write
+  id-token: write
+concurrency:
+  group: native-price-refresh
+  cancel-in-progress: false
+jobs:
+  prepare:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      ready: ${{ steps.ready.outputs.ready }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - name: Retain the newest verified site without rebuilding its models
+        id: source
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/native-prices-site.mjs restore
+      - name: Acquire exact source prices for the complete published catalogue
+        if: steps.source.outputs.ready == 'true'
+        run: node scripts/native-prices-data.mjs dist/office/data
+      - name: Check release identity and give interface releases priority
+        id: ready
+        if: steps.source.outputs.ready == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/native-prices-site.mjs check
+      - uses: actions/upload-pages-artifact@v5
+        if: steps.ready.outputs.ready == 'true'
+        with:
+          path: dist/office
+  deploy:
+    needs: prepare
+    if: needs.prepare.outputs.ready == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # Do not join the interface concurrency group: a scheduled price run must
+    # never evict a pending interface deployment. Final checks give it priority.
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+      - name: Recheck current main revision before publishing
+        id: final
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/native-prices-site.mjs final
+      - uses: actions/deploy-pages@v5
+        if: steps.final.outputs.ready == 'true'
+        id: deployment

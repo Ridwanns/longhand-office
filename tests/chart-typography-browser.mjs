@@ -4,7 +4,7 @@ export async function run(original,base='http://127.0.0.1:4175/office/'){
  const selector='.scientific-plot>svg,.context-chart-plot>svg,.latest-cycle-plot>svg,.context-cycle>svg,svg.macro-data-chart,.outlook-chart>svg';
  try{
   for(const route of ['market/macro/id/economy','market/macro/id/outlook','market/macro/id/rates','market/bonds','market/commodities','market/us','market/idx','market/fx']){
-   await p.goto(base+'#'+route);await p.waitForFunction(s=>[...document.querySelectorAll(s)].some(e=>e.getBoundingClientRect().width>100),selector);await p.waitForTimeout(160);
+   await p.goto(base+'#'+route);await p.waitForFunction(s=>[...document.querySelectorAll(s)].some(e=>e.getBoundingClientRect().width>100),selector);if(await p.locator('#market-board').count())await p.waitForFunction(()=>!document.querySelector('#refresh-market')?.disabled);await p.waitForTimeout(200);
    const geometry=()=>p.locator(selector).evaluateAll(nodes=>JSON.stringify(nodes.map(e=>[...e.querySelectorAll('path,polyline,rect')].map(n=>[n.getAttribute('d'),n.getAttribute('points'),n.getAttribute('x'),n.getAttribute('y'),n.getAttribute('height')]))));
    const baseline=await geometry();await p.locator('#theme-toggle').click();await p.waitForTimeout(70);check(route+' theme changes preserve plotted geometry',await geometry()===baseline);
    for(const width of [1660,1280,768,390,320]){

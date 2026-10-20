@@ -2,6 +2,8 @@ export async function run(original){
  const root='http://127.0.0.1:4175/office/',c=await original.context().browser().newContext({viewport:{width:1440,height:1000},reducedMotion:'reduce'}),p=await c.newPage(),checks=[],errors=[];
  const check=(name,ok)=>{if(!ok)throw Error(name);checks.push({name,passed:true});};p.on('pageerror',e=>errors.push(e.message));
  try{
+  // Exercise the original publication independently of the new optional price channel.
+  await p.route('**/data/native-prices/*.json',r=>r.fulfill({status:503,body:'TEST ONLY independent price channel unavailable'}));
   await p.goto(root+'#market/us');await p.locator('#market-coverage-status').filter({hasText:'published stocks/ETFs'}).waitFor();await p.waitForFunction(()=>document.querySelector('#refresh-market')&&!document.querySelector('#refresh-market').disabled);
   const directory=await p.evaluate(async()=>fetch('./data/manifest.json').then(r=>r.json()));check('Markets searches the broad published directory with bounded native suggestions',directory.instruments.filter(i=>i.market==='US').length>7000&&await p.locator('#market-tickers option').count()===150);
   const before=await p.evaluate(()=>localStorage.getItem('longhand-office.watchlists.v1'));await p.locator('#watchlist-symbol').fill('ZZZZZZ');check('Unpublished ticker cannot enter the watchlist',await p.locator('#watchlist-form [type=submit]').isDisabled()&&!await p.locator('#watchlist-symbol').evaluate(e=>e.checkValidity())&&before===await p.evaluate(()=>localStorage.getItem('longhand-office.watchlists.v1')));
