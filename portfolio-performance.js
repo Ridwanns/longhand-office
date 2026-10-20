@@ -1,0 +1,47 @@
+const finite=v=>typeof v==='number'&&Number.isFinite(v),day=s=>typeof s==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s)&&Number.isFinite(Date.parse(s))&&new Date(s).toISOString().slice(0,10)===s;
+const requireValue=(ok,message)=>{if(!ok)throw Error(message);},currency=s=>typeof s==='string'&&/^[A-Z]{3}$/.test(s),source=s=>typeof s==='string'&&s.trim().length>0&&s.length<=1000;
+const near=(a,b)=>Math.abs(a-b)<=Math.max(1e-6,8*Number.EPSILON*Math.max(Math.abs(a),Math.abs(b)));
+export function externalPerformanceFlows(portfolio,start,end){return (portfolio.cashFlows||[]).map((f,i)=>({...f,sequence:f.sequence??(portfolio.transactions||[]).length+i+1,signed:f.type==='Deposit'?f.amount:-f.amount})).filter(f=>['Deposit','Withdrawal'].includes(f.type)&&f.date>start&&f.date<=end).sort((a,b)=>a.date.localeCompare(b.date)||a.sequence-b.sequence);}
+export function validatePerformanceWorkbook(w,p,{checkLedger=true}={}){
+ requireValue(w?.format==='longhand-portfolio-performance'&&w.version===1&&w.portfolioId===p.id&&w.nativeCurrency===p.currency&&currency(w.reportingCurrency),'Use a performance workbook for this portfolio and its original currency.');
+ for(const [key,v]of [['start',w.start],['end',w.end]])requireValue(v&&day(v.date)&&v.date<=new Date().toISOString().slice(0,10)&&finite(v.value)&&v.value>=0&&source(v.source),'A nonnegative, dated, sourced '+key+' net asset value is required.');
+ requireValue(w.start.date<w.end.date&&w.start.value>0,'Choose a positive opening value and a later closing date. Values are after all events on their stated closing date.');
+ requireValue(Array.isArray(w.flowValuations)&&w.flowValuations.length<=10000&&Array.isArray(w.fxRates)&&w.fxRates.length<=10000,'Bounded flow valuations and FX arrays are required.');
+ requireValue(Array.isArray(w.ledgerFlows)&&w.ledgerFlows.length<=10000,'Retain the dated external-flow inputs for this study.');
+ const flowIds=new Set();for(const f of w.ledgerFlows){requireValue(f&&typeof f.id==='string'&&f.id&&!flowIds.has(f.id)&&day(f.date)&&f.date>w.start.date&&f.date<=w.end.date&&['Deposit','Withdrawal'].includes(f.type)&&finite(f.amount)&&f.amount>0&&f.currency===p.currency&&Number.isSafeInteger(f.sequence)&&f.sequence>0,'Invalid frozen external-flow evidence.');flowIds.add(f.id);}
+ const frozen=externalPerformanceFlows({...p,cashFlows:w.ledgerFlows},w.start.date,w.end.date),actual=externalPerformanceFlows(p,w.start.date,w.end.date),identity=rows=>JSON.stringify(rows.map(({id,date,type,amount,currency,sequence})=>({id,date,type,amount,currency,sequence})));
+ if(checkLedger)requireValue(identity(frozen)===identity(actual),'Ledger changed since the performance inputs were recorded. Review and prepare the study again.');
+ const flows=frozen,seen=new Set();
+ for(const v of w.flowValuations){const f=flows.find(f=>f.id===v.flowId);requireValue(f&&!seen.has(v.flowId)&&finite(v.before)&&v.before>=0&&finite(v.after)&&v.after>=0&&source(v.source),'Each flow valuation needs a unique in-period deposit/withdrawal ID and sourced before/after values.');requireValue(near(v.after-v.before,f.signed),'Before/after net asset values do not reconcile to recorded flow '+f.id+'.');seen.add(v.flowId);}
+ seen.clear();for(const r of w.fxRates){requireValue(r&&day(r.date)&&r.date>=w.start.date&&r.date<=w.end.date&&r.from===p.currency&&r.to===w.reportingCurrency&&r.from!==r.to&&finite(r.rate)&&r.rate>0&&source(r.source)&&!seen.has(r.date),'FX rates must be unique, positive, dated reporting-currency units per one native unit.');seen.add(r.date);}
+ return w;
+}
+// XIRR is accepted only for a conventional dated cash-flow sequence. Multiple
+// sign changes withhold MWR rather than selecting an arbitrary possible root.
+export function moneyWeightedReturn(cashflows){
+ const dates=new Map();for(const f of cashflows){requireValue(day(f.date)&&finite(f.amount),'Invalid dated performance cash flow.');dates.set(f.date,(dates.get(f.date)||0)+f.amount);}
+ const rows=[...dates].sort(([a],[b])=>a.localeCompare(b)).filter(([,a])=>a!==0);let changes=0;for(let i=1;i<rows.length;i++)if(Math.sign(rows[i][1])!==Math.sign(rows[i-1][1]))changes++;
+ if(rows.length<2||rows[0][1]>=0||rows.at(-1)[1]<=0)return {available:false,reason:'MWR needs an initial investment and a later positive investor receipt or terminal value.'};
+ if(changes!==1)return {available:false,reason:'Nonconventional cash flows: IRR uniqueness is not established. No arbitrary root is selected.'};
+ const first=Date.parse(rows[0][0]),years=rows.map(([d])=>(Date.parse(d)-first)/(365*86400000)),periodYears=years.at(-1);if(periodYears<=0)return {available:false,reason:'A positive dated investment period is required.'};
+ const npv=k=>{const terms=rows.map(([,a],i)=>({sign:Math.sign(a),log:Math.log(Math.abs(a))-k*years[i]})),scale=Math.max(...terms.map(t=>t.log));return terms.reduce((s,t)=>s+t.sign*Math.exp(t.log-scale),0);};
+ let lo=-50,hi=50,a=npv(lo),b=npv(hi);if(a===0||b===0||Math.sign(a)===Math.sign(b))return {available:false,reason:'IRR lies outside the supported numerical bracket.'};
+ let mid=0;for(let i=0;i<180;i++){mid=(lo+hi)/2;const v=npv(mid);if(Math.abs(v)<1e-13||hi-lo<1e-13)break;if(Math.sign(v)===Math.sign(a)){lo=mid;a=v;}else hi=mid;}
+ const annualized=Math.expm1(mid),periodReturn=Math.expm1(mid*periodYears);if(![annualized,periodReturn].every(Number.isFinite)||annualized<=-1)return {available:false,reason:'IRR exceeds supported numerical precision.'};
+ return {available:true,annualized,periodReturn,periodYears,dayCount:'ACT/365 fixed',cashflows:rows.map(([date,amount])=>({date,amount}))};
+}
+function twr(start,end,flows,valuations,rate){
+ let previous=start.value*rate(start.date),factor=1;const segments=[];
+ for(const f of flows){const v=valuations.find(v=>v.flowId===f.id);if(!v)return {available:false,reason:'Missing before/after NAV at flow '+f.id+'.'};const before=v.before*rate(f.date),after=v.after*rate(f.date);if(previous<=0||after<=0)return {available:false,reason:'TWR cannot link across a zero or negative capital boundary.'};const sub=before/previous;factor*=sub;segments.push({end:f.date,flowId:f.id,factor:sub,before,after});previous=after;}
+ if(previous<=0)return {available:false,reason:'Positive invested capital is required at every return denominator.'};const sub=end.value*rate(end.date)/previous;factor*=sub;segments.push({end:end.date,flowId:null,factor:sub});return Number.isFinite(factor)?{available:true,value:factor-1,segments}:{available:false,reason:'TWR exceeds supported numerical limits.'};
+}
+export function portfolioPerformance(p,workbook=p.performanceWorkbook){
+ if(!workbook)return {available:false,reason:'Add sourced opening/closing NAVs. TWR also needs values immediately before and after each external cash flow.'};
+ const w=validatePerformanceWorkbook(workbook,p),flows=externalPerformanceFlows(p,w.start.date,w.end.date),required=[...new Set([w.start.date,w.end.date,...flows.map(f=>f.date)])],nativeTwr=twr(w.start,w.end,flows,w.flowValuations,()=>1);
+ const same=w.reportingCurrency===p.currency,missingFx=same?[]:required.filter(d=>!w.fxRates.some(r=>r.date===d));
+ const nativeMwr=moneyWeightedReturn([{date:w.start.date,amount:-w.start.value},...flows.map(f=>({date:f.date,amount:-f.signed})),{date:w.end.date,amount:w.end.value}]);
+ if(missingFx.length)return {available:true,nativeCurrency:p.currency,reportingCurrency:w.reportingCurrency,nativeTwr,nativeMwr,twr:{available:false,reason:'Missing exact-date FX: '+missingFx.join(', ')},mwr:{available:false,reason:'Reporting-currency cash flows require every boundary FX rate.'},fx:null,flows};
+ const rate=d=>same?1:w.fxRates.find(r=>r.date===d).rate,twrResult=twr(w.start,w.end,flows,w.flowValuations,rate),mwr=moneyWeightedReturn([{date:w.start.date,amount:-w.start.value*rate(w.start.date)},...flows.map(f=>({date:f.date,amount:-f.signed*rate(f.date)})),{date:w.end.date,amount:w.end.value*rate(w.end.date)}]);
+ const fxReturn=rate(w.end.date)/rate(w.start.date)-1,fx=nativeTwr.available&&twrResult.available?{nativeReturn:nativeTwr.value,fxReturn,crossTerm:nativeTwr.value*fxReturn,reportingReturn:twrResult.value,residual:twrResult.value-(nativeTwr.value+fxReturn+nativeTwr.value*fxReturn)}:null;
+ return {available:true,nativeCurrency:p.currency,reportingCurrency:w.reportingCurrency,nativeTwr,nativeMwr,twr:twrResult,mwr,fx,flows,period:[w.start.date,w.end.date],policy:'Closing-date NAVs; exact before/after external-flow valuations for TWR. Deposits/withdrawals are external, dividends and trading fees remain inside NAV. Imported NAV/FX provenance is user-supplied, not independently verified.'};
+}

@@ -1,3 +1,4 @@
+import {validatePerformanceWorkbook} from './portfolio-performance.js';
 import {validateResearchContext,researchSymbol,checkPaperLink} from './investment-context.js';
 export const KEY = 'longhand-office.v1';
 export const empty = () => ({version:1, portfolios:[], theses:[], decisions:[]});
@@ -140,6 +141,7 @@ export function validate(data) {
   if(p.mode!==undefined&&!['paper','real'].includes(p.mode))throw Error('Invalid portfolio mode: choose paper or real.');
   if(p.cashFlows!==undefined){if(!Array.isArray(p.cashFlows)||p.cashFlows.length>50000)throw Error('Invalid cash-flow history.');for(const f of p.cashFlows){validateCashFlow(f,p,symbols);if(ids.has(f.id))throw Error('Duplicate cash-flow ID.');ids.add(f.id);}}
   for(const t of p.transactions)validTransaction(t,ids);ledger(p);
+  if(p.performanceWorkbook!==undefined)validatePerformanceWorkbook(p.performanceWorkbook,p,{checkLedger:false});
   if(p.valuations!==undefined){
    if(!Array.isArray(p.valuations)||p.valuations.length>50000)throw Error('Invalid valuation history.');
    for(const q of p.valuations){validateValuation(q,p,symbols);if(ids.has(q.id))throw Error('Duplicate valuation record ID.');ids.add(q.id);}

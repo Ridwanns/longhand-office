@@ -29,7 +29,7 @@ test('Comparator is collapsed native disclosure and only shown for Indonesia',()
  const usa=renderLatestCycle(fixture(),{country:'United States',width:600,now});
  assert.match(idn,/Quarter-aligned historical check/);
  assert.match(idn,/data-quarter-end-reference/);
- assert.match(idn,/not comparable across economies/);
+ assert.match(idn,/Both axes share the same scale/);
  assert.match(idn,/March CPI, BPS/);
  assert.doesNotMatch(usa,/Quarter-aligned historical check/);
 });

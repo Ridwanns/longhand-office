@@ -30,6 +30,7 @@ files.add('quant-navigation.js');
 ['advanced-math.js','advanced-worker.js','advanced-storage.js','advanced-ui.js'].forEach(f=>files.add(f));
 files.add('research-history.js');
 ['auto-valuation-math.js','auto-valuation-ui.js','public-quote-contract.js','ticker-study.js','ticker-storage.js','ticker-ui.js','research-math.js','research-ui.js','atlas-math.js','atlas-ui.js','atlas.css','quant-math.js','quant-contract.js','quant-history.js','analysis-contract.js','quant-ui.js','office-storage.js','office-extensions.js','office-workflows.js'].forEach(f=>files.add(f));
+['model-accountability.js','portfolio-performance.js','performance-ui.js','research-workspace.css','quarterly-regime.js','private-vault-client.js','private-vault-ui.js'].forEach(f=>files.add(f));
 let local;
 if(port===4174){files.add('valuation-example.json');files.add('flowless-example.json');}
 ['market-data-contract.js','market-data-adapters.js','market-data-research.js','market-data-worker.js','market-data-storage.js','market-data-service.js','market-data-ui.js','market-data.css'].forEach(f=>files.add(f));
@@ -69,7 +70,7 @@ const server=http.createServer(async(req,res)=>{
   }
   const name = url.pathname.slice(1) || 'index.html';
   if (!files.has(name)) {res.writeHead(404);return res.end('Not found');}
-  try {const body=await readFile(path.join(root,name));res.writeHead(200,{'Content-Type':types[path.extname(name)],'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','Content-Security-Policy':"default-src 'self'; connect-src 'self' https://raw.githubusercontent.com; frame-src https://s.tradingview.com https://www.tradingview-widget.com; style-src 'self'; script-src 'self'; img-src 'self' data:; frame-ancestors 'none'; base-uri 'none'; form-action 'self'"});res.end(body);}catch{res.writeHead(500);res.end('Unable to read app file');}
+  try {const body=await readFile(path.join(root,name));res.writeHead(200,{'Content-Type':types[path.extname(name)],'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','Content-Security-Policy':"default-src 'self'; connect-src 'self' https: http://127.0.0.1:4176 http://localhost:4176; frame-src https://s.tradingview.com https://www.tradingview-widget.com; style-src 'self'; script-src 'self'; img-src 'self' data:; frame-ancestors 'none'; base-uri 'none'; form-action 'self'"});res.end(body);}catch{res.writeHead(500);res.end('Unable to read app file');}
 });
 server.on('error',error=>{console.error(error.code==='EADDRINUSE'?'Longhand Office is already running on port '+port+'. Existing records and jobs were not reopened.':error.message);process.exitCode=1;});
 server.listen(port,'127.0.0.1',()=>{

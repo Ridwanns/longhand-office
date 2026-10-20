@@ -12,6 +12,9 @@ export function macroDeskRoute(country,view='overview'){
  return '#market/macro/'+region+'/'+view+(['IDN','USA','EMU','WLD'].includes(country)?'':'/'+country);
 }
 export function syncMacroScope(parent,country){
+ // A delayed resize/release render must never move a user who has already
+ // navigated elsewhere. The mounted desk owns only its current route.
+ if(!parent.isConnected||!location.hash.startsWith('#market/macro')||parent._scopeRoute&&parent._scopeRoute!==location.hash)return;
  const monitor=parent.closest('.macro-monitor');if(!monitor||!Object.hasOwn(CONTEXT_COUNTRIES,country))return;
  monitor.dataset.economy=country;const heading=monitor.querySelector('.macro-page-title h1');if(heading&&parent.dataset.view==='economy')heading.textContent=CONTEXT_COUNTRIES[country]+' macro';if(heading&&parent.dataset.view==='rates')heading.textContent=CONTEXT_COUNTRIES[country]+' rates';
  const control=monitor.querySelector('[data-macro-scope] select');if(control&&[...control.options].some(option=>option.value===country))control.value=country;
@@ -20,5 +23,6 @@ export function syncMacroScope(parent,country){
  const view=parent.dataset.view||'overview',url=macroDeskRoute(country,view);
  const parts=location.hash.replace(/^#/,'').split('/'),current=macroEconomy({region:parts[2],country:parts[4],economy:Object.hasOwn(CONTEXT_COUNTRIES,parts[4])?parts[4]:null});
  if(url&&country!==current)history.replaceState({...history.state},'',url);
+ parent._scopeRoute=location.hash;
  parent.querySelector('#macro-atlas')?._selectEconomy?.(country);
 }

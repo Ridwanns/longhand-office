@@ -25,3 +25,11 @@ test('The application versions the Markets bridge so a cached bridge cannot pin 
  assert.ok(assets['app.js'].includes("'./market-terminal.js?office="+version+"'"));
  for(const name of ['macro-ui','market-view','market-catalogue'])assert.ok(assets['market-terminal.js'].includes("'./"+name+".js?office="+version+"'"));
 });
+
+test('New performance, accountability and vault modules share their installed backup module identity',()=>{
+ const names=['private-vault-ui','private-vault-client','complete-backup','performance-ui','portfolio-performance','model','model-accountability','prediction-ui','prediction-math','research-layout','market-data-storage','quarterly-regime'];
+ const input=fixture();input['app.js']+='\n'+names.map(n=>`import './${n}.js';`).join('');for(const n of names)input[n+'.js']="import './complete-backup.js';import './model.js';";
+ const {version,assets}=versionMacroAssets(input);for(const n of names)assert.ok(assets['app.js'].includes(`./${n}.js?office=${version}`));
+ for(const n of names)assert.ok(assets[n+'.js'].includes(`./complete-backup.js?office=${version}`));
+ assert.equal(assets['quant-math.js'],input['quant-math.js']);
+});

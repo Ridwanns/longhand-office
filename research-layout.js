@@ -13,9 +13,10 @@ export function researchPeriod(value){
  if(/^\d{4}-(0[1-9]|1[0-2])$/.test(text))return researchDate(text+'-01').replace(/^1 /,'');
  return /^\d{4}-\d{2}-\d{2}$/.test(text)?researchDate(text):text;
 }
-export const RESEARCH_VIEWS={overview:'Research overview',models:'Quantitative models',valuation:'Company valuation',thesis:'Investment thesis',saved:'Saved research',tools:'Advanced tools'};
+export const RESEARCH_VIEWS={overview:'Research overview',models:'Quantitative models',validation:'Model accountability',valuation:'Valuation sensitivity',thesis:'Investment thesis',saved:'Saved research',tools:'Advanced tools'};
 export const runFromRoute=route=>route.startsWith('quant/run/')?route.split('/')[2]:'';
 export function viewForJump(key){
+ if(key==='predictions')return 'validation';
  if(['valuation'].includes(key))return 'valuation';
  if(['calculator','research','reference'].includes(key))return 'tools';
  if(['models','advanced','valuations','tickers','manual'].includes(key))return 'saved';
