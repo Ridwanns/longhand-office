@@ -111,7 +111,7 @@ See [DATA_SOURCE_REVIEW.md](DATA_SOURCE_REVIEW.md) for the additional US/IDX rep
 
 See [MACRO_OUTLOOK_2026_10_20.md](MACRO_OUTLOOK_2026_10_20.md) for the four-quarter macro outlook, additional independently sourced indicators, chart readability fixes, validation and remaining nowcast limits.
 
-See [Native market price updates](CONNECTED_MARKET_FEEDS.md) for automatically updated public price panels, verified watchlist listings, gold spot, bond ETFs and the explicit real-time/delayed/end-of-day boundaries.
+See [Native market price updates](CONNECTED_MARKET_FEEDS.md) for automatic source updates inside the native watchlist, exact stock/index identities, gold futures, bond ETFs and explicit source-time/delay limits. The [chart design direction](DESIGN_DIRECTION_2026_10_21.md) links the editable Figma review and the implemented chart choices.
 
 The [idx-cli review](IDX_CLI_REVIEW.md) records successful personal/read-only MSN quote and BBCA fundamental probes, the dated ownership-manifest check, and the unit/history/data-rights boundaries required before a local IDX adapter. It does not change the running Office or republish MSN datasets.
 
