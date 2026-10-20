@@ -8,6 +8,7 @@ const api=route=>JSON.parse(execFileSync('gh',['api','repos/'+repo+'/'+route],{e
 const output=async ready=>appendFile(process.env.GITHUB_OUTPUT,'ready='+ready+'\n');
 const active=()=>api('actions/workflows/pages.yml/runs?per_page=20').workflow_runs.some(r=>r.status!=='completed');
 const main=()=>api('commits/main').sha;
+const newerFullPublication=sourceRun=>api('actions/workflows/pages.yml/runs?status=success&per_page=5').workflow_runs.some(r=>r.head_sha===expected&&r.id>sourceRun);
 const expected=process.env.GITHUB_EVENT_NAME==='workflow_run'?JSON.parse(await readFile(process.env.GITHUB_EVENT_PATH,'utf8')).workflow_run.head_sha:process.env.GITHUB_SHA;
 const mode=process.argv[2];
 if(mode==='restore'){
@@ -21,8 +22,8 @@ if(mode==='restore'){
   }await output(found);if(!found)console.log('No verified site artifact for this revision; wait for the interface publication.');
  }
 }else if(mode==='check'){
- const source=JSON.parse(await readFile('.tools/native-site/source.json','utf8'));await output(source.sha===expected&&main()===expected&&!active());
+ const source=JSON.parse(await readFile('.tools/native-site/source.json','utf8'));await appendFile(process.env.GITHUB_OUTPUT,'site_run='+source.run+'\n');await output(source.sha===expected&&main()===expected&&!active()&&!newerFullPublication(source.run));
 }else if(mode==='final'){
  // A new interface commit must never be overwritten by an older price-only run.
- await output(main()===expected&&!active());
+ const sourceRun=Number(process.env.OFFICE_PRICE_SOURCE_RUN);await output(Number.isSafeInteger(sourceRun)&&sourceRun>0&&main()===expected&&!active()&&!newerFullPublication(sourceRun));
 }else throw Error('Unknown native site publication mode.');

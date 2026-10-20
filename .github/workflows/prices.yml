@@ -22,6 +22,7 @@ jobs:
     timeout-minutes: 15
     outputs:
       ready: ${{ steps.ready.outputs.ready }}
+      site_run: ${{ steps.ready.outputs.site_run }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -65,6 +66,7 @@ jobs:
         id: final
         env:
           GH_TOKEN: ${{ github.token }}
+          OFFICE_PRICE_SOURCE_RUN: ${{ needs.prepare.outputs.site_run }}
         run: node scripts/native-prices-site.mjs final
       - uses: actions/deploy-pages@v5
         if: steps.final.outputs.ready == 'true'
