@@ -1,0 +1,1711 @@
+{
+  "format": "longhand-idx-primary-reviews",
+  "version": 1,
+  "reports": [
+    {
+      "ticker": "ADRO",
+      "entityName": "PT Alamtri Resources Indonesia Tbk",
+      "documentUrl": "https://www.alamtri.com/files/news/berkas_eng/2347/FS%20ADRO%20FY25.pdf",
+      "documentSha256": "2a75e20a5cdb9b328a2d5e902e3e5bba4eecbcfb236100950bca032d33afbd87",
+      "reviewedAt": "2026-10-21T12:13:58.304269Z",
+      "periodStart": "2025-01-01",
+      "periodEnd": "2025-12-31",
+      "frequency": "annual",
+      "scope": "consolidated",
+      "currency": "USD",
+      "facts": [
+        {
+          "key": "epsBasic",
+          "value": 0.01526,
+          "scale": 1,
+          "unit": "currency/share",
+          "page": 130,
+          "printedPage": "5/107",
+          "decimals": 5
+        },
+        {
+          "key": "epsDiluted",
+          "value": 0.01526,
+          "scale": 1,
+          "unit": "currency/share",
+          "page": 130,
+          "printedPage": "5/107",
+          "decimals": 5
+        },
+        {
+          "key": "netIncomeOwners",
+          "value": 447694,
+          "scale": 1000,
+          "unit": "currency",
+          "page": 130,
+          "printedPage": "5/107",
+          "decimals": 0
+        },
+        {
+          "key": "equityOwners",
+          "value": 4485423,
+          "scale": 1000,
+          "unit": "currency",
+          "page": 16,
+          "printedPage": "1/3",
+          "decimals": 0
+        },
+        {
+          "key": "basicAverageShares",
+          "value": 29337589,
+          "scale": 1000,
+          "unit": "shares",
+          "page": 130,
+          "printedPage": "5/107",
+          "decimals": 0
+        },
+        {
+          "key": "dilutedAverageShares",
+          "value": 29337589,
+          "scale": 1000,
+          "unit": "shares",
+          "page": 130,
+          "printedPage": "5/107",
+          "decimals": 0
+        },
+        {
+          "key": "issuedShares",
+          "value": 29389689400,
+          "scale": 1,
+          "unit": "shares",
+          "page": 16,
+          "printedPage": "1/3",
+          "decimals": 0
+        },
+        {
+          "key": "cfo",
+          "value": 594125,
+          "scale": 1000,
+          "unit": "currency",
+          "page": 22,
+          "printedPage": "4/1",
+          "decimals": 0
+        }
+      ],
+      "limitations": [
+        "Consolidated operating cash flow is not parent-owner FCFE; non-controlling interests and reinvestment/debt definitions must be reconciled before valuation.",
+        "No provider TTM replacement, currency conversion, annualisation or inferred net borrowing has been made.",
+        "Financial reporting currency is USD while IDX listing prices are IDR. No FX conversion into an IDR valuation has been made.",
+        "FY2024 total EPS 0.04491 includes discontinued operations; continuing EPS was 0.01855. FY2025 total and continuing EPS both 0.01526. Comparisons must preserve this distinction.",
+        "Weighted average shares are rounded in thousands; not identical to exact period-end issued shares.",
+        "Cash additions to fixed assets 790,104 thousand USD and mining properties 11,463 are separate; asset disposal proceeds 4,902. Issuer capex/FCF management definitions are not FCFE."
+      ],
+      "id": "ADRO-2025-FY",
+      "sourceHosts": [
+        "www.alamtri.com"
+      ]
+    },
+    {
+      "ticker": "ADRO",
+      "entityName": "PT Alamtri Resources Indonesia Tbk",
+      "documentUrl": "https://www.alamtri.com/files/news/berkas_eng/2364/FS%20Alamtri%20Resources%20Indonesia%2030%20June%202026.pdf",
+      "documentSha256": "98aec7a7004c636d1d3c907ff0ef3fafc13db64ee246da5ba890dbf8bc636111",
+      "reviewedAt": "2026-10-21T12:13:58.304269Z",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "frequency": "six-month",
+      "scope": "consolidated",
+      "currency": "USD",
+      "facts": [
+        {
+          "key": "epsBasic",
+          "value": 0.01074,
+          "scale": 1,
+          "unit": "currency/share",
+          "page": 120,
+          "printedPage": "5/106",
+          "decimals": 5
+        },
+        {
+          "key": "epsDiluted",
+          "value": 0.01074,
+          "scale": 1,
+          "unit": "currency/share",
+          "page": 120,
+          "printedPage": "5/106",
+          "decimals": 5
+        },
+        {
+          "key": "netIncomeOwners",
+          "value": 309369,
+          "scale": 1000,
+          "unit": "currency",
+          "page": 120,
+          "printedPage": "5/106",
+          "decimals": 0
+        },
+        {
+          "key": "equityOwners",
+          "value": 4609002,
+          "scale": 1000,
+          "unit": "currency",
+          "page": 8,
+          "printedPage": "1/3",
+          "decimals": 0
+        },
+        {
+          "key": "basicAverageShares",
+          "value": 28800494,
+          "scale": 1000,
+          "unit": "shares",
+          "page": 120,
+          "printedPage": "5/106",
+          "decimals": 0
+        },
+        {
+          "key": "dilutedAverageShares",
+          "value": 28800494,
+          "scale": 1000,
+          "unit": "shares",
+          "page": 120,
+          "printedPage": "5/106",
+          "decimals": 0
+        },
+        {
+          "key": "issuedShares",
+          "value": 28800494200,
+          "scale": 1,
+          "unit": "shares",
+          "page": 8,
+          "printedPage": "1/3",
+          "decimals": 0
+        }
+      ],
+      "limitations": [
+        "Consolidated operating cash flow is not parent-owner FCFE; non-controlling interests and reinvestment/debt definitions must be reconciled before valuation.",
+        "No provider TTM replacement, currency conversion, annualisation or inferred net borrowing has been made.",
+        "Six months ended 30 June 2026, not annual or TTM.",
+        "Reporting currency USD; listing prices IDR. No currency conversion assumed.",
+        "Weighted average shares are rounded in thousands; issued share count is exact period end."
+      ],
+      "id": "ADRO-2026-H1",
+      "sourceHosts": [
+        "www.alamtri.com"
+      ]
+    },
+    {
+      "ticker": "ANTM",
+      "entityName": "PT ANTAM (Persero) Tbk",
+      "documentUrl": "https://asx.api.markitdigital.com/asx-research/1.0/file/2924-03130329-2A1694333",
+      "documentSha256": "a4fef805f8175ea9afd5b0c428ed4052376f108791a7c31da4cdeb22876f6256",
+      "reviewedAt": "2026-10-21T12:18:35.356967Z",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "frequency": "six-month",
+      "scope": "consolidated",
+      "currency": "IDR",
+      "facts": [
+        {
+          "key": "epsBasic",
+          "value": 265.85,
+          "scale": 1,
+          "unit": "currency/share",
+          "page": 136,
+          "printedPage": "123",
+          "decimals": 2
+        },
+        {
+          "key": "netIncomeOwners",
+          "value": 6388586,
+          "scale": 1000000,
+          "unit": "currency",
+          "page": 136,
+          "printedPage": "123",
+          "decimals": 0
+        },
+        {
+          "key": "equityOwners",
+          "value": 37270011,
+          "scale": 1000000,
+          "unit": "currency",
+          "page": 16,
+          "printedPage": "3",
+          "decimals": 0
+        },
+        {
+          "key": "basicAverageShares",
+          "value": 24030765,
+          "scale": 1000,
+          "unit": "shares",
+          "page": 136,
+          "printedPage": "123",
+          "decimals": 0
+        },
+        {
+          "key": "issuedShares",
+          "value": 24030764725,
+          "scale": 1,
+          "unit": "shares",
+          "page": 113,
+          "printedPage": "100",
+          "decimals": 0
+        }
+      ],
+      "limitations": [
+        "Updated Half Year Report and Accounts filed with ASX on 1 September 2026; review report is included, not a full-year audit.",
+        "Basic EPS is printed as 265.85 IDR; Note 35 says diluted EPS equals basic because no potential ordinary securities. Separate printed diluted value is omitted.",
+        "Group profit 6,912,857 million IDR differs from parent-owner profit 6,388,586 million IDR. Equity attributable to owners is 37,270,011 million, not total group equity 38,531,520 million.",
+        "Average shares are printed in thousands, while total issued shares are exact and include one Series A Dwiwarna share.",
+        "The issuer website returned HTTP 403; primary issuer filing was retrieved from the ASX research file endpoint and its matching ASX company announcement metadata is retained.",
+        "Six-month results have not been annualised or labelled TTM. Consolidated cash flow has not been labelled parent FCFE."
+      ],
+      "id": "ANTM-2026-H1",
+      "sourceHosts": [
+        "asx.api.markitdigital.com"
+      ]
+    },
+    {
+      "ticker": "ASII",
+      "entityName": "PT Astra International Tbk",
+      "documentUrl": "https://r2.astra.co.id/financial-reports/Astra%20Account%20December%202025.pdf",
+      "documentSha256": "3d5d1c3c93a780b12c2ccc229923e88a30a72f568bd63ba372e13e4d3341879d",
+      "reviewedAt": "2026-10-21T12:13:58.304269Z",
+      "periodStart": "2025-01-01",
+      "periodEnd": "2025-12-31",
+      "frequency": "annual",
+      "scope": "consolidated",
+      "currency": "IDR",
+      "facts": [
+        {
+          "key": "epsBasic",
+          "value": 810,
+          "scale": 1,
+          "unit": "currency/share",
+          "page": 127,
+          "printedPage": "115",
+          "decimals": 0
+        },
+        {
+          "key": "epsDiluted",
+          "value": 810,
+          "scale": 1,
+          "unit": "currency/share",
+          "page": 127,
+          "printedPage": "115",
+          "decimals": 0
+        },
+        {
+          "key": "netIncomeOwners",
+          "value": 32769,
+          "scale": 1000000000,
+          "unit": "currency",
+          "page": 127,
+          "printedPage": "115",
+          "decimals": 0
+        },
+        {
+          "key": "equityOwners",
+          "value": 228906,
+          "scale": 1000000000,
+          "unit": "currency",
+          "page": 14,
+          "printedPage": "2",
+          "decimals": 0
+        },
+        {
+          "key": "basicAverageShares",
+          "value": 40451,
+          "scale": 1000000,
+          "unit": "shares",
+          "page": 127,
+          "printedPage": "115",
+          "decimals": 0
+        },
+        {
+          "key": "dilutedAverageShares",
+          "value": 40451,
+          "scale": 1000000,
+          "unit": "shares",
+          "page": 127,
+          "printedPage": "115",
+          "decimals": 0
+        },
+        {
+          "key": "issuedShares",
+          "value": 40483553140,
+          "scale": 1,
+          "unit": "shares",
+          "page": 14,
+          "printedPage": "2",
+          "decimals": 0
+        },
+        {
+          "key": "cfo",
+          "value": 44694,
+          "scale": 1000000000,
+          "unit": "currency",
+          "page": 18,
+          "printedPage": "6",
+          "decimals": 0
+        }
+      ],
+      "limitations": [
+        "Consolidated operating cash flow is not parent-owner FCFE; non-controlling interests and reinvestment/debt definitions must be reconciled before valuation.",
+        "No provider TTM replacement, currency conversion, annualisation or inferred net borrowing has been made.",
+        "Financial services activities are included in consolidated cash flows; generic industrial FCFE cannot be assumed.",
+        "EPS and weighted average shares are rounded as printed (shares in millions), not exact unrounded amounts.",
+        "2024 comparative figures are restated for PSAK 117 insurance contracts."
+      ],
+      "id": "ASII-2025-FY",
+      "sourceHosts": [
+        "r2.astra.co.id"
+      ]
+    },
+    {
+      "ticker": "ASII",
+      "entityName": "PT Astra International Tbk",
+      "documentUrl": "https://r2.astra.co.id/financial-reports/Astra%20Account%20June%202026.pdf",
+      "documentSha256": "57590d80b9dd4c092c4c2e4d9c66d40860a495be4665b35acd93d9fbeb87e579",
+      "reviewedAt": "2026-10-21T12:13:58.304269Z",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "frequency": "six-month",
+      "scope": "consolidated",
+      "currency": "IDR",
+      "facts": [
+        {
+          "key": "epsBasic",
+          "value": 313,
+          "scale": 1,
+          "unit": "currency/share",
+          "page": 108,
+          "printedPage": "106",
+          "decimals": 0
+        },
+        {
+          "key": "epsDiluted",
+          "value": 313,
+          "scale": 1,
+          "unit": "currency/share",
+          "page": 108,
+          "printedPage": "106",
+          "decimals": 0
+        },
+        {
+          "key": "netIncomeOwners",
+          "value": 12533,
+          "scale": 1000000000,
+          "unit": "currency",
+          "page": 108,
+          "printedPage": "106",
+          "decimals": 0
+        },
+        {
+          "key": "equityOwners",
+          "value": 230068,
+          "scale": 1000000000,
+          "unit": "currency",
+          "page": 4,
+          "printedPage": "2",
+          "decimals": 0
+        },
+        {
+          "key": "basicAverageShares",
+          "value": 39981,
+          "scale": 1000000,
+          "unit": "shares",
+          "page": 108,
+          "printedPage": "106",
+          "decimals": 0
+        },
+        {
+          "key": "dilutedAverageShares",
+          "value": 39981,
+          "scale": 1000000,
+          "unit": "shares",
+          "page": 108,
+          "printedPage": "106",
+          "decimals": 0
+        },
+        {
+          "key": "issuedShares",
+          "value": 40483553140,
+          "scale": 1,
+          "unit": "shares",
+          "page": 4,
+          "printedPage": "2",
+          "decimals": 0
+        }
+      ],
+      "limitations": [
+        "Consolidated operating cash flow is not parent-owner FCFE; non-controlling interests and reinvestment/debt definitions must be reconciled before valuation.",
+        "No provider TTM replacement, currency conversion, annualisation or inferred net borrowing has been made.",
+        "Six months ended 30 June 2026, not annual or TTM.",
+        "Includes financial services; generic group cashflow FCFE is not automatically appropriate.",
+        "Weighted average shares in millions and EPS in full Rupiah are rounded as printed."
+      ],
+      "id": "ASII-2026-H1",
+      "sourceHosts": [
+        "r2.astra.co.id"
+      ]
+    },
+    {
+      "ticker": "BBCA",
+      "entityName": "PT Bank Central Asia Tbk and subsidiaries",
+      "documentUrl": "https://www.bca.co.id/-/media/Feature/Report/File/S8/Laporan-Diaudit/2026/20260127-audited-financial-statement-bca-31-december-2025-indonesia-combined.pdf",
+      "documentSha256": "4ad4429143bd02606c8548283bfed7054125abc27998635b7c74baf67a6369c4",
+      "reviewedAt": "2026-10-21T12:15:40Z",
+      "periodStart": "2025-01-01",
+      "periodEnd": "2025-12-31",
+      "frequency": "annual",
+      "scope": "consolidated",
+      "currency": "IDR",
+      "statementScale": 1000000,
+      "auditStatus": "audited",
+      "publishedDate": "2026-01-27",
+      "listingUrl": "https://www.bca.co.id/id/tentang-bca/hubungan-investor/laporan-presentasi/laporan-keuangan",
+      "pdfPages": 147,
+      "documentBytes": 4869203,
+      "facts": [
+        {
+          "key": "epsBasic",
+          "value": 467,
+          "scale": 1,
+          "unit": "currency/share",
+          "page": 93,
+          "printedPage": "5/79",
+          "decimals": 0,
+          "printedValue": "467",
+          "currency": "IDR"
+        },
+        {
+          "key": "epsDiluted",
+          "value": 467,
+          "scale": 1,
+          "unit": "currency/share",
+          "page": 93,
+          "printedPage": "5/79",
+          "decimals": 0,
+          "printedValue": "467",
+          "currency": "IDR"
+        },
+        {
+          "key": "netIncomeOwners",
+          "value": 57537287,
+          "scale": 1000000,
+          "unit": "currency",
+          "page": 93,
+          "printedPage": "5/79",
+          "decimals": 0,
+          "printedValue": "57.537.287",
+          "currency": "IDR"
+        },
+        {
+          "key": "basicAverageShares",
+          "value": 123244982342,
+          "scale": 1,
+          "unit": "shares",
+          "page": 93,
+          "printedPage": "5/79",
+          "decimals": 0,
+          "printedValue": "123.244.982.342"
+        },
+        {
+          "key": "equityOwners",
+          "value": 281466478,
+          "scale": 1000000,
+          "unit": "currency",
+          "page": 8,
+          "printedPage": "1/2",
+          "decimals": 0,
+          "printedValue": "281.466.478",
+          "currency": "IDR"
+        },
+        {
+          "key": "issuedShares",
+          "value": 123275050000,
+          "scale": 1,
+          "unit": "shares",
+          "page": 8,
+          "printedPage": "1/2",
+          "decimals": 0,
+          "printedValue": "123.275.050.000"
+        },
+        {
+          "key": "treasuryShares",
+          "value": 262016800,
+          "scale": 1,
+          "unit": "shares",
+          "page": 8,
+          "printedPage": "1/2",
+          "decimals": 0,
+          "printedValue": "262.016.800"
+        }
+      ],
+      "limitations": [
+        "Bank cash flows are not treated as distributable FCFE. No generic bank FCFE or DCF is inferred.",
+        "Reported earnings are for the named period only; they are not TTM, annualized YTD, forecasts, or provider-normalized earnings.",
+        "Book value per share is not a reported fact in this review. It can only be separately derived using owners equity and point-in-time shares excluding treasury, with a stated date."
+      ],
+      "reviewMethod": "Downloaded official issuer PDF, SHA256 recorded, numerical rows extracted and rendered for visual cross-check. Facts retain printed scale and one-based PDF page; no missing fields inferred.",
+      "id": "BBCA-2025-FY",
+      "sourceHosts": [
+        "www.bca.co.id"
+      ]
+    },
+    {
+      "ticker": "BBCA",
+      "entityName": "PT Bank Central Asia Tbk and subsidiaries",
+      "documentUrl": "https://www.bca.co.id/-/media/Feature/Report/File/S8/Laporan-Triwulan/2026/20260728-laporan-keuangan-konsolidasi-pt-bca-tbk-periode-30-juni-2026-billingual.pdf",
+      "documentSha256": "18dab89c5bbacf1da39450cba64eb8a3ec6a865469437fa7188990948a68d9c5",
+      "reviewedAt": "2026-10-21T12:15:40Z",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "frequency": "six-month",
+      "scope": "consolidated",
+      "currency": "IDR",
+      "statementScale": 1000000,
+      "auditStatus": "unaudited",
+      "publishedDate": "2026-07-28",
+      "listingUrl": "https://www.bca.co.id/id/tentang-bca/hubungan-investor/laporan-presentasi/laporan-keuangan",
+      "pdfPages": 173,
+      "documentBytes": 3736701,
+      "facts": [
+        {
+          "key": "epsBasic",
+          "value": 240,
+          "scale": 1,
+          "unit": "currency/share",
+          "page": 109,
+          "printedPage": "106",
+          "decimals": 0,
+          "printedValue": "240",
+          "currency": "IDR"
+        },
+        {
+          "key": "epsDiluted",
+          "value": 240,
+          "scale": 1,
+          "unit": "currency/share",
+          "page": 109,
+          "printedPage": "106",
+          "decimals": 0,
+          "printedValue": "240",
+          "currency": "IDR"
+        },
+        {
+          "key": "netIncomeOwners",
+          "value": 29534446,
+          "scale": 1000000,
+          "unit": "currency",
+          "page": 109,
+          "printedPage": "106",
+          "decimals": 0,
+          "printedValue": "29.534.446",
+          "currency": "IDR"
+        },
+        {
+          "key": "basicAverageShares",
+          "value": 122872754239,
+          "scale": 1,
+          "unit": "shares",
+          "page": 109,
+          "printedPage": "106",
+          "decimals": 0,
+          "printedValue": "122.872.754.239"
+        },
+        {
+          "key": "equityOwners",
+          "value": 270437543,
+          "scale": 1000000,
+          "unit": "currency",
+          "page": 7,
+          "printedPage": "4",
+          "decimals": 0,
+          "printedValue": "270.437.543",
+          "currency": "IDR"
+        },
+        {
+          "key": "issuedShares",
+          "value": 123275050000,
+          "scale": 1,
+          "unit": "shares",
+          "page": 102,
+          "printedPage": "99",
+          "decimals": 0,
+          "printedValue": "123.275.050.000"
+        },
+        {
+          "key": "treasuryShares",
+          "value": 433298700,
+          "scale": 1,
+          "unit": "shares",
+          "page": 102,
+          "printedPage": "99",
+          "decimals": 0,
+          "printedValue": "433.298.700"
+        }
+      ],
+      "limitations": [
+        "Bank cash flows are not treated as distributable FCFE. No generic bank FCFE or DCF is inferred.",
+        "Reported earnings are for the named period only; they are not TTM, annualized YTD, forecasts, or provider-normalized earnings.",
+        "Book value per share is not a reported fact in this review. It can only be separately derived using owners equity and point-in-time shares excluding treasury, with a stated date."
+      ],
+      "reviewMethod": "Downloaded official issuer PDF, SHA256 recorded, numerical rows extracted and rendered for visual cross-check. Facts retain printed scale and one-based PDF page; no missing fields inferred.",
+      "id": "BBCA-2026-H1",
+      "sourceHosts": [
+        "www.bca.co.id"
+      ]
+    },
+    {
+      "ticker": "BBNI",
+      "entityName": "PT Bank Negara Indonesia (Persero) Tbk and subsidiaries",
+      "documentUrl": "https://www.bni.co.id/Portals/1/BNI/Perusahaan/HubunganInvestor/Docs/2025/LKFS-BNI-Bilingual-31-Des2025.pdf",
+      "documentSha256": "8c427dd5af7faab41765b061dcb80614e8abc1e6fbdbbed5a822f939d180c38d",
+      "reviewedAt": "2026-10-21T12:19:22Z",
+      "periodStart": "2025-01-01",
+      "periodEnd": "2025-12-31",
+      "frequency": "annual",
+      "scope": "consolidated",
+      "currency": "IDR",
+      "statementScale": 1000000,
+      "auditStatus": "audited",
+      "publishedDate": null,
+      "listingUrl": "https://bni.co.id/en-us/investors/financial-reports",
+      "pdfPages": 336,
+      "documentBytes": 8960325,
+      "facts": [
+        {
+          "key": "epsBasic",
+          "value": 537,
+          "scale": 1,
+          "unit": "currency/share",
+          "page": 20,
+          "printedPage": "7",
+          "decimals": 0,
+          "printedValue": "537",
+          "currency": "IDR"
+        },
+        {
+          "key": "epsDiluted",
+          "value": 537,
+          "scale": 1,
+          "unit": "currency/share",
+          "page": 20,
+          "printedPage": "7",
+          "decimals": 0,
+          "printedValue": "537",
+          "currency": "IDR"
+        },
+        {
+          "key": "netIncomeOwners",
+          "value": 20040703,
+          "scale": 1000000,
+          "unit": "currency",
+          "page": 241,
+          "printedPage": "228",
+          "decimals": 0,
+          "printedValue": "20,040,703",
+          "currency": "IDR"
+        },
+        {
+          "key": "basicAverageShares",
+          "value": 37297312916,
+          "scale": 1,
+          "unit": "shares",
+          "page": 241,
+          "printedPage": "228",
+          "decimals": 0,
+          "printedValue": "37,297,312,916"
+        },
+        {
+          "key": "equityOwners",
+          "value": 171730144,
+          "scale": 1000000,
+          "unit": "currency",
+          "page": 17,
+          "printedPage": "4",
+          "decimals": 0,
+          "printedValue": "171,730,144",
+          "currency": "IDR"
+        }
+      ],
+      "limitations": [
+        "Bank cash flows are not treated as distributable FCFE. No generic bank FCFE or DCF is inferred.",
+        "Reported earnings are for the named period only; they are not TTM, annualized YTD, forecasts, or provider-normalized earnings.",
+        "Book value per share is not a reported fact in this review. It can only be separately derived using owners equity and point-in-time shares excluding treasury, with a stated date.",
+        "Source-internal issued-share inconsistency: financial-position statement classes add to37,256,798,316; Note34 prints37,297,312,916 issued shares (H1 table37,219,456,816 plus77,856,100 treasury). Point-in-time issuedShares and derived BVPS are withheld pending issuer clarification.",
+        "No diluted-average-shares denominator is inferred from basic EPS or the no-dilutive-potential-shares sentence.",
+        "Exact publication date is not asserted. Signing dates on responsibility/review reports are not treated as publication dates.",
+        "FY2025 financial statements restate comparatives (Note60); historical growth must use consistent reporting vintage."
+      ],
+      "reviewMethod": "Downloaded official issuer PDF, SHA256 recorded, numerical rows extracted and rendered for visual cross-check. Facts retain printed scale and one-based PDF page; no missing fields inferred.",
+      "id": "BBNI-2025-FY",
+      "sourceHosts": [
+        "www.bni.co.id"
+      ]
+    },
+    {
+      "ticker": "BBNI",
+      "entityName": "PT Bank Negara Indonesia (Persero) Tbk and subsidiaries",
+      "documentUrl": "https://www.bni.co.id/Portals/1/BNI/Perusahaan/HubunganInvestor/Docs/2026/LKFS-BNI-Billingual-30-Jun-2026.pdf",
+      "documentSha256": "0e9c89e958885151f29bf7badc5e514c59f5085fa9f04792788c898135b7eb73",
+      "reviewedAt": "2026-10-21T12:19:22Z",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "frequency": "six-month",
+      "scope": "consolidated",
+      "currency": "IDR",
+      "statementScale": 1000000,
+      "auditStatus": "reviewed",
+      "publishedDate": null,
+      "listingUrl": "https://bni.co.id/en-us/investors/financial-reports",
+      "pdfPages": 324,
+      "documentBytes": 6815114,
+      "facts": [
+        {
+          "key": "epsBasic",
+          "value": 289,
+          "scale": 1,
+          "unit": "currency/share",
+          "page": 12,
+          "printedPage": "7",
+          "decimals": 0,
+          "printedValue": "289",
+          "currency": "IDR"
+        },
+        {
+          "key": "epsDiluted",
+          "value": 289,
+          "scale": 1,
+          "unit": "currency/share",
+          "page": 12,
+          "printedPage": "7",
+          "decimals": 0,
+          "printedValue": "289",
+          "currency": "IDR"
+        },
+        {
+          "key": "netIncomeOwners",
+          "value": 10755836,
+          "scale": 1000000,
+          "unit": "currency",
+          "page": 233,
+          "printedPage": "228",
+          "decimals": 0,
+          "printedValue": "10,755,836",
+          "currency": "IDR"
+        },
+        {
+          "key": "basicAverageShares",
+          "value": 37273627116,
+          "scale": 1,
+          "unit": "shares",
+          "page": 233,
+          "printedPage": "228",
+          "decimals": 0,
+          "printedValue": "37,273,627,116"
+        },
+        {
+          "key": "equityOwners",
+          "value": 163863555,
+          "scale": 1000000,
+          "unit": "currency",
+          "page": 9,
+          "printedPage": "4",
+          "decimals": 0,
+          "printedValue": "163,863,555",
+          "currency": "IDR"
+        },
+        {
+          "key": "treasuryShares",
+          "value": 77856100,
+          "scale": 1,
+          "unit": "shares",
+          "page": 218,
+          "printedPage": "213",
+          "decimals": 0,
+          "printedValue": "77,856,100"
+        }
+      ],
+      "limitations": [
+        "Bank cash flows are not treated as distributable FCFE. No generic bank FCFE or DCF is inferred.",
+        "Reported earnings are for the named period only; they are not TTM, annualized YTD, forecasts, or provider-normalized earnings.",
+        "Book value per share is not a reported fact in this review. It can only be separately derived using owners equity and point-in-time shares excluding treasury, with a stated date.",
+        "Source-internal issued-share inconsistency: financial-position statement classes add to37,256,798,316; Note34 prints37,297,312,916 issued shares (H1 table37,219,456,816 plus77,856,100 treasury). Point-in-time issuedShares and derived BVPS are withheld pending issuer clarification.",
+        "No diluted-average-shares denominator is inferred from basic EPS or the no-dilutive-potential-shares sentence.",
+        "Exact publication date is not asserted. Signing dates on responsibility/review reports are not treated as publication dates.",
+        "FY2025 financial statements restate comparatives (Note60); historical growth must use consistent reporting vintage."
+      ],
+      "reviewMethod": "Downloaded official issuer PDF, SHA256 recorded, numerical rows extracted and rendered for visual cross-check. Facts retain printed scale and one-based PDF page; no missing fields inferred.",
+      "id": "BBNI-2026-H1",
+      "sourceHosts": [
+        "www.bni.co.id"
+      ]
+    },
+    {
+      "ticker": "BBRI",
+      "entityName": "PT Bank Rakyat Indonesia (Persero) Tbk and subsidiaries",
+      "documentUrl": "https://www.ir-bri.com/misc/QR/2025/FY-2025.pdf",
+      "documentSha256": "703b82183e331ab8c04095db06c01b790606bbbf0df25efffed18018b229a5bc",
+      "reviewedAt": "2026-10-21T12:15:40Z",
+      "periodStart": "2025-01-01",
+      "periodEnd": "2025-12-31",
+      "frequency": "annual",
+      "scope": "consolidated",
+      "currency": "IDR",
+      "statementScale": 1000000,
+      "auditStatus": "audited",
+      "publishedDate": "2026-02-27",
+      "listingUrl": "https://www.ir-bri.com/financials.html/year/2026",
+      "pdfPages": 445,
+      "documentBytes": 3047619,
+      "facts": [
+        {
+          "key": "epsBasic",
+          "value": 376,
+          "scale": 1,
+          "unit": "currency/share",
+          "page": 427,
+          "printedPage": "414",
+          "decimals": 0,
+          "printedValue": "376",
+          "currency": "IDR"
+        },
+        {
+          "key": "epsDiluted",
+          "value": 376,
+          "scale": 1,
+          "unit": "currency/share",
+          "page": 427,
+          "printedPage": "414",
+          "decimals": 0,
+          "printedValue": "376",
+          "currency": "IDR"
+        },
+        {
+          "key": "netIncomeOwners",
+          "value": 56652384,
+          "scale": 1000000,
+          "unit": "currency",
+          "page": 427,
+          "printedPage": "414",
+          "decimals": 0,
+          "printedValue": "56.652.384",
+          "currency": "IDR"
+        },
+        {
+          "key": "basicAverageShares",
+          "value": 150602160685,
+          "scale": 1,
+          "unit": "shares",
+          "page": 427,
+          "printedPage": "414",
+          "decimals": 0,
+          "printedValue": "150.602.160.685"
+        },
+        {
+          "key": "dilutedAverageShares",
+          "value": 150602160685,
+          "scale": 1,
+          "unit": "shares",
+          "page": 427,
+          "printedPage": "414",
+          "decimals": 0,
+          "printedValue": "150.602.160.685"
+        },
+        {
+          "key": "equityOwners",
+          "value": 324033858,
+          "scale": 1000000,
+          "unit": "currency",
+          "page": 17,
+          "printedPage": "4",
+          "decimals": 0,
+          "printedValue": "324.033.858",
+          "currency": "IDR"
+        },
+        {
+          "key": "issuedShares",
+          "value": 151559001604,
+          "scale": 1,
+          "unit": "shares",
+          "page": 17,
+          "printedPage": "4",
+          "decimals": 0,
+          "printedValue": "151.559.001.604"
+        },
+        {
+          "key": "treasuryShares",
+          "value": 958602200,
+          "scale": 1,
+          "unit": "shares",
+          "page": 39,
+          "printedPage": "26",
+          "decimals": 0,
+          "printedValue": "958.602.200"
+        }
+      ],
+      "limitations": [
+        "Bank cash flows are not treated as distributable FCFE. No generic bank FCFE or DCF is inferred.",
+        "Reported earnings are for the named period only; they are not TTM, annualized YTD, forecasts, or provider-normalized earnings.",
+        "Book value per share is not a reported fact in this review. It can only be separately derived using owners equity and point-in-time shares excluding treasury, with a stated date.",
+        "FY2025 consolidated statements restate/reclassify comparative prior periods (Note52). Do not combine old unrevised comparative values without checking their vintage."
+      ],
+      "reviewMethod": "Downloaded official issuer PDF, SHA256 recorded, numerical rows extracted and rendered for visual cross-check. Facts retain printed scale and one-based PDF page; no missing fields inferred.",
+      "id": "BBRI-2025-FY",
+      "sourceHosts": [
+        "ir-bri.com",
+        "www.ir-bri.com"
+      ]
+    },
+    {
+      "ticker": "BBRI",
+      "entityName": "PT Bank Rakyat Indonesia (Persero) Tbk and subsidiaries",
+      "documentUrl": "https://www.ir-bri.com/misc/QR/2026/Q2-2026.pdf",
+      "documentSha256": "22b80019318fddfd393e2f845a63975655da3e98fc879851e574945bc235c3c7",
+      "reviewedAt": "2026-10-21T12:15:40Z",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "frequency": "six-month",
+      "scope": "consolidated",
+      "currency": "IDR",
+      "statementScale": 1000000,
+      "auditStatus": "audited",
+      "publishedDate": "2026-08-31",
+      "listingUrl": "https://www.ir-bri.com/financials.html/year/2026",
+      "pdfPages": 436,
+      "documentBytes": 3019342,
+      "facts": [
+        {
+          "key": "epsBasic",
+          "value": 205,
+          "scale": 1,
+          "unit": "currency/share",
+          "page": 422,
+          "printedPage": "410",
+          "decimals": 0,
+          "printedValue": "205",
+          "currency": "IDR"
+        },
+        {
+          "key": "epsDiluted",
+          "value": 205,
+          "scale": 1,
+          "unit": "currency/share",
+          "page": 422,
+          "printedPage": "410",
+          "decimals": 0,
+          "printedValue": "205",
+          "currency": "IDR"
+        },
+        {
+          "key": "netIncomeOwners",
+          "value": 30865402,
+          "scale": 1000000,
+          "unit": "currency",
+          "page": 422,
+          "printedPage": "410",
+          "decimals": 0,
+          "printedValue": "30.865.402",
+          "currency": "IDR"
+        },
+        {
+          "key": "basicAverageShares",
+          "value": 150622621224,
+          "scale": 1,
+          "unit": "shares",
+          "page": 422,
+          "printedPage": "410",
+          "decimals": 0,
+          "printedValue": "150.622.621.224"
+        },
+        {
+          "key": "dilutedAverageShares",
+          "value": 150622621224,
+          "scale": 1,
+          "unit": "shares",
+          "page": 422,
+          "printedPage": "410",
+          "decimals": 0,
+          "printedValue": "150.622.621.224"
+        },
+        {
+          "key": "equityOwners",
+          "value": 321923187,
+          "scale": 1000000,
+          "unit": "currency",
+          "page": 17,
+          "printedPage": "5",
+          "decimals": 0,
+          "printedValue": "321.923.187",
+          "currency": "IDR"
+        },
+        {
+          "key": "issuedShares",
+          "value": 151559001604,
+          "scale": 1,
+          "unit": "shares",
+          "page": 16,
+          "printedPage": "4",
+          "decimals": 0,
+          "printedValue": "151.559.001.604"
+        },
+        {
+          "key": "treasuryShares",
+          "value": 874812300,
+          "scale": 1,
+          "unit": "shares",
+          "page": 39,
+          "printedPage": "27",
+          "decimals": 0,
+          "printedValue": "874.812.300"
+        }
+      ],
+      "limitations": [
+        "Bank cash flows are not treated as distributable FCFE. No generic bank FCFE or DCF is inferred.",
+        "Reported earnings are for the named period only; they are not TTM, annualized YTD, forecasts, or provider-normalized earnings.",
+        "Book value per share is not a reported fact in this review. It can only be separately derived using owners equity and point-in-time shares excluding treasury, with a stated date."
+      ],
+      "reviewMethod": "Downloaded official issuer PDF, SHA256 recorded, numerical rows extracted and rendered for visual cross-check. Facts retain printed scale and one-based PDF page; no missing fields inferred.",
+      "id": "BBRI-2026-H1",
+      "sourceHosts": [
+        "ir-bri.com",
+        "www.ir-bri.com"
+      ]
+    },
+    {
+      "ticker": "BMRI",
+      "entityName": "PT Bank Mandiri (Persero) Tbk and subsidiaries",
+      "documentUrl": "https://www.bankmandiri.co.id/documents/38265486/0/Bank+Mandiri+%28Persero%29_billingual_Tbk+31+Dec+2025_released+-+unlock+%282%29.pdf/a92e80df-c4f1-ce81-21a8-98dbe18c93c4?t=1770371043762",
+      "documentSha256": "cdbe6456f548accb414eec209811d5eeaa903224e5d19b27df144d3b1fe12129",
+      "reviewedAt": "2026-10-21T12:15:40Z",
+      "periodStart": "2025-01-01",
+      "periodEnd": "2025-12-31",
+      "frequency": "annual",
+      "scope": "consolidated",
+      "currency": "IDR",
+      "statementScale": 1000000,
+      "auditStatus": "audited",
+      "publishedDate": null,
+      "listingUrl": "https://www.bankmandiri.co.id/in/web/ir/quarterly-financials",
+      "pdfPages": 537,
+      "documentBytes": 3796027,
+      "facts": [
+        {
+          "key": "epsBasic",
+          "value": 603.23,
+          "scale": 1,
+          "unit": "currency/share",
+          "page": 384,
+          "printedPage": "363",
+          "decimals": 2,
+          "printedValue": "603,23",
+          "currency": "IDR"
+        },
+        {
+          "key": "epsDiluted",
+          "value": 603.23,
+          "scale": 1,
+          "unit": "currency/share",
+          "page": 384,
+          "printedPage": "363",
+          "decimals": 2,
+          "printedValue": "603,23",
+          "currency": "IDR"
+        },
+        {
+          "key": "netIncomeOwners",
+          "value": 56293950,
+          "scale": 1000000,
+          "unit": "currency",
+          "page": 384,
+          "printedPage": "363",
+          "decimals": 0,
+          "printedValue": "56.293.950",
+          "currency": "IDR"
+        },
+        {
+          "key": "basicAverageShares",
+          "value": 93320,
+          "scale": 1000000,
+          "unit": "shares",
+          "page": 384,
+          "printedPage": "363",
+          "decimals": 0,
+          "printedValue": "93.320"
+        },
+        {
+          "key": "equityOwners",
+          "value": 293750669,
+          "scale": 1000000,
+          "unit": "currency",
+          "page": 29,
+          "printedPage": "8",
+          "decimals": 0,
+          "printedValue": "293.750.669",
+          "currency": "IDR"
+        },
+        {
+          "key": "issuedShares",
+          "value": 93333333332,
+          "scale": 1,
+          "unit": "shares",
+          "page": 373,
+          "printedPage": "352",
+          "decimals": 0,
+          "printedValue": "93.333.333.332"
+        },
+        {
+          "key": "treasuryShares",
+          "value": 84250000,
+          "scale": 1,
+          "unit": "shares",
+          "page": 382,
+          "printedPage": "361",
+          "decimals": 0,
+          "printedValue": "84.250.000"
+        }
+      ],
+      "limitations": [
+        "Bank cash flows are not treated as distributable FCFE. No generic bank FCFE or DCF is inferred.",
+        "Reported earnings are for the named period only; they are not TTM, annualized YTD, forecasts, or provider-normalized earnings.",
+        "Book value per share is not a reported fact in this review. It can only be separately derived using owners equity and point-in-time shares excluding treasury, with a stated date.",
+        "Weighted average ordinary shares are printed in millions (93.320), so the denominator is rounded to the nearest million. EPS reconciliation must propagate both profit and denominator rounding.",
+        "FY2025 includes Bank Syariah Indonesia in consolidation; H1 2026 deconsolidates it from1February2026. Naive year-to-date growth/equity comparisons must retain this scope-change note.",
+        "Exact publication day is not asserted: official quarterly listing says February2026; PDF metadata creation date is not treated as publication date."
+      ],
+      "reviewMethod": "Downloaded official issuer PDF, SHA256 recorded, numerical rows extracted and rendered for visual cross-check. Facts retain printed scale and one-based PDF page; no missing fields inferred.",
+      "id": "BMRI-2025-FY",
+      "sourceHosts": [
+        "www.bankmandiri.co.id"
+      ]
+    },
+    {
+      "ticker": "BMRI",
+      "entityName": "PT Bank Mandiri (Persero) Tbk and subsidiaries",
+      "documentUrl": "https://www.bankmandiri.co.id/documents/38265486/0/bank%2Bmandiri_consol_interim_30%2Bjune%2B2026_released.pdf/0c8071d7-ceeb-7162-7a66-21f208792e2f?t=1784869267239",
+      "documentSha256": "385e5b498c59305c15a961ef1c6926411355f682508c61b105a4ed2ac2916ded",
+      "reviewedAt": "2026-10-21T12:15:40Z",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "frequency": "six-month",
+      "scope": "consolidated",
+      "currency": "IDR",
+      "statementScale": 1000000,
+      "auditStatus": "reviewed",
+      "publishedDate": null,
+      "listingUrl": "https://www.bankmandiri.co.id/in/web/ir/quarterly-financials",
+      "pdfPages": 603,
+      "documentBytes": 4027405,
+      "facts": [
+        {
+          "key": "epsBasic",
+          "value": 326.11,
+          "scale": 1,
+          "unit": "currency/share",
+          "page": 428,
+          "printedPage": "423",
+          "decimals": 2,
+          "printedValue": "326,11",
+          "currency": "IDR"
+        },
+        {
+          "key": "epsDiluted",
+          "value": 326.11,
+          "scale": 1,
+          "unit": "currency/share",
+          "page": 428,
+          "printedPage": "423",
+          "decimals": 2,
+          "printedValue": "326,11",
+          "currency": "IDR"
+        },
+        {
+          "key": "netIncomeOwners",
+          "value": 30412319,
+          "scale": 1000000,
+          "unit": "currency",
+          "page": 427,
+          "printedPage": "422",
+          "decimals": 0,
+          "printedValue": "30.412.319",
+          "currency": "IDR"
+        },
+        {
+          "key": "basicAverageShares",
+          "value": 93257,
+          "scale": 1000000,
+          "unit": "shares",
+          "page": 428,
+          "printedPage": "423",
+          "decimals": 0,
+          "printedValue": "93.257"
+        },
+        {
+          "key": "equityOwners",
+          "value": 284593401,
+          "scale": 1000000,
+          "unit": "currency",
+          "page": 13,
+          "printedPage": "8",
+          "decimals": 0,
+          "printedValue": "284.593.401",
+          "currency": "IDR"
+        },
+        {
+          "key": "issuedShares",
+          "value": 93333333332,
+          "scale": 1,
+          "unit": "shares",
+          "page": 413,
+          "printedPage": "408",
+          "decimals": 0,
+          "printedValue": "93.333.333.332"
+        },
+        {
+          "key": "treasuryShares",
+          "value": 0,
+          "scale": 1,
+          "unit": "shares",
+          "page": 424,
+          "printedPage": "419",
+          "decimals": 0,
+          "printedValue": "Nihil"
+        }
+      ],
+      "limitations": [
+        "Bank cash flows are not treated as distributable FCFE. No generic bank FCFE or DCF is inferred.",
+        "Reported earnings are for the named period only; they are not TTM, annualized YTD, forecasts, or provider-normalized earnings.",
+        "Book value per share is not a reported fact in this review. It can only be separately derived using owners equity and point-in-time shares excluding treasury, with a stated date.",
+        "Weighted average ordinary shares are printed in millions (93.257), so the denominator is rounded to the nearest million. EPS reconciliation must propagate both profit and denominator rounding.",
+        "Bank Syariah Indonesia was deconsolidated from1February2026 (financial position footnote and Note1g); FY2025 remains consolidated including BSI. Do not present an unqualified comparable growth rate.",
+        "Interim statements have an independent review report, not an audit opinion.",
+        "Exact publication day is not asserted: official quarterly listing says July2026; PDF metadata creation date is not treated as publication date."
+      ],
+      "reviewMethod": "Downloaded official issuer PDF, SHA256 recorded, numerical rows extracted and rendered for visual cross-check. Facts retain printed scale and one-based PDF page; no missing fields inferred.",
+      "id": "BMRI-2026-H1",
+      "sourceHosts": [
+        "www.bankmandiri.co.id"
+      ]
+    },
+    {
+      "ticker": "ICBP",
+      "entityName": "PT Indofood CBP Sukses Makmur Tbk",
+      "documentUrl": "https://www.indofoodcbp.com/uploads/statement/ICBP_billingual_31_dec_25_released.pdf",
+      "documentSha256": "07233f11ca99a3c5b834891e3a8307976531f8e351f6eb72b9eb20d443fb82aa",
+      "reviewedAt": "2026-10-21T12:17:15.010527Z",
+      "periodStart": "2025-01-01",
+      "periodEnd": "2025-12-31",
+      "frequency": "annual",
+      "scope": "consolidated",
+      "currency": "IDR",
+      "facts": [
+        {
+          "key": "epsBasic",
+          "value": 791,
+          "scale": 1,
+          "unit": "currency/share",
+          "page": 100,
+          "printedPage": "88",
+          "decimals": 0
+        },
+        {
+          "key": "netIncomeOwners",
+          "value": 9224927,
+          "scale": 1000000,
+          "unit": "currency",
+          "page": 100,
+          "printedPage": "88",
+          "decimals": 0
+        },
+        {
+          "key": "equityOwners",
+          "value": 51519743,
+          "scale": 1000000,
+          "unit": "currency",
+          "page": 15,
+          "printedPage": "3",
+          "decimals": 0
+        },
+        {
+          "key": "basicAverageShares",
+          "value": 11661908000,
+          "scale": 1,
+          "unit": "shares",
+          "page": 100,
+          "printedPage": "88",
+          "decimals": 0
+        },
+        {
+          "key": "issuedShares",
+          "value": 11661908000,
+          "scale": 1,
+          "unit": "shares",
+          "page": 15,
+          "printedPage": "3",
+          "decimals": 0
+        },
+        {
+          "key": "cfo",
+          "value": 12104427,
+          "scale": 1000000,
+          "unit": "currency",
+          "page": 19,
+          "printedPage": "7",
+          "decimals": 0
+        }
+      ],
+      "limitations": [
+        "Basic EPS only is calculated and presented; no outstanding potential dilutive ordinary shares. No separate diluted EPS value has been invented.",
+        "Consolidated group operating cashflow is not parent-owner FCFE; non-controlling interests and reinvestment/debt need reconciliation.",
+        "This fiscal period has not been annualised or relabelled TTM; reporting currency is IDR."
+      ],
+      "id": "ICBP-2025-FY",
+      "sourceHosts": [
+        "www.indofoodcbp.com"
+      ]
+    },
+    {
+      "ticker": "ICBP",
+      "entityName": "PT Indofood CBP Sukses Makmur Tbk",
+      "documentUrl": "https://www.indofoodcbp.com/uploads/statement/ICBP_billingual_30_Jun_26.pdf",
+      "documentSha256": "7fa1c005dfb8551caedbfe86e92d3acf6eb21253ccb369557e4031c81b9e2b15",
+      "reviewedAt": "2026-10-21T12:17:15.420740Z",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "frequency": "six-month",
+      "scope": "consolidated",
+      "currency": "IDR",
+      "facts": [
+        {
+          "key": "epsBasic",
+          "value": 317,
+          "scale": 1,
+          "unit": "currency/share",
+          "page": 87,
+          "printedPage": "84",
+          "decimals": 0
+        },
+        {
+          "key": "netIncomeOwners",
+          "value": 3702564,
+          "scale": 1000000,
+          "unit": "currency",
+          "page": 87,
+          "printedPage": "84",
+          "decimals": 0
+        },
+        {
+          "key": "equityOwners",
+          "value": 52766012,
+          "scale": 1000000,
+          "unit": "currency",
+          "page": 6,
+          "printedPage": "3",
+          "decimals": 0
+        },
+        {
+          "key": "basicAverageShares",
+          "value": 11661908000,
+          "scale": 1,
+          "unit": "shares",
+          "page": 87,
+          "printedPage": "84",
+          "decimals": 0
+        },
+        {
+          "key": "issuedShares",
+          "value": 11661908000,
+          "scale": 1,
+          "unit": "shares",
+          "page": 6,
+          "printedPage": "3",
+          "decimals": 0
+        }
+      ],
+      "limitations": [
+        "Basic EPS only is calculated and presented; no outstanding potential dilutive ordinary shares. No separate diluted EPS value has been invented.",
+        "Consolidated group operating cashflow is not parent-owner FCFE; non-controlling interests and reinvestment/debt need reconciliation.",
+        "This fiscal period has not been annualised or relabelled TTM; reporting currency is IDR.",
+        "Unaudited six months ended 30 June 2026."
+      ],
+      "id": "ICBP-2026-H1",
+      "sourceHosts": [
+        "www.indofoodcbp.com"
+      ]
+    },
+    {
+      "ticker": "INDF",
+      "entityName": "PT Indofood Sukses Makmur Tbk",
+      "documentUrl": "https://www.indofood.com/uploads/statement/ISM_billingual_31_december_2025_released.pdf",
+      "documentSha256": "505aa5780a337545c547708eca6bd7110b4eefc1c471a80792a0ac980ebd0b6d",
+      "reviewedAt": "2026-10-21T12:13:58.304269Z",
+      "periodStart": "2025-01-01",
+      "periodEnd": "2025-12-31",
+      "frequency": "annual",
+      "scope": "consolidated",
+      "currency": "IDR",
+      "facts": [
+        {
+          "key": "epsBasic",
+          "value": 1217,
+          "scale": 1,
+          "unit": "currency/share",
+          "page": 132,
+          "printedPage": "120",
+          "decimals": 0
+        },
+        {
+          "key": "netIncomeOwners",
+          "value": 10684653,
+          "scale": 1000000,
+          "unit": "currency",
+          "page": 132,
+          "printedPage": "120",
+          "decimals": 0
+        },
+        {
+          "key": "equityOwners",
+          "value": 73147337,
+          "scale": 1000000,
+          "unit": "currency",
+          "page": 15,
+          "printedPage": "3",
+          "decimals": 0
+        },
+        {
+          "key": "basicAverageShares",
+          "value": 8780426500,
+          "scale": 1,
+          "unit": "shares",
+          "page": 132,
+          "printedPage": "120",
+          "decimals": 0
+        },
+        {
+          "key": "issuedShares",
+          "value": 8780426500,
+          "scale": 1,
+          "unit": "shares",
+          "page": 15,
+          "printedPage": "3",
+          "decimals": 0
+        },
+        {
+          "key": "cfo",
+          "value": 19540729,
+          "scale": 1000000,
+          "unit": "currency",
+          "page": 19,
+          "printedPage": "7",
+          "decimals": 0
+        }
+      ],
+      "limitations": [
+        "Consolidated operating cash flow is not parent-owner FCFE; non-controlling interests and reinvestment/debt definitions must be reconciled before valuation.",
+        "No provider TTM replacement, currency conversion, annualisation or inferred net borrowing has been made.",
+        "No diluted EPS is calculated/presented because no outstanding potential dilutive ordinary shares; omitted rather than inventing a second EPS number.",
+        "Cash additions to fixed assets, plantations and advances for fixed assets are a combined 5,295,206 million IDR; additions to biological assets are separately 306,346 million. No generic capex subtotal is guessed."
+      ],
+      "id": "INDF-2025-FY",
+      "sourceHosts": [
+        "www.indofood.com"
+      ]
+    },
+    {
+      "ticker": "INDF",
+      "entityName": "PT Indofood Sukses Makmur Tbk",
+      "documentUrl": "https://www.indofood.com/uploads/statement/INDF_Billingual_30_June_2026.pdf",
+      "documentSha256": "87069eb558de9244bfa544269f7b032c3d5ac9f68b0072f176b12b3de2e68602",
+      "reviewedAt": "2026-10-21T12:13:58.304269Z",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "frequency": "six-month",
+      "scope": "consolidated",
+      "currency": "IDR",
+      "facts": [
+        {
+          "key": "epsBasic",
+          "value": 538,
+          "scale": 1,
+          "unit": "currency/share",
+          "page": 119,
+          "printedPage": "116",
+          "decimals": 0
+        },
+        {
+          "key": "netIncomeOwners",
+          "value": 4724250,
+          "scale": 1000000,
+          "unit": "currency",
+          "page": 119,
+          "printedPage": "116",
+          "decimals": 0
+        },
+        {
+          "key": "equityOwners",
+          "value": 76661477,
+          "scale": 1000000,
+          "unit": "currency",
+          "page": 6,
+          "printedPage": "3",
+          "decimals": 0
+        },
+        {
+          "key": "basicAverageShares",
+          "value": 8780426500,
+          "scale": 1,
+          "unit": "shares",
+          "page": 119,
+          "printedPage": "116",
+          "decimals": 0
+        },
+        {
+          "key": "issuedShares",
+          "value": 8780426500,
+          "scale": 1,
+          "unit": "shares",
+          "page": 6,
+          "printedPage": "3",
+          "decimals": 0
+        }
+      ],
+      "limitations": [
+        "Consolidated operating cash flow is not parent-owner FCFE; non-controlling interests and reinvestment/debt definitions must be reconciled before valuation.",
+        "No provider TTM replacement, currency conversion, annualisation or inferred net borrowing has been made.",
+        "Six months ended 30 June 2026, not annual or TTM.",
+        "No diluted EPS is calculated/presented because no potential dilutive ordinary shares; omitted."
+      ],
+      "id": "INDF-2026-H1",
+      "sourceHosts": [
+        "www.indofood.com"
+      ]
+    },
+    {
+      "ticker": "TLKM",
+      "entityName": "PT Telekomunikasi Indonesia (Persero) Tbk",
+      "documentUrl": "https://www.telkom.co.id/minio/show/data/lampiran/1778544447359_original_LK-Konsolidasian-Telkom-Tahun-2025-Audited-Eng.pdf",
+      "documentSha256": "da8248764991bb9b07ce008313259c0efd6141a2f3210fc779b617c60269477f",
+      "reviewedAt": "2026-10-21T12:13:58.304269Z",
+      "periodStart": "2025-01-01",
+      "periodEnd": "2025-12-31",
+      "frequency": "annual",
+      "scope": "consolidated",
+      "currency": "IDR",
+      "facts": [
+        {
+          "key": "epsBasic",
+          "value": 179.83,
+          "scale": 1,
+          "unit": "currency/share",
+          "page": 10,
+          "printedPage": "2",
+          "decimals": 2
+        },
+        {
+          "key": "netIncomeOwners",
+          "value": 17814,
+          "scale": 1000000000,
+          "unit": "currency",
+          "page": 10,
+          "printedPage": "2",
+          "decimals": 0
+        },
+        {
+          "key": "equityOwners",
+          "value": 130685,
+          "scale": 1000000000,
+          "unit": "currency",
+          "page": 9,
+          "printedPage": "1",
+          "decimals": 0
+        },
+        {
+          "key": "basicAverageShares",
+          "value": 99061024659,
+          "scale": 1,
+          "unit": "shares",
+          "page": 91,
+          "printedPage": "83",
+          "decimals": 0
+        },
+        {
+          "key": "cfo",
+          "value": 63842,
+          "scale": 1000000000,
+          "unit": "currency",
+          "page": 13,
+          "printedPage": "5",
+          "decimals": 0
+        }
+      ],
+      "limitations": [
+        "Consolidated operating cash flow is not parent-owner FCFE; non-controlling interests and reinvestment/debt definitions must be reconciled before valuation.",
+        "No provider TTM replacement, currency conversion, annualisation or inferred net borrowing has been made.",
+        "Audited 11 May 2026. Comparative 2024 and opening 2024 figures are restated following accounting policy change; use restated comparatives consistently.",
+        "Basic EPS only is printed; Note 28 states no potentially dilutive financial instruments. Diluted EPS has not been fabricated.",
+        "Cash purchases of PPE are 22,871 and intangibles 2,897 billion IDR; lease principal repayments are separately 7,356 billion. These are separate components, not an unqualified single capex measure."
+      ],
+      "id": "TLKM-2025-FY",
+      "sourceHosts": [
+        "www.telkom.co.id"
+      ]
+    },
+    {
+      "ticker": "TLKM",
+      "entityName": "PT Telekomunikasi Indonesia (Persero) Tbk",
+      "documentUrl": "https://www.telkom.co.id/minio/show/data/lampiran/1785496393919_original_Telkom-FS-Bahasa-TW-II-2026.pdf",
+      "documentSha256": "38ac46aecfa9f295446d4dc577a0478a8efe33321bb3a566848e9fc664f3b673",
+      "reviewedAt": "2026-10-21T12:13:58.304269Z",
+      "periodStart": "2026-01-01",
+      "periodEnd": "2026-06-30",
+      "frequency": "six-month",
+      "scope": "consolidated",
+      "currency": "IDR",
+      "facts": [
+        {
+          "key": "epsBasic",
+          "value": 107.5,
+          "scale": 1,
+          "unit": "currency/share",
+          "page": 5,
+          "printedPage": "2",
+          "decimals": 2
+        },
+        {
+          "key": "netIncomeOwners",
+          "value": 10623,
+          "scale": 1000000000,
+          "unit": "currency",
+          "page": 5,
+          "printedPage": "2",
+          "decimals": 0
+        },
+        {
+          "key": "equityOwners",
+          "value": 118333,
+          "scale": 1000000000,
+          "unit": "currency",
+          "page": 4,
+          "printedPage": "1",
+          "decimals": 0
+        },
+        {
+          "key": "basicAverageShares",
+          "value": 98815834912,
+          "scale": 1,
+          "unit": "shares",
+          "page": 79,
+          "printedPage": "76",
+          "decimals": 0
+        }
+      ],
+      "limitations": [
+        "Consolidated operating cash flow is not parent-owner FCFE; non-controlling interests and reinvestment/debt definitions must be reconciled before valuation.",
+        "No provider TTM replacement, currency conversion, annualisation or inferred net borrowing has been made.",
+        "Unaudited six months ended 30 June 2026; not annual or TTM.",
+        "Basic EPS only is printed. Note 28 says no potentially dilutive instruments."
+      ],
+      "id": "TLKM-2026-H1",
+      "sourceHosts": [
+        "www.telkom.co.id"
+      ]
+    }
+  ]
+}

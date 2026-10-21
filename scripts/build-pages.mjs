@@ -11,6 +11,7 @@ const files=['official-rates.js','official-rates-contract.js','auto-valuation-ma
 const generated=['market-view.js','index.html','app.js','office-storage.js','office-extensions.js','quant-ui.js','market-terminal.js','market-catalogue.js','browser-api.js','browser-worker.js','browser-controls.js','browser.css','market-controls.js','market-coverage.js'];
 files.push('macro-atlas.js','macro-atlas-data.js','macro-atlas-labels.js','macro-atlas.css','office-visual-system.css','motion-system.js');
 ['market-data-contract.js','market-data-adapters.js','market-data-research.js','market-data-worker.js','market-data-storage.js','market-data-service.js','market-data-ui.js','market-data.css'].forEach(f=>files.push(f));
+files.push('source-integrity.js','source-integrity-ui.js','idx-primary-ui.js');
 files.push('valuation-analysis.js','valuation-analysis-ui.js');
 files.push('chart-design.css','reading-details.js','idr-valuation.js','idx-quant-context.js');
 files.push('fx-history-contract.js','chart-typography.js','native-prices.js');
@@ -75,6 +76,8 @@ validateSecFeed(JSON.parse(await readFile(secFile,'utf8')));
 await copyFile(secFile,path.join(dest,'data','sec-fundamentals.json'));
 for(const h of manifest.histories){if(!/^history\/(US|IDX)-[A-Z]{1,6}(-[A-Z])?\.json$/.test(h.file))throw Error('Invalid public history path');await copyFile(path.join(input,h.file),path.join(dest,'data',h.file));}
 const expected=new Set(manifest.histories.map(h=>path.basename(h.file)));for(const file of await readdir(path.join(dest,'data','history')))if(!expected.has(file)){if(!/^(US|IDX)-[A-Z]{1,6}(-[A-Z])?\.json$/.test(file))throw Error('Unexpected history in output: '+file);await unlink(path.join(dest,'data','history',file));}
+const {validateSourceIntegrity,validateIdxEvidence}=await import('../source-integrity.js');
+for(const [name,validator] of [['source-integrity',validateSourceIntegrity],['idx-primary',validateIdxEvidence]]){validator(JSON.parse(await readFile(path.join(input,name+'.json'),'utf8')));await copyFile(path.join(input,name+'.json'),path.join(dest,'data',name+'.json'));}
 await writeCoverageReport(dest+'/data');
 try{const feed=JSON.parse(await readFile(path.join(input,'native-prices.json'),'utf8'));const {writeNativePriceFiles}=await import('./native-prices-data.mjs');await writeNativePriceFiles(feed,dest+'/data');}catch(e){if(e.code!=='ENOENT')throw e;}
 const uiFiles=[...new Set([...files,...generated])].filter(f=>f==='index.html'||/\.(?:js|css)$/.test(f));

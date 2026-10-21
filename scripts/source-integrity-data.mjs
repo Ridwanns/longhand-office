@@ -1,0 +1,40 @@
+import {readFile,writeFile,mkdir,stat,unlink} from 'node:fs/promises';
+import {createHash,randomUUID} from 'node:crypto';
+import {execFile} from 'node:child_process';
+import {promisify} from 'node:util';
+import {pathToFileURL} from 'node:url';
+import {historyRevision,missingHistoryRecords,observationFreshness,validateIdxReviews,validateIdxEvidence,validateSourceIntegrity} from '../source-integrity.js';
+import {validateMarketHistories} from '../market-history-contract.js';
+import {STOCK_UNIVERSE} from '../pages/stock-universe.js';
+const json=file=>readFile(file,'utf8').then(JSON.parse);
+async function systemHttpsPdf(url){
+ // Same public URL and normal certificate validation; never an insecure TLS retry.
+ await mkdir('.tools/issuer-transport',{recursive:true});const target='.tools/issuer-transport/'+randomUUID()+'.pdf';
+ try{const {stdout}=await promisify(execFile)('curl',['--location','--proto','=https','--proto-redir','=https','--max-time','30','--max-filesize','40000000','--fail','--silent','--show-error','--output',target,'--write-out','%{url_effective}',url],{timeout:35000,maxBuffer:8192,windowsHide:true});if((await stat(target)).size>40000000)throw Error('Issuer document exceeds the reviewed size limit.');const bytes=await readFile(target),response=new Response(bytes);Object.defineProperty(response,'url',{value:stdout.trim()});return response;}finally{await unlink(target).catch(()=>{});}
+}
+export async function acquireReviewedFilings(registry,{fetcher=fetch,now=()=>new Date().toISOString()}={}){
+ validateIdxReviews(registry);const records=[];let next=0;
+ await Promise.all(Array.from({length:2},async()=>{while(next<registry.reports.length){const review=registry.reports[next++];let status='unavailable',acquiredSha256=null,reason='';
+  try{let response;try{response=await fetcher(review.documentUrl,{redirect:'follow',signal:AbortSignal.timeout(30000),headers:{accept:'application/pdf'}});}catch(e){if(fetcher!==fetch)throw e;response=await systemHttpsPdf(review.documentUrl);}if(!response.ok)throw Error('Issuer document HTTP '+response.status+'.');
+   const final=new URL(response.url||review.documentUrl);if(final.protocol!=='https:'||!review.sourceHosts.includes(final.hostname))throw Error('Issuer document redirected outside its reviewed source hosts.');
+   const reader=response.body?.getReader();if(!reader)throw Error('Issuer supplied no document body.');let length=0,chunks=[];while(true){const {done,value}=await reader.read();if(done)break;length+=value.length;if(length>40000000){await reader.cancel();throw Error('Issuer document exceeds the reviewed size limit.');}chunks.push(value);}const bytes=Buffer.concat(chunks);if(!bytes.subarray(0,1024).includes(Buffer.from('%PDF-')))throw Error('Issuer returned a non-PDF response.');
+   acquiredSha256=createHash('sha256').update(bytes).digest('hex');status=acquiredSha256===review.documentSha256?'matched':'changed';reason=status==='matched'?'Issuer PDF fingerprint matches the reviewed document. Facts retain their original review date.':'Issuer document bytes changed. Facts require a new review; replacement figures are not inferred.';
+  }catch(e){reason=String(e.message).startsWith('Command failed: curl')?'Issuer document could not be downloaded over HTTPS.':String(e.message).slice(0,300);}
+  records.push({id:review.id,review,status,acquiredSha256,checkedAt:now(),reason});
+ }}));return records.sort((a,b)=>a.id.localeCompare(b.id));
+}
+function stockPacket(input){const m=input.metadata;return {identity:[m.provider,m.market,m.ticker,m.currency,m.listing,m.instrumentType].join(':'),retrievedAt:m.retrievedAt,rows:input.rows};}
+function longPacket(entry,confirmedZone){const q=entry.quote,zone=q.exchangeTimezoneName||confirmedZone||'UTC',today=new Intl.DateTimeFormat('en-CA',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(q.retrievedAt));return {identity:[q.provider,entry.category,entry.symbol,q.currency,q.instrumentType,q.exchange||''].join(':'),retrievedAt:q.retrievedAt,rows:q.history.map(r=>({date:r.date,rawClose:r.close,complete:r.date<today}))};}
+export function longHistoryRevision(previous,current){const revision=historyRevision(previous?longPacket(previous,current.quote.exchangeTimezoneName):null,longPacket(current));if(!current.quote.exchangeTimezoneName)revision.status='unverified-calendar';if(current.refreshError){revision.refreshFailed=true;revision.reason=current.refreshError;revision.refreshAttemptAt=current.refreshAttemptAt;}return revision;}
+export async function collectSourceIntegrity({directory='.pages-data',baseline='.tools/source-baseline',registryFile='idx-primary-reviews.json',fetcher=fetch}={}){
+ const manifest=await json(directory+'/manifest.json'),market=await json(directory+'/market.json'),long=validateMarketHistories(await json(directory+'/market-history.json')),registry=validateIdxReviews(await json(registryFile));
+ const previous=await json(baseline+'/manifest.json').catch(()=>null),previousLong=await json(baseline+'/market-history.json').then(validateMarketHistories).catch(()=>null),histories=[];let next=0;
+ await Promise.all(Array.from({length:4},async()=>{while(next<manifest.histories.length){const h=manifest.histories[next++],current=stockPacket(await json(directory+'/'+h.file)),oldEntry=previous?.histories.find(r=>r.market===h.market&&r.ticker===h.ticker),old=oldEntry?await json(baseline+'/'+oldEntry.file).then(stockPacket):null;histories.push({id:h.market+':'+h.ticker,...historyRevision(old,current)});}}));
+ histories.push(...missingHistoryRecords(previous?.histories||[],manifest.histories,manifest.publishedAt));
+ for(const e of long.entries){if(!e.quote){histories.push({id:e.category+':'+e.symbol,status:'unavailable',identity:e.symbol,previousAt:null,currentAt:long.publishedAt,commonRows:0,newRows:0,backfilledRows:0,removedRows:0,changedRows:0,rawChanges:0,adjustedChanges:0,valueChecks:0,maxAbsoluteChange:0,samples:[]});continue;}const old=previousLong?.entries.find(r=>r.category===e.category&&r.symbol===e.symbol&&r.quote);histories.push({id:e.category+':'+e.symbol,...longHistoryRevision(old,e)});}
+ const filings=await acquireReviewedFilings(registry,{fetcher}),generatedAt=new Date().toISOString(),quotes=Object.entries(market.quotes).map(([id,item])=>({id,...observationFreshness(item.quote,Date.parse(generatedAt)),observedAt:item.quote?.timestamp||null,retrievedAt:item.quote?.retrievedAt||null,retained:!!item.quote&&!!item.error,reason:item.error||null}));
+ const report=validateSourceIntegrity({format:'longhand-source-integrity',version:1,generatedAt,publicationAt:market.publishedAt,baselineAt:previous?.publishedAt||null,researchTickers:STOCK_UNIVERSE.IDX,histories:histories.sort((a,b)=>a.id.localeCompare(b.id)),filings,quotes,policy:'Source-vintage revisions and descriptive observation age, not an exchange-original accuracy certificate. Every exact numeric change is counted; adjusted-only changes remain separate. Current unfinished sessions and rolling-window expiries are excluded. Facts are never replaced when an issuer PDF changes.'});
+ const primary=validateIdxEvidence({format:'longhand-idx-primary-evidence',version:1,publishedAt:generatedAt,researchTickers:STOCK_UNIVERSE.IDX,records:filings});await mkdir(directory,{recursive:true});await writeFile(directory+'/source-integrity.json',JSON.stringify(report));await writeFile(directory+'/idx-primary.json',JSON.stringify(primary));
+ console.log(JSON.stringify({baselineAt:report.baselineAt,histories:histories.length,revised:histories.filter(h=>h.status==='revised').length,adjustedRevisions:histories.filter(h=>h.status==='adjusted-revision').length,initial:histories.filter(h=>h.status==='initial').length,olderObservations:quotes.filter(q=>q.status==='older-observation').length,issuerReports:filings.length,issuerMatches:filings.filter(f=>f.status==='matched').length,issuerChanged:filings.filter(f=>f.status==='changed').length,issuerUnavailable:filings.filter(f=>f.status==='unavailable').length}));return report;
+}
+if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href)await collectSourceIntegrity();

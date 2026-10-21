@@ -78,6 +78,7 @@ jobs:
           for officeRunId in $(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/pages.yml/runs?status=success&per_page=5" --jq '.workflow_runs[].id'); do
             officeCacheDir=".tools/market-history-cache/$officeRunId"
             if gh run download "$officeRunId" --repo "$GITHUB_REPOSITORY" --name github-pages --dir "$officeCacheDir" && python scripts/retain-market-history.py "$officeCacheDir/artifact.tar"; then
+              python scripts/source-baseline.py "$officeCacheDir/artifact.tar"
               echo "Retained complete public history from run $officeRunId with its original source dates."
               break
             fi
@@ -98,6 +99,8 @@ jobs:
         env:
           OFFICE_US_TICKERS: ${{ inputs.us_tickers }}
           OFFICE_SEC_USER_AGENT: ${{ vars.OFFICE_SEC_USER_AGENT }}
+      - name: Reconcile public vintages and reacquire reviewed issuer filings
+        run: node scripts/source-integrity-data.mjs
       - run: node scripts/build-pages.mjs
       - uses: actions/upload-pages-artifact@v5
         with:

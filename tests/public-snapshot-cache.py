@@ -12,6 +12,16 @@ reuse = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(reuse)
 
 class PublicSnapshotTests(unittest.TestCase):
+    def test_integrity_baseline_copies_only_public_json_with_original_dates(self):
+        member=tarfile.TarInfo('data/../../private.sqlite');member.size=4
+        archive=self.archive(extras=[(member,b'TEST')])
+        source=importlib.util.spec_from_file_location('baseline',Path(__file__).resolve().parents[1]/'scripts/source-baseline.py')
+        baseline=importlib.util.module_from_spec(source);source.loader.exec_module(baseline)
+        target=Path(self.temp.name)/'isolated-public-baseline';baseline.capture(archive,target)
+        self.assertEqual(json.loads((target/'manifest.json').read_text())['publishedAt'],'2026-10-01T00:01:00Z')
+        self.assertTrue((target/'history/US-TEST.json').is_file())
+        self.assertFalse((Path(self.temp.name)/'private.sqlite').exists())
+
     def archive(self, edit=None, extras=None):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)

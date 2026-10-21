@@ -16,7 +16,7 @@ const files = new Set(['index.html','style.css','app.js','model.js','theme.js','
 ['macro-atlas.js','macro-atlas-data.js','macro-atlas-labels.js','macro-atlas.css','office-visual-system.css','motion-system.js'].forEach(f=>files.add(f));
 ['chart-typography.js','macro-forecast.js','macro-forecast-ui.js','macro-indicators-contract.js','macro-indicators-ui.js','macro-chart.js','macro-context-contract.js','macro-context-math.js','macro-context-ui.js','macro-context.css'].forEach(f=>files.add(f));
 ['macro-releases-contract.js','macro-releases-ui.js','macro-extended-contract.js','macro-extended-ui.js','macro-navigation.js','macro-briefing.js'].forEach(f=>files.add(f));
-['idr-valuation.js','idx-quant-context.js','valuation-analysis.js','valuation-analysis-ui.js'].forEach(f=>files.add(f));
+['source-integrity.js','source-integrity-ui.js','idx-primary-ui.js','idr-valuation.js','idx-quant-context.js','valuation-analysis.js','valuation-analysis-ui.js'].forEach(f=>files.add(f));
 files.add('chart-design.css');files.add('fx-history-contract.js');files.add('rooms.css');files.add('workflow-continuity.js');
 files.add('macro-cycle.js');files.add('workspace-navigation.js');files.add('workspace-refinement.css');
 ['research-layout.js','research-lab.js','research-lab.css'].forEach(f=>files.add(f));
