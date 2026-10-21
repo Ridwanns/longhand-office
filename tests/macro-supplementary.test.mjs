@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
 import {parseIndicatorGem,transformIndicatorRows} from '../scripts/macro-indicators-data.mjs';
 import {MACRO_INDICATORS,INDICATOR_REVIEWED_AT,validateMacroIndicators} from '../macro-indicators-contract.js';
 import {indicatorRange,macroFocusEntries,supplementaryIndicatorEntries,renderMacroScorecard,renderSurveyOutlook,scorecardHistory,scorecardTrend} from '../macro-indicators-ui.js';
@@ -16,3 +17,19 @@ test('Additional country entries preserve original source dates and do not leak 
 test('Survey expectations are separate, source-bounded and never accepted as actual observations',()=>{const f=feed();f.expectations=[{id:'id-pmi-bi',date:'2026-10-01',value:52.37,releasedAt:'2026-10-19',sourceUrl:MACRO_INDICATORS['id-pmi-bi'].sourceUrl,status:'survey-expectation',reviewedAt:INDICATOR_REVIEWED_AT,sourceHash:'a'.repeat(64)}];assert.equal(validateMacroIndicators(f,Date.parse(INDICATOR_REVIEWED_AT)),f);assert.ok(renderSurveyOutlook(f,'IDN',Date.parse(INDICATOR_REVIEWED_AT)).includes('52.37'));assert.equal(renderSurveyOutlook(f,'USA',Date.parse(INDICATOR_REVIEWED_AT)),'');assert.equal(renderSurveyOutlook(f,'IDN',Date.parse('2027-01-01T00:00:00Z')),'');f.expectations[0].id='id-m2';assert.throws(()=>validateMacroIndicators(f,Date.parse(INDICATOR_REVIEWED_AT)));});
 
 test('High-impact focus is country-specific, avoids repeated GDP/CPI and does not invent missing readings',()=>{const entries=['gdp','inflation','policy','us-payrolls','us-unemployment','us-retail','id-core','id-reserves-monthly','id-trade-balance','wdi-CHN-unemployment','wdi-CHN-gdp'].map(id=>({id,latest:{value:1}})),before=JSON.stringify(entries);assert.deepEqual(macroFocusEntries(entries,'USA').map(e=>e.id),['gdp','inflation','policy','us-payrolls','us-unemployment','us-retail']);assert.deepEqual(macroFocusEntries(entries,'IDN').map(e=>e.id),['gdp','inflation','policy','id-trade-balance','id-reserves-monthly','id-core']);assert.deepEqual(macroFocusEntries(entries,'CHN').map(e=>e.id),['gdp','inflation','policy','wdi-CHN-unemployment']);assert.deepEqual(macroFocusEntries([{id:'gdp',latest:null}], 'WLD'),[]);assert.equal(JSON.stringify(entries),before);});
+
+test('A separately reviewed trade release keeps its own fixed date without renewing the BI review',async()=>{
+ const original=JSON.parse(await readFile(new URL('../sources/macro-indicators-reviewed.json',import.meta.url))),entry=original.series.find(s=>s.id==='id-trade-official'),spec=MACRO_INDICATORS[entry.id],f=feed();
+ f.generatedAt=entry.reviewedAt;const row=f.series.find(s=>s.id===entry.id);delete row.error;Object.assign(row,{retrievedAt:entry.reviewedAt,sourceHash:'a'.repeat(64),observations:entry.observations});
+ assert.equal(validateMacroIndicators(f,Date.parse(f.generatedAt)),f);assert.equal(original.reviewedAt,INDICATOR_REVIEWED_AT);assert.notEqual(row.retrievedAt,INDICATOR_REVIEWED_AT);
+ const wrongDate=structuredClone(f);wrongDate.series.find(s=>s.id===entry.id).retrievedAt=INDICATOR_REVIEWED_AT;assert.throws(()=>validateMacroIndicators(wrongDate,Date.parse(f.generatedAt)));
+ const wrongSource=structuredClone(f);wrongSource.series.find(s=>s.id===entry.id).observations[0].sourceUrl='https://www.bi.go.id/TEST-ONLY-wrong-provider';assert.throws(()=>validateMacroIndicators(wrongSource,Date.parse(f.generatedAt)));assert.equal(spec.sourceUrl,entry.evidence.sourceUrl);
+});
+test('Official reported monthly balance is not recomputed from rounded exports and imports',async()=>{
+ const record=JSON.parse(await readFile(new URL('../sources/macro-indicators-reviewed.json',import.meta.url))),row=record.series.find(s=>s.id==='id-trade-official');
+ assert.deepEqual(row.observations.map(o=>[o.date,o.value]),[['2026-07-01',.12],['2026-08-01',3.55]]);assert.notEqual(row.observations[0].value,26.22-26.09);assert.ok(Math.abs(row.observations[1].value-row.observations[0].value-3.43)<1e-12);assert.ok(row.observations.every(o=>o.releasedAt==='2026-10-06'));
+});
+test('Newer official trade gets the focus card without splicing or deleting GEM history',()=>{
+ const entries=[{id:'id-trade-official',latest:{date:'2026-08-01',value:3.55},observations:[{date:'2026-07-01',value:.12},{date:'2026-08-01',value:3.55}]},{id:'id-trade-balance',latest:{date:'2026-06-01',value:-.45},observations:[{date:'2026-06-01',value:-.45}]}],before=JSON.stringify(entries);
+ assert.equal(macroFocusEntries(entries,'IDN')[0].id,'id-trade-official');assert.equal(JSON.stringify(entries),before);assert.equal(macroFocusEntries([{...entries[0],latest:null},entries[1]],'IDN')[0].id,'id-trade-balance');
+});

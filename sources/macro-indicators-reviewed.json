@@ -265,6 +265,36 @@
           "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2820926.aspx"
         }
       ]
+    },
+    {
+      "id": "id-trade-official",
+      "reviewedAt": "2026-10-21T05:40:51.000Z",
+      "evidence": {
+        "reviewMode": "Official publisher article text returned by web search; direct page request timed out.",
+        "releasedAt": "2026-10-06",
+        "sourceUrl": "https://www.kemendag.go.id/index.php/berita/siaran-pers/surplus-perdagangan-agustus-2026-menguat-surplus-januari-agustus-2026-tembus-usd-725-miliar",
+        "precision": "Reported monthly balances rounded to USD billions; not derived from rounded exports/imports or cumulative totals.",
+        "excerpts": [
+          "surplus senilai USD 3,55 miliar",
+          "surplus Juli 2026 yang tercatat sebesar USD 0,12 miliar."
+        ]
+      },
+      "observations": [
+        {
+          "date": "2026-07-01",
+          "value": 0.12,
+          "status": "reported",
+          "releasedAt": "2026-10-06",
+          "sourceUrl": "https://www.kemendag.go.id/index.php/berita/siaran-pers/surplus-perdagangan-agustus-2026-menguat-surplus-januari-agustus-2026-tembus-usd-725-miliar"
+        },
+        {
+          "date": "2026-08-01",
+          "value": 3.55,
+          "status": "reported",
+          "releasedAt": "2026-10-06",
+          "sourceUrl": "https://www.kemendag.go.id/index.php/berita/siaran-pers/surplus-perdagangan-agustus-2026-menguat-surplus-januari-agustus-2026-tembus-usd-725-miliar"
+        }
+      ]
     }
   ],
   "expectations": [
