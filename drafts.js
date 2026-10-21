@@ -2,7 +2,7 @@ import {continuityGet,continuityList,saveDraft,saveManual} from './continuity-st
 import {workspaceScope} from './workspace-scope.js';
 import {normalizedResearchSeries} from './research-math.js';
 const controllers=new Set(),manualSaves=new Set(),manualFailures=new Map();
-const allowed={atlas:['scenario','scenarioEps','equityDcf','combinedReturn','portfolioStress','monthlyBudget'],research:['option','iv','bond','yield','risk']};
+const allowed={atlas:['scenario','scenarioEps','equityDcfIdr','equityDcf','combinedReturn','portfolioStress','monthlyBudget'],research:['option','iv','bond','yield','risk']};
 export function validateDraft(d){if(!d||!Object.hasOwn(allowed,d.id)||d.format!=='longhand-form-draft'||d.version!==1||!Number.isSafeInteger(d.revision)||d.revision<0||!allowed[d.id].includes(d.activeMethod)||!d.methods||typeof d.methods!=='object'||new TextEncoder().encode(JSON.stringify(d)).length>5000000)throw Error('Invalid calculator draft.');for(const [method,m]of Object.entries(d.methods)){if(!allowed[d.id].includes(method)||!m?.fields||typeof m.fields!=='object'||Object.values(m.fields).some(v=>typeof v!=='string'||v.length>500000)||Object.keys(m.fields).some(k=>! /^[A-Za-z][A-Za-z0-9]*$/.test(k)))throw Error('Invalid draft fields.');if(m.extra){if(d.id!=='research'||method!=='risk')throw Error('Unexpected draft source rows.');normalizedResearchSeries({series:m.extra},{basis:m.fields.basis||'raw'});}}return d;}
 const fields=form=>Object.fromEntries([...form.elements].filter(e=>e.name&&e.type!=='file'&&!['submit','button'].includes(e.type)).map(e=>[e.name,e.value]));
 export async function mountDrafts(form,id,{redraw,readExtra=()=>null,applyExtra=()=>{}}){

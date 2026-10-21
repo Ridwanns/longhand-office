@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {equityDcfIdr} from '../idr-valuation.js';
+const base={currency:'IDR',cashFlowType:'FCFE',listingBasis:'quoted-share',costOfEquity:.12,terminalGrowth:.03,fcfePerShareForecastIdr:[100,110]};
+const near=(a,b)=>assert.ok(Math.abs(a-b)<Math.max(1,Math.abs(b))*1e-12);
+test('IDR FCFE independently discounts annual cash flows and year-N terminal value in rupiah',()=>{const r=equityDcfIdr(base),terminal=110*1.03/(.12-.03);assert.equal(r.currency,'IDR');near(r.valuePerShareIdr,100/1.12+110/1.12**2+terminal/1.12**2);near(r.pvTerminalIdr,terminal/1.12**2);assert.equal(Object.keys(r).some(k=>k.endsWith('Usd')),false);});
+test('IDR base-growth and explicit forecasts agree; units scale linearly with no inferred FX',()=>{const a=equityDcfIdr({...base,fcfePerShareForecastIdr:undefined,fcfePerShareIdr:100,fcfeGrowth:.1,years:2}),b=equityDcfIdr({...base,fcfePerShareForecastIdr:[110,121]});near(a.valuePerShareIdr,b.valuePerShareIdr);near(equityDcfIdr({...base,fcfePerShareForecastIdr:[100000,110000]}).valuePerShareIdr,equityDcfIdr(base).valuePerShareIdr*1000);});
+test('USD, enterprise cash flow, missing shares basis and mixed routes never become IDR FCFE',()=>{for(const change of [{currency:'USD'},{cashFlowType:'FCFF'},{listingBasis:undefined},{fcfePerShareIdr:10},{fcfePerShareForecastIdr:[100,null]},{costOfEquity:.03},{costOfEquity:0}]){const r=equityDcfIdr({...base,...change});assert.equal(r.ok,false);assert.equal(r.valuePerShareIdr,null);}});
+test('Negative early FCFE is permitted but nonpositive terminal flow and overflow are withheld',()=>{assert.equal(equityDcfIdr({...base,fcfePerShareForecastIdr:[-100,110]}).ok,true);assert.equal(equityDcfIdr({...base,fcfePerShareForecastIdr:[100,0]}).status,'loss-making');assert.equal(equityDcfIdr({...base,fcfePerShareForecastIdr:[Number.MAX_VALUE,Number.MAX_VALUE]}).status,'invalid');});
+test('IDR calculator never mutates supplied assumptions',()=>{const before=JSON.stringify(base);equityDcfIdr(base);assert.equal(JSON.stringify(base),before);});

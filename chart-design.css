@@ -124,3 +124,19 @@ body .research-lab .lab-model-controls:not(:has(>:not([hidden]))){display:none}
 body .research-lab .core-forecast-summary{padding:0 0 12px;margin:0 0 12px;border-top:0;border-bottom:1px solid var(--line)}
 body .research-lab .advanced-brief{max-width:none;padding:8px 0;margin:8px 0 12px}
 body .research-lab .monte-carlo-layout .scientific-plot{margin:10px 0 14px}
+.accountability-history-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:12px 0 20px}
+.accountability-history-grid>article{min-width:0}.accountability-history-grid h4{font-size:13px;margin:0 0 8px}
+body .research-lab .accountability-history-grid .scientific-plot{margin:0;padding:12px}
+.accountability-history-grid>article>details>summary{font-size:11px;padding:10px 0;cursor:pointer}
+.accountability-start>p{font-size:12px;line-height:1.7;max-width:95ch}
+.accountability-start ol{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));list-style:none;gap:12px;padding:0;margin:12px 0}
+.accountability-start li{border:1px solid var(--line);border-radius:8px;padding:12px;font-size:12px;line-height:1.6}
+.accountability-start li>span{display:block;color:var(--muted);font-size:11px;margin-top:5px}
+.accountability-readiness{padding:10px 12px;border-left:3px solid var(--chart-amber);background:var(--surface)}
+.valuation-unit-summary,.idx-context-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:12px 0 16px}
+.valuation-unit-summary>div,.idx-context-metrics>div{min-width:0;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--white)}
+.valuation-unit-summary dt,.idx-context-metrics dt{font-size:11px;color:var(--muted);line-height:1.5}
+.valuation-unit-summary dd,.idx-context-metrics dd{margin:6px 0 0;font-size:17px;font-variant-numeric:tabular-nums}
+.valuation-eligibility{font-size:12px;line-height:1.7;border-left:3px solid var(--chart-amber);padding:4px 14px;margin:12px 0}
+.idx-context-metrics{grid-template-columns:repeat(4,minmax(0,1fr))}.idx-context-period{font-size:11px;color:var(--muted)}
+@media(max-width:760px){.accountability-history-grid{grid-template-columns:1fr}.accountability-start ol{grid-template-columns:1fr}.valuation-unit-summary{gap:8px}.valuation-unit-summary>div{padding:9px}.valuation-unit-summary dd{font-size:13px}.idx-context-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
