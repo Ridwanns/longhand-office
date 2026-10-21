@@ -42,6 +42,7 @@ jobs:
       - run: python tests/atlas-parity.py -v
       - run: python tests/research-reference.py
       - run: python tests/public-snapshot-cache.py
+      - run: python tests/macro-retention.py
       - run: python -m pip install -r requirements-data.txt
       - run: python scripts/yahoo-stock-directory.py
         id: directory
@@ -92,6 +93,8 @@ jobs:
       - run: node scripts/macro-releases-data.mjs
       - run: node scripts/macro-indicators-data.mjs
       - run: node scripts/macro-extended-data.mjs
+      - name: Retain independently audited macro series when a source refresh fails
+        run: node scripts/retain-macro-data.mjs
       - run: python scripts/audit-macro-extended.py
       - run: node scripts/verify-macro-outlook.mjs
       - run: python scripts/audit-macro-outlook.py

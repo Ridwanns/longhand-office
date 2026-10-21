@@ -10,6 +10,7 @@ import calendar
 import datetime
 import argparse
 from pathlib import Path
+from macro_retention import retained_match
 
 registry = json.loads(subprocess.check_output([
     'node', '--input-type=module', '-e',
@@ -17,11 +18,13 @@ registry = json.loads(subprocess.check_output([
 ]).decode('utf8'))
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--snapshot', default='.pages-data/macro-extended.json', help='Local public snapshot to reconcile')
+parser.add_argument('--baseline', default='.tools/source-baseline/macro-extended.json', help='Prior successful full Pages artifact JSON; only for exact retained-series checks')
 args = parser.parse_args()
 feed = json.loads(Path(args.snapshot).read_text(encoding='utf8'))
 review = json.loads(Path('sources/macro-extended-reviewed.json').read_text(encoding='utf8'))
 sources = {}
-urls = sorted({s['url'] for s in registry.values() if s['provider'] != 'reviewed'})
+baseline = json.loads(Path(args.baseline).read_text(encoding='utf8')) if any(s.get('refreshError') for s in feed['series']) else None
+urls = sorted({registry[s['id']]['url'] for s in feed['series'] if registry[s['id']]['provider'] != 'reviewed' and not s.get('refreshError')})
 
 def acquire(url):
     accept = 'application/vnd.sdmx.data+csv;version=1.0.0' if 'stats.bis.org' in url else 'application/json,text/csv'
@@ -34,17 +37,28 @@ def acquire(url):
     parsed = json.loads(text) if 'ec.europa.eu' in url else list(csv.DictReader(io.StringIO(text, newline='')))
     return url, (hashlib.sha256(text.encode()).hexdigest(), parsed)
 
+def bounded_acquire(url):
+    try:
+        return acquire(url)
+    except Exception as exc:
+        return url, {'error': str(exc)[:240]}
+
 with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
-    for url, source in executor.map(acquire, urls):
+    for url, source in executor.map(bounded_acquire, urls):
         sources[url] = source
 
 def number(value):
     return None if value is None or str(value) in ['', '.', 'NaN'] else float(value)
 
-checks, failures = [], []
+checks, retained, failures = [], [], []
 for item in feed['series']:
     spec = registry[item['id']]
     try:
+        if item.get('refreshError'):
+            assert baseline['format'] == feed['format'] and baseline['version'] == feed['version'], 'Incompatible verified baseline'
+            retained_match(item, baseline, feed['generatedAt'])
+            retained.append({'id': item['id'], 'retrievedAt': item['retrievedAt'], 'refreshAttemptAt': item['refreshAttemptAt'], 'reason': item['refreshError'], 'status': 'exact-prior-verified-copy; no fresh source confirmation'})
+            continue
         expected = []
         if spec['provider'] == 'reviewed':
             entry = next(r for r in review['series'] if r['id'] == item['id'])
@@ -52,6 +66,7 @@ for item in feed['series']:
             expected = [(o['date'], o['value']) for o in entry['observations']]
             assert item['sourceHash'] == hashlib.sha256(Path('sources/macro-extended-reviewed.json').read_bytes()).hexdigest()
         else:
+            assert not isinstance(sources[spec['url']], dict), sources[spec['url']].get('error')
             digest, raw = sources[spec['url']]
             assert item['sourceHash'] == digest, 'Acquired source response changed; recollect before reconciliation'
             if spec['provider'].startswith('bis'):
@@ -94,7 +109,7 @@ for item in feed['series']:
         failures.append({'id': item['id'], 'error': str(exc)})
 
 report = {'snapshot': feed['generatedAt'], 'series': len(checks),
-          'observations': sum(c['observations'] for c in checks), 'checks': checks, 'failures': failures}
+          'observations': sum(c['observations'] for c in checks), 'checks': checks, 'retained': retained, 'failures': failures}
 Path('validation').mkdir(exist_ok=True)
 Path('validation/macro-extended-source-audit.json').write_text(json.dumps(report, indent=2), encoding='utf8')
 print(json.dumps({k: v for k, v in report.items() if k != 'checks'}))

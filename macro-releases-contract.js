@@ -1,5 +1,5 @@
 // Public observations only. This independent feed never changes saved research inputs.
-import {CONTEXT_COUNTRIES,isContextDay} from './macro-context-contract.js';
+import {CONTEXT_COUNTRIES,isContextDay,validateMacroRetention} from './macro-context-contract.js';
 export const RELEASE_COUNTRIES=Object.fromEntries(Object.entries(CONTEXT_COUNTRIES).filter(([id])=>!['WLD','EMU'].includes(id)));
 export const RELEASE_GROUPS={ASEAN:['IDN','MYS','SGP','THA','PHL','VNM','BRN','KHM','LAO','MMR','TLS'],Asia:['CHN','JPN','KOR','IND','HKG'],Europe:['EMU','GBR','DEU','FRA','ITA','ESP','NLD','CHE','SWE','NOR','DNK','POL'],'United States':['USA']};
 const gem=(code,frequency)=>'https://api.worldbank.org/v2/country/'+Object.keys(RELEASE_COUNTRIES).join(';')+'/indicator/'+code+'?source=15&format=json&date=1999'+(frequency==='Q'?'Q1:':'M01:')+new Date().getUTCFullYear()+(frequency==='Q'?'Q4':'M12')+'&frequency='+frequency+'&per_page=20000';
@@ -29,6 +29,7 @@ export function releasePeriodEnd(date,frequency){const d=new Date(date+'T00:00:0
 export function validateMacroReleases(feed,now=Date.now()){
  const fail=m=>{throw Error('Invalid macro releases: '+m);};if(feed?.format!=='longhand-macro-releases'||feed.version!==1||!stamp(feed.generatedAt)||Date.parse(feed.generatedAt)>now+300000||!Array.isArray(feed.series)||feed.series.length!==Object.keys(RELEASE_SERIES).length)fail('header or coverage');
  const seen=new Set();for(const s of feed.series){const spec=RELEASE_SERIES[s?.id];if(!Object.hasOwn(RELEASE_SERIES,s?.id)||seen.has(s.id))fail('identity');seen.add(s.id);if(s.sourceUrl!==spec.sourceUrl||s.frequency!==spec.frequency||s.unit!==spec.unit||!stamp(s.retrievedAt)||Date.parse(s.retrievedAt)>Date.parse(feed.generatedAt)||!Array.isArray(s.observations)||s.observations.length>2000)fail('metadata');
+  validateMacroRetention(s,feed.generatedAt);
   if(s.error){if(typeof s.error!=='string'||s.error.length>240||s.observations.length)fail('unavailable');continue;}
   if(!/^[a-f0-9]{64}$/.test(s.sourceHash)||!s.observations.length||s.sourceUpdated!==undefined&&!isContextDay(s.sourceUpdated))fail('provenance');let prior='';
   for(const o of s.observations){if(!isContextDay(o.date)||o.date<=prior||!o.date.endsWith('-01')||spec.frequency==='Q'&&!/^\d{4}-(01|04|07|10)-01$/.test(o.date)||releasePeriodEnd(o.date,spec.frequency)>s.retrievedAt.slice(0,10)||o.value!==null&&(!Number.isFinite(o.value)||Math.abs(o.value)>10000)||!['reported','derived','estimate','provisional','missing'].includes(o.status)||o.value===null&&o.status!=='missing'||o.releasedAt!=null&&(!isContextDay(o.releasedAt)||o.releasedAt<releasePeriodEnd(o.date,spec.frequency)||o.releasedAt>s.retrievedAt.slice(0,10)))fail('observation');prior=o.date;}

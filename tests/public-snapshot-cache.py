@@ -22,6 +22,18 @@ class PublicSnapshotTests(unittest.TestCase):
         self.assertTrue((target/'history/US-TEST.json').is_file())
         self.assertFalse((Path(self.temp.name)/'private.sqlite').exists())
 
+    def test_integrity_baseline_preserves_exact_macro_bytes_for_audited_retention(self):
+        formats={'macro':'longhand-macro','macro-context':'longhand-macro-context','macro-releases':'longhand-macro-releases','macro-extended':'longhand-macro-extended'}
+        payloads={key:json.dumps({'format':value,'version':1,'generatedAt':'2026-10-01T00:00:00Z','series':[]}).encode() for key,value in formats.items()}
+        extras=[]
+        for key,raw in payloads.items():
+            member=tarfile.TarInfo('data/'+key+'.json');member.size=len(raw);extras.append((member,raw))
+        archive=self.archive(extras=extras)
+        source=importlib.util.spec_from_file_location('baseline',Path(__file__).resolve().parents[1]/'scripts/source-baseline.py')
+        baseline=importlib.util.module_from_spec(source);source.loader.exec_module(baseline)
+        target=Path(self.temp.name)/'macro-baseline';baseline.capture(archive,target)
+        for key,raw in payloads.items():self.assertEqual((target/(key+'.json')).read_bytes(),raw)
+
     def archive(self, edit=None, extras=None):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)

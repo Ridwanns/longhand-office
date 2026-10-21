@@ -27,11 +27,16 @@ for(const [country]of Object.entries(CONTEXT_COUNTRIES))for(const [metric,[code,
 export const BLS_CALENDAR_URL='https://www.bls.gov/schedule/news_release/bls.ics';
 export const isContextDay=s=>typeof s==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s)&&Number.isFinite(Date.parse(s+'T00:00:00Z'))&&new Date(s+'T00:00:00Z').toISOString().slice(0,10)===s;
 const validStamp=s=>typeof s==='string'&&/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d{3})?Z$/.test(s)&&Number.isFinite(Date.parse(s))&&isContextDay(s.slice(0,10));
+export function validateMacroRetention(s,generatedAt){
+ if(!['refreshError','refreshAttemptAt','retainedFromGeneratedAt'].some(k=>Object.hasOwn(s,k)))return;
+ if(s.error||typeof s.refreshError!=='string'||!s.refreshError.trim()||s.refreshError.length>240||!validStamp(s.refreshAttemptAt)||!validStamp(s.retainedFromGeneratedAt)||Date.parse(s.retrievedAt)>Date.parse(s.refreshAttemptAt)||Date.parse(s.refreshAttemptAt)>Date.parse(generatedAt)||Date.parse(s.retainedFromGeneratedAt)>Date.parse(generatedAt)||Date.parse(s.retrievedAt)>Date.parse(s.retainedFromGeneratedAt)||!/^[a-f0-9]{64}$/.test(s.sourceHash)||!s.observations?.some(o=>typeof o.value==='number'&&Number.isFinite(o.value)))throw Error('Invalid retained macro source evidence.');
+}
 export function validateMacroContext(feed,now=Date.now()){
  const fail=m=>{throw Error('Invalid macro context: '+m);};
  if(feed?.format!=='longhand-macro-context'||feed.version!==1||!validStamp(feed.generatedAt)||Date.parse(feed.generatedAt)>now+300000||!Array.isArray(feed.series)||feed.series.length!==Object.keys(CONTEXT_SERIES).length)fail('header or coverage');
  const ids=new Set();for(const s of feed.series){const spec=CONTEXT_SERIES[s?.id];if(!Object.hasOwn(CONTEXT_SERIES,s?.id)||ids.has(s.id))fail('series identity');ids.add(s.id);
   if(!validStamp(s.retrievedAt)||Date.parse(s.retrievedAt)>Date.parse(feed.generatedAt)||s.sourceUrl!==spec.sourceUrl||s.unit!==spec.unit||s.frequency!==spec.frequency||!Array.isArray(s.observations)||s.observations.length>12000)fail('source metadata');
+  validateMacroRetention(s,feed.generatedAt);
   if(s.error){if(typeof s.error!=='string'||s.error.length>240||s.observations.length)fail('unavailable series');continue;}
   if(!/^[a-f0-9]{64}$/.test(s.sourceHash)||!s.observations.length)fail('provenance');let prior='';
   for(const o of s.observations){if(!isContextDay(o.date)||o.date<=prior||o.date>s.retrievedAt.slice(0,10)||o.value!==null&&(!Number.isFinite(o.value)||Math.abs(o.value)>1e15))fail('observation');prior=o.date;

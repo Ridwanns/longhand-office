@@ -6,6 +6,10 @@ import {pathToFileURL} from 'node:url';
 import {historyRevision,missingHistoryRecords,observationFreshness,validateIdxReviews,validateIdxEvidence,validateSourceIntegrity} from '../source-integrity.js';
 import {validateMarketHistories} from '../market-history-contract.js';
 import {STOCK_UNIVERSE} from '../pages/stock-universe.js';
+import {validateMacroFeed} from '../macro-contract.js';
+import {validateMacroContext} from '../macro-context-contract.js';
+import {validateMacroReleases} from '../macro-releases-contract.js';
+import {validateMacroExtended} from '../macro-extended-contract.js';
 const json=file=>readFile(file,'utf8').then(JSON.parse);
 async function systemHttpsPdf(url){
  // Same public URL and normal certificate validation; never an insecure TLS retry.
@@ -33,7 +37,11 @@ export async function collectSourceIntegrity({directory='.pages-data',baseline='
  histories.push(...missingHistoryRecords(previous?.histories||[],manifest.histories,manifest.publishedAt));
  for(const e of long.entries){if(!e.quote){histories.push({id:e.category+':'+e.symbol,status:'unavailable',identity:e.symbol,previousAt:null,currentAt:long.publishedAt,commonRows:0,newRows:0,backfilledRows:0,removedRows:0,changedRows:0,rawChanges:0,adjustedChanges:0,valueChecks:0,maxAbsoluteChange:0,samples:[]});continue;}const old=previousLong?.entries.find(r=>r.category===e.category&&r.symbol===e.symbol&&r.quote);histories.push({id:e.category+':'+e.symbol,...longHistoryRevision(old,e)});}
  const filings=await acquireReviewedFilings(registry,{fetcher}),generatedAt=new Date().toISOString(),quotes=Object.entries(market.quotes).map(([id,item])=>({id,...observationFreshness(item.quote,Date.parse(generatedAt)),observedAt:item.quote?.timestamp||null,retrievedAt:item.quote?.retrievedAt||null,retained:!!item.quote&&!!item.error,reason:item.error||null}));
- const report=validateSourceIntegrity({format:'longhand-source-integrity',version:1,generatedAt,publicationAt:market.publishedAt,baselineAt:previous?.publishedAt||null,researchTickers:STOCK_UNIVERSE.IDX,histories:histories.sort((a,b)=>a.id.localeCompare(b.id)),filings,quotes,policy:'Source-vintage revisions and descriptive observation age, not an exchange-original accuracy certificate. Every exact numeric change is counted; adjusted-only changes remain separate. Current unfinished sessions and rolling-window expiries are excluded. Facts are never replaced when an issuer PDF changes.'});
+ const macroSources=[];for(const [name,validate]of [['macro',validateMacroFeed],['macro-context',validateMacroContext],['macro-releases',validateMacroReleases],['macro-extended',validateMacroExtended]]){
+  let raw;try{raw=await json(directory+'/'+name+'.json');}catch(e){if(e.code==='ENOENT')continue;throw e;}
+  const feed=validate(raw);for(const s of feed.series)macroSources.push({id:name+':'+s.id,status:s.error?'unavailable':s.refreshError?'retained':'acquired',retrievedAt:s.retrievedAt,refreshAttemptAt:s.refreshAttemptAt||null,reason:s.error||s.refreshError||null,sourceUrl:s.sourceUrl});
+ }
+ const report=validateSourceIntegrity({format:'longhand-source-integrity',version:1,generatedAt,publicationAt:market.publishedAt,baselineAt:previous?.publishedAt||null,researchTickers:STOCK_UNIVERSE.IDX,histories:histories.sort((a,b)=>a.id.localeCompare(b.id)),filings,quotes,macroSources,policy:'Source-vintage revisions and descriptive observation age, not an exchange-original accuracy certificate. Every exact numeric change is counted; adjusted-only changes remain separate. Current unfinished sessions and rolling-window expiries are excluded. Facts are never replaced when an issuer PDF changes.'});
  const primary=validateIdxEvidence({format:'longhand-idx-primary-evidence',version:1,publishedAt:generatedAt,researchTickers:STOCK_UNIVERSE.IDX,records:filings});await mkdir(directory,{recursive:true});await writeFile(directory+'/source-integrity.json',JSON.stringify(report));await writeFile(directory+'/idx-primary.json',JSON.stringify(primary));
  console.log(JSON.stringify({baselineAt:report.baselineAt,histories:histories.length,revised:histories.filter(h=>h.status==='revised').length,adjustedRevisions:histories.filter(h=>h.status==='adjusted-revision').length,initial:histories.filter(h=>h.status==='initial').length,olderObservations:quotes.filter(q=>q.status==='older-observation').length,issuerReports:filings.length,issuerMatches:filings.filter(f=>f.status==='matched').length,issuerChanged:filings.filter(f=>f.status==='changed').length,issuerUnavailable:filings.filter(f=>f.status==='unavailable').length}));return report;
 }

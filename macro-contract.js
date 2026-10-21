@@ -1,4 +1,5 @@
 // Public macro observations only. Metadata is fixed here, never supplied by a remote feed.
+import {validateMacroRetention} from './macro-context-contract.js';
 export const MACRO_REGIONS={id:'Indonesia',us:'United States',eu:'Europe',asean:'ASEAN',global:'Global'};
 export const ASEAN_COUNTRIES={IDN:'Indonesia',MYS:'Malaysia',SGP:'Singapore',THA:'Thailand',PHL:'Philippines',VNM:'Vietnam'};
 export const WORLD_BANK_URL='https://api.worldbank.org/v2/country/IDN;USA;EMU;MYS;SGP;THA;PHL;VNM;WLD/indicator/NY.GDP.MKTP.KD.ZG;FP.CPI.TOTL.ZG?source=2&format=json&date=2020:2026&per_page=1000';
@@ -30,6 +31,7 @@ export function validateMacroFeed(input,now=Date.now()){
  const ids=new Set();
  for(const s of input.series){if(!s||!Object.hasOwn(MACRO_SERIES,s.id)||ids.has(s.id))fail('unknown or duplicate series');const spec=MACRO_SERIES[s.id];ids.add(s.id);
   if(!stamp(s.retrievedAt)||Date.parse(s.retrievedAt)>Date.parse(input.generatedAt)||s.acquisition!==spec.acquisition||s.sourceUrl!==spec.url||!Array.isArray(s.observations)||s.observations.length>200)fail('series metadata');
+  validateMacroRetention(s,input.generatedAt);
   if(s.error){if(typeof s.error!=='string'||s.error.length>240||s.observations.length)fail('failed series contains observations');continue;}
   if(!/^[a-f0-9]{64}$/.test(s.sourceHash)||!s.observations.length)fail('missing provenance or observations');
   let previous=-Infinity;
