@@ -79,3 +79,48 @@ body .research-lab .advanced-core-audit{margin:18px 0;border-top:1px solid var(-
 .reading-details-dialog [hidden],.context-vintage[hidden]{display:none!important}
 [data-theme=dark] .reading-details-dialog{background:var(--paper,#1c2427);color:var(--ink,#e8ece8)}
 @media(max-width:600px){.reading-details-dialog{padding:16px;max-height:90dvh}.reading-details-button{margin-top:8px}}
+.research-lab :is(.lab-precision,.atlas-tabs)[hidden]{display:none!important}
+.lab-context .workflow-links:has([data-lab-use-current][hidden]){display:none}
+.lab-model-controls:has(~ #quant-results:not([hidden])) [data-lab-jump=ticker]{display:none}
+.lab-model-controls{margin:8px 0}
+.core-forecast-summary{border-top:1px solid var(--line);padding-top:18px;margin-top:22px}
+.core-forecast-summary h3{font:600 17px/1.4 'Segoe UI',Arial,sans-serif;margin-bottom:6px}
+.core-forecast-period{font-size:11px;color:var(--muted);line-height:1.5}
+.core-forecast-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.core-forecast-grid article{min-width:0;padding:14px;border:1px solid var(--line);border-radius:8px;background:var(--white)}
+.core-forecast-grid h4{margin:0 0 8px;font-size:13px}
+.core-forecast-grid th,.core-forecast-grid td{font-size:11px;padding:9px 6px;letter-spacing:0;text-transform:none;white-space:normal}
+.core-forecast-grid td{font-variant-numeric:tabular-nums}
+.core-forecast-grid td:last-child{min-width:0}
+.monitor-source-histories>h3{font:600 16px/1.4 'Segoe UI',Arial,sans-serif;margin:20px 0 12px}
+@media(max-width:1000px){.core-forecast-grid{grid-template-columns:1fr}}
+.research-lab #ticker-output{display:none!important}
+.official-fundamentals>h3{font:600 16px/1.4 'Segoe UI',Arial,sans-serif;margin:16px 0 8px}
+.annual-facts-period{font-size:11px;color:var(--muted);margin:8px 0}
+.annual-facts-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:12px 0 16px}
+.annual-facts-grid>div{padding:12px;border:1px solid var(--line);border-radius:7px;min-width:0}
+.annual-facts-grid dt{font-size:11px;color:var(--muted);line-height:1.4}
+.annual-facts-grid dd{margin:8px 0 4px;font-size:20px;font-variant-numeric:tabular-nums}
+.annual-facts-grid small{font-size:10px;color:var(--muted)}
+.official-fundamentals>details>summary{font-size:12px;padding:8px 0;cursor:pointer}
+@media(max-width:760px){.annual-facts-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.saved-study-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:12px}
+.saved-study-group{min-width:0;border:1px solid var(--line);border-radius:8px;padding:16px;background:var(--white)}
+.saved-study-group h3{font:600 16px/1.4 'Segoe UI',Arial,sans-serif;margin:0 0 12px}
+.saved-study-group label{display:grid;gap:6px;font-size:11px;color:var(--muted)}
+.saved-study-group select{max-width:100%;width:100%;font-size:12px;padding:10px;background:var(--paper);color:var(--ink);border:1px solid var(--line)}
+.saved-study-group .summary-links{margin:12px 0 0;gap:8px}
+@media(max-width:760px){.saved-study-grid{grid-template-columns:1fr}}
+/* Collapse inherited page-header spacing inside the model result, not the data. */
+body .research-lab .advanced-study-asset{height:auto;min-height:0;padding:0;margin:8px 0;border:0;position:static;background:transparent}
+body .research-lab #quant-results{margin-top:12px;padding-top:0;border-top:0}
+body .research-lab .advanced-study{margin:12px 0;padding:16px 0}
+body .research-lab .advanced-study>.eyebrow{margin:0 0 6px}
+body .research-lab .advanced-study>h2{font-size:24px;margin:0 0 8px}
+body .research-lab .quant-custom{padding:8px 0;margin-bottom:12px}
+body .research-lab #quant-launch-status:empty{display:none}
+body .research-lab .lab-model-controls{margin:8px 0}
+body .research-lab .lab-model-controls:not(:has(>:not([hidden]))){display:none}
+body .research-lab .core-forecast-summary{padding:0 0 12px;margin:0 0 12px;border-top:0;border-bottom:1px solid var(--line)}
+body .research-lab .advanced-brief{max-width:none;padding:8px 0;margin:8px 0 12px}
+body .research-lab .monte-carlo-layout .scientific-plot{margin:10px 0 14px}

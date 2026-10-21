@@ -43,3 +43,20 @@ Pembaca CSV independen diperbaiki agar fingerprint RBA mempertahankan byte-order
 Jalur acak Monte Carlo dan distribusi terminal kini dua panel berbeda. Ada 120 jalur tampilan yang diulang dari seed asli, sementara statistik tetap memakai seluruh 5.000 draw advanced atau 1.000 draw core. Rekonsiliasi kedua mesin dan kedua horizon cocok persis dengan versi sebelum perubahan. Model yang dibuka dari arsip menampilkan identitas ticker sendiri.
 
 Macro menampilkan maksimal enam prioritas per ekonomi; record lainnya dapat dicari tanpa memenuhi tampilan awal. Halaman saham mendahulukan watchlist, harga dan grafik. Penjelasan sumber, rincian katalog, sejarah exact dan hasil core tetap tersedia melalui detail yang dapat dibuka.
+
+
+## Pemeriksaan lanjutan: duplikasi, hasil langsung terlihat, dan ruang kosong
+
+Pengulangan kartu instrumen, navigasi alat, status selesai, dan tombol tesis diringkas. Arsip dikelompokkan per instrumen dengan semua versi asli tetap dapat dipilih. Forecast core 5/20 sesi ditampilkan langsung setelah penilaian model; grafik GDP/CPI juga langsung terlihat. Bukti annual SEC ditampilkan bila tersedia, sedangkan kegagalan sumber tetap terlihat sebagai tidak tersedia. Tidak ada nilai contoh yang diterbitkan sebagai fakta.
+
+Grafik Monte Carlo tetap dipisahkan dari distribusi terminal. Pengukuran ulang saat panel dibuka memperbaiki kanvas yang sempat terlalu tinggi; identitas model tidak lagi mewarisi tinggi header halaman. Jarak antarbagiannya dipadatkan. Perubahan harga dari penyedia sudah dalam persen dan ditampilkan tanpa dikalikan 100 lagi. Seed, source history, hasil model, dan catatan privat tidak diubah.
+
+Audit sumber lanjutan pada 21 Oktober 2026:
+
+- Context: 293 seri di 46 ekonomi, 69.002 observasi; 314 pemeriksaan independen lolos. Tiga agregat WDI tanpa angka tetap kosong.
+- Extended macro: 123 seri, 43.436 observasi; macro dasar/FX: 5.488 observasi; rekonsiliasi independen lolos.
+- Rilis regional diperbarui dan direkonsiliasi: 125 seri, 21.605 observasi. [ONS D7G7](https://www.ons.gov.uk/economy/inflationandpriceindices/timeseries/d7g7/mm23) menambahkan CPI September 2026 sebesar 3,5% pada 21 Oktober; 320 observasi sebelumnya tidak berubah.
+- Sejarah pasar diperbarui setelah penyedia menarik beberapa bar futures 20 Oktober. Setelah pengambilan ulang, 51 seri dan 241.379 observasi hari selesai cocok; 21 berkas Treasury dan 70.028 posisi nilainya juga cocok. Bar null dihilangkan, tidak diisi nol atau diinterpolasi.
+- Audit langsung 8.575 identitas quote unik mencatat 8.559 harga dengan timestamp yang sama cocok dan 15 timestamp penyedia lebih baru. Temuan yang memerlukan pengambilan ulang mencakup bar futures yang ditarik, satu bar TIPG yang kini null, ASGI-RI dengan harga sumber nol yang ditolak, serta MTF=F yang masih bertanggal Februari 2025. Ini tidak disamakan dengan harga terkini atau bukti real-time.
+
+Bukti lokal: `validation/duplicate-context-source.log`, `duplicate-extended-source.log`, `duplicate-fx-source.log`, `duplicate-regional-refreshed-audit.log`, `duplicate-fresh-long-source.log`, dan `all-quotes-independent-source-audit.json`. Angka audit di atas bertanggal; penyedia dapat merevisi observasi setelah snapshot. Pengambilan ulang publikasi tetap menjalankan validasi dan mempertahankan status unavailable/retained bila sumber gagal.

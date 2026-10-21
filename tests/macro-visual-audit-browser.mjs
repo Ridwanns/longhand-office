@@ -22,7 +22,7 @@ export async function run(original,base='http://127.0.0.1:4175/office/'){
    check(id+' has finite, dated chart observations where connected',await page.locator('.monitor-history [data-macro-chart]').evaluateAll(ns=>ns.every(e=>JSON.parse(e.dataset.macroPoints).every(([date,value])=>/^\d{4}-\d{2}-\d{2}$/.test(date)&&(value===null||Number.isFinite(value))))));
   }
   await page.locator('#macro-country').selectOption('USA');
-  await page.locator('.monitor-source-histories>summary').click();
+  await page.locator('.monitor-source-histories').waitFor();
   const chart=page.locator('[data-monitor-history=inflation]'),surface=chart.locator('[data-macro-surface]');
   const rows=await chart.locator('[data-macro-chart]').getAttribute('data-macro-points').then(JSON.parse);
   await surface.focus();await surface.press('Home');
