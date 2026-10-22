@@ -1,4 +1,4 @@
-import {vaultInfo,legacyInfo,startVault,startGuest,restoreVault,secureFlush,encryptedExport,finalizeMigration,secureLock} from './secure-workspace.js';
+import {vaultInfo,legacyInfo,startVault,startGuest,restoreVault,secureFlush,encryptedExport,finalizeMigration,secureLock,changeVaultPassword} from './secure-workspace.js';
 
 // Pages entry point. Private application modules are imported only after a choice.
 const IDLE_MS=10*60*1000,HIDDEN_MS=60*1000;
@@ -144,6 +144,36 @@ async function lockWorkspace(){
  }
 }
 
+function showPasswordChange(){
+ if(document.querySelector('#secure-password-dialog'))return;
+ const dialog=document.createElement('dialog');dialog.id='secure-password-dialog';dialog.setAttribute('aria-labelledby','secure-password-title');
+ dialog.innerHTML='<h2 id="secure-password-title">Change vault password</h2><p>Save a backup first. After changing your password, download a new backup. Older backup files still require their original password.</p><button type="button" id="secure-password-backup">Download current encrypted backup</button><form id="secure-password-form"><label for="secure-password-current">Current password</label><input type="password" id="secure-password-current" autocomplete="current-password" required><label for="secure-password-new">New password · at least 12 characters</label><input type="password" id="secure-password-new" autocomplete="new-password" required><label for="secure-password-confirm">Confirm new password</label><input type="password" id="secure-password-confirm" autocomplete="new-password" required><button type="submit" class="secure-primary" disabled>Change password</button></form><p id="secure-password-status" role="status" aria-live="polite"></p><button type="button" id="secure-password-close">Cancel</button>';
+ document.body.append(dialog);const form=dialog.querySelector('form'),backup=dialog.querySelector('#secure-password-backup'),close=dialog.querySelector('#secure-password-close'),status=dialog.querySelector('#secure-password-status');let busy=false,changed=false,backedUp=false;
+ const clear=()=>{form.reset();};
+ const dismiss=()=>{if(!busy){clear();dialog.close();dialog.remove();}};
+ dialog.addEventListener('cancel',e=>{e.preventDefault();dismiss();});close.addEventListener('click',dismiss);
+ const controls=disabled=>{for(const el of dialog.querySelectorAll('button,input'))el.disabled=disabled;form.querySelector('button').disabled=disabled||!backedUp;};
+ backup.addEventListener('click',async()=>{busy=true;controls(true);try{await exportRecovery();backedUp=true;text(status,changed?'New encrypted backup download requested. Use your new password to restore it.':'Backup download requested. Save the file before continuing.');}catch{text(status,'Backup download failed. Retry before closing this session.');}finally{busy=false;controls(false);}});
+ form.addEventListener('submit',async e=>{
+  e.preventDefault();if(busy||changed||!backedUp)return;
+  let current=dialog.querySelector('#secure-password-current').value,next=dialog.querySelector('#secure-password-new').value;
+  if(next!==dialog.querySelector('#secure-password-confirm').value){text(status,'The new passwords do not match.');clear();return;}
+  busy=true;controls(true);text(status,'Verifying and encrypting locally…');
+  try{
+   const {flushDrafts}=await import('./drafts.js');await flushDrafts();
+   await changeVaultPassword(current,next);changed=true;clear();form.hidden=true;backup.textContent='Download new encrypted backup';close.textContent='Done';
+   text(status,'Password changed and stored data verified. Download a new encrypted backup now.');
+   try{await exportRecovery();text(status,'Password changed and verified. New backup download requested; save the file. Older backups still use the old password.');}catch{text(status,'Password changed. Download the new encrypted backup before closing this session.');}
+  }catch(error){
+   clear();
+   if(error.passwordChanged){changed=true;form.hidden=true;backup.textContent='Download new encrypted backup';close.textContent='Done';text(status,'Password changed, but final storage verification needs attention. Keep this session open and download a new encrypted backup before locking.');}
+   else text(status,'Could not change the password. Check your current password and choose a different new password of at least 12 characters. Your previous password is unchanged.');
+  }
+  finally{current='';next='';busy=false;controls(false);}
+ });
+ dialog.showModal();backup.focus();
+}
+
 async function mountSessionControls(){
  const info=await vaultInfo();
  sessionBar=document.createElement('div');sessionBar.id='secure-session-controls';sessionBar.setAttribute('aria-label','Workspace privacy');
@@ -152,7 +182,8 @@ async function mountSessionControls(){
   const button=document.createElement('button');button.type='button';button.textContent='Set up vault';button.addEventListener('click',()=>{if(window.confirm('Leave this temporary session? Unsaved temporary work will be discarded.'))location.reload();});sessionBar.append(button);
  }else{
   const backup=document.createElement('button');backup.type='button';backup.textContent='Encrypted backup';backup.addEventListener('click',async()=>{backup.disabled=true;try{await exportRecovery();text(sessionBar.querySelector('.secure-session-state'),'Encrypted download requested');}catch{text(sessionBar.querySelector('.secure-session-state'),'Backup failed · retry');}finally{backup.disabled=false;}});
-  const lock=document.createElement('button');lock.type='button';lock.textContent='Lock';lock.addEventListener('click',lockWorkspace);sessionBar.append(backup,lock);
+  const password=document.createElement('button');password.type='button';password.textContent='Change password';password.addEventListener('click',showPasswordChange);
+  const lock=document.createElement('button');lock.type='button';lock.textContent='Lock';lock.addEventListener('click',lockWorkspace);sessionBar.append(backup,password,lock);
  }
  const header=document.querySelector('.office-topbar');(header||document.body).append(sessionBar);setSessionStatus(info);
  const notice=document.createElement('p');notice.id='secure-session-notice';

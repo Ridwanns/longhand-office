@@ -63,6 +63,27 @@ export async function secureTransaction(dbName,storeDefinitions,names,access,fn)
  try{const result=await fn(tx);while(pending.size)await Promise.all([...pending]);if(aborted)throw aborted;if(access==='readwrite'){try{await checkpoint(next);}catch(e){acknowledge(localPending,localChanges);acknowledge(sessionPending,sessionChanges);throw report(e);}acknowledge(localPending,localChanges);acknowledge(sessionPending,sessionChanges);}return result;}catch(e){throw e;}});}
 export async function secureFlush(){if(mode==='inactive')return {mode:'inactive',unlocked:false,dirty:false,error:null};return enqueue(async()=>{unlocked();clearTimeout(checkpointTimer);if(!localPending.size&&!sessionPending.size){if(failure&&mode==='vault'){const saved=(await readContainer())?.envelope;if(!saved||saved.revision!==envelope.revision||encodeWorkspaceValue(await decryptWorkspaceSnapshot(saved,keyContext.key))!==encodeWorkspaceValue(state))throw failure;failure=null;signal();}return info();}const localChanges=new Map(localPending),sessionChanges=new Map(sessionPending),next=clone(state);mergePending(next,localChanges,sessionChanges);try{await checkpoint(next);acknowledge(localPending,localChanges);acknowledge(sessionPending,sessionChanges);return info();}catch(e){acknowledge(localPending,localChanges);acknowledge(sessionPending,sessionChanges);throw report(e);}});}
 export async function encryptedExport(){await secureFlush();unlocked();if(mode!=='vault'||!envelope)throw Error('Guest sessions do not have an encrypted device vault.');exportedRevision=envelope.revision;return clone(envelope);}
+export async function changeVaultPassword(currentPassword,newPassword){
+ await secureFlush();
+ return enqueue(async()=>{
+  unlocked();if(mode!=='vault'||state.migration)throw Error('Complete vault setup before changing its password.');
+  if(currentPassword===newPassword)throw Error('Choose a different new password.');
+  const oldContext=await deriveWorkspaceKey(currentPassword,validateWorkspaceEnvelope(envelope).salt);
+  const verified=checkSnapshot(await decryptWorkspaceSnapshot(envelope,oldContext.key));
+  if(encodeWorkspaceValue(verified)!==encodeWorkspaceValue(state))throw Error('Vault verification failed.');
+  const nextContext=await deriveWorkspaceKey(newPassword);
+  const next=await encryptWorkspaceSnapshot(state,{...nextContext,vaultId:envelope.vaultId,revision:envelope.revision+1});
+  if(encodeWorkspaceValue(await decryptWorkspaceSnapshot(next,nextContext.key))!==encodeWorkspaceValue(state))throw Error('New encryption could not be verified.');
+  await atomicEnvelope(next,envelope.revision);
+  // Once committed, keep the matching key even if the subsequent readback fails.
+  keyContext=nextContext;envelope=next;exportedRevision=0;
+  try{
+   const saved=(await readContainer())?.envelope;
+   if(!saved||encodeWorkspaceValue(saved)!==encodeWorkspaceValue(next)||encodeWorkspaceValue(await decryptWorkspaceSnapshot(saved,nextContext.key))!==encodeWorkspaceValue(state))throw Error('Password changed, but storage readback needs attention. Keep this session open and export a fresh encrypted backup.');
+   failure=null;signal();return {changed:true,revision:next.revision};
+  }catch(e){const error=report(e);error.passwordChanged=true;throw error;}
+ });
+}
 async function deleteLegacyDatabase(name){
  // A blocked deleteDatabase request cannot be cancelled. First remove data in
  // an abortable upgrade: if a legacy tab holds a connection, a later upgrade
