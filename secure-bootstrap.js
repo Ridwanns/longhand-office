@@ -176,6 +176,16 @@ function showPasswordChange(){
 
 async function mountSessionControls(){
  const info=await vaultInfo();
+ if(info.mode==='inactive'){
+  // Normal browser storage is the default. Never overwrite an existing encrypted vault.
+  if(info.exists){
+   const button=document.createElement('button');button.type='button';button.textContent='Open saved vault';
+   button.addEventListener('click',()=>{sessionStorage.setItem('office.open-private-vault','1');location.reload();});
+   sessionBar=document.createElement('div');sessionBar.id='secure-session-controls';sessionBar.append(button);
+   (document.querySelector('.office-topbar')||document.body).append(sessionBar);
+  }
+  return;
+ }
  sessionBar=document.createElement('div');sessionBar.id='secure-session-controls';sessionBar.setAttribute('aria-label','Workspace privacy');
  sessionBar.innerHTML='<span class="secure-session-state" role="status" aria-live="polite"></span>';
  if(info.mode==='guest'){
@@ -214,4 +224,10 @@ document.addEventListener('visibilitychange',()=>{
 });
 window.addEventListener('office:secure-storage-error',()=>{if(sessionBar){sessionBar.dataset.storageState='error';text(sessionBar.querySelector('.secure-session-state'),'Save failed · keep this tab open');}});
 window.addEventListener('office:secure-storage-change',()=>{if(sessionBar)void vaultInfo().then(setSessionStatus).catch(()=>{});});
-void showGate();
+async function startOffice(){
+ if(window.top!==window.self){await showGate();return;}
+ let openPrivate=false;
+ try{openPrivate=sessionStorage.getItem('office.open-private-vault')==='1';sessionStorage.removeItem('office.open-private-vault');}catch{}
+ if(openPrivate)await showGate();else await openWorkspace();
+}
+void startOffice();

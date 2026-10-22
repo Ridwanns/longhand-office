@@ -28,7 +28,7 @@ export async function run(original,base='http://127.0.0.1:4175/office/'){
   await f.evaluate(async()=>{localStorage.setItem('longhand-office.TEST-ONLY-after-readback','preserved');await V.secureFlush();await V.secureLock();});await f.reload();await load(f);await f.evaluate(next=>V.startVault(next),next);
   check('Post-commit readback failure retains the correct key for subsequent encrypted saves',await f.evaluate(()=>localStorage.getItem('longhand-office.TEST-ONLY-after-readback')==='preserved'));
   const g=await fresh();await g.evaluate(()=>V.startGuest());check('Temporary sessions cannot change vault passwords',await g.evaluate(async({password,next})=>{try{await V.changeVaultPassword(password,next);return false;}catch{return true;}},{password,next}));
-  const ctx=await browser.newContext({acceptDownloads:true});contexts.push(ctx);const u=await ctx.newPage();u.on('pageerror',e=>errors.push(e.message));await u.goto(base+'#overview');await u.locator('#secure-password').fill(password);await u.locator('#secure-password-confirm').fill(password);await u.locator('#secure-tabs-closed').check();await u.locator('#secure-vault-form [type=submit]').click();await u.locator('#secure-gate').waitFor({state:'detached',timeout:30000});
+  const ctx=await browser.newContext({acceptDownloads:true});contexts.push(ctx);await ctx.addInitScript(()=>sessionStorage.setItem('office.open-private-vault','1'));const u=await ctx.newPage();u.on('pageerror',e=>errors.push(e.message));await u.goto(base+'#overview');await u.locator('#secure-password').fill(password);await u.locator('#secure-password-confirm').fill(password);await u.locator('#secure-tabs-closed').check();await u.locator('#secure-vault-form [type=submit]').click();await u.locator('#secure-gate').waitFor({state:'detached',timeout:30000});
   await u.getByRole('button',{name:'Change password',exact:true}).click();check('Password form requires a backup download first',await u.locator('#secure-password-form [type=submit]').isDisabled());
   let download=u.waitForEvent('download');await u.locator('#secure-password-backup').click();await download;
   for(const width of [1440,390,320]){await u.setViewportSize({width,height:850});check('Password dialog fits '+width+'px',await u.locator('#secure-password-dialog').evaluate(d=>d.scrollWidth<=d.clientWidth&&d.getBoundingClientRect().right<=innerWidth));}
@@ -38,5 +38,3 @@ export async function run(original,base='http://127.0.0.1:4175/office/'){
   check('No unexpected browser errors',errors.length===0);return {checks,errors};
  }finally{await Promise.all(contexts.map(c=>c.close()));}
 }
-
-
