@@ -1,3 +1,4 @@
+import {secureMode,secureTransaction} from './secure-workspace.js';
 import {workspaceScope} from './workspace-scope.js';
 const connections=new Map();
 const req=r=>new Promise((resolve,reject)=>{r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});
@@ -5,7 +6,7 @@ export async function continuityDb(scope=workspaceScope()){
  const name='longhand-office.continuity.'+new URL('.',location.href).pathname+scope;
  if(!connections.has(name))connections.set(name,new Promise((resolve,reject)=>{const r=indexedDB.open(name,1);r.onupgradeneeded=()=>{for(const s of ['drafts','manual','predictions'])r.result.createObjectStore(s,{keyPath:'id'});};r.onsuccess=()=>{r.result.onversionchange=()=>{r.result.close();connections.delete(name);};resolve(r.result);};r.onerror=()=>{connections.delete(name);reject(r.error);};r.onblocked=()=>{connections.delete(name);reject(Error('Continuity storage is blocked by another tab.'));};}));return connections.get(name);
 }
-export async function continuityTransaction(stores,mode,fn,scope){const db=await continuityDb(scope),tx=db.transaction(stores,mode),done=new Promise((resolve,reject)=>{tx.oncomplete=resolve;tx.onabort=()=>reject(tx.error||Error('Continuity save aborted.'));tx.onerror=()=>{};});try{const value=await fn(tx,req);await done;return value;}catch(e){try{tx.abort();}catch{}await done.catch(()=>{});throw e;}}
+export async function continuityTransaction(stores,mode,fn,scope){if(secureMode())return secureTransaction('longhand-office.continuity.'+new URL('.',location.href).pathname+(scope??workspaceScope()),{drafts:{keyPath:'id'},manual:{keyPath:'id'},predictions:{keyPath:'id'}},stores,mode,tx=>fn(tx,req));const db=await continuityDb(scope),tx=db.transaction(stores,mode),done=new Promise((resolve,reject)=>{tx.oncomplete=resolve;tx.onabort=()=>reject(tx.error||Error('Continuity save aborted.'));tx.onerror=()=>{};});try{const value=await fn(tx,req);await done;return value;}catch(e){try{tx.abort();}catch{}await done.catch(()=>{});throw e;}}
 export const continuityList=(store,scope)=>continuityTransaction([store],'readonly',(tx,r)=>r(tx.objectStore(store).getAll()),scope);
 export const continuityGet=(store,id)=>continuityTransaction([store],'readonly',(tx,r)=>r(tx.objectStore(store).get(id)));
 export async function saveDraft(value,expected){return continuityTransaction(['drafts'],'readwrite',async(tx,r)=>{const s=tx.objectStore('drafts'),old=await r(s.get(value.id));if((old?.revision||0)!==expected)throw Error('Draft changed in another tab. Export your current draft before reloading.');const next={...value,revision:expected+1};s.put(next);return next;});}

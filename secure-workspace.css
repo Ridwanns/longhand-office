@@ -1,0 +1,46 @@
+html[data-secure-gated="true"] body>:not(#secure-gate):not(script):not(style):not(link){visibility:hidden!important;pointer-events:none!important}
+#secure-gate{position:fixed;inset:0;z-index:10000;overflow:auto;display:grid;place-items:start center;padding:clamp(18px,5vh,52px) 16px;background:#f5f3eb;color:#253127;font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;box-sizing:border-box}
+#secure-gate *,#secure-lock-layer *,#secure-session-controls *{box-sizing:border-box}
+.secure-gate-card{width:min(100%,490px);padding:clamp(20px,4vw,32px);border:1px solid #d9ddd2;border-radius:14px;background:#fffefa;box-shadow:0 12px 38px #2834220b}
+.secure-brand{display:flex;align-items:center;gap:12px;width:fit-content;margin-bottom:24px;font:30px/1 Georgia,serif;text-decoration:none;color:#3c533c}
+.secure-brand span{font:600 10px/1.3 system-ui,sans-serif;letter-spacing:.15em}
+#secure-gate h1{font:500 clamp(24px,5vw,30px)/1.15 Georgia,serif;letter-spacing:-.025em;margin:5px 0 12px;color:inherit}
+#secure-gate p{max-width:none;margin:10px 0;font-size:14px;line-height:1.55;color:inherit}
+#secure-gate .secure-eyebrow{font-size:10px;line-height:1.4;letter-spacing:.13em;text-transform:uppercase;color:#667560;margin-bottom:8px}
+#secure-vault-form{display:grid;gap:8px;margin-top:22px}
+#secure-restore-form{display:grid;gap:8px}
+.secure-restore{margin-top:24px;padding-top:18px;border-top:1px solid #dce0d7}
+#secure-gate .secure-restore h2{font:500 19px/1.3 Georgia,serif;margin:0 0 9px;color:inherit}
+#secure-restore-form>label{font-size:12px;font-weight:600}
+#secure-restore-file{width:100%;font:11px/1.5 system-ui,sans-serif;color:inherit;min-height:40px;padding:8px 0}
+#secure-vault-form>label{font-size:12px;font-weight:600}
+#secure-gate input[type="password"]{display:block;width:100%;min-height:44px;padding:10px 12px;border:1px solid #a8b4a2;border-radius:7px;background:#fff;color:#233025;font:16px/1.3 system-ui,sans-serif;box-shadow:none;letter-spacing:normal}
+#secure-gate button,#secure-session-controls button,#secure-lock-layer button{min-height:40px;border:1px solid #a8b4a2;border-radius:7px;background:transparent;color:inherit;padding:9px 13px;font:500 12px/1.3 system-ui,sans-serif;cursor:pointer;text-transform:none;letter-spacing:normal;white-space:normal}
+#secure-gate button{width:100%}
+#secure-gate button.secure-primary,#secure-lock-layer button.secure-primary{background:#435b41;border-color:#435b41;color:#fff}
+#secure-gate button:disabled,#secure-session-controls button:disabled,#secure-lock-layer button:disabled{opacity:.5;cursor:wait}
+#secure-gate :focus-visible,#secure-session-controls :focus-visible,#secure-lock-layer :focus-visible{outline:3px solid #7a9eaa;outline-offset:3px}
+#secure-gate p.secure-small{font-size:11px;line-height:1.6;color:#65705f;margin:0 0 12px}
+#secure-gate p.secure-limits{margin:18px 0 0;padding-top:15px;border-top:1px solid #dce0d7;font-size:10px;line-height:1.65;color:#65705f}
+#secure-gate p.secure-status{min-height:0;margin:14px 0 0;font-size:12px;line-height:1.55}
+#secure-gate p.secure-status:empty{display:none}
+#secure-gate p.secure-status[role="alert"]{color:#943f30;background:#fbefea;padding:10px;border-radius:6px}
+.secure-check{display:flex!important;align-items:flex-start;gap:9px;font-size:11px!important;font-weight:400!important;line-height:1.6;margin:8px 0 14px;cursor:pointer}
+.secure-check input[type="checkbox"]{width:17px;height:17px;min-width:17px;margin:2px 0 0;accent-color:#435b41}
+.secure-divider{display:flex;align-items:center;gap:12px;margin:20px 0 15px;color:#65705f;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+.secure-divider:before,.secure-divider:after{content:"";height:1px;background:#dce0d7;flex:1}
+.secure-steps{padding:0 0 0 20px;margin:18px 0;font-size:12px;line-height:1.6}
+.secure-steps li+li{margin-top:7px}
+#secure-session-controls{display:flex;align-items:center;justify-content:flex-end;gap:7px;flex-wrap:wrap;min-width:0;max-width:100%;font:10px/1.35 system-ui,sans-serif;color:var(--ink,#354232)}
+#secure-session-controls .secure-session-state{font-size:10px;max-width:145px}
+#secure-session-controls button{min-height:30px;padding:5px 9px;font-size:10px}
+#secure-session-controls[data-storage-state="error"] .secure-session-state{color:#aa4938}
+#secure-session-notice{position:relative;margin:0!important;padding:7px 22px 7px var(--office-content-inset,24px);font:10px/1.5 system-ui,sans-serif;background:var(--surface,#f0f3ea);color:var(--muted,#5a6957);border-bottom:1px solid var(--line,#dce0d7);max-width:none!important}
+#secure-lock-layer{position:fixed;inset:0;margin:auto;width:min(420px,calc(100% - 32px));max-height:calc(100% - 32px);padding:24px;background:#fffefa;color:#253127;border:1px solid #ccd4c5;border-radius:12px;box-shadow:0 20px 60px #18231d33;font:13px/1.6 system-ui,sans-serif}
+#secure-lock-layer::backdrop{background:#19241fe6;backdrop-filter:blur(8px)}
+#secure-lock-layer h2{font:500 23px/1.2 Georgia,serif;margin:0 0 12px}
+#secure-lock-layer p{font-size:13px;line-height:1.6;margin:0 0 16px;color:inherit}
+.secure-lock-actions{display:flex;flex-wrap:wrap;gap:9px}
+.secure-lock-actions[hidden]{display:none}
+@media(max-width:760px){#secure-session-controls .secure-session-state{display:none}#secure-session-controls{gap:4px}#secure-session-controls button{padding:5px 7px}#secure-session-notice{padding:7px 14px}#secure-gate{padding:20px 12px}.secure-gate-card{padding:22px 18px}}
+@media(prefers-color-scheme:dark){html:not([data-theme="light"]) #secure-gate{background:#171e1a;color:#e7eddf}html:not([data-theme="light"]) .secure-gate-card,html:not([data-theme="light"]) #secure-lock-layer{background:#202a23;color:#e7eddf;border-color:#465342}html:not([data-theme="light"]) #secure-gate input[type="password"]{background:#172019;color:#f1f3eb;border-color:#67775f}html:not([data-theme="light"]) .secure-brand{color:#c1d1b3}html:not([data-theme="light"]) #secure-gate p.secure-small,html:not([data-theme="light"]) #secure-gate p.secure-limits,html:not([data-theme="light"]) #secure-gate .secure-eyebrow{color:#bac6b1}html:not([data-theme="light"]) #secure-gate p.secure-status[role="alert"]{color:#ffd4c8;background:#4a2e27}}

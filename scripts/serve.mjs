@@ -23,7 +23,7 @@ files.add('macro-cycle.js');files.add('workspace-navigation.js');files.add('work
 files.add('research-intent.js');files.add('quant-charts.js');files.add('workspace-shell.js');files.add('workspace-shell.css');
 ['macro-ui.js','macro-contract.js','macro.css','macro-visuals.js','macro-map-data.js','market-view.js','market-history-contract.js'].forEach(f=>files.add(f));
 files.add('idx-msn-ui.js');files.add('idx-msn-contract.js');
-files.add('encrypted-backup.js');
+files.add('encrypted-backup.js');files.add('secure-workspace.js');files.add('secure-workspace-crypto.js');
 files.add('sec-fundamentals-contract.js');files.add('official-fundamentals.js');
 files.add('official-rates.js');files.add('official-rates-contract.js');
 files.add('quant-navigation.js');
