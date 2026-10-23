@@ -37,13 +37,18 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: '24'
-      - uses: actions/setup-python@v6
+          check-latest: true
+      - run: node scripts/node-security.mjs
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: '3.12'
+          check-latest: true
       - run: npm test
       - run: python tests/public-snapshot-cache.py && python tests/interface-snapshot.py
       - name: Restore only public data from the preceding successful full Pages artifact
@@ -56,12 +61,12 @@ jobs:
           python scripts/reuse-interface-snapshot.py .tools/interface-public-cache/artifact.tar
           echo "::notice::Interface release uses verified public run $officeRunId. Original source acquisition times are unchanged."
       - run: node scripts/build-pages.mjs
-      - uses: actions/upload-pages-artifact@v5
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
         with:
           path: dist/office
       - name: Deploy working Office
         id: deployment
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5
   deploy:
     if: github.event_name != 'workflow_dispatch' || !inputs.interface_only
     runs-on: ubuntu-latest
@@ -70,19 +75,26 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: '24'
+          check-latest: true
+      - run: node scripts/node-security.mjs
       - run: npm test
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: '3.12'
+          check-latest: true
       - run: python tests/atlas-parity.py -v
       - run: python tests/research-reference.py
       - run: python tests/public-snapshot-cache.py
       - run: python tests/macro-retention.py
-      - run: python -m pip install -r requirements-data.txt
+      - run: python -m pip install --upgrade 'pip>=26.2.2'
+      - run: python -m pip install --only-binary=:all: -r requirements-data.txt
+      - run: python scripts/audit-python-dependencies.py
       - run: python scripts/yahoo-stock-directory.py
         id: directory
         continue-on-error: true
@@ -144,9 +156,9 @@ jobs:
       - name: Reconcile public vintages and reacquire reviewed issuer filings
         run: node scripts/source-integrity-data.mjs
       - run: node scripts/build-pages.mjs
-      - uses: actions/upload-pages-artifact@v5
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
         with:
           path: dist/office
       - name: Deploy working Office
         id: deployment
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5

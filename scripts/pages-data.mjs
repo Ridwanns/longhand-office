@@ -1,3 +1,5 @@
+import {assertPatchedNode} from './node-security.mjs';
+assertPatchedNode();
 import {projectValuationFundamental} from './valuation-fundamentals.mjs';
 import {mkdir,writeFile,readFile} from 'node:fs/promises';
 import path from 'node:path';

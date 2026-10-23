@@ -1,3 +1,5 @@
+import {assertPatchedNode} from './node-security.mjs';
+assertPatchedNode();
 import {writeCoverageReport} from './data-coverage.mjs';
 import {versionMacroAssets} from './pages-asset-version.mjs';
 import {copyFile,mkdir,readdir,readFile,writeFile,stat,unlink} from 'node:fs/promises';

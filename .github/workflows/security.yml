@@ -1,0 +1,37 @@
+name: Check project security
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '15 2 * * *'
+  push:
+    branches: [main]
+    paths:
+      - requirements-data.txt
+      - package.json
+      - scripts/node-security.mjs
+      - scripts/audit-python-dependencies.py
+      - .github/**
+permissions:
+  contents: read
+jobs:
+  dependencies:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: '24'
+          check-latest: true
+      - run: node scripts/node-security.mjs
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+          check-latest: true
+      - run: python -m venv .tools/security-audit
+      - run: python tests/security-dependencies.py
+      - run: .tools/security-audit/bin/python -m pip install --upgrade 'pip>=26.2.2'
+      - run: .tools/security-audit/bin/python -m pip install --only-binary=:all: -r requirements-data.txt
+      - run: .tools/security-audit/bin/python scripts/audit-python-dependencies.py
