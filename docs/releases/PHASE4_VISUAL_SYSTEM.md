@@ -161,16 +161,16 @@ Each pair below uses the actual running static baseline and final application, f
 
 | Screen | Desktop before / after | Mobile before / after |
 | --- | --- | --- |
-| Overview | [Before](validation/phase4-baseline-overview-desktop.png) / [After](validation/phase4-after-overview-desktop.png) | [Before](validation/phase4-baseline-overview-mobile.png) / [After](validation/phase4-after-overview-mobile.png) |
-| Markets | [Before](validation/phase4-baseline-markets-desktop.png) / [After](validation/phase4-after-markets-desktop.png) | [Before](validation/phase4-baseline-markets-mobile.png) / [After](validation/phase4-after-markets-mobile.png) |
-| Macro: Indonesia | [Before](validation/phase4-baseline-macro-id-desktop.png) / [After](validation/phase4-after-macro-id-desktop.png) | [Before](validation/phase4-baseline-macro-id-mobile.png) / [After](validation/phase4-after-macro-id-mobile.png) |
-| Macro: United States | [Before](validation/phase4-baseline-macro-us-desktop.png) / [After](validation/phase4-after-macro-us-desktop.png) | [Before](validation/phase4-baseline-macro-us-mobile.png) / [After](validation/phase4-after-macro-us-mobile.png) |
-| Research Lab | [Before](validation/phase4-baseline-research-desktop.png) / [After](validation/phase4-after-research-desktop.png) | [Before](validation/phase4-baseline-research-mobile.png) / [After](validation/phase4-after-research-mobile.png) |
-| Portfolio | [Before](validation/phase4-baseline-portfolio-desktop.png) / [After](validation/phase4-after-portfolio-desktop.png) | [Before](validation/phase4-baseline-portfolio-mobile.png) / [After](validation/phase4-after-portfolio-mobile.png) |
+| Overview | [Before](../../validation/phase4-baseline-overview-desktop.png) / [After](../../validation/phase4-after-overview-desktop.png) | [Before](../../validation/phase4-baseline-overview-mobile.png) / [After](../../validation/phase4-after-overview-mobile.png) |
+| Markets | [Before](../../validation/phase4-baseline-markets-desktop.png) / [After](../../validation/phase4-after-markets-desktop.png) | [Before](../../validation/phase4-baseline-markets-mobile.png) / [After](../../validation/phase4-after-markets-mobile.png) |
+| Macro: Indonesia | [Before](../../validation/phase4-baseline-macro-id-desktop.png) / [After](../../validation/phase4-after-macro-id-desktop.png) | [Before](../../validation/phase4-baseline-macro-id-mobile.png) / [After](../../validation/phase4-after-macro-id-mobile.png) |
+| Macro: United States | [Before](../../validation/phase4-baseline-macro-us-desktop.png) / [After](../../validation/phase4-after-macro-us-desktop.png) | [Before](../../validation/phase4-baseline-macro-us-mobile.png) / [After](../../validation/phase4-after-macro-us-mobile.png) |
+| Research Lab | [Before](../../validation/phase4-baseline-research-desktop.png) / [After](../../validation/phase4-after-research-desktop.png) | [Before](../../validation/phase4-baseline-research-mobile.png) / [After](../../validation/phase4-after-research-mobile.png) |
+| Portfolio | [Before](../../validation/phase4-baseline-portfolio-desktop.png) / [After](../../validation/phase4-after-portfolio-desktop.png) | [Before](../../validation/phase4-baseline-portfolio-mobile.png) / [After](../../validation/phase4-after-portfolio-mobile.png) |
 
-Dark pairs: [Overview before](validation/phase4-baseline-overview-dark.png) / [after](validation/phase4-after-overview-dark.png); [Research before](validation/phase4-baseline-research-dark.png) / [after](validation/phase4-after-research-dark.png); [Macro before](validation/phase4-baseline-macro-id-dark.png) / [after](validation/phase4-after-macro-id-dark.png).
+Dark pairs: [Overview before](../../validation/phase4-baseline-overview-dark.png) / [after](../../validation/phase4-after-overview-dark.png); [Research before](../../validation/phase4-baseline-research-dark.png) / [after](../../validation/phase4-after-research-dark.png); [Macro before](../../validation/phase4-baseline-macro-id-dark.png) / [after](../../validation/phase4-after-macro-id-dark.png).
 
-Scientific chart captures: [desktop](validation/phase4-after-scientific-desktop.png), [dark](validation/phase4-after-scientific-dark.png), [mobile](validation/phase4-after-scientific-mobile.png). Full atlas captures: [dark](validation/phase4-after-macro-dark.png), [mobile](validation/phase4-after-macro-mobile.png).
+Scientific chart captures: [desktop](../../validation/phase4-after-scientific-desktop.png), [dark](../../validation/phase4-after-scientific-dark.png), [mobile](../../validation/phase4-after-scientific-mobile.png). Full atlas captures: [dark](../../validation/phase4-after-macro-dark.png), [mobile](../../validation/phase4-after-macro-mobile.png).
 
 ## Known limits and stop boundary
 

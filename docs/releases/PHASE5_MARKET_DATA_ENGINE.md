@@ -213,11 +213,11 @@ Added tests: `tests/market-data-fixture.mjs`, `tests/market-data.test.mjs`, `tes
 
 ## Screenshots and local preview
 
-- [Data Sources, desktop](validation/phase5-data-sources-desktop.png)
-- [Fresh Pluang NVDA inspection, desktop](validation/phase5-pluang-nvda-preview-desktop.png)
-- [Fresh Pluang NVDA inspection, dark](validation/phase5-pluang-nvda-preview-dark.png)
-- [Fresh Pluang NVDA inspection, mobile](validation/phase5-pluang-nvda-preview-mobile.png)
-- [TEST ONLY selected-source Research, mobile](validation/phase5-source-study-mobile.png)
+- [Data Sources, desktop](../../validation/phase5-data-sources-desktop.png)
+- [Fresh Pluang NVDA inspection, desktop](../../validation/phase5-pluang-nvda-preview-desktop.png)
+- [Fresh Pluang NVDA inspection, dark](../../validation/phase5-pluang-nvda-preview-dark.png)
+- [Fresh Pluang NVDA inspection, mobile](../../validation/phase5-pluang-nvda-preview-mobile.png)
+- [TEST ONLY selected-source Research, mobile](../../validation/phase5-source-study-mobile.png)
 
 Working application: `http://127.0.0.1:4173/#data-sources`. Static artifact inspected at `http://127.0.0.1:4175/office/#data-sources`. The public GitHub Pages site was not deployed or changed by this phase.
 

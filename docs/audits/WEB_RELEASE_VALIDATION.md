@@ -52,4 +52,4 @@ Both localhost servers were restarted after extracting shared portable contracts
 - Forecasts are retrospective statistical studies; scenarios are assumed-process simulations. Missing sessions reduce usable contiguous histories; fewer than 20 scored errors yield no empirical interval. No validated forecast probability or execution entitlement is implied.
 - No broker orders, tax lots, automatic corporate-action changes to recorded trades, FX conversion or TWR/MWR. Treasury/Governance remain planned. Backups above 50 MB are rejected; automatic pruning is not implemented.
 
-Detailed usage/publication boundaries are in [GITHUB_PAGES.md](GITHUB_PAGES.md). Earlier audit/release documents retain their historical verification and local-only constraints; this report records the user-authorized public browser release.
+Detailed usage/publication boundaries are in [GITHUB_PAGES.md](../guides/GITHUB_PAGES.md). Earlier audit/release documents retain their historical verification and local-only constraints; this report records the user-authorized public browser release.
