@@ -4,7 +4,7 @@ import {marketDataContext} from './market-data-ui.js';
 import {macroPage,mountMacro} from './macro-ui.js';
 import {preferenceKey} from './workspace-scope.js';
 import {researchDate} from './research-layout.js';
-import {dataBadge} from './data-status.js';
+import {dataBadge,dataState} from './data-status.js';
 import {officialRatesPanel,mountOfficialRates} from './official-rates.js';
 import {MARKET_CATEGORIES} from './market-catalogue.js';
 import {localIdxPanel,mountLocalIdx} from './idx-msn-ui.js';
@@ -24,7 +24,11 @@ function chart(q,large=false){
  const points=history.map((p,i)=>`${(pad+i/(history.length-1)*(width-pad*2)).toFixed(2)},${(range?height-pad-(p.close-low)/range*(height-pad*2):height/2).toFixed(2)}`).join(' ');
  return `<svg class="source-chart ${tone(q)}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(q.symbol)}: ${history.length} available daily close observations, ${esc(history[0].date)} to ${esc(history.at(-1).date)}"><title>Available source closes; latest daily bar may be in progress</title>${large?`<path class="chart-grid" d="M15 15H505 M15 105H505 M15 195H505"/>`:''}<polyline points="${points}" fill="none" stroke="currentColor" stroke-width="${large?2:1.7}" vector-effect="non-scaling-stroke"/></svg>${large?`<div class="chart-dates"><span>${history[0].date}</span><span>${history.at(-1).date}</span></div><p class="quiet-note">${history.length} available daily closes · range ${num(low)}–${num(high)}${q.provider==='yahoo'?' · current bar may be in progress.':'.'} ${history.at(-1).date<(q.date||q.marketDate||'')?'Chart history ends before the latest price observation.':''}</p>`:''}`;
 }
-function sourceTime(q,compact=false){if(q.date)return q.date;return new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Jakarta',...(compact?{month:'short',day:'2-digit',hour:'2-digit',minute:'2-digit'}:{dateStyle:'medium',timeStyle:'medium'})}).format(new Date(q.timestamp))+' WIB';}
+function sourceTime(q,compact=false){
+ const observed=q.timestamp||q.date,date=new Date(observed);if(!Number.isFinite(date.getTime()))return 'Date unverified';if(q.date)return q.date;
+ const yearFormat=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Jakarta',year:'numeric'}),showYear=yearFormat.format(date)!==yearFormat.format(new Date())||dataState({observedAt:observed}).kind==='outdated';
+ return new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Jakarta',...(compact?{month:'short',day:'2-digit',hour:'2-digit',minute:'2-digit',...(showYear?{year:'numeric'}:{})}:{dateStyle:'medium',timeStyle:'medium'})}).format(date)+' WIB';
+}
 const unitFor=(category,q)=>category==='idx'?'IDR per share':category==='us'?'USD per share':q.unit;
 export function marketPage(requested='us'){
  const category=Object.hasOwn(MARKET_CATEGORIES,requested)?requested:'us',c=MARKET_CATEGORIES[category],symbols=symbolsFor(category);
@@ -47,8 +51,8 @@ async function getQuote(category,symbol,force=false){
 }
 function paintRow(board,symbol,result){
  const row=[...board.querySelectorAll('tr[data-symbol]')].find(r=>r.dataset.symbol===symbol);if(!row)return;
- const q=result.quote,name=MARKET_CATEGORIES[board.dataset.category].instruments?.find(i=>i.symbol===symbol)?.name||q?.name||symbol;
- row.innerHTML=`<td class="watch-name"><button class="watch-symbol" type="button" data-inspect="${esc(symbol)}" aria-pressed="${board.dataset.selected===symbol}">${esc(name)}<small>${esc(symbol)}${MARKET_CATEGORIES[board.dataset.category].instruments?.find(i=>i.symbol===symbol)?.type==='INDEX'?' · Index':''}</small></button>${['us','idx'].includes(board.dataset.category)?`<button type="button" class="watch-remove" data-remove="${esc(symbol)}" aria-label="Remove ${esc(symbol)} from watchlist">×</button>`:''}</td>`+(q?`<td class="watch-price">${num(q.price)}<small>${esc(unitFor(board.dataset.category,q))}</small><small>${esc(sourceTime(q,true))}</small></td><td class="watch-change ${tone(q)}">${q.change?pct(q.change.percent):'Change unavailable'}${q.change?`<small>vs ${esc(q.change.referenceDate?researchDate(q.change.referenceDate):"provider previous close with no supplied date")}</small>`:''}</td><td class="watch-spark">${chart(q)}</td>`:`<td colspan="3"><span class="form-error">${result.errorKind==='not-published'?'Not published':result.errorKind==='invalid-data'?'Invalid source data':'Source unavailable'}</span><small>${esc(result.error)}</small></td>`);
+ const q=result.quote,name=MARKET_CATEGORIES[board.dataset.category].instruments?.find(i=>i.symbol===symbol)?.name||q?.name||symbol,freshness=q?dataState({observedAt:q.timestamp||q.date}):null;
+ row.innerHTML=`<td class="watch-name"><button class="watch-symbol" type="button" data-inspect="${esc(symbol)}" aria-pressed="${board.dataset.selected===symbol}">${esc(name)}<small>${esc(symbol)}${MARKET_CATEGORIES[board.dataset.category].instruments?.find(i=>i.symbol===symbol)?.type==='INDEX'?' · Index':''}</small></button>${['us','idx'].includes(board.dataset.category)?`<button type="button" class="watch-remove" data-remove="${esc(symbol)}" aria-label="Remove ${esc(symbol)} from watchlist">×</button>`:''}</td>`+(q?`<td class="watch-price">${num(q.price)}<small>${esc(unitFor(board.dataset.category,q))}</small><small>${esc(sourceTime(q,true))}</small>${freshness.kind!=='snapshot'?`<small class="watch-source-status data-state-${freshness.kind}" title="${esc(freshness.detail)}">${esc(freshness.label)}</small>`:''}</td><td class="watch-change ${tone(q)}">${q.change?pct(q.change.percent):'Change unavailable'}${q.change?`<small>vs ${esc(q.change.referenceDate?researchDate(q.change.referenceDate):"provider previous close with no supplied date")}</small>`:''}</td><td class="watch-spark">${chart(q)}</td>`:`<td colspan="3"><span class="form-error">${result.errorKind==='not-published'?'Not published':result.errorKind==='invalid-data'?'Invalid source data':'Source unavailable'}</span><small>${esc(result.error)}</small></td>`);
  row.classList.toggle('selected',board.dataset.selected===symbol);
 }
 function paintDetail(board){

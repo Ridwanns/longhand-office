@@ -180,8 +180,8 @@
     },
     {
       "id": "review-NZL-inflation",
-      "reviewedAt": "2026-10-18T13:44:28Z",
-      "sourceUrl": "https://www.stats.govt.nz/information-releases/consumers-price-index-june-2026-quarter/",
+      "reviewedAt": "2026-10-22T22:24:28Z",
+      "sourceUrl": "https://www.stats.govt.nz/information-releases/consumers-price-index-september-2026-quarter/",
       "observations": [
         {
           "date": "2022-04-01",
@@ -267,9 +267,15 @@
           "date": "2026-04-01",
           "value": 4.1,
           "status": "reported"
+        },
+        {
+          "date": "2026-07-01",
+          "value": 3.7,
+          "status": "reported",
+          "releasedAt": "2026-10-22"
         }
       ],
-      "sourceNotes": "Original Stats NZ all-groups annual-change column, Q2 2022 through Q2 2026. Last 4.1% YoY, not 1.5% QoQ. Q3 scheduled 22 October 2026. No monthly NZ CPI is supplied."
+      "sourceNotes": "Stats NZ all-groups CPI annual-change column. September-quarter release, published 22 October 2026 at 10:45 NZ time, reports 3.7% YoY and 0.7% QoQ; only 3.7% YoY is retained. Existing Q2 2022-Q2 2026 observations are preserved from the previously reviewed June-quarter release; the new release also republishes Q3 2022-Q2 2026. Observation date 2026-07-01 represents Q3, not a July monthly value. No monthly NZ CPI is supplied."
     }
   ]
 }

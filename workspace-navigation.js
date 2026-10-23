@@ -6,7 +6,7 @@ export const WORKSPACES=[
  {id:'portfolio',label:'Portfolio',route:'#portfolios',icon:'portfolio'}
 ];
 export const WORKSPACE_PAGES=[
- {id:'overview',group:'Overview',label:'Daily workspace',route:'#overview',icon:'office',aliases:'overview dashboard summary recent research completeness courtyard office'},
+ {id:'overview',group:'Overview',label:'Command Center',route:'#overview',icon:'office',aliases:'overview command center dashboard summary recent research completeness courtyard office'},
  {id:'us',group:'Markets',label:'US stocks & ETFs',route:'#market/us',icon:'market',aliases:'US stocks America prices watchlist markets'},
  {id:'idx',group:'Markets',label:'Indonesia',route:'#market/idx',icon:'market',aliases:'IDX Indonesian stocks saham MSN Flowless'},
  {id:'macro',group:'Markets',label:'Macro monitor',route:'#market/macro',icon:'macro',aliases:'macro GDP CPI inflation economy indices index'},
@@ -23,7 +23,7 @@ export const WORKSPACE_PAGES=[
  {id:'real',group:'Portfolio',label:'Real portfolios',route:'#portfolios/real',icon:'real',aliases:'real actual investment portfolio holdings positions transactions performance TWR MWR FX daily closing valuation'},
  {id:'decisions',group:'Portfolio',label:'Decision journal',route:'#decisions',icon:'journal',aliases:'decision journal reasoning'},
  {id:'reviews',group:'Portfolio',label:'Investment reviews',route:'#decisions',icon:'journal',target:'.review-queue',finderOnly:true,aliases:'review reviews outcome due monitor'},
- {id:'records',group:'Workspace',label:'Records & Backups',route:'#records',icon:'records',aliases:'records backup backups export import restore encrypted storage vault'},
+ {id:'records',group:'Workspace',label:'Records and backups',route:'#records',icon:'records',aliases:'records backup backups export import restore encrypted storage vault'},
  {id:'data-sources',group:'Workspace',label:'Data Sources',route:'#data-sources',icon:'library',aliases:'data sources provider providers Pluang Yahoo Flowless SEC import CSV quality provenance coverage freshness missing unavailable report'},
  {id:'sources',group:'Workspace',label:'Source information',route:'#market/macro/id/sources',icon:'library',finderOnly:true,aliases:'source sources provenance data freshness'},
  {id:'forecasts',group:'Research Lab',label:'Model accountability & forecasts',route:'#quant/section/predictions',icon:'quant',section:'predictions',finderOnly:true,aliases:'model validation accountability forecast forecasts prediction predictions outcomes'},
@@ -33,8 +33,8 @@ export const WORKSPACE_PAGES=[
  {id:'tickers',group:'Research Lab',label:'Saved ticker studies',route:'#quant/section/tickers',icon:'records',section:'tickers',finderOnly:true,aliases:'saved ticker studies archive'},
  {id:'calculators',group:'Research Lab',label:'Decision calculators',route:'#quant/section/calculator',icon:'quant',section:'calculator',finderOnly:true,aliases:'calculator manual stress budget fees'},
  {id:'reference',group:'Research Lab',label:'Atlas reference studies',route:'#quant/section/reference',icon:'library',section:'reference',finderOnly:true,aliases:'Atlas historical reference studies'},
- {id:'appearance',group:'Preferences',label:'Appearance · light / dark',route:null,action:'appearance',icon:'office',aliases:'preferences theme dark light appearance'},
- {id:'detail',group:'Preferences',label:'Study view · Simple / Advanced',route:'#quant/section/ticker',section:'ticker',target:'.desk-mode',icon:'quant',aliases:'preferences simple advanced detail study view'},
+ {id:'appearance',group:'Preferences',label:'Appearance',route:null,action:'appearance',icon:'office',aliases:'preferences theme dark light appearance'},
+ {id:'detail',group:'Preferences',label:'Study view',route:'#quant/section/ticker',section:'ticker',target:'.desk-mode',icon:'quant',aliases:'preferences simple advanced detail study view'},
  {id:'watchlists',group:'Preferences',label:'US watchlist preferences',route:'#market/us',target:'#watchlist-form',icon:'market',aliases:'preferences watchlist stocks list'}
 ];
 export const sectionDestination=route=>WORKSPACE_PAGES.find(p=>p.section&&p.route==='#'+route);
