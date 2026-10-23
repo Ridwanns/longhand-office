@@ -2,7 +2,7 @@
 
 Implemented 14 October 2026 (Asia/Jakarta). The mathematical engines, retained runs, hashes, Office records and backup formats are unchanged.
 
-Production verification: all **59 navigation checks** passed on the live Pages release `c99a41773fb8d08fc86dc7d47dc2f4c63f005677`, including independent valuation/quant ticker labels, retained drafts, same-tab routes, keyboard activation, reduced motion and 320–1440 px layouts. [Pages 38462609619](https://github.com/Ridwanns/longhand-office/actions/runs/38462609619) and [CI 38462609157](https://github.com/Ridwanns/longhand-office/actions/runs/38462609157) succeeded. The additional official-rate panel passed 19 live checks; see [DATA_SOURCE_REVIEW.md](DATA_SOURCE_REVIEW.md).
+Production verification: all **59 navigation checks** passed on the live Pages release `c99a41773fb8d08fc86dc7d47dc2f4c63f005677`, including independent valuation/quant ticker labels, retained drafts, same-tab routes, keyboard activation, reduced motion and 320–1440 px layouts. [Pages 38462609619](https://github.com/Ridwanns/longhand-office/actions/runs/38462609619) and [CI 38462609157](https://github.com/Ridwanns/longhand-office/actions/runs/38462609157) succeeded. The additional official-rate panel passed 19 live checks; see [DATA_SOURCE_REVIEW.md](../reviews/DATA_SOURCE_REVIEW.md).
 
 Desktop now has a sticky left-hand directory beside the working area. On screens at or below 1,000 px, a compact sticky **Navigate study** selector replaces it. Both use the same destinations:
 
@@ -35,8 +35,8 @@ Only public manifest, market, fundamental and referenced history JSON are copied
 
 ## Subsequent continuity release
 
-The 14 October continuity release adds Stock overview, Registered forecasts and Saved manual studies to this navigation, with method-aware draft persistence and a complete isolated backup. Those features supersede the earlier statement above that there is no unified backup. See [CONTINUITY_RELEASE.md](CONTINUITY_RELEASE.md) for the current behavior, verification and limits; the preceding dated test receipts remain historical evidence.
+The 14 October continuity release adds Stock overview, Registered forecasts and Saved manual studies to this navigation, with method-aware draft persistence and a complete isolated backup. Those features supersede the earlier statement above that there is no unified backup. See [CONTINUITY_RELEASE.md](../releases/CONTINUITY_RELEASE.md) for the current behavior, verification and limits; the preceding dated test receipts remain historical evidence.
 
 ## Subsequent Simple Office release
 
-The later 14 October release defaults to seven Simple destinations around Investment brief and its source, valuation, risk, next steps, comparison and forecasts. Advanced retains the complete earlier tools and archives. Desktop shortcuts and the sticky mobile menu switch views without submitting models or changing investment records. Explicit preferences survive reload and complete isolated restoration. See [SIMPLE_OFFICE_RELEASE.md](SIMPLE_OFFICE_RELEASE.md) for 213 live browser checks and the current deployment receipt; earlier counts above remain historical.
+The later 14 October release defaults to seven Simple destinations around Investment brief and its source, valuation, risk, next steps, comparison and forecasts. Advanced retains the complete earlier tools and archives. Desktop shortcuts and the sticky mobile menu switch views without submitting models or changing investment records. Explicit preferences survive reload and complete isolated restoration. See [SIMPLE_OFFICE_RELEASE.md](../releases/SIMPLE_OFFICE_RELEASE.md) for 213 live browser checks and the current deployment receipt; earlier counts above remain historical.

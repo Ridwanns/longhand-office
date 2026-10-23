@@ -9,16 +9,16 @@ The user requested working models and data rather than the earlier read-only des
 - Paper and Real ledgers, supplied trade prices/fees, dated cash flows and manual valuations.
 - Investment theses, published Research reports, linked decisions and append-only reviews.
 - Source-labelled US/IDX snapshots, bond ETFs, commodity futures and indices.
-- Official US Treasury daily par yields in Bonds and Macro, with source dates, missing/stale states and basis-point spreads. See [DATA_SOURCE_REVIEW.md](DATA_SOURCE_REVIEW.md).
+- Official US Treasury daily par yields in Bonds and Macro, with source dates, missing/stale states and basis-point spreads. See [DATA_SOURCE_REVIEW.md](../reviews/DATA_SOURCE_REVIEW.md).
 - Historical risk, AR(1), Ridge, zero/mean comparisons, chronological evaluation and seeded scenarios for eligible equities/ETFs.
-- Research toolkit: European option value/Greeks/IV, regular bond price/yield/duration, fresh same-currency portfolio covariance/risk and OpenBB-format imports, with reproducible study export/restore. See [QUANT_REPOSITORY_REVIEW.md](QUANT_REPOSITORY_REVIEW.md).
+- Research toolkit: European option value/Greeks/IV, regular bond price/yield/duration, fresh same-currency portfolio covariance/risk and OpenBB-format imports, with reproducible study export/restore. See [QUANT_REPOSITORY_REVIEW.md](../reviews/QUANT_REPOSITORY_REVIEW.md).
 - Market Atlas decision calculators with standalone export/restore, plus verified historical advanced reference studies; see [MARKET_ATLAS_MATH.md](MARKET_ATLAS_MATH.md) for the distinction from fresh runs.
 - Persistent immutable browser analyses, research attachments, complete export and validated atomic restoration into a browser IndexedDB vault.
 - Existing architecture, light/dark themes, responsive tables, keyboard navigation and reduced-motion behavior.
 
 ## Data and computation
 
-The tested broad publication searches **7,686 US stock/ETF names** and **837 IDX stocks**, with **1,344 ticker-specific histories** and **8,534 quote entries**. Of these, **1,315 histories** have eligible model cutoffs, **8,514 prices** validate, and **20 source prices** remain explicitly unavailable. Counts can change at later publications. See [BROAD_MARKET_COVERAGE.md](BROAD_MARKET_COVERAGE.md). ADRO, AADI, ANTM, the major banks and other selected active Indonesian names are included. These are real Yahoo chart observations with source timestamps, currency, adjustment definition and publication time. They are not invented prices or real-time streaming.
+The tested broad publication searches **7,686 US stock/ETF names** and **837 IDX stocks**, with **1,344 ticker-specific histories** and **8,534 quote entries**. Of these, **1,315 histories** have eligible model cutoffs, **8,514 prices** validate, and **20 source prices** remain explicitly unavailable. Counts can change at later publications. See [BROAD_MARKET_COVERAGE.md](../reviews/BROAD_MARKET_COVERAGE.md). ADRO, AADI, ANTM, the major banks and other selected active Indonesian names are included. These are real Yahoo chart observations with source timestamps, currency, adjustment definition and publication time. They are not invented prices or real-time streaming.
 
 Quant shows six popular shortcuts, a ticker/company search and a collapsed complete coverage list. Choose market, ticker and scenario horizon, then **Run models**. Results appear below the controls on the same page. Previous analyses remain immutable and reloadable; Browser Back restores the prior analysis. Date, price basis and simulation seed are optional Advanced settings. The seed fixes the random draws: identical retained history, settings and seed reproduce identical scenarios. Changing it does not change AR/Ridge forecasts or make them more accurate.
 
@@ -46,7 +46,7 @@ The local port-4173 browser data and SQLite vault were not migrated, replaced or
 
 ## Verification and remaining limits
 
-The application suite passes **219 tests**. The broad release validates **5,260 model cases** across all **1,315 eligible histories**, and all **8,534 entries** through the browser quote adapter (8,514 accepted, 20 explicitly withheld). Expanded browser tests cover new US/IDX names, actual PLTR/EMTK Worker runs, persistence, faults, mobile layouts and bounded search. The **22-step full Investment Lab workflow**, isolated linked-analysis export/restore, **22 Quant usability checks**, **20 availability checks** and **51 browser safety checks** pass again. See [BROAD_MARKET_COVERAGE.md](BROAD_MARKET_COVERAGE.md) for current evidence; prior reports retain their dated audit counts.
+The application suite passes **219 tests**. The broad release validates **5,260 model cases** across all **1,315 eligible histories**, and all **8,534 entries** through the browser quote adapter (8,514 accepted, 20 explicitly withheld). Expanded browser tests cover new US/IDX names, actual PLTR/EMTK Worker runs, persistence, faults, mobile layouts and bounded search. The **22-step full Investment Lab workflow**, isolated linked-analysis export/restore, **22 Quant usability checks**, **20 availability checks** and **51 browser safety checks** pass again. See [BROAD_MARKET_COVERAGE.md](../reviews/BROAD_MARKET_COVERAGE.md) for current evidence; prior reports retain their dated audit counts.
 
 Markets offers a searchable published stock list and rejects unsupported additions before changing the watchlist. Older saved unsupported entries remain present as **Not published**. Source failures and invalid observations receive distinct explanations. Refresh updates the publication notice; it reads a dated file, not a streaming price.
 

@@ -4,7 +4,7 @@ Latest verification is in [AUDIT_2026-10-13.md](AUDIT_2026-10-13.md): 152 automa
 
 This checklist is superseded by [VALIDATION.md](VALIDATION.md), which records the complete workflow, independent arithmetic, screenshots, fixes and remaining limitations. `npm test` now passes 26 model tests. The two isolated browser suites pass 34 workflow and 11 record-safety assertions.
 
-The manual valuation extension is documented in [VALUATION.md](VALUATION.md): the combined model suite now has **52 passing tests**, with **35 additional browser assertions** for valuation, currencies, persistence and isolated restore. Earlier counts below remain historical.
+The manual valuation extension is documented in [VALUATION.md](../releases/VALUATION.md): the combined model suite now has **52 passing tests**, with **35 additional browser assertions** for valuation, currencies, persistence and isolated restore. Earlier counts below remain historical.
 
 All current browser tests run in fresh contexts at **http://127.0.0.1:4174**. The existing browser's port 4173 record value was compared before and after and stayed unchanged. The earlier prototype checks below are historical; no current test creates or restores records in the ordinary browser profile.
 

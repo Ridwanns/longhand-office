@@ -2,7 +2,7 @@
 
 14 October 2026. Scope: applicability to the owner's Longhand Office source, public artifact and isolated test workspaces. This is a selective source review and regression assessment, not a complete security audit of three repositories or a certification of Office.
 
-The preceding Simple Office release was completed and verified first; see [SIMPLE_OFFICE_RELEASE.md](SIMPLE_OFFICE_RELEASE.md). The repositories below were read as reference material. Their agent instructions were not installed or activated. No external security programs, bootstrap scripts, MCP servers or exploitation tools were executed, and no new runtime dependency was added.
+The preceding Simple Office release was completed and verified first; see [SIMPLE_OFFICE_RELEASE.md](../releases/SIMPLE_OFFICE_RELEASE.md). The repositories below were read as reference material. Their agent instructions were not installed or activated. No external security programs, bootstrap scripts, MCP servers or exploitation tools were executed, and no new runtime dependency was added.
 
 ## Selection
 

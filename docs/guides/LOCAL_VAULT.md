@@ -43,7 +43,7 @@ Time-/money-weighted investment returns remain unavailable because a complete va
 
 ## Follow-up reliability audit
 
-See [AUDIT_2026-10-13.md](AUDIT_2026-10-13.md) for reproduced defects and verification. Out-of-order reads cannot regress the client revision/data. Expired server-session tokens refresh once only after an explicit pre-write expiry rejection; ambiguous writes are not replayed. A peer update leaves a committing editor mounted so its revision conflict can be reported safely. Restore callbacks must still own the current open dialog/file selection.
+See [AUDIT_2026-10-13.md](../audits/AUDIT_2026-10-13.md) for reproduced defects and verification. Out-of-order reads cannot regress the client revision/data. Expired server-session tokens refresh once only after an explicit pre-write expiry rejection; ambiguous writes are not replayed. A peer update leaves a committing editor mounted so its revision conflict can be reported safely. Restore callbacks must still own the current open dialog/file selection.
 
 Complete linked analysis bundles receive structural/numeric validation as well as hash checks. Unknown wrappers and exports beyond the 50 MB restore limit fail explicitly. Archive list reads return only small summaries. Lightweight failed-Quant-request notices live under `longhand-office.quant-request.<run UUID>` in browser storage; saved server jobs take precedence. These notices contain request configuration/error, not tokens or private thesis/portfolio text.
 
