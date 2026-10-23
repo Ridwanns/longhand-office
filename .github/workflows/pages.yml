@@ -93,7 +93,8 @@ jobs:
       - run: python tests/public-snapshot-cache.py
       - run: python tests/macro-retention.py
       - run: python -m pip install --upgrade 'pip>=26.2.2'
-      - run: python -m pip install --only-binary=:all: -r requirements-data.txt
+      - run: |
+          python -m pip install --only-binary=:all: -r requirements-data.txt
       - run: python scripts/audit-python-dependencies.py
       - run: python scripts/yahoo-stock-directory.py
         id: directory

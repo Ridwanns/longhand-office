@@ -33,5 +33,6 @@ jobs:
       - run: python -m venv .tools/security-audit
       - run: python tests/security-dependencies.py
       - run: .tools/security-audit/bin/python -m pip install --upgrade 'pip>=26.2.2'
-      - run: .tools/security-audit/bin/python -m pip install --only-binary=:all: -r requirements-data.txt
+      - run: |
+          .tools/security-audit/bin/python -m pip install --only-binary=:all: -r requirements-data.txt
       - run: .tools/security-audit/bin/python scripts/audit-python-dependencies.py
