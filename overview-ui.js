@@ -8,7 +8,7 @@ const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const num=(x,d=2)=>Number.isFinite(x)?new Intl.NumberFormat('en-GB',{maximumFractionDigits:d,minimumFractionDigits:d}).format(x):'Unavailable';
 const signed=(x,d=2)=>(x>0?'+':'')+num(x,d);
 const labelDate=x=>x?new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}).format(new Date(x.slice(0,10)+'T00:00:00Z')):'Date unavailable';
-let feedCache=null,feedPromise=null,mode='real',currencyChoice='',economy='IDN',range=90,ticket=0;
+let feedCache=null,feedPromise=null,mode='real',currencyChoice='',economy='IDN',range=90,ticket=0,stopSizing;
 const modeLabel=()=>mode==='real'?'Real':'Paper';
 const groupRoute=()=>mode==='real'?'#portfolios/real':'#portfolios';
 const tabs=(values,current,attr)=>values.map(([v,label])=>`<button type="button" ${attr}="${v}" aria-pressed="${String(v)===String(current)}">${label}</button>`).join('');
@@ -53,7 +53,10 @@ async function readFeed(){if(feedCache)return feedCache;if(!feedPromise)feedProm
 export async function mountCommandCenter(data,asOf){
  const root=document.querySelector('.command-center');if(!root)return;const own=++ticket;
  const grid=root.querySelector('.command-main-grid'),lower=root.querySelector('.command-lower-grid');
- if(lower){const left=document.createElement('div'),right=document.createElement('div');left.className='command-market-column';right.className='command-side-column';left.append(root.querySelector('.command-markets'),lower.children[0]);right.append(root.querySelector('.command-macro'),lower.children[0]);grid.replaceChildren(left,right);lower.remove();}
+ if(lower){const left=document.createElement('div'),right=document.createElement('div');left.className='command-market-column';right.className='command-side-column';lower.children[0].classList.add('command-research');left.append(root.querySelector('.command-markets'),lower.children[0]);lower.children[0].classList.add('command-risk');right.append(root.querySelector('.command-macro'),lower.children[0]);grid.replaceChildren(left,right);lower.remove();}
+ stopSizing?.();let lastWidth=0,resizeFrame;
+ const sizing=new ResizeObserver(entries=>{const width=Math.round(entries[0].contentRect.width);if(!root.isConnected){sizing.disconnect();return;}if(width===lastWidth)return;lastWidth=width;cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(()=>{if(root.isConnected&&feedCache)renderMarkets(root,root._quotes||feedCache.markets);});});sizing.observe(root.querySelector('[data-command-comparison]'));
+ stopSizing=()=>{sizing.disconnect();cancelAnimationFrame(resizeFrame);};
  renderPrivate(root,data,asOf);
  root.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.hasAttribute('data-command-mode')){mode=b.dataset.commandMode;currencyChoice='';renderPrivate(root,data,asOf);}if(b.hasAttribute('data-command-economy')&&feedCache){economy=b.dataset.commandEconomy;renderMacro(root);}if(b.hasAttribute('data-command-range')&&feedCache){range=Number(b.dataset.commandRange);renderMarkets(root,root._quotes||feedCache.markets);}});
  root.querySelector('[data-command-currency]').addEventListener('change',e=>{currencyChoice=e.target.value;renderPrivate(root,data,asOf);});
