@@ -1,6 +1,7 @@
 // Read-only overview calculations. No storage, acquisition, FX inference or
 // hypothetical performance is introduced by this presentation adapter.
 import {valuation,PRICE_MAX_AGE_DAYS} from './model.js';
+import {treasurySpread} from './official-rates-contract.js';
 
 const day=s=>typeof s==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s)&&Number.isFinite(Date.parse(s))&&new Date(s).toISOString().slice(0,10)===s;
 const finite=x=>typeof x==='number'&&Number.isFinite(x);
@@ -77,4 +78,12 @@ export function buildAlignedMarketComparison(series,range={}){
  const aligned=prepared.map(s=>{const base=s.map.get(dates[0]),points=dates.map(date=>({date,close:s.map.get(date),value:s.map.get(date)/base*100}));return {key:s.key,label:s.label,points,priceReturn:s.map.get(dates.at(-1))/base-1,omittedDates:s.rows.length-dates.length};});
  if(aligned.some(s=>!finite(s.priceReturn)||s.points.some(p=>!finite(p.value))))return unavailable('The supplied price scale exceeds the supported numerical range.');
  return {available:true,reason:null,dates,baseDate:dates[0],endDate:dates.at(-1),observations:dates.length,series:aligned,returnKind:'price-return'};
+}
+
+// Select one source date, including its missing values. Never assemble a curve across dates.
+export function overviewYieldCurve(rates){
+ const tenors=[['2 Yr',2],['5 Yr',5],['10 Yr',10],['20 Yr',20],['30 Yr',30]];
+ const row=rates?.observations?.findLast(r=>tenors.some(([tenor])=>Number.isFinite(r.rates?.[tenor])));
+ if(!row)return null;
+ return {date:row.date,retrievedAt:rates.retrievedAt,sourceUrl:rates.sourceUrl,points:tenors.map(([tenor,years])=>({tenor,years,value:Number.isFinite(row.rates[tenor])?row.rates[tenor]:null})),spreadBp:treasurySpread(row)};
 }

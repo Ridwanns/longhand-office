@@ -35,3 +35,12 @@ The audited retained fundamentals directory has 8,326 records but only 23 comple
 The main audit prior to final UI refinements passed 747 unit tests. Four further overview publication-contract tests and 13 new overview numerical tests cover missing-data withholding, Real/Paper and currency isolation, exact common dates, invalid scales and source identities. Browser checks cover responsive widths 320–1440, light/dark mode, actual saved synthetic portfolios, interactive ranges/country controls and optional old-vault compatibility. Final CI and public verification provide the deployment check.
 
 No owner portfolio, private backup, browser password, Pluang account or brokerage order was accessed or modified. Only public data and isolated synthetic test records were used. This work does not establish a licensed real-time feed or certify every external observation.
+
+
+## Compact chart revision, 23 October 2026
+
+The Overview now uses a purpose-built percent-price-change plot, with straight source-point segments, calendar-date spacing, a zero baseline, stable instrument colours, readable percentage ticks, collision-separated endpoint labels and an immediately available date inspector. All paths use the original common-date intersection. These are price returns in original quote currencies, excluding income; no FX conversion or interpolated observations are introduced. Repeated mini charts and the duplicate standalone 10Y quote are removed.
+
+A Treasury maturity curve adds 2Y, 5Y, 10Y, 20Y and 30Y par yields from the latest applicable row of the already validated official-rates publication. All tenor values and the 10Y minus 2Y basis-point spread share that date. Missing tenors remain null and break the curve; a missing spread input withholds the spread. Original provenance and acquisition time are retained. This UI release reuses the last successfully published source snapshot, rather than labelling reused observations as newly acquired.
+
+Verification: 754 unit checks passed; the updated Command Center browser suite passed 24 checks, including responsive widths from 320 to 1440 pixels, immediately available inspection, exact zero-percent common starting values, Real/Paper and currency isolation, and no JavaScript errors. Ordinary-entry browser coverage passed 11 additional checks. Desktop, mobile and dark appearances were visually reviewed. No owner portfolio records or connected brokerage accounts were accessed.

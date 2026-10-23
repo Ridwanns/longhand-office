@@ -3,6 +3,7 @@ import {MACRO_SERIES} from './macro-contract.js';
 import {RELEASE_SERIES} from './macro-releases-contract.js';
 import {EXTENDED_SERIES} from './macro-extended-contract.js';
 import {CONTEXT_SERIES} from './macro-context-contract.js';
+import {TREASURY_SOURCE,treasurySpread} from './official-rates-contract.js';
 export const OVERVIEW_MARKETS=[{category:'macro',symbol:'^JKSE',label:'IHSG',route:'#market/macro/id/markets'},{category:'macro',symbol:'^GSPC',label:'S&P 500',route:'#market/macro/us/markets'},{category:'bonds',symbol:'TLT',label:'Long Treasury ETF',route:'#market/bonds'},{category:'commodities',symbol:'GC=F',label:'Gold futures',route:'#market/commodities'}];
 const stamp=(v,now)=>typeof v==='string'&&Number.isFinite(Date.parse(v))&&Date.parse(v)<=now+300000;
 const https=v=>{try{const u=new URL(v);return u.protocol==='https:'&&!u.username&&!u.password;}catch{return false;}};
@@ -23,5 +24,12 @@ export function validateOverviewFeed(f,now=Date.now()){
   }
  }
  for(const r of f.context||[]){if(!['USDIDR','UST10Y'].includes(r.key)||!Number.isFinite(r.value)||!stamp(r.date,now)||!stamp(r.retrievedAt,now)||!https(r.sourceUrl))throw Error('Invalid overview context reading.');}
+ if(f.yieldCurve!=null){
+  const c=f.yieldCurve,tenors=[['2 Yr',2],['5 Yr',5],['10 Yr',10],['20 Yr',20],['30 Yr',30]];
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(c.date)||!stamp(c.date,now)||new Date(c.date).toISOString().slice(0,10)!==c.date||!stamp(c.retrievedAt,now)||c.date>c.retrievedAt.slice(0,10)||c.sourceUrl!==TREASURY_SOURCE||!Array.isArray(c.points)||c.points.length!==5)throw Error('Invalid overview Treasury curve.');
+  for(const [i,p]of c.points.entries())if(p.tenor!==tenors[i][0]||p.years!==tenors[i][1]||p.value!==null&&(!Number.isFinite(p.value)||p.value< -5||p.value>100))throw Error('Invalid overview Treasury tenor.');
+  const spread=treasurySpread({rates:Object.fromEntries(c.points.map(p=>[p.tenor,p.value]))});
+  if(c.spreadBp!==spread)throw Error('Overview Treasury spread does not reconcile.');
+ }
  return f;
 }

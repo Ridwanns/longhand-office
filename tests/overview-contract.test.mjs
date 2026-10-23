@@ -1,8 +1,16 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import {validateOverviewFeed,OVERVIEW_MARKETS} from '../overview-contract.js';
+import {overviewYieldCurve} from '../overview-data.js';
 const now=Date.parse('2026-10-23T02:00:00Z');
 const feed=()=>({format:'longhand-overview',version:1,assembledAt:'2026-10-22T22:00:00Z',marketPublishedAt:'2026-10-22T21:00:00Z',markets:OVERVIEW_MARKETS.map(({category,symbol})=>({category,symbol,error:'TEST ONLY unavailable source'})),macro:['IDN','USA'].map(country=>({country,readings:['gdp','inflation','policy','yield'].map(key=>({key,items:[]}))})),context:[]});
 const quote=()=>({provider:'yahoo',symbol:'^GSPC',currency:'USD',instrumentType:'INDEX',unit:'index points',price:150,timestamp:'2026-10-22T20:00:00Z',retrievedAt:'2026-10-22T21:00:00Z',marketDate:'2026-10-22',realtimeVerified:false,delayMinutes:null,history:[{date:'2026-10-21',close:100},{date:'2026-10-22',close:150}],change:{referenceDate:'2026-10-21',referenceClose:100,value:50,percent:50}});
+
+test('Overview Treasury curve requires actual tenor identities, original source and a reconciled basis-point spread',()=>{
+ const f=feed();f.yieldCurve=overviewYieldCurve({sourceUrl:'https://home.treasury.gov/policy-issues/financing-the-government/interest-rate-statistics',retrievedAt:'2026-10-22T23:00:00Z',observations:[{date:'2026-10-22',rates:{'2 Yr':3.7,'5 Yr':null,'10 Yr':4.35,'20 Yr':4.8,'30 Yr':4.9}}]});
+ assert.equal(validateOverviewFeed(f,now),f);
+ for(const mutate of [c=>c.spreadBp=0.65,c=>c.points[1].value=undefined,c=>c.points[2].tenor='20 Yr',c=>c.sourceUrl='https://example.com/',c=>c.date='2026-02-30',c=>c.date='2026-10-24']){const copy=structuredClone(f);mutate(copy.yieldCurve);assert.throws(()=>validateOverviewFeed(copy,now));}
+ const copy=structuredClone(f);copy.yieldCurve.points[0].value=null;copy.yieldCurve.spreadBp=null;assert.equal(validateOverviewFeed(copy,now),copy);
+});
 test('Unavailable overview data remains explicit and cannot turn into placeholder prices or a regime',()=>{const f=feed();assert.equal(validateOverviewFeed(f,now),f);assert.equal(f.markets.filter(m=>m.quote).length,0);assert.ok(f.macro.every(c=>c.readings.every(r=>r.items.length===0)));});
 test('Overview snapshot preserves original quote, currency, daily change and source dates',()=>{const f=feed();f.markets[1]={category:'macro',symbol:'^GSPC',quote:quote()};const before=structuredClone(f);validateOverviewFeed(f,now);assert.deepEqual(f,before);});
 test('Misidentified instruments, fabricated history gaps, invalid dates and unsupported currency reject',()=>{for(const mutate of [f=>f.markets[0].symbol='FAKE',f=>f.markets[1].quote.currency='IDR',f=>f.markets[1].quote.history[0].date='2026-02-30',f=>f.markets[1].quote.history[0].close=0,f=>f.markets[1].quote.history[0].date='2026-10-22',f=>f.marketPublishedAt='2027-01-01',f=>f.macro[0].country='USA']){const f=feed();f.markets[1]={category:'macro',symbol:'^GSPC',quote:quote()};mutate(f);assert.throws(()=>validateOverviewFeed(f,now));}});

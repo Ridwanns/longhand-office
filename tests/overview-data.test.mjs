@@ -1,12 +1,19 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {overviewPortfolioSummary,overviewReviewQueue,buildAlignedMarketComparison} from '../overview-data.js';
+import {overviewPortfolioSummary,overviewReviewQueue,buildAlignedMarketComparison,overviewYieldCurve} from '../overview-data.js';
 import {recordDestination} from '../workflow-continuity.js';
 
 const asOf='2026-10-23',near=(a,b)=>assert.ok(Math.abs(a-b)<1e-12,`${a} differs from ${b}`);
 const transaction=(id,symbol,quantity,price,date='2026-10-01')=>({id,date,side:'Buy',symbol,quantity,price,fee:0,note:'SYNTHETIC TEST ONLY'});
 const portfolio=(id='p',currency='USD',mode='real')=>({id,name:'SYNTHETIC TEST ONLY '+id,currency,mode,openingCash:1000,transactions:[transaction(id+'-buy','TEST',5,100)],valuations:[{id:id+'-price',date:'2026-10-22',symbol:'TEST',price:110,currency,source:'SYNTHETIC TEST ONLY'}]});
 const summary=p=>overviewPortfolioSummary({portfolios:p},asOf);
+
+test('Overview yield curve selects one source date and converts the 10Y minus 2Y difference to basis points',()=>{
+ const source={sourceUrl:'https://home.treasury.gov/policy-issues/financing-the-government/interest-rate-statistics',retrievedAt:'2026-10-22T23:00:00Z',observations:[{date:'2026-10-21',rates:{'2 Yr':3.6,'5 Yr':3.9,'10 Yr':4.1,'20 Yr':4.6,'30 Yr':4.7}},{date:'2026-10-22',rates:{'2 Yr':3.7,'5 Yr':null,'10 Yr':4.35,'20 Yr':4.8,'30 Yr':4.9}}]},before=structuredClone(source),c=overviewYieldCurve(source);
+ assert.equal(c.date,'2026-10-22');assert.equal(c.spreadBp,65);assert.equal(c.points[1].value,null);assert.equal(c.points[3].value,4.8);assert.deepEqual(source,before);
+ source.observations[1].rates['2 Yr']=null;assert.equal(overviewYieldCurve(source).spreadBp,null);assert.equal(overviewYieldCurve(source).date,'2026-10-22');
+ assert.equal(overviewYieldCurve({observations:[]}),null);
+});
 
 test('Overview default selects actual records, keeps Paper/legacy separate, and never combines USD with IDR',()=>{
  const real=portfolio(),idr=portfolio('idr','IDR'),paper=portfolio('paper','USD','paper'),legacy=portfolio('legacy');delete legacy.mode;
