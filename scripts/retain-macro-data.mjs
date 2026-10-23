@@ -8,7 +8,11 @@ import {validateMacroFeed} from '../macro-contract.js';
 // The baseline is read only from a preceding successful full Pages artifact.
 // Retention is per failed series; successful new acquisitions stay untouched.
 export function retainMacroSeries(current,previous,validate){
- validate(current);if(!previous)return current;validate(previous);
+ validate(current);
+ // A complete fresh acquisition never inherits a baseline value. An older
+ // review URL/schema must not block it merely because retention is configured.
+ if(!previous||current.series.every(item=>!item.error))return current;
+ validate(previous);
  if(Date.parse(previous.generatedAt)>Date.parse(current.generatedAt))throw Error('Macro baseline is newer than the attempted publication.');
  return validate({...current,series:current.series.map(item=>{
   if(!item.error)return item;

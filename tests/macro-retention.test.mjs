@@ -28,3 +28,11 @@ test('Missing, unavailable, malformed or newer baseline cannot invent a macro re
  const {old,current,id,validate}=fixture(...cases[3]);assert.equal(retainMacroSeries(current,null,validate),current);assert.deepEqual(retainMacroSeries(current,current,validate),current);
  const bad=structuredClone(old);bad.series.find(s=>s.id===id).unit='USD';assert.throws(()=>retainMacroSeries(current,bad,validate));const newer=structuredClone(old);newer.generatedAt='2026-10-21T14:00:00Z';assert.throws(()=>retainMacroSeries(current,newer,validate));
 });
+
+test('A fully valid fresh acquisition never reads or inherits an obsolete unused review baseline',()=>{
+ const {current,validate}=fixture(...cases[3]);
+ for(const s of current.series){delete s.error;s.sourceHash=hash;s.observations=[{date:'2026-01-01',value:2,status:'reported'}];}
+ validate(current);const old=structuredClone(current);old.series.find(s=>s.id==='review-NZL-inflation').sourceUrl='https://www.stats.govt.nz/TEST-ONLY-obsolete-review';assert.throws(()=>validate(old));
+ const before=structuredClone(current);assert.equal(retainMacroSeries(current,old,validate),current);assert.deepEqual(current,before);
+ const bad=structuredClone(current);bad.series[0].unit='TEST ONLY wrong units';assert.throws(()=>retainMacroSeries(bad,old,validate));
+});
