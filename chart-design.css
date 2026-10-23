@@ -1,6 +1,9 @@
 /* Shared native chart language. All marks retain their original numerical scales. */
 :root{--chart-cyan:#167b9d;--chart-violet:#7963b8;--chart-teal:#278579;--chart-amber:#b07a25;--pulse-card-padding:18px;--pulse-card-radius:12px}
 :root[data-theme=dark]{--chart-cyan:#71c2de;--chart-violet:#b3a0ec;--chart-teal:#75cbb8;--chart-amber:#e3bd79}
+/* Cross-asset comparison series. Validated as a crossing 4-line set (all pairs, normal vision >= 15); end labels carry identity for CVD. */
+:root{--series-1:#2a6fc4;--series-2:#c2457e;--series-3:#138a63;--series-4:#a97800}
+:root[data-theme=dark]{--series-1:#3987e5;--series-2:#d55181;--series-3:#199e70;--series-4:#c98500}
 body .quant-room,body .research-workspace{--plot-blue:var(--chart-cyan);--plot-teal:var(--chart-teal);--plot-purple:var(--chart-violet);--plot-orange:var(--chart-amber)}
 body :is(.scientific-plot,.outlook-chart,.macro-data-figure,.context-history-chart){border-radius:12px;box-shadow:0 3px 12px #00000003}
 body .scientific-plot{padding:20px;min-width:0;border:1px solid var(--line);background:var(--white)}
