@@ -21,7 +21,7 @@ files.push('chart-design.css','reading-details.js','idr-valuation.js','idx-quant
 files.push('fx-history-contract.js','chart-typography.js','native-prices.js');
 files.push('macro-forecast.js','macro-forecast-ui.js','macro-indicators-contract.js','macro-indicators-ui.js');
 files.push('macro-chart.js','macro-context-contract.js','macro-context-math.js','macro-context-ui.js','macro-context.css');
-files.push('macro-releases-contract.js','macro-releases-ui.js','macro-extended-contract.js','macro-extended-ui.js','macro-navigation.js','macro-briefing.js');
+files.push('macro-releases-contract.js','macro-releases-ui.js','macro-extended-contract.js','macro-extended-ui.js','macro-navigation.js','macro-briefing.js','macro-winds.js');
 files.push('workflow-continuity.js','workspace-refinement.css','macro-cycle.js');
 files.push('encrypted-backup.js','sec-fundamentals-contract.js','official-fundamentals.js');
 files.push('idx-msn-ui.js','idx-msn-contract.js');
