@@ -1,7 +1,7 @@
 import {assertPatchedNode} from './node-security.mjs';
 assertPatchedNode();
 import http from 'node:http';
-import {readFile} from 'node:fs/promises';
+import {readFile,stat} from 'node:fs/promises';
 import path from 'node:path';
 import {readFlowlessPrice,readFlowlessStatus} from './flowless-adapter.mjs';
 import {readUsSnapshot} from './us-market-adapter.mjs';
@@ -11,7 +11,19 @@ import {readLocalMsn,localMsnSymbols} from './idx-msn-adapter.mjs';
 import {readMarketHistories} from './market-history-data.mjs';
 import {readMacroSnapshot} from './macro-adapter.mjs';
 import {readFxHistory} from './fx-history-data.mjs';
+import {writeOverviewSnapshot} from './overview-data.mjs';
 const root = process.cwd();
+// The built Pages overview is preferred. Without a build, assemble the same
+// validated snapshot from the local public data and reuse it until those
+// source files change. Only public publication files are read.
+let overviewCache=null;
+async function readLocalOverview(){
+ try{return await readFile(path.join(root,'dist','office','data','overview.json'));}catch(error){if(error.code!=='ENOENT')throw error;}
+ const input=path.join(root,'.pages-data'),names=['market-history','macro','macro-context','macro-releases','macro-extended','fx-history','official-rates'];
+ const key=(await Promise.all(names.map(name=>stat(path.join(input,name+'.json')).then(s=>s.mtimeMs)))).join(':');
+ if(overviewCache?.key!==key){const destination=path.join(input,'overview.json');await writeOverviewSnapshot(input,destination);overviewCache={key,body:await readFile(destination)};}
+ return overviewCache.body;
+}
 const portIndex=process.argv.indexOf('--port'),port=portIndex<0?4173:Number(process.argv[portIndex+1]);
 if(![4173,4174].includes(port))throw Error('Only local workspace port 4173 and isolated test port 4174 are supported.');
 const files = new Set(['index.html','style.css','app.js','model.js','theme.js','market-terminal.js','market-catalogue.js','building.svg','catalogue.json']);
@@ -75,7 +87,7 @@ const server=http.createServer(async(req,res)=>{
   }
   const name = url.pathname.slice(1) || 'index.html';
   if(url.pathname==='/data/overview.json'){
-    try{const body=await readFile(path.join(root,'dist','office','data','overview.json'));res.writeHead(200,{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});return res.end(body);}catch{res.writeHead(404);return res.end('Public overview snapshot unavailable.');}
+    try{const body=await readLocalOverview();res.writeHead(200,{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});return res.end(body);}catch{res.writeHead(404);return res.end('Public overview snapshot unavailable.');}
   }
   if (!files.has(name)) {res.writeHead(404);return res.end('Not found');}
   try {const body=await readFile(path.join(root,name));res.writeHead(200,{'Content-Type':types[path.extname(name)],'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','Content-Security-Policy':"default-src 'self'; connect-src 'self' https: http://127.0.0.1:4176 http://localhost:4176; frame-src https://s.tradingview.com https://www.tradingview-widget.com; style-src 'self'; script-src 'self'; img-src 'self' data:; frame-ancestors 'none'; base-uri 'none'; form-action 'self'"});res.end(body);}catch{res.writeHead(500);res.end('Unable to read app file');}

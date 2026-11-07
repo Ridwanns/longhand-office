@@ -1,0 +1,8 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {projectMarketSnapshot} from '../scripts/market-adapter.mjs';
+import {validatePublicQuote} from '../public-quote-contract.js';
+const at='2026-11-07T12:00:00.000Z',raw=()=>({chart:{result:[{meta:{symbol:'SB=F',instrumentType:'ALTSYMBOL',currency:'USX',exchangeName:'NYB',exchangeTimezoneName:'America/New_York',regularMarketPrice:18.25,regularMarketTime:Date.parse('2026-11-06T18:59:59Z')/1000},timestamp:[Date.parse('2026-11-05T18:00:00Z')/1000,Date.parse('2026-11-06T18:00:00Z')/1000],indicators:{quote:[{close:[19.06,18.25]}]}}]}});
+test('ICE US sugar provider alias keeps USX quotation and FUTURE contract class',()=>{const q=projectMarketSnapshot(raw(),'commodities','SB=F',at);assert.equal(q.price,18.25);assert.equal(q.currency,'USX');assert.equal(q.unit,'US cents / pound');assert.equal(q.instrumentType,'FUTURE');assert.equal(q.sourceInstrumentType,'ALTSYMBOL');assert.equal(q.sourceExchange,'NYB');assert.equal(validatePublicQuote(q,'commodities','SB=F',at),q);});
+test('The sugar allowance rejects another exchange, currency or provider type, and does not spread to other futures',()=>{for(const fields of [{exchangeName:'NYM'},{currency:'USD'},{instrumentType:'ETF'}]){const r=raw();Object.assign(r.chart.result[0].meta,fields);assert.throws(()=>projectMarketSnapshot(r,'commodities','SB=F',at));}const r=raw();Object.assign(r.chart.result[0].meta,{symbol:'KC=F'});assert.throws(()=>projectMarketSnapshot(r,'commodities','KC=F',at));});
+test('Canonical FUTURE sugar observations remain valid',()=>{const r=raw();r.chart.result[0].meta.instrumentType='FUTURE';assert.equal(projectMarketSnapshot(r,'commodities','SB=F',at).sourceInstrumentType,'FUTURE');});

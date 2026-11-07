@@ -108,3 +108,7 @@ body #toast{border-radius:4px;background:var(--forest);color:#fff;border:1px sol
 
 body .architecture{animation:office-panel-reveal 280ms ease-out both}
 @media(prefers-reduced-motion:reduce){body .architecture{animation:none!important}}
+
+/* Dark theme: the generic `nav a[aria-current]` ink colour out-ranks the filled tab rule above, leaving light text on the mint fill (~1.6:1). Keep selected tabs dark-on-mint like .macro-regions; captions follow the tab colour in both themes. */
+:root[data-theme=dark] body .market-tabs a[aria-current],:root[data-theme=dark] body .portfolio-mode-tabs a[aria-current],:root[data-theme=dark] body .tabs a[aria-current]{color:#182327}
+body .market-tabs a[aria-current] :is(small,span),body .portfolio-mode-tabs a[aria-current] :is(small,span),body .tabs a[aria-current] :is(small,span){color:inherit;opacity:.82}
