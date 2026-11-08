@@ -19,6 +19,9 @@ export const MARKET_CATEGORIES={
   {symbol:'^JKSE',name:'IHSG / IDX Composite',type:'INDEX',currency:'IDR',unit:'index points'},
   {symbol:'^VIX',name:'CBOE VIX',type:'INDEX',currency:'USD',unit:'index points'}]}
 };
-// Yahoo now labels its same NYMEX TTF=F / EUR contract as ALTSYMBOL. Keep
-// the contract class separate from that provider label; no currency conversion.
-export const marketProviderTypeMatches=(instrument,type,exchange)=>type===instrument.type||instrument.symbol==='TTF=F'&&instrument.type==='FUTURE'&&type==='ALTSYMBOL'&&exchange==='NYM';
+// Yahoo relabels some front-month futures series as ALTSYMBOL when a contract
+// rolls (NYMEX TTF=F in Oct 2026, ICE US Sugar No. 11 SB=F in Nov 2026). Each
+// alias is pinned to its verified listing exchange; the contract class stays
+// FUTURE and no currency or unit conversion is applied.
+const PROVIDER_ALIAS_EXCHANGES=Object.freeze({'TTF=F':'NYM','SB=F':'NYB'});
+export const marketProviderTypeMatches=(instrument,type,exchange)=>type===instrument.type||instrument.type==='FUTURE'&&type==='ALTSYMBOL'&&Object.hasOwn(PROVIDER_ALIAS_EXCHANGES,instrument.symbol)&&exchange===PROVIDER_ALIAS_EXCHANGES[instrument.symbol];

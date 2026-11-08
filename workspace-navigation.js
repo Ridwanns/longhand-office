@@ -48,3 +48,10 @@ export function findDestinations(query=''){
  const words=query.trim().toLowerCase().split(/\s+/).filter(Boolean);
  return WORKSPACE_PAGES.filter(p=>words.every(w=>(p.label+' '+p.aliases).toLowerCase().includes(w)));
 }
+
+// Routes the page renderer handles. Anything else used to render the Overview
+// markup without mounting it (endless "Reading published prices…" under an
+// "Investment Lab" title); it is now normalized before rendering.
+const ROUTE_ALIASES=Object.freeze({portfolio:'portfolios',macro:'market/macro',markets:'market/us',research:'quant',journal:'decisions'});
+const KNOWN_ROUTE=/^(?:overview|about|library|records|theses|decisions|portfolios(?:\/real)?|portfolio\/[^/]+|(?:theses|decisions)\/[^/]+(?:\/reviews)?|market(?:\/.*)?|quant(?:\/.*)?|data-sources(?:\/.*)?)$/;
+export function canonicalRoute(route=''){const value=String(route||'overview');if(KNOWN_ROUTE.test(value))return value;return Object.hasOwn(ROUTE_ALIASES,value)?ROUTE_ALIASES[value]:'overview';}

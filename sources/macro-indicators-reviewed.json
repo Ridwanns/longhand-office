@@ -1,6 +1,6 @@
 {
-  "reviewedAt": "2026-10-20T12:50:07.847Z",
-  "note": "Manually reviewed official Bank Indonesia releases on 20 October 2026. Realisations only. Survey projections and expectations about future production are not appended as realised observations. Review date is fixed; collection does not renew this vintage.",
+  "reviewedAt": "2026-11-08T09:35:00.000Z",
+  "note": "Manually reviewed official Bank Indonesia releases on 20 October 2026; October 2026 inflation composition (sp_2823826) and October 2026 reserves (sp_2824226) added from the official BI pages opened on 8 November 2026. Realisations only. Survey projections and expectations about future production are not appended as realised observations. Review date is fixed; collection does not renew this vintage.",
   "series": [
     {
       "id": "id-cci",
@@ -194,6 +194,13 @@
           "status": "reported",
           "releasedAt": "2026-10-07",
           "sourceUrl": "https://www.bi.go.id/en/publikasi/ruang-media/news-release/Pages/sp_2821426.aspx"
+        },
+        {
+          "date": "2026-10-01",
+          "value": 146.8,
+          "status": "reported",
+          "releasedAt": "2026-11-06",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2824226.aspx"
         }
       ]
     },
@@ -206,6 +213,13 @@
           "status": "reported",
           "releasedAt": "2026-10-07",
           "sourceUrl": "https://www.bi.go.id/en/publikasi/ruang-media/news-release/Pages/sp_2821426.aspx"
+        },
+        {
+          "date": "2026-10-01",
+          "value": 5.3,
+          "status": "reported",
+          "releasedAt": "2026-11-06",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2824226.aspx"
         }
       ]
     },
@@ -225,6 +239,13 @@
           "status": "reported",
           "releasedAt": "2026-10-01",
           "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2820926.aspx"
+        },
+        {
+          "date": "2026-10-01",
+          "value": 2.56,
+          "status": "reported",
+          "releasedAt": "2026-11-02",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2823826.aspx"
         }
       ]
     },
@@ -244,6 +265,13 @@
           "status": "reported",
           "releasedAt": "2026-10-01",
           "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2820926.aspx"
+        },
+        {
+          "date": "2026-10-01",
+          "value": 5.81,
+          "status": "reported",
+          "releasedAt": "2026-11-02",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2823826.aspx"
         }
       ]
     },
@@ -263,6 +291,13 @@
           "status": "reported",
           "releasedAt": "2026-10-01",
           "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2820926.aspx"
+        },
+        {
+          "date": "2026-10-01",
+          "value": 3.24,
+          "status": "reported",
+          "releasedAt": "2026-11-02",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2823826.aspx"
         }
       ]
     },

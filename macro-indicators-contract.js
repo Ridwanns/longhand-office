@@ -1,6 +1,6 @@
 import {isContextDay} from './macro-context-contract.js';
 const bi=(slug,lang='en')=>'https://www.bi.go.id/'+lang+'/publikasi/ruang-media/news-release/Pages/'+slug+'.aspx';
-export const INDICATOR_REVIEWED_AT='2026-10-20T12:50:07.847Z';
+export const INDICATOR_REVIEWED_AT='2026-11-08T09:35:00.000Z';
 export const MACRO_INDICATORS={};
 for(const [id,title,group,unit,frequency,url,method]of [
  ['id-cci','Consumer confidence','Activity and sentiment','Index, 100 = neutral','M',bi('sp_2821626'),'BI consumer survey; not a national production measure.'],

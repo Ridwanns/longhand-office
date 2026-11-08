@@ -1,4 +1,4 @@
-export function yahooHistory(body,quoteTime,{limit:count=20}={}){
+export function yahooHistory(body,quoteTime,{limit:count=20,withStamp=false}={}){
  if(!Number.isInteger(count)||count<1||count>6000)throw Error('Invalid chart history bound.');
  const result=body?.chart?.result?.[0],zone=result?.meta?.exchangeTimezoneName||'America/New_York',signedPrices=result?.meta?.instrumentType==='FUTURE';
  let format;try{format=new Intl.DateTimeFormat('en-CA',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit'});}catch{return [];}
@@ -14,7 +14,7 @@ export function yahooHistory(body,quoteTime,{limit:count=20}={}){
   if(old?.stamp===stamp&&old.close!==close)return [];
   if(!old||stamp>old.stamp)byDate.set(date,{date,close,stamp});
  }
- return [...byDate.values()].sort((a,b)=>a.date.localeCompare(b.date)).slice(-count).map(({date,close})=>({date,close}));
+ return [...byDate.values()].sort((a,b)=>a.date.localeCompare(b.date)).slice(-count).map(({date,close,stamp})=>withStamp?{date,close,stamp}:{date,close});
 }
 export function dailyChange(history,price,date){
  const prior=history.filter(p=>p.date<date).at(-1);

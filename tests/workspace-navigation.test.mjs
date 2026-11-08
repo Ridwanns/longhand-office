@@ -25,3 +25,9 @@ test('section links use existing Quant jump keys, with no dynamic or executable 
  assert.equal(sectionDestination('quant/run/retained-id'),undefined);
  assert.equal(sectionDestination('quant/section/__proto__'),undefined);
 });
+test('unknown or shorthand routes normalize to a page that renders and mounts',async()=>{
+ const {canonicalRoute}=await import('../workspace-navigation.js');
+ for(const route of ['overview','about','records','library','theses','decisions','portfolios','portfolios/real','portfolio/abc','theses/x1','decisions/x1/reviews','market','market/us','market/macro/id/economy','quant','quant/run/r1','data-sources','data-sources/macro'])assert.equal(canonicalRoute(route),route,route);
+ assert.equal(canonicalRoute('portfolio'),'portfolios');assert.equal(canonicalRoute('macro'),'market/macro');assert.equal(canonicalRoute('markets'),'market/us');assert.equal(canonicalRoute('research'),'quant');assert.equal(canonicalRoute('journal'),'decisions');
+ for(const route of ['','no-such-page','constructor','__proto__','overview/extra'])assert.equal(canonicalRoute(route),'overview',route);
+});
