@@ -4,7 +4,7 @@ import {pathToFileURL} from 'node:url';
 import {projectUsSnapshot} from './us-market-adapter.mjs';
 import {projectPagesIdxSnapshot} from './pages-data.mjs';
 import {projectMarketSnapshot} from './market-adapter.mjs';
-import {validateNativePriceFeed,nativePriceBucket} from '../native-prices.js';
+import {validateNativePriceFeed,nativePriceBucket,olderObservation} from '../native-prices.js';
 import {validatePublicQuote} from '../public-quote-contract.js';
 
 export function sparkResponses(body,requested){
@@ -38,7 +38,7 @@ export async function collectNativePrices(base,previous=null,{fetcher=fetch,now=
   for(const sourceSymbol of batch)for(const {key,category,symbol}of bySymbol.get(sourceSymbol)){try{
    const raw=mapped.get(sourceSymbol);if(!raw)throw Error('Yahoo supplied no observation for this instrument.');
    const quote=projectNativePrice(raw,category,symbol,retrievedAt),old=quotes[key]?.quote;
-   if(old&&Date.parse(quote.timestamp)<Date.parse(old.timestamp))throw Error('Yahoo returned an older observation; the newer recorded observation is retained.');
+   if(old&&olderObservation(quote,old))throw Error('Yahoo returned an older observation; the newer recorded observation is retained.');
    // Price refreshes do not erase separately dated public fundamentals or
    // reinterpret an old market cap as a live calculation from the new price.
    const reference=base.quotes[key]?.quote;
