@@ -20,7 +20,7 @@ test('High-impact focus is country-specific, avoids repeated GDP/CPI and does no
 
 test('A separately reviewed trade release keeps its own fixed date without renewing the BI review',async()=>{
  const original=JSON.parse(await readFile(new URL('../sources/macro-indicators-reviewed.json',import.meta.url))),entry=original.series.find(s=>s.id==='id-trade-official'),spec=MACRO_INDICATORS[entry.id],f=feed();
- f.generatedAt=entry.reviewedAt;const row=f.series.find(s=>s.id===entry.id);delete row.error;Object.assign(row,{retrievedAt:entry.reviewedAt,sourceHash:'a'.repeat(64),observations:entry.observations});
+ f.generatedAt=[entry.reviewedAt,INDICATOR_REVIEWED_AT].sort().at(-1);const row=f.series.find(s=>s.id===entry.id);delete row.error;Object.assign(row,{retrievedAt:entry.reviewedAt,sourceHash:'a'.repeat(64),observations:entry.observations});
  assert.equal(validateMacroIndicators(f,Date.parse(f.generatedAt)),f);assert.equal(original.reviewedAt,INDICATOR_REVIEWED_AT);assert.notEqual(row.retrievedAt,INDICATOR_REVIEWED_AT);
  const wrongDate=structuredClone(f);wrongDate.series.find(s=>s.id===entry.id).retrievedAt=INDICATOR_REVIEWED_AT;assert.throws(()=>validateMacroIndicators(wrongDate,Date.parse(f.generatedAt)));
  const wrongSource=structuredClone(f);wrongSource.series.find(s=>s.id===entry.id).observations[0].sourceUrl='https://www.bi.go.id/TEST-ONLY-wrong-provider';assert.throws(()=>validateMacroIndicators(wrongSource,Date.parse(f.generatedAt)));assert.equal(spec.sourceUrl,entry.evidence.sourceUrl);
