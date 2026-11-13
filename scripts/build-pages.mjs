@@ -15,6 +15,7 @@ files.push('macro-atlas.js','macro-atlas-data.js','macro-atlas-labels.js','macro
 ['market-data-contract.js','market-data-adapters.js','market-data-research.js','market-data-worker.js','market-data-storage.js','market-data-service.js','market-data-ui.js','market-data.css'].forEach(f=>files.push(f));
 files.push('secure-workspace.js','secure-workspace-crypto.js','secure-bootstrap.js','secure-workspace.css');
 files.push('overview-data.js','overview-contract.js','overview-ui.js','overview-chart.js','overview.css');
+files.push('office-identity.css');
 files.push('source-integrity.js','source-integrity-ui.js','idx-primary-ui.js');
 files.push('valuation-analysis.js','valuation-analysis-ui.js');
 files.push('chart-design.css','reading-details.js','idr-valuation.js','idx-quant-context.js');
@@ -32,9 +33,11 @@ files.push('quant-charts.js','research-intent.js','macro-ui.js','macro-contract.
 files.push('model-accountability.js','portfolio-performance.js','performance-ui.js','research-workspace.css','quarterly-regime.js','private-vault-client.js','private-vault-ui.js');
 files.push('portfolio-events.js','portfolio-reconciliation.js','prediction-review.js','data-coverage.js','data-coverage-ui.js','portfolio-close-prices.js','portfolio-prices-ui.js','data-workflows.css');
 files.push(...advancedFiles);
-await mkdir(dest,{recursive:true});const allowed=new Set([...files,...generated,'data']);
+await mkdir(dest,{recursive:true});const allowed=new Set([...files,...generated,'data','fonts']);
 for(const existing of await readdir(dest))if(!allowed.has(existing))throw Error('Unexpected file in Pages output: '+existing);
 for(const name of files)await copyFile(path.join(root,name),path.join(dest,name));
+// Self-hosted identity fonts (OFL); the Pages CSP allows only same-origin fonts.
+await mkdir(path.join(dest,'fonts'),{recursive:true});for(const name of await readdir(path.join(root,'fonts')))if(/^[a-z0-9-]+\.woff2$|^OFL-[A-Za-z]+\.txt$/.test(name))await copyFile(path.join(root,'fonts',name),path.join(dest,'fonts',name));else throw Error('Unexpected file in fonts/: '+name);
 const load=name=>readFile(path.join(root,name),'utf8'),save=(name,s)=>writeFile(path.join(dest,name),s),replace=(s,old,value)=>{if(!s.includes(old))throw Error('Static build contract changed: '+old.slice(0,80));return s.replace(old,value);};
 let marketView=await load('market-view.js');marketView=replace(marketView,"const historyFeedUrl='/api/market/history';","const historyFeedUrl=new URL('./data/market-history.json',import.meta.url);");await save('market-view.js',marketView);
 let macro=await load('macro-ui.js');macro=replace(macro,"const macroFeedUrl='/api/market/macro/snapshot';","const macroFeedUrl=new URL('./data/macro.json',import.meta.url);");macro=replace(macro,"const refreshPolicy='Local automatic checks: every 5 minutes while this page is visible; official sources are acquired at most every 15 minutes. Indonesia remains a reviewed release snapshot. Auto-refresh is not real-time streaming.';","const refreshPolicy='Checks the published Pages snapshot every 5 minutes while visible. The publication pipeline is scheduled every 6 hours and may fail or be delayed. Indonesia remains a reviewed release snapshot. Auto-refresh is not real-time streaming.';");await save('macro-ui.js',macro);
