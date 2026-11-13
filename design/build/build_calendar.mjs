@@ -1,11 +1,12 @@
 // Build design/preview/calendar.js: US release schedule (BLS calendar in macro-context.json) and Indonesian releases
-// recorded in the snapshot (BPS GDP/CPI release dates, Bank Indonesia rate decisions). Window: Sept to the end of next month.
+// recorded in the snapshot (BPS GDP/CPI release dates, Bank Indonesia rate decisions). Window: the start of the month two
+// months back to the end of next month.
 // usage: node build_calendar.mjs <repo> [dataDir]
 import fs from 'fs'; import path from 'path';
 const repo = path.resolve(process.argv[2] || '.'), data = path.resolve(repo, process.argv[3] || '.pages-data');
 const J = f => JSON.parse(fs.readFileSync(path.join(data, f), 'utf8'));
 const CTX = J('macro-context.json'), MACRO = J('macro.json');
-const today = new Date(), from = '2026-09-01';
+const today = new Date(), from = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth() - 2, 1)).toISOString().slice(0, 10);
 const to = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth() + 2, 0)).toISOString().slice(0, 10);
 const out = [];
 for (const e of CTX.calendar.events) if (e.date >= from && e.date <= to) out.push([e.date, 'US', e.title, 'BLS']);

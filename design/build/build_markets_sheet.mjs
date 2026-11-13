@@ -8,7 +8,10 @@ const QUOTES = JSON.parse(fs.readFileSync(P('market.json'), 'utf8')).quotes;
 const RATES = JSON.parse(fs.readFileSync(P('official-rates.json'), 'utf8'));
 const r4 = v => Math.round(v * 10000) / 10000;
 const safe = s => s.replace(/[^A-Za-z0-9]/g, '_');
-const weekly = pts => { const m = new Map(); for (const p of pts) { const k = Math.floor(new Date(p[0] + 'T00:00:00Z') / 6048e5); m.set(k, p) } return [...m.values()] };
+// Monday-to-Sunday weeks (epoch day 0 is a Thursday; 1970-01-05 is the first Monday), keeping each week's last session.
+const weekly = pts => { const m = new Map(); for (const p of pts) { const k = Math.floor((new Date(p[0] + 'T00:00:00Z') - 4 * 864e5) / 6048e5); m.set(k, p) } return [...m.values()] };
+// Calendar months, keeping each month's last session (a true month-end close).
+const monthly = pts => { const m = new Map(); for (const p of pts) m.set(p[0].slice(0, 7), p); return [...m.values()] };
 const since = (pts, days) => { if (!pts.length) return pts; const cut = new Date(new Date(pts.at(-1)[0] + 'T00:00:00Z') - days * 864e5).toISOString().slice(0, 10); return pts.filter(p => p[0] >= cut) };
 function stats(pts) {
   const c = pts.map(p => p[1]), last = c.at(-1), at = n => c[Math.max(0, c.length - 1 - n)];
@@ -17,8 +20,8 @@ function stats(pts) {
   return { last: r4(last), date: pts.at(-1)[0], d1: pct(last, at(1)), m1: pct(last, at(21)), m3: pct(last, at(63)), y1: c.length > 252 ? pct(last, at(252)) : null, hi52: r4(hi), lo52: r4(lo), n: c.length, first: pts[0][0], spark: c.slice(-30).map(r4) };
 }
 function writeSeries(key, pts, extra = {}) {
-  const daily = since(pts, 3 * 365), w = weekly(pts);
-  fs.writeFileSync(path.join(OUT, 'mk', safe(key) + '.json'), JSON.stringify({ key, d: daily.map(p => [p[0], ...p.slice(1).map(v => v == null ? null : r4(v))]), w: w.map(p => [p[0], r4(p[1])]), ...extra }));
+  const daily = since(pts, 3 * 365), w = weekly(pts), mo = monthly(pts);
+  fs.writeFileSync(path.join(OUT, 'mk', safe(key) + '.json'), JSON.stringify({ key, d: daily.map(p => [p[0], ...p.slice(1).map(v => v == null ? null : r4(v))]), w: w.map(p => [p[0], r4(p[1])]), m: mo.map(p => [p[0], r4(p[1])]), ...extra }));
 }
 const mhEntry = s => MH.entries.find(e => e.symbol === s);
 // Completed sessions only (the app's policy): a point dated on the retrieval day counts only once the exchange's
@@ -68,7 +71,7 @@ const last = obs.at(-1), back = (days) => nearest(new Date(new Date(last.date + 
 const curve = o => MATS.filter(m => Number.isFinite(o.rates[m])).map(m => [m, YRS[m], o.rates[m]]);
 const ust = { date: last.date, latest: curve(last), m1: { date: back(30).date, pts: curve(back(30)) }, y1: { date: back(365).date, pts: curve(back(365)) },
   source: RATES.sourceUrl, retrieved: RATES.retrievedAt, unit: RATES.unit, first: obs[0].date, n: obs.length };
-const ustHist = {}; for (const m of MATS) { const pts = obs.filter(o => Number.isFinite(o.rates[m])).map(o => [o.date, o.rates[m]]); ustHist[m] = { d: since(pts, 3 * 365), w: weekly(pts) } }
+const ustHist = {}; for (const m of MATS) { const pts = obs.filter(o => Number.isFinite(o.rates[m])).map(o => [o.date, o.rates[m]]); ustHist[m] = { d: since(pts, 3 * 365), w: weekly(pts), m: monthly(pts) } }
 fs.writeFileSync(path.join(OUT, 'mk', 'ust.json'), JSON.stringify(ustHist));
 
 const sheet = { builtFrom: `.pages-data market-history (${MH.publishedAt}), market.json, history/*.json, official-rates (${RATES.retrievedAt})`, indices: INDICES, us: US, idx: IDX, idxWatch: IDX_WATCH, idxPicks: IDX_PICKS, bonds: BOND_ETFS, commodities: COMMODITIES, ust, mats: MATS };

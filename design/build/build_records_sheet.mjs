@@ -5,7 +5,7 @@ import fs from 'fs'; import path from 'path';
 const repo = process.argv[2];
 const C = JSON.parse(fs.readFileSync(path.join(repo, '.pages-data', 'data-coverage.json'), 'utf8'));
 // Same rule as the app's coverageFreshness() in data-coverage.js, evaluated on the build date.
-const NOW = Date.parse(process.argv[3] || '2026-11-13T12:00:00Z'), DAY = 864e5;
+const NOW = process.argv[3] ? Date.parse(process.argv[3]) : Date.now(), DAY = 864e5;
 const OBS_DAYS = { D: 10, W: 21, M: 75, Q: 210, A: 550, E: 120 };
 const iso = s => typeof s === 'string' && !Number.isNaN(Date.parse(s));
 function freshness(r) {

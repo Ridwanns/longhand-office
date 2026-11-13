@@ -19,14 +19,14 @@ $N scripts/data-coverage.mjs
 
 # 2. sheets (every figure computed from the snapshot; atlas uses the app's own selection code)
 R="$(pwd -W 2>/dev/null || pwd)"; NOW=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-node design/build/build_atlas_rates.mjs "$R" .pages-data "$NOW"
-node design/build/build_atlas.mjs "$R" .pages-data "$NOW"
-node design/build/build_countries.mjs "$R" "$R/design"
-node design/build/build_cycles.mjs "$R"
-node design/build/build_macro_sheet.mjs "$R" .pages-data "$NOW"
-node design/build/build_markets_sheet.mjs "$R"
-node design/build/build_overview.mjs "$R"
-node design/build/build_calendar.mjs "$R"
-node design/build/build_research_sheet.mjs "$R"
-node design/build/build_records_sheet.mjs "$R" "$NOW"
+$N design/build/build_atlas_rates.mjs "$R" .pages-data "$NOW"
+$N design/build/build_atlas.mjs "$R" .pages-data "$NOW"
+$N design/build/build_countries.mjs "$R" "$R/design"
+$N design/build/build_cycles.mjs "$R"
+$N design/build/build_macro_sheet.mjs "$R" .pages-data "$NOW"
+$N design/build/build_markets_sheet.mjs "$R"
+$N design/build/build_overview.mjs "$R"
+$N design/build/build_calendar.mjs "$R"
+$N design/build/build_research_sheet.mjs "$R"   # reads the isolated test workspace (4174) read-only
+$N design/build/build_records_sheet.mjs "$R" "$NOW"
 echo "Done. Snapshot: $(date)"

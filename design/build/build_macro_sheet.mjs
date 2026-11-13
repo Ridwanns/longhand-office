@@ -13,7 +13,8 @@ const S = {}; for (const f of ['macro', 'macro-context', 'macro-releases', 'macr
 const toDate = o => o.date || (o.period && (/^\d{4}-Q[1-4]$/.test(o.period) ? `${o.period.slice(0, 4)}-${String((+o.period[6] - 1) * 3 + 1).padStart(2, '0')}-01` : /^\d{4}-\d{2}$/.test(o.period) ? o.period + '-01' : /^\d{4}$/.test(o.period) ? o.period + '-01-01' : null));
 const obs = id => (S[id]?.observations || []).map(o => ({ ...o, d: (toDate(o) || '').slice(0, 10) })).filter(o => o.d && Number.isFinite(o.value)).sort((a, b) => a.d < b.d ? -1 : 1);
 const hist = (id, since = '0000', until = '9999') => obs(id).filter(o => o.d >= since && o.d <= until).map(o => [o.d, Math.round(o.value * 1000) / 1000]);
-const weekly = pts => { const m = new Map(); for (const p of pts) { const k = Math.floor(new Date(p[0] + 'T00:00:00Z') / 6048e5); m.set(k, p) } return [...m.values()] };
+// Monday-to-Sunday weeks (epoch day 0 is a Thursday; 1970-01-05 is the first Monday), keeping each week's last observation.
+const weekly = pts => { const m = new Map(); for (const p of pts) { const k = Math.floor((new Date(p[0] + 'T00:00:00Z') - 4 * 864e5) / 6048e5); m.set(k, p) } return [...m.values()] };
 const src = id => S[id] ? { id, url: S[id].sourceUrl || S[id].spec?.url || '', retrieved: S[id].retrievedAt || '', acquisition: S[id].acquisition || S[id].spec?.acquisition || '', unit: S[id].unit || S[id].spec?.unit || '', freq: S[id].frequency || S[id].spec?.frequency || '', retained: S[id].retainedFromGeneratedAt || null, refreshError: S[id].refreshError || null } : null;
 const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 const mIdx = d => +d.slice(0, 4) * 12 + (+d.slice(5, 7) - 1);

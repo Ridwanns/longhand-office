@@ -38,7 +38,7 @@ const RANGES=[['1M',31],['3M',92],['6M',183],['1Y',366],['3Y',1096],['5Y',1827],
 function pick(data,range,freq){
   const days=RANGES.find(r=>r[0]===range)[1],useDaily=freq==='Daily'&&days<=1096&&data.d?.length;
   let pts=useDaily?data.d:data.w;
-  if(freq==='Monthly'){const m=new Map();for(const p of data.w)m.set(p[0].slice(0,7),p);pts=[...m.values()]}
+  if(freq==='Monthly'){if(data.m?.length)pts=data.m;else{const m=new Map();for(const p of data.w)m.set(p[0].slice(0,7),p);pts=[...m.values()]}}
   if(days<1e6&&pts.length){const cut=new Date(new Date(pts.at(-1)[0]+'T00:00:00Z')-days*864e5).toISOString().slice(0,10);pts=pts.filter(p=>p[0]>=cut)}
   return {pts,days,note:freq==='Daily'&&days>1096?'Daily view beyond 3 years uses weekly points in this preview.':''};
 }
