@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2032%2032%22%3E%3Ccircle%20cx=%2216%22%20cy=%2216%22%20r=%2216%22%20fill=%22%23f3efe6%22/%3E%3Cpath%20d=%22M15.9%206.5%20L20.3%209.2%20C20.5%2012.4%2020.3%2014.9%2019.3%2017.1%20C18.5%2018.9%2017.3%2020.8%2016%2023.1%20C14.7%2020.8%2013.5%2018.9%2012.7%2017.1%20C11.7%2014.9%2011.5%2012.4%2011.6%209.4%20Z%22%20fill=%22%2318332a%22/%3E%3Ccircle%20cx=%2216%22%20cy=%2214.9%22%20r=%220.95%22%20fill=%22%2318332a%22%20stroke=%22%23f3efe6%22%20stroke-width=%220.6%22/%3E%3Cpath%20d=%22M16%2016.1V22.2%22%20stroke=%22%23f3efe6%22%20stroke-width=%220.55%22%20stroke-linecap=%22round%22/%3E%3Cpath%20d=%22M11.1%2024.9c1.6-.75%203.25-.75%204.9%200s3.25.75%204.9%200%22%20fill=%22none%22%20stroke=%22%2318332a%22%20stroke-width=%220.65%22%20stroke-linecap=%22round%22/%3E%3C/svg%3E">
+<title>Longhand Office — Sheet 01 Overview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#efe9dd; --grid:rgba(90,78,55,.07); --grid2:rgba(90,78,55,.12);
+  --ink:#1c1f1b; --ink2:#5a5e55; --ink3:#8b8d84; --rule:rgba(40,36,28,.16);
+  --glass:rgba(250,247,240,.58); --glass-edge:rgba(255,255,255,.8); --glass-shade:rgba(80,66,40,.12);
+  --olive:#525e46; --gain:#2b7a57; --loss:#b4483c; --gold:#a7822f; --focus:#c4513f;
+  --shadow:0 1px 0 rgba(255,255,255,.6) inset,0 18px 40px -28px rgba(60,48,26,.45);
+  --display:"Newsreader",Georgia,serif; --body:"IBM Plex Sans","Segoe UI",sans-serif; --mono:"IBM Plex Mono",Consolas,monospace; --cond:"IBM Plex Sans Condensed","Arial Narrow",sans-serif;
+}
+:root[data-theme="dark"]{
+  --paper:#0d1628; --grid:rgba(150,185,235,.06); --grid2:rgba(150,185,235,.11);
+  --ink:#e8edf5; --ink2:#a2afc2; --ink3:#6c7a90; --rule:rgba(160,190,230,.18);
+  --glass:rgba(18,30,52,.55); --glass-edge:rgba(170,200,240,.16); --glass-shade:rgba(0,0,0,.35);
+  --olive:#9fb886; --gain:#5fd29e; --loss:#ff8270; --gold:#e6bd63; --focus:#ff8270;
+  --shadow:0 1px 0 rgba(170,200,240,.08) inset,0 18px 44px -24px rgba(0,0,0,.8);
+}
+*{box-sizing:border-box;margin:0}
+body{font:15px/1.5 var(--body);color:var(--ink);min-height:100vh;
+  background-color:var(--paper);
+  background-image:linear-gradient(var(--grid2) 1px,transparent 1px),linear-gradient(90deg,var(--grid2) 1px,transparent 1px),
+                   linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:96px 96px,96px 96px,12px 12px,12px 12px;transition:background-color .5s,color .4s}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit}
+.mono{font-family:var(--mono);font-weight:400;letter-spacing:-.02em}
+.num{font-variant-numeric:tabular-nums}
+.up{color:var(--gain)}.dn{color:var(--loss)}
+
+/* glass: frosted over the drafting grid, hairline edge, no glow */
+.glass{background:var(--glass);backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);
+  border:1px solid var(--glass-edge);box-shadow:var(--shadow);border-radius:6px}
+
+/* header */
+header{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:32px;padding:0 28px;height:56px;border-radius:0;border-width:0 0 1px;border-bottom-color:var(--rule)}
+.brand{display:flex;align-items:center;gap:11px;font:500 13px var(--body);letter-spacing:.04em}
+.brand .logo{width:30px;height:30px;flex:none;border-radius:50%;box-shadow:0 0 0 1px var(--rule)}
+.brand span{font:500 13px var(--body);letter-spacing:.14em;text-transform:uppercase}
+nav{display:flex;gap:26px;height:100%}
+nav a{display:flex;align-items:center;color:var(--ink2);font-weight:500;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .2s,border-color .2s}
+nav a:hover{color:var(--ink)}
+nav a.on{color:var(--ink);border-bottom-color:var(--ink)}
+.sp{flex:1}
+.find{display:flex;align-items:center;gap:10px;height:34px;padding:0 12px;border:1px solid var(--rule);border-radius:4px;color:var(--ink3);min-width:230px;font-size:13px}
+.find svg,.iconbtn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.6}
+.find kbd{margin-left:auto;font:10px var(--mono);color:var(--ink3)}
+.iconbtn{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--rule);border-radius:4px;background:none;cursor:pointer}
+.iconbtn:hover{border-color:var(--ink2)}
+
+/* sheet */
+.sheet{max-width:1520px;margin:0 auto;padding:30px 28px 24px;display:grid;grid-template-columns:minmax(500px,0.9fr) 1.1fr;gap:24px;align-items:start}
+.kicker{font:500 11px var(--cond);letter-spacing:.12em;color:var(--ink3);text-transform:uppercase}
+h1{font:400 clamp(38px,4vw,60px)/1.02 var(--display);font-optical-sizing:auto;letter-spacing:-.025em;margin:12px 0 16px;max-width:14ch}
+h1 .fig{color:var(--focus);font-style:italic}
+.dek{color:var(--ink2);max-width:46ch;font-size:15.5px}
+.dek b{color:var(--ink);font-weight:600}
+
+/* market schedule */
+.schedule{margin-top:26px;padding:6px 0 4px}
+.sched-head{display:flex;align-items:center;justify-content:space-between;padding:10px 16px 8px}
+.seg{display:flex;border:1px solid var(--rule);border-radius:4px;overflow:hidden}
+.seg button{background:none;border:0;padding:4px 10px;font:500 11px var(--cond);letter-spacing:.06em;color:var(--ink2);cursor:pointer}
+.seg button+button{border-left:1px solid var(--rule)}
+.seg button.on{background:var(--ink);color:var(--paper)}
+table{width:100%;border-collapse:collapse}
+th{font:500 10.5px var(--cond);color:var(--ink3);text-transform:uppercase;letter-spacing:.1em;font-weight:500;text-align:right;padding:6px 10px;border-bottom:1px solid var(--rule)}
+th:first-child,td:first-child{text-align:left;padding-left:16px}
+td{padding:11px 10px;border-bottom:1px solid var(--rule);text-align:right;vertical-align:middle;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+tbody tr{cursor:pointer;transition:background .2s;opacity:0;transform:translateY(6px);animation:in .5s cubic-bezier(.2,.8,.2,1) forwards}
+td .nm{font-weight:600;display:block}
+td .u{font:400 11px var(--cond);color:var(--ink3);letter-spacing:.02em}
+td.last{font:500 15px var(--mono);letter-spacing:-.02em}
+td.chg{font:400 12px var(--mono)}
+td.spark{width:118px;padding-right:6px;position:relative}
+.spark svg{display:block;width:110px;height:34px;overflow:visible;cursor:crosshair}
+.model{min-width:0}
+.spark path{fill:none;stroke-width:1.4}
+.spark .hair{stroke:var(--ink3);stroke-width:1;stroke-dasharray:2 2}
+.tip{position:absolute;right:8px;top:-22px;font:10.5px var(--mono);background:var(--ink);color:var(--paper);padding:3px 6px;border-radius:3px;pointer-events:none;opacity:0;transition:opacity .15s;z-index:3}
+td.range{width:110px;padding-right:16px}
+.rbar{position:relative;height:4px;background:var(--rule);border-radius:2px}
+.rbar i{position:absolute;top:-4px;width:2px;height:12px;background:var(--ink)}
+.rlab{display:flex;justify-content:space-between;font:9.5px var(--mono);color:var(--ink3);margin-top:5px}
+.asof{padding:10px 16px 8px;font:11px var(--cond);color:var(--ink3);border-top:1px solid var(--rule);letter-spacing:.02em}
+
+/* model viewer */
+.model{position:relative}
+.viewer{position:relative;aspect-ratio:3/2;user-select:none}
+#build{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0;transition:opacity .35s}
+#build.on{opacity:1;transition:none}
+.viewer svg.leaders{transition:opacity .25s}.viewer svg.leaders.fade{opacity:0}
+.modelbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:6px 6px 0}
+.modelbar .replay{height:28px;padding:0 12px;border:1px solid var(--rule);border-radius:4px;background:transparent;font:500 12px var(--body);color:var(--ink2);cursor:pointer;transition:border-color .2s,color .2s}
+.modelbar .replay:hover{border-color:var(--ink2);color:var(--ink)}
+.modelbar .replay:disabled{opacity:.45;cursor:default}
+.viewer img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;opacity:0;transition:opacity .8s}
+.viewer img.ready{opacity:1}
+
+.viewer svg.leaders{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.leaders line{stroke:var(--ink2);stroke-width:1;vector-effect:non-scaling-stroke;stroke-dasharray:var(--len,600);stroke-dashoffset:var(--len,600);transition:stroke .2s}
+.leaders.drawn line{animation:draw .9s cubic-bezier(.4,0,.2,1) forwards}
+.leaders circle{fill:var(--paper);stroke:var(--ink2);stroke-width:1.2;vector-effect:non-scaling-stroke;opacity:0;transition:r .2s}
+.leaders.drawn circle{animation:fade .3s forwards}
+.leaders g.hi line{stroke:var(--focus)}
+.leaders g.hi circle{stroke:var(--focus);r:6}
+.callout{position:absolute;width:172px;padding:0 0 7px;border-bottom:1px solid var(--ink2);cursor:pointer;opacity:0;transform:translateY(4px);transition:border-color .2s,transform .25s;text-shadow:0 0 2px var(--paper),0 0 8px var(--paper),0 0 14px var(--paper)}
+.callout.r{text-align:right}
+.callout.show{animation:in .45s cubic-bezier(.2,.8,.2,1) forwards}
+.callout .no{font:500 10.5px var(--mono);color:var(--ink3);letter-spacing:.04em}
+.callout b{display:block;font:600 17px/1.15 var(--display);letter-spacing:-.01em;margin:1px 0 1px;transition:color .2s}
+.callout span{font-size:12px;color:var(--ink2)}
+.callout:hover,.callout.hi{border-color:var(--focus)}.callout:hover b,.callout.hi b{color:var(--focus)}
+.orbit{display:flex;align-items:center;gap:14px;margin:4px 6px 0;font:10px var(--mono);color:var(--ink3)}
+.orbit input{flex:1;accent-color:var(--ink);height:2px}
+
+/* title block (architectural drawing convention) */
+.titleblock{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.4fr .7fr;margin-top:12px}
+.titleblock div{padding:8px 12px;border-right:1px solid var(--rule)}
+.titleblock div:last-child{border-right:0}
+.titleblock small{display:block;font:500 10px var(--cond);color:var(--ink3);text-transform:uppercase;letter-spacing:.12em}
+.titleblock strong{font:500 13px var(--cond);letter-spacing:.01em}
+
+/* room card */
+.room{position:absolute;left:0;right:0;bottom:0;min-height:92px;padding:14px 18px 14px;z-index:5;display:grid;grid-template-columns:1fr auto;column-gap:24px;align-items:end;opacity:0;pointer-events:none;transform:translateY(8px);transition:.3s cubic-bezier(.2,.8,.2,1)}
+.room.show{opacity:1;pointer-events:auto;transform:none}
+.room h3{font:400 26px var(--display);margin:2px 0}
+.room p{font-size:13px;color:var(--ink2);max-width:62ch}
+.room .go{margin:0;white-space:nowrap}
+.room .x{position:absolute;right:10px;top:8px;background:none;border:0;font-size:18px;color:var(--ink3);cursor:pointer}
+.go{display:inline-flex;align-items:center;gap:8px;margin-top:12px;font:500 13px var(--body);border-bottom:1px solid var(--ink);padding-bottom:2px}
+.go:hover{gap:12px}
+.go{transition:gap .2s}
+
+/* featured chart */
+.feature{max-width:1520px;margin:0 auto;padding:0 28px 20px}
+.chartcard{padding:18px 20px 12px}
+.chart-head{display:flex;align-items:flex-end;gap:28px;flex-wrap:wrap}
+.chart-head h2{font:400 26px/1.1 var(--display);letter-spacing:-.01em;margin:6px 0 0}
+.chart-head .stat small{display:block;font:500 10.5px var(--cond);letter-spacing:.1em;text-transform:uppercase;color:var(--ink3)}
+.chart-head .stat b{font:500 20px var(--mono);letter-spacing:-.03em}
+.chart-head .seg{margin-left:auto}
+.big{width:100%;height:300px;display:block;margin-top:14px;overflow:visible;touch-action:pan-y}
+.big .gridl{stroke:var(--rule)}
+.big text{font:10.5px var(--mono);fill:var(--ink3)}
+.big .area{opacity:.16}
+.big .line{fill:none;stroke-width:1.6;vector-effect:non-scaling-stroke}
+.big .peak{stroke:var(--ink3);stroke-dasharray:3 4;vector-effect:non-scaling-stroke}
+.big .ann{font:500 11px var(--cond);letter-spacing:.06em;fill:var(--ink2)}
+.big .dd{stroke:var(--focus);stroke-width:1.2;vector-effect:non-scaling-stroke}
+.big .ddl{font:500 12px var(--mono);fill:var(--focus)}
+.big .xh{stroke:var(--ink);stroke-width:1;vector-effect:non-scaling-stroke;opacity:0}
+.big .xd{opacity:0}
+.readout{display:flex;gap:22px;min-height:20px;margin-top:6px;font:11px var(--mono);color:var(--ink2)}
+.readout b{color:var(--ink);font-weight:500}
+tbody tr:hover{background:rgba(127,127,127,.06)}
+tbody tr.sel{background:rgba(127,127,127,.1);box-shadow:inset 3px 0 0 var(--focus)}
+
+/* orbit ruler */
+.orbit{position:relative;padding-top:2px}
+.ruler{position:relative;flex:1;height:26px}
+.ruler input{position:absolute;inset:0;width:100%;margin:0;opacity:0;cursor:ew-resize}
+.ruler .ticks{position:absolute;left:0;right:0;top:4px;height:8px;background:repeating-linear-gradient(90deg,var(--ink3) 0 1px,transparent 1px calc(100%/12));border-bottom:1px solid var(--ink3)}
+.ruler .ticks::after{content:"";position:absolute;right:0;top:0;width:1px;height:100%;background:var(--ink3)}
+.ruler .knob{position:absolute;top:0;width:2px;height:16px;background:var(--focus);transform:translateX(-1px);transition:left .12s}
+.ruler .knob::after{content:"";position:absolute;left:-4px;top:15px;border:5px solid transparent;border-bottom-color:var(--focus);transform:rotate(180deg)}
+.ruler .deg{position:absolute;top:16px;font:10px var(--mono);color:var(--ink3);transform:translateX(-50%)}
+
+/* lower sheets */
+.lower{max-width:1520px;margin:0 auto;padding:0 28px 30px;display:grid;grid-template-columns:1.25fr 1fr .9fr;gap:20px}
+.card{padding:18px 20px 16px;position:relative}
+.card h2{font:400 24px/1.15 var(--display);letter-spacing:-.01em;margin:6px 0 4px}
+.card .sub{font-size:13px;color:var(--ink2)}
+.curve{width:100%;height:190px;margin-top:8px;overflow:visible}
+.curve .ax line{stroke:var(--rule)}
+.curve text{font:10.5px var(--mono);fill:var(--ink3)}
+.curve .ln{fill:none;stroke:var(--ink);stroke-width:1.6;vector-effect:non-scaling-stroke;stroke-dasharray:900;stroke-dashoffset:900;animation:draw 1.4s .8s forwards}
+.curve circle{fill:var(--paper);stroke:var(--ink);stroke-width:1.4}
+.curve .v{fill:var(--ink);font-weight:500}
+.spread{display:flex;align-items:baseline;gap:10px;margin-top:8px}
+.spread b{font:500 30px var(--mono);letter-spacing:-.03em}
+.quad{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:12px}
+.quad div{background:var(--paper);padding:9px 10px;font-size:12px;color:var(--ink3);min-height:62px}
+:root[data-theme="dark"] .quad div{background:rgba(13,22,40,.6)}
+.quad b{display:block;font:500 11px var(--cond);letter-spacing:.1em;color:var(--ink2)}
+.quad .on{background:var(--ink)!important;color:var(--paper)}
+.quad .on b{color:var(--paper)}
+.gdp{display:flex;gap:16px;margin-top:14px}
+.gdp div{flex:1;border-top:1px solid var(--rule);padding-top:6px}
+.gdp div:first-child{flex:1.9}.gdp strong{white-space:nowrap}
+.gdp small{font:500 10.5px var(--cond);letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);display:block}
+.gdp strong{font:500 16px var(--mono);letter-spacing:-.02em}
+.vault{display:flex;gap:14px;align-items:center;margin-top:12px}
+.crop{flex:none;width:128px;height:128px;overflow:hidden;position:relative;border:1px solid var(--rule);border-radius:4px}
+.crop img{position:absolute;width:400%;max-width:none}
+.vault p{font-size:13px;color:var(--ink2)}
+footer{max-width:1520px;margin:0 auto;padding:0 28px 32px;font:11px var(--cond);letter-spacing:.02em;color:var(--ink3);display:flex;gap:18px;flex-wrap:wrap}
+
+@keyframes in{to{opacity:1;transform:none}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes fade{to{opacity:1}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-delay:0s!important;transition:none!important}}
+
+@media (max-width:1150px){.sheet{grid-template-columns:1fr}.lower{grid-template-columns:1fr 1fr}.lower .card:first-child{grid-column:1/-1}}
+@media (max-width:720px){
+  header{padding:0 14px;gap:14px}nav,.find{display:none}
+  .sheet{padding:20px 14px;gap:20px}.lower{grid-template-columns:1fr;padding:0 14px 24px}footer{padding:0 14px 24px}
+  .sheet>section{min-width:0}.schedule{overflow-x:auto}
+  td.range,th.range{display:none}td.spark{width:76px}.spark svg{width:70px}
+  td,th{padding-left:6px;padding-right:6px}td:first-child{white-space:normal}td .u{display:none}td.last{font-size:14px}td.chg{font-size:11px}
+  .callout{width:24px;height:24px;padding:0;border:1px solid var(--ink2);border-radius:50%;display:grid;place-items:center;background:var(--paper);text-shadow:none}.callout span,.callout b{display:none}.callout .no{font-size:10.5px;color:var(--ink)}
+  .titleblock{grid-template-columns:1fr 1fr}.titleblock div:nth-child(2n){border-right:0}.titleblock div{border-bottom:1px solid var(--rule)}
+  .room{position:fixed;left:12px;right:12px;bottom:12px;width:auto;z-index:40}
+}
+</style>
+<link rel="stylesheet" href="office-ui.css">
+<link rel="stylesheet" href="identity.css">
+</head>
+<body>
+<header class="glass">
+  <a class="brand" href="index.html" aria-label="Longhand Office, overview"><svg class="logo" viewBox="0 0 32 32" role="img" aria-label="Longhand"><circle cx="16" cy="16" r="16" fill="#f3efe6"/><path d="M15.9 6.5 L20.3 9.2 C20.5 12.4 20.3 14.9 19.3 17.1 C18.5 18.9 17.3 20.8 16 23.1 C14.7 20.8 13.5 18.9 12.7 17.1 C11.7 14.9 11.5 12.4 11.6 9.4 Z" fill="#18332a"/><circle cx="16" cy="14.9" r="0.95" fill="#18332a" stroke="#f3efe6" stroke-width="0.6"/><path d="M16 16.1V22.2" stroke="#f3efe6" stroke-width="0.55" stroke-linecap="round"/><path d="M11.1 24.9c1.6-.75 3.25-.75 4.9 0s3.25.75 4.9 0" fill="none" stroke="#18332a" stroke-width="0.65" stroke-linecap="round"/></svg><span>Longhand Office</span></a>
+  <nav><a class="on" href="index.html">Overview</a><a href="macro.html">Macro</a><a href="markets.html">Markets</a><a href="research.html">Research Lab</a><a href="portfolio.html">Portfolio</a><a href="records.html">Records</a></nav>
+  <div class="sp"></div>
+  <div class="find"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>Find a page<kbd>CTRL K</kbd></div>
+  <button class="iconbtn" id="theme" aria-label="Switch theme"><svg viewBox="0 0 24 24" id="ticon"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg></button>
+</header>
+
+<main class="sheet">
+  <section>
+    <div class="kicker">Sheet 01 · Overview · <span data-ov="closeLabel">latest close</span></div>
+    <h1 id="headline">IHSG is <span class="fig">45%</span> below its January peak.</h1>
+    <p class="dek" id="dek"></p>
+
+    <div class="schedule glass">
+      <div class="sched-head"><span class="kicker">Market schedule</span>
+        <div class="seg" role="group" aria-label="Chart window"><button data-w="21">1M</button><button data-w="63" class="on">3M</button><button data-w="252">1Y</button></div></div>
+      <table><thead><tr><th>Market</th><th>Last</th><th>1D</th><th id="wh">3M</th><th>Daily closes</th><th class="range">52-wk range</th></tr></thead><tbody id="rows"></tbody></table>
+      <div class="asof">Daily closes · Yahoo Finance via the Office snapshot of <span data-ov="snapLabel"></span> · completed sessions only, not real time</div>
+    </div>
+  </section>
+
+  <section class="model">
+    <div class="viewer" id="viewer" aria-label="Model of the office with four rooms.">
+      <img id="frame" alt="Architectural model of Longhand Office with four rooms: trading floor, vault, library and archive">
+      <canvas id="build" aria-hidden="true"></canvas>
+      <svg class="leaders" id="leaders" viewBox="0 0 1000 667" preserveAspectRatio="none"></svg>
+    </div>
+    <div class="modelbar"><span class="kicker">Model · front elevation · Blender 5.3</span><button type="button" class="replay" id="replay">Replay assembly</button></div>
+    <div class="titleblock glass">
+      <div><small>Project</small><strong>Longhand Office</strong></div>
+      <div><small>Sheet</small><strong>01 Overview</strong></div>
+      <div><small>Data</small><strong class="num" data-ov="closeDots">—</strong></div>
+      <div><small>Sources</small><strong>Yahoo · US Treasury · BPS · BI</strong></div>
+      <div><small>Model</small><strong>Blender 5.3</strong></div>
+    </div>
+    <div class="room glass" id="room" role="dialog" aria-live="polite"></div>
+  </section>
+</main>
+
+<section class="feature" id="feature">
+  <article class="card glass chartcard">
+    <div class="chart-head">
+      <div><div class="kicker" id="fk">Featured · daily closes</div><h2 id="fname">IHSG</h2></div>
+      <div class="stat"><small>Last</small><b class="num" id="flast">—</b></div>
+      <div class="stat"><small id="fwlab">Window</small><b class="num" id="fwin">—</b></div>
+      <div class="stat"><small>From window peak</small><b class="num dn" id="fdd">—</b></div>
+      <div class="seg" role="group" aria-label="Featured chart window" id="fseg"><button data-f="63">3M</button><button data-f="252">1Y</button><button data-f="0" class="on">All</button></div>
+    </div>
+    <svg class="big" id="big" viewBox="0 0 1200 300" preserveAspectRatio="none" aria-label="Daily closing prices"></svg>
+    <div class="readout" id="readout"><span>Hover the chart for date, close and distance from peak. Click a row in the schedule to switch market.</span></div>
+  </article>
+</section>
+
+<section class="lower">
+  <article class="card glass" id="rates">
+    <div class="kicker">Rates · US Treasury par yields · <span data-ov="ustLabel"></span></div>
+    <h2 data-ov="ustHead">—</h2>
+    <div class="spread"><b class="num" data-ov="spread">—</b><span class="sub">10-year minus 2-year</span></div>
+    <svg class="curve" id="curve" viewBox="0 0 600 190" preserveAspectRatio="none"></svg>
+  </article>
+  <article class="card glass">
+    <div class="kicker">Macro regime · Indonesia · latest releases · <span data-ov="quadPer"></span></div>
+    <h2 data-ov="quadHead">—</h2>
+    <div class="quad">
+      <div data-q="3"><b>QUAD 3</b>growth down · inflation up</div><div data-q="2"><b>QUAD 2</b>growth up · inflation up</div>
+      <div data-q="4"><b>QUAD 4</b>growth down · inflation down</div><div data-q="1"><b>QUAD 1</b>growth up · inflation down</div>
+    </div>
+    <div class="gdp">
+      <div><small data-ov="gdpLab">GDP</small><strong class="num" data-ov="gdpVals">—</strong></div>
+      <div><small data-ov="cpiLab">CPI</small><strong class="num" data-ov="cpiVals">—</strong></div>
+      <div><small>BI rate</small><strong class="num" data-ov="bi">—</strong></div>
+    </div>
+  </article>
+  <article class="card glass">
+    <div class="kicker">Portfolio · room 02</div>
+    <h2>Nothing in the vault yet.</h2>
+    <div class="vault">
+      <div class="crop"><img id="vaultimg" alt="The vault room in the model"></div>
+      <div><p>No Real or Paper portfolio is recorded in this workspace. Value, P&amp;L and allocation appear here once one is.</p><a class="go" href="#">Record a portfolio →</a></div>
+    </div>
+  </article>
+</section>
+
+<footer><span>Design preview — not the live app.</span><span data-ov="footer">All figures from the Office snapshot.</span><span>Model rendered in Blender 5.3, Cycles: a 60-frame assembly per theme.</span></footer>
+
+<script src="series.js"></script>
+<script>
+/* every date and figure on this sheet comes from series.js (built from the Office snapshot) */
+const OVLAB=(()=>{const MONS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec'],dl=x=>`${+x.slice(8,10)} ${MONS[+x.slice(5,7)-1]} ${x.slice(0,4)}`,
+  j=SERIES['^JKSE'].at(-1)[0],us=SERIES['^GSPC'].at(-1)[0],snap=String(OVERVIEW.marketSnapshot).slice(0,10);
+  return {dl,close:j,us,snap:dl(snap),closeLabel:j===us?`close of ${dl(j)}`:`IDX close ${dl(j)} · US close ${dl(us)}`,dots:j.slice(8,10)+'·'+j.slice(5,7)+'·'+j.slice(0,4)}})();
+document.addEventListener('DOMContentLoaded',()=>{
+  const set=(k,v,h)=>document.querySelectorAll(`[data-ov="${k}"]`).forEach(e=>h?e.innerHTML=v:e.textContent=v),O=OVERVIEW.idn,MONS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec'];
+  const qp=p=>/Q/.test(p)?p.replace(/(\d{4})-Q(\d)/,'Q$2'):MONS[+p.slice(5,7)-1];
+  set('closeLabel',OVLAB.closeLabel);set('snapLabel',OVLAB.snap);set('closeDots',OVLAB.dots);
+  const sp=YIELD.spreadBp,ten=YIELD.points.find(p=>p.years===10),two=YIELD.points.find(p=>p.years===2),thirty=YIELD.points.find(p=>p.years===30);
+  set('ustLabel',OVLAB.dl(YIELD.date));set('spread',(sp>0?'+':sp<0?'−':'')+Math.abs(sp)+' bp');document.querySelector('[data-ov="spread"]').className='num '+(sp>=0?'up':'dn');
+  set('ustHead',sp>0?(thirty&&thirty.value<YIELD.points.find(p=>p.years===20).value?'Upward sloping to 20 years, slightly lower at 30.':'The curve is upward sloping beyond two years.'):sp<0?'The 2-to-10-year curve is inverted.':'The 2-to-10-year curve is flat.');
+  const QT={1:'Quad 1: growth up, inflation easing.',2:'Quad 2: growth up, inflation rising.',3:'Quad 3: growth down, inflation rising.',4:'Quad 4: growth down, inflation easing.'};
+  set('quadHead',QT[O.quad]||'On an axis: one rate is unchanged.');set('quadPer',`GDP ${O.gdp.at(-1).period.replace(/(\d{4})-Q(\d)/,'Q$2 $1')} · CPI ${MONS[+O.cpi.at(-1).period.slice(5,7)-1]} ${O.cpi.at(-1).period.slice(0,4)}`);
+  document.querySelectorAll('.quad [data-q]').forEach(e=>{const on=+e.dataset.q===O.quad;e.classList.toggle('on',on);e.querySelector('b').textContent='QUAD '+e.dataset.q+(on?' · ID':'')});
+  set('gdpLab','GDP '+O.gdp.map(g=>qp(g.period)).join(' → '));set('gdpVals',O.gdp.map((g,i)=>i===O.gdp.length-1?`<span class="${g.value>=O.gdp.at(-2).value?'up':'dn'}">${g.value.toFixed(2)}%</span>`:g.value.toFixed(2)).join(' → '),true);
+  set('cpiLab','CPI '+O.cpi.map(c=>qp(c.period)).join(' → '));set('cpiVals',O.cpi.map((c,i)=>c.value.toFixed(2)+(i===O.cpi.length-1?'%':'')).join(' → '));
+  set('bi',O.bi.value.toFixed(2)+'%');
+  set('footer',`All figures from the Office snapshot: market closes to ${OVLAB.dl(OVLAB.close)} (completed sessions), US Treasury ${OVLAB.dl(YIELD.date)}, BPS GDP release ${O.gdpReleased?OVLAB.dl(O.gdpReleased):'—'}.`);
+});
+</script>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const MK=[
+ {k:'^JKSE',name:'IHSG',u:'index pts',dec:0},
+ {k:'^GSPC',name:'S&P 500',u:'index pts',dec:0},
+ {k:'TLT',name:'Long Treasury ETF',u:'USD · TLT',dec:2},
+ {k:'GC=F',name:'Gold futures',u:'USD / oz',dec:0}];
+const fmt=(v,d)=>v.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+const pct=v=>(v>=0?'+':'−')+Math.abs(v).toFixed(2)+'%';
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+/* ---- headline from data ---- */
+(function(){
+  const s=SERIES['^JKSE'],c=s.map(x=>x[1]),last=c.at(-1),prev=c.at(-2),hi=Math.max(...c),lo=Math.min(...c);
+  const hiD=s[c.indexOf(hi)][0],loI=c.indexOf(lo),since=c.length-1-loI;
+  const d=x=>new Date(x+'T00:00:00Z').toLocaleDateString('en-GB',{day:'numeric',month:'short',timeZone:'UTC'});
+  const spx=SERIES['^GSPC'].map(x=>x[1]),gold=SERIES['GC=F'].map(x=>x[1]);
+  $('#headline .fig').textContent=Math.round((1-last/hi)*100)+'%';
+  $('#dek').innerHTML=`It closed at <b>${fmt(last,0)}</b> on ${d(s.at(-1)[0])}, ${last>=prev?'up':'down'} ${Math.abs((last/prev-1)*100).toFixed(2)}%, ${since} sessions after its lowest close in the record (${fmt(lo,0)} on ${d(s[loI][0])}). The peak was ${fmt(hi,0)} on ${d(hiD)}. For scale: the S&amp;P 500 is ${Math.abs((spx.at(-1)/Math.max(...spx)-1)*100).toFixed(1)}% off its high, gold ${Math.abs((gold.at(-1)/Math.max(...gold)-1)*100).toFixed(0)}%.`;
+})();
+
+/* ---- market schedule with real sparklines ---- */
+let WIN=63,SEL='^JKSE',FWIN=0;
+function render(){
+  $('#wh').textContent={21:'1M',63:'3M',252:'1Y'}[WIN];
+  $('#rows').innerHTML=MK.map((m,i)=>{
+    const s=SERIES[m.k],c=s.map(x=>x[1]),last=c.at(-1),d1=(last/c.at(-2)-1)*100,w=s.slice(-WIN-1),wc=w.map(x=>x[1]);
+    const ch=(last/wc[0]-1)*100,y=c.slice(-252),lo=Math.min(...y),hi=Math.max(...y),pos=(last-lo)/(hi-lo)*100;
+    const mn=Math.min(...wc),mx=Math.max(...wc),X=j=>j/(wc.length-1)*130,Y=v=>32-(v-mn)/(mx-mn||1)*30;
+    const path=wc.map((v,j)=>(j?'L':'M')+X(j).toFixed(1)+' '+Y(v).toFixed(1)).join('');
+    return `<tr data-k="${m.k}" class="${m.k===SEL?'sel':''}" style="animation-delay:${.15+i*.07}s"><td><span class="nm">${m.name}</span><span class="u">${m.u}</span></td>
+      <td class="last num">${fmt(last,m.dec)}</td><td class="chg ${d1>=0?'up':'dn'}">${pct(d1)}</td><td class="chg ${ch>=0?'up':'dn'}">${pct(ch)}</td>
+      <td class="spark" data-k="${m.k}"><span class="tip"></span><svg viewBox="0 0 130 34" preserveAspectRatio="none"><line class="hair" y1="0" y2="34" x1="-9" x2="-9"/><path d="${path}" stroke="${ch>=0?css('--gain'):css('--loss')}"/><circle r="2.4" cx="${X(wc.length-1)}" cy="${Y(last)}" fill="${ch>=0?css('--gain'):css('--loss')}"/></svg></td>
+      <td class="range"><div class="rbar"><i style="left:calc(${pos.toFixed(1)}% - 1px)"></i></div><div class="rlab num"><span>${fmt(lo,m.dec)}</span><span>${fmt(hi,m.dec)}</span></div></td></tr>`;
+  }).join('');
+  $$('#rows tr').forEach(tr=>tr.addEventListener('click',()=>{SEL=tr.dataset.k;$$('#rows tr').forEach(x=>x.classList.toggle('sel',x===tr));feature()}));
+  $$('td.spark').forEach(td=>{
+    const s=SERIES[td.dataset.k].slice(-WIN-1),svg=td.querySelector('svg'),hair=td.querySelector('.hair'),tip=td.querySelector('.tip'),m=MK.find(x=>x.k===td.dataset.k);
+    svg.addEventListener('pointermove',e=>{const r=svg.getBoundingClientRect(),j=Math.round(Math.min(1,Math.max(0,(e.clientX-r.left)/r.width))*(s.length-1)),x=j/(s.length-1)*130;
+      hair.setAttribute('x1',x);hair.setAttribute('x2',x);tip.textContent=s[j][0]+'  '+fmt(s[j][1],m.dec);tip.style.opacity=1});
+    svg.addEventListener('pointerleave',()=>{hair.setAttribute('x1',-9);hair.setAttribute('x2',-9);tip.style.opacity=0});
+  });
+}
+$$('.seg button').forEach(b=>b.onclick=()=>{$$('.seg button').forEach(x=>x.classList.toggle('on',x===b));WIN=+b.dataset.w;render()});
+
+
+/* ---- featured chart: real closes, peak/low annotations, drawdown, crosshair ---- */
+function feature(){
+  const el=$('#big');if(!el)return;const m=MK.find(x=>x.k===SEL),all=SERIES[SEL],s=FWIN?all.slice(-FWIN-1):all,c=s.map(x=>x[1]);
+  const W=Math.max(300,el.clientWidth),H=300,L=8,R=W-62,T=26,B=H-28;el.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  const hi=Math.max(...c),lo=Math.min(...c),hiI=c.indexOf(hi),loI=c.indexOf(lo),last=c.at(-1),pad=(hi-lo)*.1,mn=lo-pad,mx=hi+pad;
+  const X=i=>L+(R-L)*i/(c.length-1),Y=v=>B-(B-T)*(v-mn)/(mx-mn);
+  const up=last>=c[0],col=up?css('--gain'):css('--loss');
+  let g='';for(let k=0;k<=4;k++){const v=mn+(mx-mn)*k/4;g+=`<line class="gridl" x1="${L}" x2="${R}" y1="${Y(v)}" y2="${Y(v)}"/><text x="${R+8}" y="${Y(v)+3}">${fmt(v,m.dec)}</text>`}
+  let lastM='';const step=c.length>200?3:1;s.forEach((p,i)=>{const ym=p[0].slice(0,7),mo=+p[0].slice(5,7);if(ym!==lastM&&(mo-1)%step===0&&i>2){g+=`<text x="${X(i)}" y="${H-8}" text-anchor="middle">${p[0].slice(2,7).replace('-','·')}</text>`}lastM=ym});
+  const d=c.map((v,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1)).join('');
+  g+=`<path class="area" fill="${col}" d="${d} L${X(c.length-1)} ${B} L${X(0)} ${B}Z"/><path class="line" stroke="${col}" d="${d}"/>`;
+  g+=`<line class="peak" x1="${X(hiI)}" x2="${R}" y1="${Y(hi)}" y2="${Y(hi)}"/>`;
+  const end=i=>i>c.length*.75;
+  g+=`<circle cx="${X(hiI)}" cy="${Y(hi)}" r="3.5" fill="${css('--ink')}"/><text class="ann" x="${X(hiI)+(end(hiI)?-6:6)}" y="${Y(hi)-8}" text-anchor="${end(hiI)?'end':'start'}">PEAK ${fmt(hi,m.dec)} · ${s[hiI][0]}</text>`;
+  g+=`<circle cx="${X(loI)}" cy="${Y(lo)}" r="3.5" fill="${css('--ink')}"/><text class="ann" x="${X(loI)+(end(loI)?-6:6)}" y="${Y(lo)+16}" text-anchor="${end(loI)?'end':'start'}">LOW ${fmt(lo,m.dec)} · ${s[loI][0]}</text>`;
+  const dd=(last/hi-1)*100;
+  if(dd<-0.5){g+=`<line class="dd" x1="${R-2}" x2="${R-2}" y1="${Y(hi)}" y2="${Y(last)}"/><line class="dd" x1="${R-8}" x2="${R+4}" y1="${Y(hi)}" y2="${Y(hi)}"/><line class="dd" x1="${R-8}" x2="${R+4}" y1="${Y(last)}" y2="${Y(last)}"/><text class="ddl" x="${R-12}" y="${(Y(hi)+Y(last))/2+4}" text-anchor="end">${dd.toFixed(1)}%</text>`}
+  g+=`<line class="xh" id="xh" y1="${T-10}" y2="${B}"/><circle class="xd" id="xd" r="4" fill="${css('--paper')}" stroke="${css('--ink')}" stroke-width="1.5"/>`;
+  el.innerHTML=g;
+  $('#fname').textContent=m.name;$('#fk').textContent=`Featured · ${c.length} daily closes · ${s[0][0]} → ${s.at(-1)[0]}`;
+  $('#flast').textContent=fmt(last,m.dec);const ch=(last/c[0]-1)*100;$('#fwin').textContent=pct(ch);$('#fwin').className='num '+(ch>=0?'up':'dn');
+  $('#fwlab').textContent={63:'3M change',252:'1Y change',0:'Since '+s[0][0].slice(0,7)}[FWIN];$('#fdd').textContent=dd.toFixed(1)+'%';
+  const ro=$('#readout'),xh=$('#xh'),xd=$('#xd');
+  el.onpointermove=e=>{const r=el.getBoundingClientRect(),px=(e.clientX-r.left)/r.width*W,i=Math.round(Math.min(1,Math.max(0,(px-L)/(R-L)))*(c.length-1));
+    xh.setAttribute('x1',X(i));xh.setAttribute('x2',X(i));xh.style.opacity=.5;xd.setAttribute('cx',X(i));xd.setAttribute('cy',Y(c[i]));xd.style.opacity=1;
+    const runHi=Math.max(...c.slice(0,i+1));
+    ro.innerHTML=`<span>${s[i][0]}</span><span>close <b>${fmt(c[i],m.dec)}</b></span><span>vs window start <b class="${c[i]>=c[0]?'up':'dn'}">${pct((c[i]/c[0]-1)*100)}</b></span><span>from running peak <b class="dn">${((c[i]/runHi-1)*100).toFixed(1)}%</b></span>`};
+  el.onpointerleave=()=>{xh.style.opacity=0;xd.style.opacity=0};
+}
+$$('#fseg button').forEach(b=>b.onclick=()=>{$$('#fseg button').forEach(x=>x.classList.toggle('on',x===b));FWIN=+b.dataset.f;feature()});
+
+/* ---- yield curve: straight segments, tenor spaced by years ---- */
+function curve(){
+  const el=$('#curve'),W=Math.max(260,el.clientWidth),H=190;el.setAttribute('viewBox',`0 0 ${W} ${H}`);el.setAttribute('preserveAspectRatio','xMidYMid meet');
+  const p=YIELD.points,vals=p.map(q=>q.value),mn=Math.floor((Math.min(...vals)-.15)*10)/10,mx=Math.ceil((Math.max(...vals)+.15)*10)/10,X=y=>44+Math.sqrt(y/30)*(W-70),Y=v=>160-(v-mn)/(mx-mn)*140;
+  const tk=[0,1,2].map(i=>Math.round((mn+(mx-mn)*(i+.5)/3)*10)/10);
+  let g='<g class="ax">'+tk.map(v=>`<line x1="44" x2="${W-10}" y1="${Y(v)}" y2="${Y(v)}"/><text x="0" y="${Y(v)+3}">${v.toFixed(1)}%</text>`).join('')+'</g>';
+  g+=`<path class="ln" d="${p.map((q,i)=>(i?'L':'M')+X(q.years)+' '+Y(q.value)).join('')}"/>`;
+  g+=p.map(q=>`<circle cx="${X(q.years)}" cy="${Y(q.value)}" r="3.5"/><text class="v" x="${X(q.years)}" y="${Y(q.value)-10}" text-anchor="middle">${q.value.toFixed(2)}</text><text x="${X(q.years)}" y="184" text-anchor="middle">${q.years}Y</text>`).join('');
+  g+=`<text x="${W-10}" y="14" text-anchor="end">tenor axis: square root of years</text>`;
+  el.innerHTML=g;
+}
+
+/* ---- model viewer: real orbit frames + leader-line callouts ---- */
+const CALL=[
+ {k:'research',no:'03',t:'Library',s:'Research Lab',lx:.0,ly:.06,side:'l',
+  room:{h:'Research Lab',p:'Quant Lab, company valuation and investment theses.',go:'Open Research Lab'}},
+ {k:'records',no:'04',t:'Archive',s:'Records & backups',lx:.80,ly:.10,side:'r',
+  room:{h:'Records',p:'Encrypted backups and data sources. Market snapshot: '+OVLAB.snap+'.',go:'Open Records'}},
+ {k:'screen',no:'01',t:'Trading floor',s:'IHSG, 370 real closes',lx:.0,ly:.72,side:'l',
+  room:{h:'Markets',p:'US and IDX stocks, bonds, commodities and macro. The wall screen is a rendered IHSG chart; live figures are in the market schedule.',go:'Open Markets'}},
+ {k:'portfolio',no:'02',t:'Vault',s:'Portfolio · empty',lx:.80,ly:.80,side:'r',
+  room:{h:'Portfolio',p:'Real and Paper portfolios and the decision journal. Nothing recorded yet.',go:'Record a portfolio'}}];
+const viewer=$('#viewer'),img=$('#frame'),svg=$('#leaders'),room=$('#room'),cv=$('#build'),ctx=cv.getContext('2d');
+let theme,FR={light:null,dark:null},BU={},drawn=false,playing=false;
+const FRONT=6; // the front camera of the model set
+CALL.forEach(c=>{const el=document.createElement('div');el.className='callout'+(c.side==='r'?' r':'');el.dataset.k=c.k;
+  el.innerHTML=`<div class="no">${c.no}</div><b>${c.t}</b><span>${c.s}</span>`;
+  if(c.side==='r')el.style.right='0';else el.style.left=(c.lx*100)+'%';el.style.top=(c.ly*100)+'%';viewer.appendChild(el);c.el=el;
+  el.onmouseenter=()=>hi(c.k,true);el.onmouseleave=()=>hi(c.k,false);el.onclick=()=>open(c)});
+function hi(k,on){$$('.leaders g').forEach(g=>g.classList.toggle('hi',on&&g.dataset.k===k));$$('.callout').forEach(e=>e.classList.toggle('hi',on&&e.dataset.k===k))}
+const anchors=()=>FR[theme].frames[FRONT].anchors;
+function leaders(){
+  if(!FR[theme])return;const a=anchors(),vw=viewer.clientWidth,vh=viewer.clientHeight;
+  svg.innerHTML=CALL.map(c=>{const el=c.el,ax=a[c.k][0]*1000,ay=a[c.k][1]*667;
+    const small=el.offsetWidth<40,ex=(small?el.offsetLeft+el.offsetWidth/2:(c.side==='l'?(el.offsetLeft+el.offsetWidth):el.offsetLeft))/vw*1000,ey=(small?el.offsetTop+el.offsetHeight/2:el.offsetTop+el.offsetHeight)/vh*667;
+    const len=Math.hypot((ax-ex)*vw/1000,(ay-ey)*vh/667)+20;
+    return `<g data-k="${c.k}"><line style="--len:${len}" x1="${ex}" y1="${ey}" x2="${ax}" y2="${ay}"/><circle cx="${ax}" cy="${ay}" r="4.5"/></g>`}).join('');
+  if(drawn){svg.classList.add('drawn');svg.querySelectorAll('line').forEach(l=>l.style.strokeDashoffset=0);svg.querySelectorAll('circle').forEach(c=>c.style.opacity=1)}
+}
+// the finished model: the high-quality last frame of the Blender assembly, or the old front frame as a fallback
+const frontSrc=()=>BU[theme]&&BU[theme].j.final?'frames/'+BU[theme].j.final:'frames/'+FR[theme].frames[FRONT].file;
+function vaultCrop(){const v=$('#vaultimg'),a=anchors().portfolio,box=v.parentElement.clientWidth,w=box*4,h=w*2/3;
+  const src=frontSrc();if(!v.src.endsWith(src))v.src=src;v.style.left=(box/2-(a[0]+.035)*w)+'px';v.style.top=(box/2-(a[1]-.075)*h)+'px'}
+function show(){const f=frontSrc();if(!img.src.endsWith(f))img.src=f;vaultCrop();leaders()}
+async function load(t){if(!FR[t])FR[t]=await (await fetch('frames/'+t+'.json')).json()}
+async function loadBuild(t){
+  if(BU[t]===undefined){try{const j=await (await fetch('frames/build-'+t+'.json')).json();BU[t]={j,imgs:null}}catch(e){BU[t]=null}}
+  return BU[t];
+}
+const frames=b=>b.imgs||(b.imgs=b.j.files.map(f=>{const im=new Image();im.decoding='async';im.src='frames/'+f;return im}));
+// the assembly: the bare board shows while the rest load; playback starts once every frame is decoded and is timed by the clock,
+// so a slow phone drops frames instead of stuttering. It always ends on the finished model.
+async function assemble(){
+  if(playing)return;const b=await loadBuild(theme);if(!b||document.hidden)return;
+  const imgs=frames(b),n=imgs.length;
+  const r=viewer.getBoundingClientRect(),dpr=Math.min(2,devicePixelRatio||1);cv.width=Math.round(r.width*dpr);cv.height=Math.round(r.height*dpr);
+  ctx.imageSmoothingQuality='high';
+  const draw=i=>{const im=imgs[i],s=Math.min(cv.width/im.naturalWidth,cv.height/im.naturalHeight),w=im.naturalWidth*s,h=im.naturalHeight*s;ctx.clearRect(0,0,cv.width,cv.height);ctx.drawImage(im,(cv.width-w)/2,(cv.height-h)/2,w,h)};
+  playing=true;$('#replay').disabled=true;
+  const within=(pr,ms,fb)=>Promise.race([pr,new Promise(res=>setTimeout(()=>res(fb),ms))]);
+  // ready = loaded (load event), then decoded if the browser will do it promptly; never wait on decode alone
+  const ready=im=>within((im.complete&&im.naturalWidth?Promise.resolve(true):new Promise(res=>{im.addEventListener('load',()=>res(true),{once:true});im.addEventListener('error',()=>res(false),{once:true})}))
+    .then(okay=>okay&&within(im.decode().then(()=>true,()=>true),400,true)),8000,false);
+  const first=await ready(imgs[0]);
+  if(first){draw(0);cv.classList.add('on');img.classList.remove('ready')}
+  const ok=await within(Promise.all(imgs.map(ready)).then(x=>x.every(Boolean)),8000,false);
+  if(ok){
+    const ms=1000/b.j.fps*n;
+    await new Promise(done=>{let last=-1,fin=false;const t0=performance.now();
+      const end=()=>{if(fin)return;fin=true;draw(n-1);done()};
+      // driven by both rAF (smooth, vsync) and a 16 ms timer (keeps going where rAF is throttled); each tick draws the frame for the current time
+      const tick=()=>{if(fin)return;const i=Math.min(n-1,Math.floor((performance.now()-t0)/ms*n));if(i!==last){draw(i);last=i}if(i>=n-1){clearInterval(iv);end()}};
+      const loop=()=>{tick();if(!fin)requestAnimationFrame(loop)};const iv=setInterval(tick,16);requestAnimationFrame(loop);setTimeout(()=>{clearInterval(iv);end()},ms+800)});
+  }
+  img.style.transition='none';img.classList.add('ready');void img.offsetWidth;await new Promise(res=>setTimeout(res,50));cv.classList.remove('on');setTimeout(()=>img.style.transition='',400);
+  playing=false;$('#replay').disabled=false;
+}
+async function setTheme(t){
+  theme=t;document.documentElement.dataset.theme=t;
+  $('#ticon').innerHTML=t==='dark'?'<circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/>':'<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/>';
+  try{localStorage.setItem('lh-theme',t)}catch(e){}
+  await load(t);await loadBuild(t);show();render();feature();
+}
+addEventListener('resize',()=>{leaders();curve();feature();if(FR[theme])vaultCrop()});
+$('#replay').onclick=async()=>{CALL.forEach(c=>c.el.classList.remove('show'));svg.classList.add('fade');await assemble();svg.classList.remove('fade');CALL.forEach((c,i)=>setTimeout(()=>c.el.classList.add('show'),120+i*90))};
+function open(c){hi(c.k,true);room.innerHTML=`<button class="x" aria-label="Close">×</button><div><div class="kicker">Room ${c.no} · ${c.t}</div><h3>${c.room.h}</h3><p>${c.room.p}</p></div><a class="go" href="#">${c.room.go} →</a>`;
+  room.querySelector('.x').onclick=()=>{room.classList.remove('show');hi(c.k,false)};room.classList.add('show')}
+addEventListener('keydown',e=>{if(e.key==='Escape')room.classList.remove('show')});
+$('#theme').onclick=()=>setTheme(theme==='dark'?'light':'dark');
+
+// intro: the model assembles once (board, ground floor, columns, upper floor, trees), then leaders draw, then callouts
+(async()=>{
+  let t='light';try{t=localStorage.getItem('lh-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}
+  curve();feature();await setTheme(t);
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!reduce)await assemble();
+  img.classList.add('ready');
+  drawn=true;svg.classList.add('drawn');leaders();
+  CALL.forEach((c,i)=>setTimeout(()=>c.el.classList.add('show'),reduce?0:200+i*110));
+})();
+</script>
+<script>/* title-block logo */document.querySelectorAll('.titleblock div:first-child strong').forEach(st=>{const l=document.querySelector('header .logo').cloneNode(true);l.style.cssText='width:18px;height:18px;vertical-align:-4px;margin-right:6px;border-radius:50%;box-shadow:0 0 0 1px var(--rule)';st.prepend(l)})</script>
+<script>/* deep links: #m=<symbol> opens a market in the featured chart */
+function fromHash(){const h=decodeURIComponent(location.hash.slice(1));
+  if(h.startsWith('m=')&&SERIES[h.slice(2)]){SEL=h.slice(2);document.querySelectorAll('#rows tr').forEach(x=>x.classList.toggle('sel',x.dataset.k===SEL));feature();document.getElementById('feature').scrollIntoView({behavior:'smooth',block:'start'})}
+  else if(h==='feature'||h==='rates')document.getElementById(h).scrollIntoView({behavior:'smooth',block:'start'})}
+addEventListener('hashchange',fromHash);setTimeout(fromHash,400);</script>
+<script src="office-ui.js"></script>
+</body>
+</html>

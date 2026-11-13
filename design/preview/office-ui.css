@@ -1,0 +1,134 @@
+/* Longhand Office — shared tactile components (lamp switch, liquid tabs, finder, release calendar).
+   Original implementations; ideas drawn from the PinUI catalogue (lamp switch, search card, calendar card, liquid tabs). */
+
+/* ---------- lamp switch (theme) ---------- */
+.lamp{position:relative;display:flex;align-items:center;gap:9px;height:36px;padding:0 12px 0 8px;border:1px solid var(--rule);border-radius:999px;background:transparent;cursor:pointer;color:var(--ink);font:500 11px var(--cond);letter-spacing:.12em;text-transform:uppercase;transition:border-color .2s,background .3s}
+.lamp:hover{border-color:var(--ink2)}
+.lamp:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.lamp .bulb{position:relative;width:22px;height:28px;flex:none}
+.lamp .bulb svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.lamp .shade{fill:var(--ink)}
+.lamp .glass-b{fill:#f6d58a;transition:fill .35s,filter .35s}
+.lamp .halo{fill:#ffd98a;opacity:.55;transition:opacity .35s;filter:blur(3px)}
+.lamp .cord{stroke:var(--ink2);stroke-width:1;transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
+.lamp .knob{fill:#b08d4c;transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
+.lamp.pull .cord,.lamp.pull .knob{transform:translateY(3px)}
+:root[data-theme="dark"] .lamp .glass-b{fill:#3a4152}
+:root[data-theme="dark"] .lamp .halo{opacity:0}
+.lamp .state{min-width:2.2em;text-align:left;color:var(--ink2)}
+#ticon{display:none}
+
+/* ---------- liquid tabs ---------- */
+.seg{position:relative;isolation:isolate}
+.seg .liquid{position:absolute;z-index:-1;top:0;bottom:0;left:0;width:0;background:var(--ink);border-radius:2px;transition:left .42s cubic-bezier(.3,1.35,.45,1),width .42s cubic-bezier(.3,1.35,.45,1)}
+.seg.liquid-on button.on{background:transparent!important}
+.seg.liquid-on button{position:relative}
+
+/* ---------- finder (Ctrl K) ---------- */
+.find{cursor:pointer;transition:border-color .2s}
+.find:hover{border-color:var(--ink2)}
+.finder{position:fixed;inset:0;z-index:100;display:grid;place-items:start center;padding-top:12vh;background:rgba(20,18,12,.28);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .18s}
+:root[data-theme="dark"] .finder{background:rgba(0,0,0,.45)}
+.finder.open{opacity:1;pointer-events:auto}
+.finder .box{width:min(620px,calc(100vw - 28px));max-height:70vh;display:flex;flex-direction:column;overflow:hidden;transform:translateY(-8px) scale(.98);transition:transform .22s cubic-bezier(.2,.9,.3,1.2)}
+.finder.open .box{transform:none}
+.finder .in{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--rule)}
+.finder .in svg{width:18px;height:18px;stroke:var(--ink3);fill:none;stroke-width:1.6;flex:none}
+.finder input{flex:1;border:0;background:transparent;font:400 18px var(--body);color:var(--ink);outline:none}
+.finder kbd{font:10px var(--mono);color:var(--ink3);border:1px solid var(--rule);border-radius:4px;padding:2px 6px}
+.finder .res{overflow:auto;padding:6px}
+.finder .grp{font:500 10.5px var(--cond);letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);padding:10px 10px 4px}
+.finder .it{display:grid;grid-template-columns:28px 1fr auto;align-items:center;gap:10px;padding:8px 10px;border-radius:5px;cursor:pointer;color:var(--ink)}
+.finder .it .ic{width:28px;height:28px;border-radius:5px;border:1px solid var(--rule);display:grid;place-items:center;font:500 10px var(--mono);color:var(--ink2)}
+.finder .it b{font-weight:500}
+.finder .it small{display:block;font:12px var(--cond);color:var(--ink3);letter-spacing:.02em}
+.finder .it .v{font:500 12.5px var(--mono);color:var(--ink2)}
+.finder .it.act{background:var(--ink);color:var(--paper)}
+.finder .it.act small,.finder .it.act .v,.finder .it.act .ic{color:var(--paper);border-color:rgba(255,255,255,.3)}
+.finder .foot{display:flex;gap:16px;padding:8px 14px;border-top:1px solid var(--rule);font:11px var(--cond);color:var(--ink3)}
+.finder .none{padding:22px;text-align:center;color:var(--ink3);font-size:14px}
+
+/* ---------- release calendar card ---------- */
+.cal{padding:16px 18px 14px}
+.cal-head{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin-bottom:10px}
+.cal-head h3{font:400 24px/1 var(--display);letter-spacing:-.01em}
+.cal-head .nav{display:flex;gap:6px}
+.cal-head .nav button{width:28px;height:28px;border:1px solid var(--rule);border-radius:4px;background:none;cursor:pointer;color:var(--ink)}
+.cal-head .nav button:hover{border-color:var(--ink2)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal-grid .dow{font:500 10px var(--cond);letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);text-align:center;padding:2px 0 4px}
+.cal-grid .d{position:relative;height:40px;border-radius:5px;border:1px solid transparent;background:none;cursor:pointer;color:var(--ink);font:400 13px var(--mono);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;transition:background .15s,border-color .15s,transform .15s}
+.cal-grid .d:hover{background:rgba(127,127,127,.08);transform:translateY(-1px)}
+.cal-grid .d.out{color:var(--ink3);opacity:.45}
+.cal-grid .d.past{color:var(--ink2)}
+.cal-grid .d.today{border-color:var(--focus)}
+.cal-grid .d.sel{background:var(--ink);color:var(--paper)}
+.cal-grid .dots{display:flex;gap:3px;height:5px}
+.cal-grid .dots i{width:5px;height:5px;border-radius:50%}
+.cal-grid .dots i.us{background:#4f7f96}.cal-grid .dots i.id{background:var(--focus)}
+.cal-list{margin-top:10px;border-top:1px solid var(--rule);padding-top:8px;min-height:60px}
+.cal-list .ev{display:grid;grid-template-columns:30px 1fr;gap:8px;padding:5px 0;font-size:13px}
+.cal-list .ev .tag{font:500 10px var(--mono);border-radius:3px;padding:2px 0;text-align:center;color:#fff;height:fit-content}
+.cal-list .ev .tag.us{background:#4f7f96}.cal-list .ev .tag.id{background:var(--focus)}
+.cal-list .ev small{display:block;font:11px var(--cond);color:var(--ink3);letter-spacing:.02em}
+.cal-key{display:flex;gap:14px;font:11px var(--cond);color:var(--ink3);margin-top:8px;letter-spacing:.02em}
+.cal-key span{display:flex;align-items:center;gap:5px}.cal-key i{width:7px;height:7px;border-radius:50%}
+@media (prefers-reduced-motion:reduce){.seg .liquid,.lamp .cord,.lamp .knob,.finder,.finder .box{transition:none}}
+
+/* phones: icon-only search, bulb-only lamp so the header never overflows */
+@media (max-width:720px){
+  header{gap:10px!important}
+  header .find{display:flex!important;min-width:0!important;width:34px;height:34px;padding:0!important;justify-content:center;font-size:0!important}
+  header .find svg{width:16px!important;height:16px!important;flex:none}
+  header .find kbd,header .find span{display:none!important}
+  .lamp{padding:0 8px;gap:0}.lamp .state{display:none}
+  .brand span{font-size:11.5px!important;letter-spacing:.1em!important}
+}
+
+/* grid items never grow past their track because of an SVG intrinsic width */
+.lower>*,.feature>*,.sheet>*,.duo>*{min-width:0}
+.curve,.big,.spark{max-width:100%}
+@media (max-width:720px){.gdp{flex-wrap:wrap;gap:10px 16px!important}.gdp div:first-child{flex:1 1 100%!important}.gdp strong{white-space:normal!important}}
+
+/* ================= RHYTHM: one spacing system for every sheet =================
+   page edge 28 · card inside 20 · between cards 20 · between columns 24 · max width 1520 */
+:root{--edge:28px;--pad:20px;--gap:20px;--col:24px;--maxw:1520px}
+header{padding-inline:max(var(--edge),calc((100% - var(--maxw))/2 + var(--edge)))!important}
+.sheet,.lower,.feature,footer{max-width:var(--maxw)!important}
+.sheet{padding:28px var(--edge) var(--gap)!important;gap:var(--col)!important}
+.lower{padding:0 var(--edge) 28px!important;gap:var(--gap)!important}
+.feature{padding:0 var(--edge) var(--gap)!important}
+h1{font-size:clamp(38px,3.8vw,56px)!important;line-height:1.03!important;margin:12px 0 14px!important}
+.dek{margin-bottom:0}
+/* cards: one inner padding */
+.card,.chartcard,.cal,.dossier{padding:var(--pad)!important}
+.sched-head{padding:16px var(--pad) 10px!important}
+.schedule th:first-child,.schedule td:first-child{padding-left:var(--pad)!important}
+.schedule th:last-child,.schedule td:last-child{padding-right:var(--pad)!important}
+.asof{padding:10px var(--pad) 12px!important}
+.rows{padding:0 calc(var(--pad) - 6px) 14px!important}
+.titleblock div{padding:10px 16px!important}
+/* Overview: both top columns end on the same line */
+.sheet:has(#viewer){align-items:stretch!important}
+.sheet:has(#viewer)>section:first-child{display:flex;flex-direction:column}
+.sheet:has(#viewer)>section:first-child .schedule{flex:1;display:flex;flex-direction:column;margin-top:22px!important;padding:0!important}
+.sheet:has(#viewer) .asof{margin-top:auto}
+.model{display:flex;flex-direction:column}
+.model .orbit{margin:auto 0 0!important;padding-top:8px}
+.model .titleblock{margin-top:10px!important}
+/* Macro: schedule and calendar share their bottom edge */
+.duo{gap:var(--gap)!important;margin-top:var(--gap)!important;align-items:stretch!important}
+.duo>.schedule,.duo>.cal{margin-top:0!important}
+.cal{display:flex;flex-direction:column}
+.cal-list{flex:1}
+.cal-key{margin-top:12px}
+.mapcard{margin-top:16px!important}
+@media (max-width:720px){:root{--edge:14px;--pad:16px}}
+
+/* themed scrollbars on every sheet */
+*{scrollbar-width:thin;scrollbar-color:var(--ink3) transparent}
+*::-webkit-scrollbar{width:8px;height:8px}*::-webkit-scrollbar-thumb{background:var(--ink3);border-radius:4px;border:2px solid transparent;background-clip:padding-box}*::-webkit-scrollbar-track{background:transparent}
+
+/* wide tables scroll inside their panel instead of widening the page */
+.two>*,.cyc>*,.val>*,.desk>*,.ustg>*{min-width:0}
+@media (max-width:1100px){.panel table.obs{display:block;overflow-x:auto;max-width:100%;-webkit-overflow-scrolling:touch}.panel table.obs td,.panel table.obs th{white-space:nowrap}}

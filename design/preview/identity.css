@@ -1,0 +1,94 @@
+/* Longhand identity layer, loaded last on every sheet.
+   Paper and ink. Day: a calm off-white writing paper. Night: graphite, like the desk with the lamp off.
+   The only brand colour is the Longhand nib green; red ink is kept for losses.
+   Background: fine paper grain only, no grid or ruled lines. Panels: frosted sheets without live blur
+   (backdrop blur on large panels is what made scrolling stutter).
+   Display type: Schibsted Grotesk; body IBM Plex Sans; figures IBM Plex Mono. */
+html:root{
+  --paper:#f0f1ed; --sheet:#f8f9f6;
+  --ink:#15201a; --ink2:#4a544e; --ink3:#7b837e; --rule:rgba(21,32,26,.14);
+  --glass:rgba(250,251,248,.86); --glass-edge:rgba(21,32,26,.12);
+  --olive:#3d5a46; --gain:#1d6a43; --loss:#b3261e; --focus:#1f5a3b; --accent-soft:rgba(31,90,59,.10);
+  --land:#dadfd8; --ocean:rgba(255,255,255,.35); --border:rgba(21,32,26,.38);
+  --shadow:0 1px 2px rgba(21,32,26,.05);
+  --display:"Schibsted Grotesk","IBM Plex Sans","Segoe UI",sans-serif;
+  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.08 0 0 0 0 0.12 0 0 0 0 0.1 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  --wave:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 8'%3E%3Cpath d='M0 4.5c5-3 10-3 15 0s10 3 15 0 7-2.4 10-1.2' fill='none' stroke='%231f5a3b' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+html:root[data-theme="dark"]{
+  --paper:#131415; --sheet:#1a1b1d;
+  --ink:#ebebe7; --ink2:#a7a9a5; --ink3:#73767a; --rule:rgba(235,235,231,.11);
+  --glass:rgba(27,28,30,.92); --glass-edge:rgba(235,235,231,.09);
+  --olive:#a9bfae; --gain:#78cf9b; --loss:#ff7f6e; --focus:#a8d5b6; --accent-soft:rgba(168,213,182,.10);
+  --land:#26282b; --ocean:rgba(255,255,255,.012); --border:rgba(235,235,231,.26);
+  --shadow:0 1px 2px rgba(0,0,0,.35);
+  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .045 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  --wave:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 8'%3E%3Cpath d='M0 4.5c5-3 10-3 15 0s10 3 15 0 7-2.4 10-1.2' fill='none' stroke='%23a8d5b6' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
+  color-scheme:dark;
+}
+html:root body{background-color:var(--paper);background-image:var(--grain);background-size:180px 180px;background-attachment:scroll;transition:background-color .3s var(--ease),color .3s var(--ease)}
+@media (prefers-reduced-motion:no-preference){html:root{scroll-behavior:smooth}}
+/* panels: frosted sheets, no live backdrop blur */
+html:root .glass,html:root .glass *{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html:root .glass{background:var(--glass);border:1px solid var(--glass-edge);border-radius:4px;box-shadow:var(--shadow)}
+html:root header.glass{background:color-mix(in srgb,var(--paper) 92%,transparent);border-radius:0;box-shadow:none}
+/* headline: the key figure is underlined with the nib's wave */
+html:root h1{font-family:var(--display);font-weight:600;letter-spacing:-.03em}
+html:root h1 em,html:root h1 .fig{font-style:normal;color:inherit;background:var(--wave) 0 100%/.9em .2em repeat-x;padding-bottom:.08em}
+html:root h2{font-family:var(--display);letter-spacing:-.02em}
+html:root .brand .logo{box-shadow:0 0 0 1px var(--rule)}
+html:root .brand span{font-family:var(--display);font-weight:600;letter-spacing:.06em}
+html:root nav a.on{border-bottom:2px solid var(--focus)}
+html:root .seg button.on{background:var(--ink);color:var(--paper)}
+/* calmer, consistent motion */
+html:root button,html:root a{transition-timing-function:var(--ease)}
+@keyframes lh-enter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.lh-enter{animation:lh-enter .32s var(--ease) both}
+@media (prefers-reduced-motion:reduce){.lh-enter{animation:none}html:root body{transition:none}}
+html:root h1 em, html:root .q em, html:root .regime em{font-style:normal}
+html:root .regime .q em{color:var(--focus)}
+
+/* map scales, one per indicator, tuned per theme (low values quiet, high values strong) */
+html:root{
+  --m-gdp-0:#c45a4b; --m-gdp-1:#d9d7c8; --m-gdp-2:#93b49c; --m-gdp-3:#2f6b4a;
+  --m-cpi-0:#d3dccf; --m-cpi-1:#e2cd98; --m-cpi-2:#d28d5a; --m-cpi-3:#a4473a;
+  --m-pol-0:#d5dee3; --m-pol-1:#9fb8c6; --m-pol-2:#5f8aa3; --m-pol-3:#2e5a75;
+  --m-yld-0:#dcdcd6; --m-yld-1:#aeb0a8; --m-yld-2:#777a72; --m-yld-3:#41443f;
+}
+html:root[data-theme="dark"]{
+  --m-gdp-0:#d9705f; --m-gdp-1:#3d403b; --m-gdp-2:#4f7d5d; --m-gdp-3:#8fd0a5;
+  --m-cpi-0:#36403a; --m-cpi-1:#7e7048; --m-cpi-2:#c07a4a; --m-cpi-3:#ec9480;
+  --m-pol-0:#2f383d; --m-pol-1:#3f6075; --m-pol-2:#6f9ab3; --m-pol-3:#b0d3e6;
+  --m-yld-0:#34352f; --m-yld-1:#5d6058; --m-yld-2:#90948b; --m-yld-3:#d3d6cd;
+}
+#hatch line{stroke:var(--ink)!important;stroke-opacity:.5}
+
+.ctry{fill:var(--land)}
+/* phone page bar */
+.tabbar{display:none}
+@media (max-width:720px){
+  .tabbar{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0;position:fixed;left:0;right:0;bottom:0;top:auto;height:auto!important;margin:0;z-index:40;
+    padding:0 max(4px,env(safe-area-inset-right,0px)) env(safe-area-inset-bottom,0px) max(4px,env(safe-area-inset-left,0px));
+    background:color-mix(in srgb,var(--paper) 96%,transparent);border-top:1px solid var(--rule)}
+  .tabbar a{position:relative;display:flex;align-items:center;justify-content:center;height:52px;font:500 11.5px var(--body);color:var(--ink2);text-align:center;letter-spacing:-.01em}
+  .tabbar a.on{color:var(--ink);font-weight:600}
+  .tabbar a.on::before{content:"";position:absolute;top:-1px;left:22%;right:22%;height:2px;background:var(--focus);border-radius:0 0 2px 2px}
+  body{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
+  .room{bottom:calc(64px + env(safe-area-inset-bottom,0px))!important}
+}
+
+/* sheet views: hidden views stay laid out at full width (charts keep their size) but take no space */
+main>section.view-off{position:absolute!important;left:0;right:0;top:0;height:0!important;min-height:0!important;padding-top:0!important;padding-bottom:0!important;overflow:hidden!important;visibility:hidden;pointer-events:none}
+.tile .tf small{font:12px var(--cond);color:var(--ink3);align-self:flex-end;padding-bottom:3px}
+/* solid bars: with no blur, see-through bars let text show behind them */
+html:root header.glass{background:var(--paper)}
+html:root .mtabs{background:var(--paper)!important}
+.tabbar a.on{border-bottom:0!important}
+.tabbar{background:var(--paper)!important}
+.tile .tf b{font-family:var(--display)!important;font-weight:600!important;font-variant-numeric:tabular-nums;letter-spacing:-.02em!important}
+/* Overview: quieter chart fill, quad cells in the theme, active quad marked by accent not a white block */
+.big .area{opacity:.07!important}
+.quad div{background:var(--glass)!important;transition:background .25s}
+.quad .on{background:var(--accent-soft)!important;color:var(--ink)!important;box-shadow:inset 0 0 0 1px var(--focus)}
+.quad .on b{color:var(--focus)!important}
