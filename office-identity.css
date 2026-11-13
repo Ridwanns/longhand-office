@@ -1,0 +1,84 @@
+/* Longhand identity layer for the working Office, loaded after every other stylesheet.
+   Same identity as the design preview (design/preview/identity.css):
+   - Paper and ink. Light: a calm off-white writing paper. Dark: graphite, not green.
+   - The only brand colour is the Longhand nib green; red ink is kept for losses.
+   - Fine paper grain behind the page; no grid or ruled background.
+   - Panels are flat sheets with a thin edge and a small radius.
+   - Display type Schibsted Grotesk, body IBM Plex Sans, code IBM Plex Mono (self-hosted in fonts/, OFL).
+   Only tokens and presentation change here; no layout, data or behaviour. */
+
+@font-face{font-family:"Schibsted Grotesk";font-style:normal;font-weight:400 700;font-display:swap;src:url(fonts/schibsted-grotesk-latin.woff2) format("woff2")}
+@font-face{font-family:"IBM Plex Sans";font-style:normal;font-weight:100 700;font-display:swap;src:url(fonts/ibm-plex-sans-latin.woff2) format("woff2")}
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/ibm-plex-mono-400-latin.woff2) format("woff2")}
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:500;font-display:swap;src:url(fonts/ibm-plex-mono-500-latin.woff2) format("woff2")}
+
+html:root{
+  --app-paper:#f0f1ed; --app-white:#f8f9f6; --app-ink:#15201a; --app-muted:#4f5853;
+  --app-line:#d3d6d1; --app-surface:#e7e9e4; --app-accent:#1f5a3b;
+  --paper:var(--app-paper); --white:var(--app-white); --ink:var(--app-ink); --muted:var(--app-muted);
+  --line:var(--app-line); --surface:var(--app-surface); --olive:var(--app-accent);
+  --forest:#1f5a3b; --gain:#1d6a43; --loss:#b3261e;
+  --desk-radius:6px; --desk-radius-sm:4px; --desk-shadow:0 1px 2px rgba(21,32,26,.05);
+  --lh-display:"Schibsted Grotesk","IBM Plex Sans","Segoe UI",Arial,sans-serif;
+  --lh-body:"IBM Plex Sans","Segoe UI",Arial,sans-serif;
+  --lh-mono:"IBM Plex Mono",Consolas,monospace;
+  --lh-accent-soft:rgba(31,90,59,.10);
+  --lh-grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.08 0 0 0 0 0.12 0 0 0 0 0.1 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  --lh-ease:cubic-bezier(.2,.7,.2,1);
+}
+html:root[data-theme=dark]{
+  --app-paper:#131415; --app-white:#1a1b1d; --app-ink:#ebebe7; --app-muted:#a7a9a5;
+  --app-line:#2f3133; --app-surface:#222326; --app-accent:#a8d5b6;
+  --paper:var(--app-paper); --white:var(--app-white); --ink:var(--app-ink); --muted:var(--app-muted);
+  --line:var(--app-line); --surface:var(--app-surface); --olive:var(--app-accent);
+  --forest:#2a2c2e; --gain:#78cf9b; --loss:#ff7f6e;
+  --desk-shadow:0 1px 2px rgba(0,0,0,.35);
+  --lh-accent-soft:rgba(168,213,182,.10);
+  --lh-grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .045 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  color-scheme:dark;
+}
+
+/* paper */
+html:root,html:root body{background-color:var(--app-paper)}
+html:root body{background-image:var(--lh-grain);background-size:180px 180px;color:var(--app-ink);font-variant-numeric:tabular-nums}
+
+/* type: one body face everywhere (about 300 rules hard-coded Segoe UI, Arial or Georgia), display face for headings */
+html:root body,html:root body *:not(code,pre,kbd,samp){font-family:var(--lh-body)!important}
+html:root body :is(code,pre,kbd,samp){font-family:var(--lh-mono)!important}
+html:root body :is(h1,h2,h3,.brand,.brand *,.command-heading h1,.page-heading h1,.intro h1,.intro h2){font-family:var(--lh-display)!important}
+html:root body :is(h1,.command-heading h1){font-weight:600;letter-spacing:-.03em}
+html:root body :is(h2,h3){letter-spacing:-.015em}
+html:root body :is(h1,h2) em{font-style:normal}
+
+/* brand: the nib on a cream disc replaces the old "LO" mark */
+html:root .brand-mark{font:0/0 a;width:32px;height:32px;padding:0;border:0;flex:0 0 32px;display:block}
+html:root .brand-mark svg{display:block;width:32px;height:32px;border-radius:50%;box-shadow:0 0 0 1px var(--app-line)}
+html:root .brand{letter-spacing:.06em;font-weight:600}
+html:root .brand b{font-weight:500}
+
+/* sheets: flat panels, thin edge, one small radius (was 9 to 14px across seven stylesheets) */
+html:root body :is(.command-portfolio,.command-panel,.empty-state,.record-list article,.vault-panel,.paper-steps,dialog,.entrance,.quant-room,
+  .pulse-card,.table-wrap,.macro-section-nav,.evidence-stats article,.evidence-empty,.data-coverage-desk,.published-portfolio-prices,
+  .statement-reconciliation,.source-selection-tools,.scientific-plot,.outlook-chart,.macro-data-figure,.market-chart-info,.reading-details-dialog,
+  .monitor-cycle,.idx-primary-panel,.valuation-scenario-card,.valuation-dot-chart,.accountability-panel,.portfolio-performance,.private-vault-panel,
+  .complete-backup,.latest-cycle-badge){border-radius:var(--desk-radius)}
+html:root body :is(.command-portfolio,.command-panel){box-shadow:var(--desk-shadow);border-color:var(--app-line)}
+
+/* current navigation item and selected tabs: marked by the nib green */
+html:root #office-navigation a[aria-current]{background:var(--lh-accent-soft);color:var(--app-ink);box-shadow:inset 2px 0 0 var(--app-accent)}
+html:root #office-navigation a[aria-current] svg{color:var(--app-accent)}
+html:root body :is(.command-quad.is-current){background:var(--lh-accent-soft);box-shadow:inset 0 0 0 1px var(--app-accent)}
+
+/* Markets and the macro monitor re-declare their own surfaces (slate blue) in market-data.css and macro-context.css.
+   Bring the surfaces and the accent onto the paper/graphite palette; chart data colours are left as they are. */
+html:root body :is(.market-workspace,.macro-monitor){--market-accent:var(--app-accent);--context-accent:var(--app-accent);--olive:var(--app-accent)}
+html:root[data-theme=dark] body:is(:has(.macro-monitor),:has(.market-workspace)){--paper:#131415;--app-paper:#131415;--app-white:#1a1b1d;--app-surface:#222326;--app-line:#2f3133;--app-ink:#ebebe7;--app-muted:#a7a9a5}
+html:root[data-theme=dark] body :is(.market-workspace,.macro-monitor){--paper:#131415;--white:#1a1b1d;--surface:#222326;--line:#2f3133;--ink:#ebebe7;--muted:#a7a9a5;--market-panel:#1a1b1d;--market-grid:#2f3133}
+
+/* dark leftovers: style.css paints every <header> #202722 (green-grey) and hover states use the old teal/blue */
+html:root[data-theme=dark] header:not(.office-topbar){background:transparent}
+html:root[data-theme=dark] body :is(.primary,.quant-room .primary):hover{background:color-mix(in srgb,var(--app-accent) 82%,#fff)}
+
+/* calmer, consistent motion */
+html:root body :is(a,button,summary,input,select){transition-timing-function:var(--lh-ease)}
+@media (prefers-reduced-motion:no-preference){html:root{scroll-behavior:smooth}}
