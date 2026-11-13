@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2032%2032%22%3E%3Ccircle%20cx=%2216%22%20cy=%2216%22%20r=%2216%22%20fill=%22%23f3efe6%22/%3E%3Cpath%20d=%22M15.9%206.5%20L20.3%209.2%20C20.5%2012.4%2020.3%2014.9%2019.3%2017.1%20C18.5%2018.9%2017.3%2020.8%2016%2023.1%20C14.7%2020.8%2013.5%2018.9%2012.7%2017.1%20C11.7%2014.9%2011.5%2012.4%2011.6%209.4%20Z%22%20fill=%22%2318332a%22/%3E%3Ccircle%20cx=%2216%22%20cy=%2214.9%22%20r=%220.95%22%20fill=%22%2318332a%22%20stroke=%22%23f3efe6%22%20stroke-width=%220.6%22/%3E%3Cpath%20d=%22M16%2016.1V22.2%22%20stroke=%22%23f3efe6%22%20stroke-width=%220.55%22%20stroke-linecap=%22round%22/%3E%3Cpath%20d=%22M11.1%2024.9c1.6-.75%203.25-.75%204.9%200s3.25.75%204.9%200%22%20fill=%22none%22%20stroke=%22%2318332a%22%20stroke-width=%220.65%22%20stroke-linecap=%22round%22/%3E%3C/svg%3E">
+<title>Longhand Office — Sheet 05 Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#efe9dd; --grid:rgba(90,78,55,.07); --grid2:rgba(90,78,55,.12);
+  --ink:#1c1f1b; --ink2:#5a5e55; --ink3:#8b8d84; --rule:rgba(40,36,28,.16);
+  --glass:rgba(250,247,240,.62); --glass-edge:rgba(255,255,255,.8);
+  --olive:#525e46; --gain:#2b7a57; --loss:#b4483c; --focus:#c4513f;
+  --land:#dcd4c3; --ocean:rgba(255,255,255,.18); --border:rgba(70,60,40,.45);
+  --shadow:0 1px 0 rgba(255,255,255,.6) inset,0 18px 40px -28px rgba(60,48,26,.45);
+  --display:"Newsreader",Georgia,serif; --body:"IBM Plex Sans","Segoe UI",sans-serif; --mono:"IBM Plex Mono",Consolas,monospace; --cond:"IBM Plex Sans Condensed","Arial Narrow",sans-serif;
+}
+:root[data-theme="dark"]{
+  --paper:#0d1628; --grid:rgba(150,185,235,.06); --grid2:rgba(150,185,235,.11);
+  --ink:#e8edf5; --ink2:#a2afc2; --ink3:#6c7a90; --rule:rgba(160,190,230,.18);
+  --glass:rgba(18,30,52,.6); --glass-edge:rgba(170,200,240,.16);
+  --olive:#9fb886; --gain:#5fd29e; --loss:#ff8270; --focus:#ff8270;
+  --land:#24324a; --ocean:rgba(255,255,255,.02); --border:rgba(170,200,240,.35);
+  --shadow:0 1px 0 rgba(170,200,240,.08) inset,0 18px 44px -24px rgba(0,0,0,.8);
+}
+*{box-sizing:border-box;margin:0}
+body{font:15px/1.5 var(--body);color:var(--ink);min-height:100vh;background-color:var(--paper);
+  background-image:linear-gradient(var(--grid2) 1px,transparent 1px),linear-gradient(90deg,var(--grid2) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:96px 96px,96px 96px,12px 12px,12px 12px;transition:background-color .5s,color .4s}
+a{color:inherit;text-decoration:none}button{font:inherit;color:inherit}
+.num{font-variant-numeric:tabular-nums}.up{color:var(--gain)}.dn{color:var(--loss)}
+.glass{background:var(--glass);backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);border:1px solid var(--glass-edge);box-shadow:var(--shadow);border-radius:6px}
+.kicker{font:500 11px var(--cond);letter-spacing:.12em;color:var(--ink3);text-transform:uppercase}
+header{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:32px;padding:0 28px;height:56px;border-radius:0;border-width:0 0 1px;border-bottom-color:var(--rule)}
+.brand{display:flex;align-items:center;gap:11px;font:500 13px var(--body);letter-spacing:.04em}
+.brand .logo{width:30px;height:30px;flex:none;border-radius:50%;box-shadow:0 0 0 1px var(--rule)}
+.brand span{font:500 13px var(--body);letter-spacing:.14em;text-transform:uppercase}
+nav{display:flex;gap:26px;height:100%}
+nav a{display:flex;align-items:center;color:var(--ink2);font-weight:500;border-bottom:2px solid transparent;margin-bottom:-1px}
+nav a:hover{color:var(--ink)}nav a.on{color:var(--ink);border-bottom-color:var(--ink)}
+.sp{flex:1}
+.iconbtn{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--rule);border-radius:4px;background:none;cursor:pointer;color:var(--ink)}
+.iconbtn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.6}
+.iconbtn:hover{border-color:var(--ink2)}
+.seg{display:flex;border:1px solid var(--rule);border-radius:4px;overflow:hidden;width:max-content;max-width:100%}
+.seg button{background:none;border:0;padding:6px 13px;font:500 11.5px var(--cond);letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);cursor:pointer;white-space:nowrap;transition:background .2s,color .2s}
+.seg button+button{border-left:1px solid var(--rule)}.seg button.on{background:var(--ink);color:var(--paper)}
+
+.sheet{max-width:1560px;margin:0 auto;padding:26px 28px 20px;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(360px,1fr);gap:22px;align-items:start}
+.sheet>*{min-width:0}
+.intro{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+h1{font:400 clamp(34px,3.4vw,52px)/1.04 var(--display);letter-spacing:-.025em;margin:10px 0 10px;max-width:18ch}
+h1 em{color:var(--focus)}
+.dek{color:var(--ink2);max-width:70ch;margin-bottom:16px}
+.dek b{color:var(--ink);font-weight:600}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font:12px var(--cond);color:var(--ink2);letter-spacing:.02em;margin:10px 0 0}
+.legend span{display:flex;align-items:center;gap:6px}
+.sw{width:14px;height:10px;border-radius:2px;border:1px solid var(--rule)}
+.sw.hatch{background:repeating-linear-gradient(135deg,transparent 0 2px,var(--ink2) 2px 3px)}
+
+/* map */
+.mapcard{position:relative;margin-top:14px;padding:0;overflow:hidden}
+.map{display:block;width:100%;height:auto;aspect-ratio:2/1;cursor:grab;touch-action:none;background:var(--ocean)}
+.map.drag{cursor:grabbing}
+#world{transform-origin:0 0;transition:transform .75s cubic-bezier(.22,.8,.2,1)}
+.map.drag #world,.map.noanim #world{transition:none}
+.grat{fill:none;stroke:var(--rule);stroke-width:.6;vector-effect:non-scaling-stroke}
+.ctry{stroke:var(--border);stroke-width:.6;vector-effect:non-scaling-stroke;transition:fill .35s ease,opacity .25s;cursor:pointer}
+.ctry.none{fill:var(--land);cursor:pointer}
+.ctry:hover{stroke:var(--ink);stroke-width:1.4}
+.ctry.sel{stroke:var(--ink);stroke-width:2.2}
+.dim .ctry:not(.sel){opacity:.55}
+.hatch{fill:url(#hatch);pointer-events:none}
+.sgp{stroke:var(--border);stroke-width:.8;vector-effect:non-scaling-stroke;cursor:pointer}
+.tip{position:absolute;left:0;top:0;pointer-events:none;padding:7px 10px;font:12px var(--body);opacity:0;transition:opacity .15s;white-space:nowrap;z-index:5}
+.tip b{font:500 15px var(--display);display:block}
+.tip .v{font:500 13px var(--mono)}
+.mapctl{position:absolute;right:12px;bottom:12px;display:flex;flex-direction:column;gap:6px;z-index:4}
+.mapctl .iconbtn{background:var(--glass);backdrop-filter:blur(10px)}
+.maphint{position:absolute;left:14px;bottom:12px;font:11px var(--cond);color:var(--ink3);letter-spacing:.04em}
+
+/* schedule under map */
+.schedule{margin-top:16px}
+.sched-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px 8px}
+.find{height:30px;border:1px solid var(--rule);border-radius:4px;background:transparent;padding:0 10px;font:12.5px var(--body);color:var(--ink);width:170px}
+.rows{columns:3 260px;column-gap:0;padding:0 8px 10px}
+.row{display:grid;grid-template-columns:24px 1fr 58px 70px;align-items:center;gap:8px;padding:6px 8px;border-radius:4px;cursor:pointer;break-inside:avoid;transition:background .15s;font-size:13px}
+.row:hover{background:rgba(127,127,127,.08)}
+.row.sel{background:rgba(127,127,127,.14);box-shadow:inset 3px 0 0 var(--focus)}
+.row .rk{font:11px var(--mono);color:var(--ink3)}
+.row .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .vl{font:500 12.5px var(--mono);text-align:right}
+.row .bar{height:8px;position:relative;background:var(--rule);border-radius:1px;overflow:hidden}
+.row .bar i{position:absolute;top:0;bottom:0;left:0}
+.row .bar i.h{background-image:repeating-linear-gradient(135deg,transparent 0 2px,rgba(0,0,0,.45) 2px 3px)!important}
+
+/* dossier */
+.dossier{position:sticky;top:122px;max-height:calc(100vh - 138px);overflow:auto;padding:20px 20px 16px}
+.dossier>*{animation:in .45s cubic-bezier(.2,.8,.2,1) both}
+.dossier>*:nth-child(2){animation-delay:.04s}.dossier>*:nth-child(3){animation-delay:.08s}.dossier>*:nth-child(4){animation-delay:.12s}.dossier>*:nth-child(5){animation-delay:.16s}.dossier>*:nth-child(6){animation-delay:.2s}.dossier>*:nth-child(7){animation-delay:.24s}
+.dossier h2{font:400 40px/1 var(--display);letter-spacing:-.02em;margin:6px 0 4px}
+.dossier .lead{color:var(--ink2);font-size:14px;margin-bottom:14px}
+.ind{border-top:1px solid var(--rule);padding:14px 0 10px}
+.ind-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.ind-head .t{font:500 11px var(--cond);letter-spacing:.12em;text-transform:uppercase;color:var(--ink2)}
+.ind-head .rank{font:11px var(--cond);color:var(--ink3);letter-spacing:.02em}
+.ind-val{display:flex;align-items:baseline;gap:12px;margin:2px 0 2px;flex-wrap:wrap}
+.ind-val b{font:500 30px var(--mono);letter-spacing:-.03em}
+.ind-val span{font:12px var(--cond);color:var(--ink2);letter-spacing:.02em}
+.ind-val .stale{color:var(--focus)}
+.ind.none .ind-val b{font:400 15px var(--body);color:var(--ink3)}
+.spark{display:block;width:100%;height:88px;overflow:visible;touch-action:pan-y}
+.spark .l{fill:none;stroke:var(--ink);stroke-width:1.4;vector-effect:non-scaling-stroke}
+.spark .a{fill:var(--ink);opacity:.06}
+.spark .z{stroke:var(--ink3);stroke-dasharray:2 3;vector-effect:non-scaling-stroke}
+.spark .j{stroke:var(--focus);stroke-dasharray:3 3;vector-effect:non-scaling-stroke}
+.spark text{font:10px var(--mono);fill:var(--ink3)}
+.spark .xh{stroke:var(--ink);opacity:0;vector-effect:non-scaling-stroke}
+.ro{font:11px var(--mono);color:var(--ink2);min-height:16px}
+.ro b{color:var(--ink);font-weight:500}
+.src{font:11px var(--cond);color:var(--ink3);letter-spacing:.02em}
+.wdi{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;border-top:1px solid var(--rule);padding-top:12px;margin-top:4px}
+.wdi small{display:block;font:500 10.5px var(--cond);letter-spacing:.1em;text-transform:uppercase;color:var(--ink3)}
+.wdi strong{font:500 17px var(--mono);letter-spacing:-.02em}
+.wdi em{font:11px var(--cond);font-style:normal;color:var(--ink3)}
+.empty{color:var(--ink2);font-size:14px;border-top:1px solid var(--rule);padding-top:14px}
+.duo{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(300px,1fr);gap:16px;margin-top:16px;align-items:start}.duo>.schedule{margin-top:0}.duo .rows{columns:2 230px}.duo .row{grid-template-columns:22px minmax(0,1fr) 46px 40px;gap:6px;padding:5px 6px}
+@media (max-width:900px){.duo{grid-template-columns:1fr}}
+footer{max-width:1560px;margin:0 auto;padding:0 28px 30px;font:11px var(--cond);color:var(--ink3);display:flex;gap:18px;flex-wrap:wrap;letter-spacing:.02em}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:1100px){.sheet{grid-template-columns:1fr}.dossier{position:static;max-height:none}}
+@media (max-width:720px){header{padding:0 14px;gap:14px}nav{display:none}.sheet{padding:18px 14px}footer{padding:0 14px 24px}
+  .seg button{padding:6px 9px;font-size:10.5px}.maphint{display:none}.rows{columns:1}.dossier h2{font-size:32px}.wdi{grid-template-columns:1fr 1fr}}
+</style>
+<link rel="stylesheet" href="office-ui.css">
+<link rel="stylesheet" href="macro-sections.css">
+<link rel="stylesheet" href="markets.css">
+<link rel="stylesheet" href="research.css">
+<link rel="stylesheet" href="identity.css">
+</head>
+<body>
+<header class="glass">
+  <a class="brand" href="index.html" aria-label="Longhand Office, overview"><svg class="logo" viewBox="0 0 32 32" role="img" aria-label="Longhand"><circle cx="16" cy="16" r="16" fill="#f3efe6"/><path d="M15.9 6.5 L20.3 9.2 C20.5 12.4 20.3 14.9 19.3 17.1 C18.5 18.9 17.3 20.8 16 23.1 C14.7 20.8 13.5 18.9 12.7 17.1 C11.7 14.9 11.5 12.4 11.6 9.4 Z" fill="#18332a"/><circle cx="16" cy="14.9" r="0.95" fill="#18332a" stroke="#f3efe6" stroke-width="0.6"/><path d="M16 16.1V22.2" stroke="#f3efe6" stroke-width="0.55" stroke-linecap="round"/><path d="M11.1 24.9c1.6-.75 3.25-.75 4.9 0s3.25.75 4.9 0" fill="none" stroke="#18332a" stroke-width="0.65" stroke-linecap="round"/></svg><span>Longhand Office</span></a>
+  <nav><a href="index.html">Overview</a><a href="macro.html">Macro</a><a href="markets.html">Markets</a><a href="research.html">Research Lab</a><a class="on" href="portfolio.html">Portfolio</a><a href="records.html">Records</a></nav>
+  <div class="sp"></div>
+  <div class="find" style="display:flex;align-items:center;gap:10px;height:34px;padding:0 12px;border:1px solid var(--rule);border-radius:4px;color:var(--ink3);min-width:220px;font-size:13px"><svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.6"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg><span style="white-space:nowrap">Find page or country</span><kbd style="margin-left:auto;font:10px var(--mono)">CTRL K</kbd></div>
+  <button class="iconbtn" id="theme" aria-label="Switch theme"><svg viewBox="0 0 24 24" id="ticon"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg></button>
+</header>
+<nav class="mtabs" id="mtabs" aria-label="Sheet 05 Portfolio sections"></nav>
+<main>
+  <section class="msec lead-sec"><div class="kicker">Sheet 05 · Portfolio · manual records, Paper and Real kept apart</div><h1>Your records, kept apart and priced honestly.</h1><p class="dek">Real holds your actual investments, entered by hand. Paper holds simulations. The worked ledger below is a clearly labelled example in Paper, priced with the latest published closes in the snapshot; it is not your record.</p></section>
+  <section class="msec" id="groups"><div class="panel glass"></div></section>
+  <section class="msec" id="holdings"><div class="panel glass"></div></section>
+  <section class="msec" id="journal"><div class="panel glass"></div></section>
+  <section class="msec" id="income"><div class="panel glass"></div></section>
+  <section class="msec" id="pricing"><div class="panel glass"></div></section>
+  <section class="msec" id="performance"><div class="panel glass"></div></section>
+  <section class="msec" id="reconcile"><div class="panel glass"></div></section>
+  <section class="msec" id="decisions"><div class="panel glass"></div></section>
+</main>
+<footer><span>Design preview — not the live app.</span><span>No brokerage connection. The app never places orders.</span><span>Currencies are never consolidated through invented exchange rates.</span></footer>
+<script src="markets-sheet.js"></script>
+<script src="portfolio.js"></script>
+<script src="sheet-views.js"></script>
+<script src="office-ui.js"></script>
+<script>
+function setTheme(t){document.documentElement.dataset.theme=t;try{localStorage.setItem('lh-theme',t)}catch(e){}}
+document.getElementById('theme').onclick=()=>setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark');
+(function(){let t='light';try{t=localStorage.getItem('lh-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}setTheme(t)})();
+</script>
+</body>
+</html>
