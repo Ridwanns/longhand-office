@@ -2,7 +2,8 @@
 // usage: node build_markets_sheet.mjs <repo>
 import fs from 'fs'; import path from 'path';
 const repo = process.argv[2]; const P = f => path.join(repo, '.pages-data', f);
-const OUT = path.join(repo, 'design', 'preview'); fs.mkdirSync(path.join(OUT, 'mk'), { recursive: true });
+// LH_SHEET_OUT: the Pages build's scratch folder; otherwise the committed preview
+const OUT = process.env.LH_SHEET_OUT || path.join(repo, 'design', 'preview'); fs.mkdirSync(path.join(OUT, 'mk'), { recursive: true });
 const MH = JSON.parse(fs.readFileSync(P('market-history.json'), 'utf8'));
 const QUOTES = JSON.parse(fs.readFileSync(P('market.json'), 'utf8')).quotes;
 const RATES = JSON.parse(fs.readFileSync(P('official-rates.json'), 'utf8'));

@@ -1,12 +1,15 @@
 // Presentation metadata only. Routes, record identifiers and financial engines are unchanged.
 export const WORKSPACES=[
  {id:'overview',label:'Overview',route:'#overview',icon:'office'},
- {id:'markets',label:'Markets',route:'#market/us',icon:'market'},
+ {id:'macro',label:'Macro',route:'#macro',icon:'macro'},
+ {id:'markets',label:'Markets',route:'#markets',icon:'market'},
  {id:'research',label:'Research Lab',route:'#quant',icon:'quant'},
  {id:'portfolio',label:'Portfolio',route:'#portfolios',icon:'portfolio'}
 ];
 export const WORKSPACE_PAGES=[
  {id:'overview',group:'Overview',label:'Command Center',route:'#overview',icon:'office',aliases:'overview command center dashboard summary recent research completeness courtyard office'},
+ {id:'macro-sheet',group:'Macro',label:'Macro sheet',route:'#macro',icon:'macro',aliases:'macro world map economies countries GDP growth inflation policy rate 10-year yield dossier release calendar cycle quad'},
+ {id:'markets-sheet',group:'Markets',label:'All markets',route:'#markets',icon:'market',aliases:'markets all markets indices index sheet overview S&P IHSG treasury curve bonds commodities'},
  {id:'us',group:'Markets',label:'US stocks & ETFs',route:'#market/us',icon:'market',aliases:'US stocks America prices watchlist markets'},
  {id:'idx',group:'Markets',label:'Indonesia',route:'#market/idx',icon:'market',aliases:'IDX Indonesian stocks saham MSN Flowless'},
  {id:'macro',group:'Markets',label:'Macro monitor',route:'#market/macro',icon:'macro',aliases:'macro GDP CPI inflation economy indices index'},
@@ -52,6 +55,6 @@ export function findDestinations(query=''){
 // Routes the page renderer handles. Anything else used to render the Overview
 // markup without mounting it (endless "Reading published prices…" under an
 // "Investment Lab" title); it is now normalized before rendering.
-const ROUTE_ALIASES=Object.freeze({portfolio:'portfolios',macro:'market/macro',markets:'market/us',research:'quant',journal:'decisions'});
-const KNOWN_ROUTE=/^(?:overview|about|library|records|theses|decisions|portfolios(?:\/real)?|portfolio\/[^/]+|(?:theses|decisions)\/[^/]+(?:\/reviews)?|market(?:\/.*)?|quant(?:\/.*)?|data-sources(?:\/.*)?)$/;
+const ROUTE_ALIASES=Object.freeze({portfolio:'portfolios',research:'quant',journal:'decisions'});
+const KNOWN_ROUTE=/^(?:overview|macro|markets|about|library|records|theses|decisions|portfolios(?:\/real)?|portfolio\/[^/]+|(?:theses|decisions)\/[^/]+(?:\/reviews)?|market(?:\/.*)?|quant(?:\/.*)?|data-sources(?:\/.*)?)$/;
 export function canonicalRoute(route=''){const value=String(route||'overview');if(KNOWN_ROUTE.test(value))return value;return Object.hasOwn(ROUTE_ALIASES,value)?ROUTE_ALIASES[value]:'overview';}

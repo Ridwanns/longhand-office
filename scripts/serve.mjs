@@ -27,9 +27,9 @@ async function readLocalOverview(){
 const portIndex=process.argv.indexOf('--port'),port=portIndex<0?4173:Number(process.argv[portIndex+1]);
 if(![4173,4174].includes(port))throw Error('Only local workspace port 4173 and isolated test port 4174 are supported.');
 const files = new Set(['index.html','style.css','app.js','model.js','theme.js','market-terminal.js','market-catalogue.js','building.svg','catalogue.json']);
-['overview-ui.js','overview-chart.js','overview-data.js','overview-contract.js','overview.css','native-prices.js'].forEach(f=>files.add(f));
+['overview-ui.js','overview-chart.js','overview-data.js','overview-contract.js','overview.css','native-prices.js','overview-desk.js','overview-model.js','overview-desk.css','office-shell.css','sheet-host.js','sheet-macro-page.js','sheet-macro-map.js','sheet-macro-sections.js','sheet-macro-calendar.js','sheet-macro.css','macro-map-data.js','sheet-markets-page.js','sheet-markets-desks.js','sheet-markets-lead.js','sheet-views.js','sheet-markets.css','sheet-skin.js','sheet-skin.css'].forEach(f=>files.add(f));
 // Longhand identity layer and its self-hosted fonts (OFL).
-['office-identity.css','fonts/schibsted-grotesk-latin.woff2','fonts/ibm-plex-sans-latin.woff2','fonts/ibm-plex-mono-400-latin.woff2','fonts/ibm-plex-mono-500-latin.woff2'].forEach(f=>files.add(f));
+['office-identity.css','fonts/newsreader-latin.woff2','fonts/ibm-plex-sans-latin.woff2','fonts/ibm-plex-mono-400-latin.woff2','fonts/ibm-plex-mono-500-latin.woff2'].forEach(f=>files.add(f));
 ['macro-atlas.js','macro-atlas-data.js','macro-atlas-labels.js','macro-atlas.css','office-visual-system.css','motion-system.js'].forEach(f=>files.add(f));
 ['chart-typography.js','macro-forecast.js','macro-forecast-ui.js','macro-indicators-contract.js','macro-indicators-ui.js','macro-chart.js','macro-context-contract.js','macro-context-math.js','macro-context-ui.js','macro-context.css'].forEach(f=>files.add(f));
 ['macro-releases-contract.js','macro-releases-ui.js','macro-extended-contract.js','macro-extended-ui.js','macro-navigation.js','macro-briefing.js','macro-winds.js'].forEach(f=>files.add(f));
@@ -53,7 +53,7 @@ files.add('research-history.js');
 let local;
 if(port===4174){files.add('valuation-example.json');files.add('flowless-example.json');}
 ['market-data-contract.js','market-data-adapters.js','market-data-research.js','market-data-worker.js','market-data-storage.js','market-data-service.js','market-data-ui.js','market-data.css'].forEach(f=>files.add(f));
-const types = {'.html':'text/html','.css':'text/css','.js':'text/javascript','.svg':'image/svg+xml','.json':'application/json','.woff2':'font/woff2'};
+const types = {'.html':'text/html','.css':'text/css','.js':'text/javascript','.svg':'image/svg+xml','.json':'application/json','.woff2':'font/woff2','.webp':'image/webp'};
 const server=http.createServer(async(req,res)=>{
   let url;try{if(!req.url?.startsWith('/')||req.url.startsWith('//'))throw Error('Invalid local path');url=new URL(req.url,'http://localhost');}catch{res.writeHead(400);return res.end('Invalid request path');}
   const allowedHosts=new Set([`127.0.0.1:${port}`,`localhost:${port}`]);
@@ -90,6 +90,16 @@ const server=http.createServer(async(req,res)=>{
   const name = url.pathname.slice(1) || 'index.html';
   if(url.pathname==='/data/overview.json'){
     try{const body=await readLocalOverview();res.writeHead(200,{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});return res.end(body);}catch{res.writeHead(404);return res.end('Public overview snapshot unavailable.');}
+  }
+  // Ported sheets read their data as JSON. Locally that is the committed design snapshot (design/preview/*.js,
+  // window.NAME=...); the Pages build regenerates it from the current .pages-data on every deploy.
+  const history=/^sheet-data\/mk\/([A-Za-z0-9_.-]+\.json)$/.exec(name);
+  if(history){try{const body=await readFile(path.join(root,'design','preview','mk',history[1]));res.writeHead(200,{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});return res.end(body);}catch{res.writeHead(404);return res.end('Instrument history unavailable.');}}
+  const sheet=/^sheet-data\/(countries|macro-sheet|cycles|calendar|markets-sheet)\.json$/.exec(name);
+  if(sheet){try{const text=await readFile(path.join(root,'design','preview',sheet[1]+'.js'),'utf8'),start=text.search(/window\.[A-Z]+=/),body=text.slice(text.indexOf('=',start)+1).trim().replace(/;$/,'');JSON.parse(body);res.writeHead(200,{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});return res.end(body);}catch{res.writeHead(404);return res.end('Sheet data unavailable.');}}
+  // The Overview's architectural model: Blender frames kept once, in design/preview/frames, and served under model/.
+  if(/^model\/build-(light|dark)(-(\d{2}|final)\.webp|\.json)$/.test(name)){
+    try{const body=await readFile(path.join(root,'design','preview','frames',name.slice(6)));res.writeHead(200,{'Content-Type':types[path.extname(name)],'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});return res.end(body);}catch{res.writeHead(404);return res.end('Not found');}
   }
   if (!files.has(name)) {res.writeHead(404);return res.end('Not found');}
   try {const body=await readFile(path.join(root,name));res.writeHead(200,{'Content-Type':types[path.extname(name)],'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','Content-Security-Policy':"default-src 'self'; connect-src 'self' https: http://127.0.0.1:4176 http://localhost:4176; frame-src https://s.tradingview.com https://www.tradingview-widget.com; style-src 'self'; script-src 'self'; img-src 'self' data:; frame-ancestors 'none'; base-uri 'none'; form-action 'self'"});res.end(body);}catch{res.writeHead(500);res.end('Unable to read app file');}
