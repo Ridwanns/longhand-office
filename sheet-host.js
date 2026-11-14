@@ -6,7 +6,7 @@
 //   applied through the CSSOM, which the CSP allows. They come from the templates and escaped published values.
 // - Listeners: window/document listeners registered by the sheet stop when the sheet leaves the page.
 // - In-sheet links: a link to an element of the sheet scrolls to it instead of changing the Office route.
-const SHEET_DATA={countries:'COUNTRIES','macro-sheet':'MACRO',cycles:'CYCLES',calendar:'CALENDAR','markets-sheet':'MARKETS'};
+const SHEET_DATA={countries:'COUNTRIES','macro-sheet':'MACRO',cycles:'CYCLES',calendar:'CALENDAR','markets-sheet':'MARKETS','records-sheet':'RECORDS'};
 const loaded=new Map();
 export function loadSheetData(names){
  return Promise.all(names.map(name=>{

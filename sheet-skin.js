@@ -28,8 +28,41 @@ function views(key,main){
  // the published Library belongs with Records & Data Sources in the design
  return key==='records'?[...pages,{label:'Library',route:'#library',id:'library',current:location.hash==='#library'}]:pages;
 }
+// Research Lab as preview sheet 04: the general headline, and every view opened by the preview's numbered detail
+// heading (bubble, label, description). The view's own title element is kept: the Lab focuses it when a view opens.
+const RESEARCH_DETAILS={
+ overview:['Research overview',''],
+ models:['Advanced research','Core methods include AR(1), Ridge, Mean and Zero. Advanced methods cover return forecasts, volatility, market regimes, tail risk and scenarios. Unavailable analyses explain what is missing.'],
+ validation:['Validation & accountability','Eligible fresh core forecasts can be frozen and observed over five or twenty future source sessions. Pending outcomes are never scored as zero.'],
+ valuation:['Valuation sensitivity','Scenario assumptions are editable and are not market facts. Fundamentals are not inferred from a ticker; enter them from a filing you trust.'],
+ thesis:['Investment lab','Give an idea a clear argument, evidence and a date to reconsider. Earlier text is retained when you revise.'],
+ saved:['Saved research','Searchable archives of core analyses, advanced studies, registered forecasts, manual studies, ticker studies and valuations.'],
+ tools:['Advanced tools','Research toolkit · options, fixed income and portfolio risk. Inputs are yours; nothing is inferred from a stock ticker.']};
+const RESEARCH_HEADLINE='Study the evidence. Keep assumptions and retained research in view.';
+function researchSheet(main){
+ const head=main.querySelector('.quant-head'),h1=head?.querySelector('h1'),lede=head?.querySelector(':scope>p:last-child');
+ if(h1&&h1.textContent!==RESEARCH_HEADLINE){h1.textContent=RESEARCH_HEADLINE;if(lede&&lede.textContent.trim()===RESEARCH_HEADLINE)lede.classList.add('lh-skin-original');}
+ const order=Object.keys(RESEARCH_DETAILS);
+ // the view bar follows the heading, as the preview's section row does; the selected-instrument card comes after it
+ const bar=main.querySelector('nav.research-views'),context=main.querySelector('.quant-content > .lab-context');
+ if(bar&&context&&context.compareDocumentPosition(bar)&Node.DOCUMENT_POSITION_FOLLOWING)context.before(bar);
+ // Detail 1 is the instrument panel itself, as on the preview: bubble, label, "Start with a ticker."
+ const desk=main.querySelector('[data-lab-pane="overview"] .ticker-desk');
+ if(desk&&!desk.classList.contains('lh-detail')){desk.classList.add('lh-detail');const bubble=document.createElement('span');bubble.className='lh-dbub';bubble.setAttribute('aria-hidden','true');bubble.innerHTML='<b>1</b><i>04</i>';desk.prepend(bubble);const eyebrow=desk.querySelector(':scope>.eyebrow');if(eyebrow&&!eyebrow.textContent.startsWith('Detail'))eyebrow.textContent='Detail 1 · '+eyebrow.textContent;}
+ main.querySelectorAll('.research-lab .lab-section-title').forEach(title=>{
+  if(title.closest('.lh-sec-head'))return;
+  const view=title.closest('[data-lab-pane]')?.dataset.labPane;if(!RESEARCH_DETAILS[view]||view==='overview')return;
+  const [kicker,lede]=RESEARCH_DETAILS[view]||['',''],n=order.indexOf(view)+1;
+  const wrap=document.createElement('div');wrap.className='lh-sec-head';
+  wrap.innerHTML=`<span class="lh-dbub" aria-hidden="true"><b>${n||''}</b><i>04</i></span><div class="lh-sec-text"><p class="lh-skin-kicker">Detail ${n} · ${esc(kicker)}</p></div>`;
+  title.before(wrap);wrap.querySelector('.lh-sec-text').append(title);
+  if(lede){const p=document.createElement('p');p.className='lh-sec-lede';p.textContent=lede;wrap.querySelector('.lh-sec-text').append(p);}
+ });
+}
 export function applySheetSkin(route){
- const main=document.querySelector('main#main'),key=Object.keys(SHEETS).find(k=>SHEETS[k].match(route));
+ const main=document.querySelector('main#main');let key=Object.keys(SHEETS).find(k=>SHEETS[k].match(route));
+ // a page that is a full ported sheet (Records) already carries the design
+ if(main?.querySelector('.lh-sheet'))key=undefined;
  document.body.dataset.sheet=key||'';if(!key||!main)return;
  const sheet=SHEETS[key],head=main.querySelector('.quant-head,.page-heading');
  if(head&&!head.classList.contains('lh-skin-head')){
@@ -42,6 +75,7 @@ export function applySheetSkin(route){
   const first=[...main.children].find(e=>!e.matches('.test-banner,.error-banner,.recovery-notice,aside'));
   if(first&&first!==head&&head.parentElement===main)main.insertBefore(head,first);
  }
+ if(key==='research')researchSheet(main);
  if(sheet.overview(route)&&!main.querySelector('.lh-deep')){
   const list=views(key,main).filter(v=>!v.current&&v.route!=='#'+route);
   if(list.length){

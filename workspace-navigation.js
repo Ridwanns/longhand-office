@@ -26,7 +26,7 @@ export const WORKSPACE_PAGES=[
  {id:'real',group:'Portfolio',label:'Real portfolios',route:'#portfolios/real',icon:'real',aliases:'real actual investment portfolio holdings positions transactions performance TWR MWR FX daily closing valuation'},
  {id:'decisions',group:'Portfolio',label:'Decision journal',route:'#decisions',icon:'journal',aliases:'decision journal reasoning'},
  {id:'reviews',group:'Portfolio',label:'Investment reviews',route:'#decisions',icon:'journal',target:'.review-queue',finderOnly:true,aliases:'review reviews outcome due monitor'},
- {id:'records',group:'Workspace',label:'Records and backups',route:'#records',icon:'records',aliases:'records backup backups export import restore encrypted storage vault'},
+ {id:'records',group:'Workspace',label:'Records',route:'#records',icon:'records',aliases:'records backup backups export import restore encrypted storage vault'},
  {id:'data-sources',group:'Workspace',label:'Data Sources',route:'#data-sources',icon:'library',aliases:'data sources provider providers Pluang Yahoo Flowless SEC import CSV quality provenance coverage freshness missing unavailable report'},
  {id:'sources',group:'Workspace',label:'Source information',route:'#market/macro/id/sources',icon:'library',finderOnly:true,aliases:'source sources provenance data freshness'},
  {id:'forecasts',group:'Research Lab',label:'Model accountability & forecasts',route:'#quant/section/predictions',icon:'quant',section:'predictions',finderOnly:true,aliases:'model validation accountability forecast forecasts prediction predictions outcomes'},

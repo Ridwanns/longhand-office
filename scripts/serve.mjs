@@ -27,9 +27,9 @@ async function readLocalOverview(){
 const portIndex=process.argv.indexOf('--port'),port=portIndex<0?4173:Number(process.argv[portIndex+1]);
 if(![4173,4174].includes(port))throw Error('Only local workspace port 4173 and isolated test port 4174 are supported.');
 const files = new Set(['index.html','style.css','app.js','model.js','theme.js','market-terminal.js','market-catalogue.js','building.svg','catalogue.json']);
-['overview-ui.js','overview-chart.js','overview-data.js','overview-contract.js','overview.css','native-prices.js','overview-desk.js','overview-model.js','overview-desk.css','office-shell.css','sheet-host.js','sheet-macro-page.js','sheet-macro-map.js','sheet-macro-sections.js','sheet-macro-calendar.js','sheet-macro.css','macro-map-data.js','sheet-markets-page.js','sheet-markets-desks.js','sheet-markets-lead.js','sheet-views.js','sheet-markets.css','sheet-skin.js','sheet-skin.css'].forEach(f=>files.add(f));
+['overview-ui.js','overview-chart.js','overview-data.js','overview-contract.js','overview.css','native-prices.js','overview-desk.js','overview-model.js','overview-desk.css','office-shell.css','sheet-host.js','sheet-macro-page.js','sheet-macro-map.js','sheet-macro-sections.js','sheet-macro-calendar.js','sheet-macro.css','macro-map-data.js','sheet-markets-page.js','sheet-markets-desks.js','sheet-markets-lead.js','sheet-views.js','sheet-markets.css','sheet-skin.js','sheet-skin.css','sheet-records-page.js','sheet-records-sections.js','sheet-records.css','sheet-portfolio-page.js','sheet-portfolio.css'].forEach(f=>files.add(f));
 // Longhand identity layer and its self-hosted fonts (OFL).
-['office-identity.css','fonts/newsreader-latin.woff2','fonts/ibm-plex-sans-latin.woff2','fonts/ibm-plex-mono-400-latin.woff2','fonts/ibm-plex-mono-500-latin.woff2'].forEach(f=>files.add(f));
+['office-identity.css','fonts/schibsted-grotesk-latin.woff2','fonts/ibm-plex-sans-latin.woff2','fonts/ibm-plex-mono-400-latin.woff2','fonts/ibm-plex-mono-500-latin.woff2'].forEach(f=>files.add(f));
 ['macro-atlas.js','macro-atlas-data.js','macro-atlas-labels.js','macro-atlas.css','office-visual-system.css','motion-system.js'].forEach(f=>files.add(f));
 ['chart-typography.js','macro-forecast.js','macro-forecast-ui.js','macro-indicators-contract.js','macro-indicators-ui.js','macro-chart.js','macro-context-contract.js','macro-context-math.js','macro-context-ui.js','macro-context.css'].forEach(f=>files.add(f));
 ['macro-releases-contract.js','macro-releases-ui.js','macro-extended-contract.js','macro-extended-ui.js','macro-navigation.js','macro-briefing.js','macro-winds.js'].forEach(f=>files.add(f));
@@ -95,7 +95,7 @@ const server=http.createServer(async(req,res)=>{
   // window.NAME=...); the Pages build regenerates it from the current .pages-data on every deploy.
   const history=/^sheet-data\/mk\/([A-Za-z0-9_.-]+\.json)$/.exec(name);
   if(history){try{const body=await readFile(path.join(root,'design','preview','mk',history[1]));res.writeHead(200,{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});return res.end(body);}catch{res.writeHead(404);return res.end('Instrument history unavailable.');}}
-  const sheet=/^sheet-data\/(countries|macro-sheet|cycles|calendar|markets-sheet)\.json$/.exec(name);
+  const sheet=/^sheet-data\/(countries|macro-sheet|cycles|calendar|markets-sheet|records-sheet)\.json$/.exec(name);
   if(sheet){try{const text=await readFile(path.join(root,'design','preview',sheet[1]+'.js'),'utf8'),start=text.search(/window\.[A-Z]+=/),body=text.slice(text.indexOf('=',start)+1).trim().replace(/;$/,'');JSON.parse(body);res.writeHead(200,{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});return res.end(body);}catch{res.writeHead(404);return res.end('Sheet data unavailable.');}}
   // The Overview's architectural model: Blender frames kept once, in design/preview/frames, and served under model/.
   if(/^model\/build-(light|dark)(-(\d{2}|final)\.webp|\.json)$/.test(name)){

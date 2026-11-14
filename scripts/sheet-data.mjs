@@ -10,7 +10,8 @@ import {tmpdir} from 'node:os';
 import path from 'node:path';
 const GROUPS=[
  {name:'macro',files:['countries','macro-sheet','cycles','calendar'],steps:(root,input,now)=>[['build_atlas_rates.mjs',root,input,now],['build_atlas.mjs',root,input,now],['build_countries.mjs',root,path.join(root,'design')],['build_cycles.mjs',root],['build_macro_sheet.mjs',root,input,now],['build_calendar.mjs',root,input]]},
- {name:'markets',files:['markets-sheet'],histories:true,steps:root=>[['build_markets_sheet.mjs',root]]}];
+ {name:'markets',files:['markets-sheet'],histories:true,steps:root=>[['build_markets_sheet.mjs',root]]},
+ {name:'records',files:['records-sheet'],steps:(root,input,now)=>[['build_records_sheet.mjs',root,now]]}];
 const json=async(file,name)=>{const text=await readFile(file,'utf8'),start=text.search(/window\.[A-Z]+=/);if(start<0)throw Error('Sheet data '+name+' has no window assignment.');const body=text.slice(text.indexOf('=',start)+1).trim().replace(/;$/,'');JSON.parse(body);return body;};
 async function publish(from,group,dest){
  for(const name of group.files)await writeFile(path.join(dest,name+'.json'),await json(path.join(from,name+'.js'),name));

@@ -14,7 +14,7 @@ const generated=['market-view.js','index.html','app.js','office-storage.js','off
 files.push('macro-atlas.js','macro-atlas-data.js','macro-atlas-labels.js','macro-atlas.css','office-visual-system.css','motion-system.js');
 ['market-data-contract.js','market-data-adapters.js','market-data-research.js','market-data-worker.js','market-data-storage.js','market-data-service.js','market-data-ui.js','market-data.css'].forEach(f=>files.push(f));
 files.push('secure-workspace.js','secure-workspace-crypto.js','secure-bootstrap.js','secure-workspace.css');
-files.push('overview-data.js','overview-contract.js','overview-ui.js','overview-chart.js','overview.css','overview-desk.js','overview-model.js','overview-desk.css','sheet-host.js','sheet-macro-page.js','sheet-macro-map.js','sheet-macro-sections.js','sheet-macro-calendar.js','sheet-macro.css','sheet-markets-page.js','sheet-markets-desks.js','sheet-markets-lead.js','sheet-views.js','sheet-markets.css','sheet-skin.js','sheet-skin.css');
+files.push('overview-data.js','overview-contract.js','overview-ui.js','overview-chart.js','overview.css','overview-desk.js','overview-model.js','overview-desk.css','sheet-host.js','sheet-macro-page.js','sheet-macro-map.js','sheet-macro-sections.js','sheet-macro-calendar.js','sheet-macro.css','sheet-markets-page.js','sheet-markets-desks.js','sheet-markets-lead.js','sheet-views.js','sheet-markets.css','sheet-skin.js','sheet-skin.css','sheet-records-page.js','sheet-records-sections.js','sheet-records.css','sheet-portfolio-page.js','sheet-portfolio.css');
 files.push('office-identity.css','office-shell.css');
 files.push('source-integrity.js','source-integrity-ui.js','idx-primary-ui.js');
 files.push('valuation-analysis.js','valuation-analysis-ui.js');

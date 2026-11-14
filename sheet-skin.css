@@ -1,5 +1,5 @@
 /* Sheets 04 to 06 (Research Lab, Portfolio, Records & Data Sources): the design preview's presentation on the live pages.
-   Sheet label, large Newsreader heading, segmented view bars, glass panels and the "Deep analysis" chooser.
+   Sheet label, large Schibsted Grotesk heading, segmented view bars, glass panels and the "Deep analysis" chooser.
    Only presentation: every control and data hook of these pages is unchanged. */
 html:root body[data-sheet]:not([data-sheet=""]) main#main{
   --skin-glass:color-mix(in srgb,var(--app-white) 72%,transparent);--skin-edge:color-mix(in srgb,var(--app-line) 85%,#fff 15%);
@@ -10,7 +10,7 @@ html:root[data-theme=dark] body[data-sheet]:not([data-sheet=""]) main#main{--ski
 html:root body main#main .lh-skin-head{display:block;padding:8px 0 4px;margin:0 0 22px;border:0;background:none}
 html:root body main#main .lh-skin-kicker{margin:0;font:500 11px/1.4 var(--lh-body)!important;letter-spacing:.13em;text-transform:uppercase;color:var(--skin-ink3)}
 html:root body main#main .lh-skin-head .lh-skin-original{display:none}
-html:root body main#main .lh-skin-head h1{font:450 clamp(38px,4.2vw,62px)/1.02 var(--lh-display)!important;letter-spacing:-.022em;margin:12px 0 14px;text-wrap:balance}
+html:root body main#main .lh-skin-head h1{font:600 clamp(38px,4vw,60px)/1.02 var(--lh-display)!important;letter-spacing:-.03em;margin:12px 0 14px;text-wrap:balance}
 html:root body main#main .lh-skin-head>p:not(.lh-skin-kicker):not(.eyebrow),html:root body main#main .quant-head+p{max-width:58ch;font-size:15.5px;line-height:1.6;color:var(--app-muted)}
 html:root body main#main .quant-head.lh-skin-head{display:grid;grid-template-columns:1fr auto;align-items:end;column-gap:20px}
 html:root body main#main .quant-head.lh-skin-head>:not(.desk-mode){grid-column:1}
@@ -30,13 +30,13 @@ html:root body[data-sheet]:not([data-sheet=""]) main#main :is(.command-panel,.em
 /* deep analysis chooser */
 html:root body main#main .lh-deep{margin:30px 0 8px;padding:22px 0 0;border-top:1px solid var(--app-line)}
 html:root body main#main .lh-deep-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px 28px;flex-wrap:wrap;margin-bottom:16px}
-html:root body main#main .lh-deep-head h2{font:500 28px/1.1 var(--lh-display)!important;letter-spacing:-.012em;margin:6px 0 0}
+html:root body main#main .lh-deep-head h2{font:400 26px/1.1 var(--lh-display)!important;letter-spacing:-.012em;margin:6px 0 0}
 html:root body main#main .lh-deep-head>p{max-width:42ch;margin:0;font-size:13px;color:var(--app-muted)}
 html:root body main#main .lh-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
 html:root body main#main .lh-tile{display:grid;grid-template-rows:auto auto 1fr auto;gap:6px;min-height:150px;padding:16px 16px 14px;border:1px solid var(--skin-edge);border-radius:var(--desk-radius);background:var(--skin-glass);box-shadow:var(--skin-shade);color:var(--app-ink);text-decoration:none!important;transition:transform .25s var(--lh-ease),border-color .2s var(--lh-ease)}
 html:root body main#main .lh-tile:hover,html:root body main#main .lh-tile:focus-visible{transform:translateY(-2px);border-color:var(--app-accent)}
 html:root body main#main .lh-tile-no{font:500 11px/1 var(--lh-mono)!important;color:var(--skin-ink3)}
-html:root body main#main .lh-tile-title{font:520 19px/1.15 var(--lh-display)!important;letter-spacing:-.01em}
+html:root body main#main .lh-tile-title{font:600 17px/1.15 var(--lh-display)!important;letter-spacing:-.01em}
 html:root body main#main .lh-tile-line{font-size:12.5px;line-height:1.5;color:var(--app-muted)}
 html:root body main#main .lh-tile-go{font-size:12px;font-weight:500;color:var(--app-accent)}
 @media (prefers-reduced-motion:reduce){html:root body main#main .lh-tile{transition:none}}
@@ -45,3 +45,26 @@ html:root body main#main .lh-tile-go{font-size:12px;font-weight:500;color:var(--
   html:root body main#main .quant-head.lh-skin-head .desk-mode{grid-column:1;grid-row:auto;justify-self:start;margin-top:6px}
   html:root body[data-sheet]:not([data-sheet=""]) main#main :is(nav.research-views,nav.portfolio-mode-tabs,nav.atlas-tabs){flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;width:auto}
 }
+
+/* Research Lab views: the preview's numbered detail heading (bubble "n / 04", label, title, description) */
+html:root body main#main .lh-sec-head{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:start;margin:0 0 16px}
+html:root body main#main .lh-dbub{display:grid;place-items:center;width:38px;height:38px;border:1px solid var(--app-ink);border-radius:50%;font:500 12px/1 var(--lh-mono)!important;position:relative;flex:none}
+html:root body main#main .lh-dbub b{font-weight:500;transform:translateY(-6px)}
+html:root body main#main .lh-dbub i{position:absolute;bottom:7px;font-style:normal;font-size:9px;color:var(--skin-ink3)}
+html:root body main#main .lh-dbub::after{content:"";position:absolute;left:6px;right:6px;top:50%;height:1px;background:var(--app-ink);opacity:.6}
+html:root body main#main .lh-sec-text .lab-section-title{font:400 26px/1.12 var(--lh-display)!important;letter-spacing:-.012em;margin:4px 0 6px;outline:none}
+html:root body main#main .lh-sec-lede{max-width:72ch;margin:0;font-size:13.5px;line-height:1.55;color:var(--app-muted)}
+
+/* Research Lab: Detail 1 is the instrument panel, with the preview's bubble beside its heading */
+html:root body main#main .ticker-desk.lh-detail{position:relative;padding-left:72px}
+html:root body main#main .ticker-desk.lh-detail>.lh-dbub{position:absolute;left:20px;top:22px}
+html:root body main#main .ticker-desk.lh-detail>h2{font:400 28px/1.12 var(--lh-display)!important;letter-spacing:-.02em}
+@media (max-width:720px){html:root body main#main .ticker-desk.lh-detail{padding-left:16px}html:root body main#main .ticker-desk.lh-detail>.lh-dbub{position:static;margin-bottom:8px}}
+/* the view bar sits under the top bar like the preview's section row, and stays there while the page scrolls */
+@media (min-width:1001px){
+  html:root body[data-sheet=research] main#main nav.research-views{position:sticky;top:59px;z-index:40;width:auto;max-width:none;border-radius:0;border-width:0 0 1px;margin:0 -26px 22px;padding:6px 26px;background:color-mix(in srgb,var(--app-paper) 88%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+  html:root body[data-sheet=research] main#main nav.research-views>:is(a,button){border:1px solid var(--app-line);border-right-width:0;min-height:28px;padding:4px 10px;font-size:10.5px!important}
+  html:root body[data-sheet=research] main#main nav.research-views>:is(a,button):first-child{border-radius:4px 0 0 4px}
+  html:root body[data-sheet=research] main#main nav.research-views>:is(a,button):last-child{border-right-width:1px;border-radius:0 4px 4px 0}
+}
+html:root body main#main .ticker-desk.lh-detail>.eyebrow{text-transform:uppercase;letter-spacing:.13em}

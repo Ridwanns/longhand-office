@@ -60,7 +60,6 @@ def scope_block(css, P):
 def bindings(P):
     return ('\n/* live identity bindings */\n'
             f'{P}{{--display:var(--lh-display);--body:var(--lh-body);--mono:var(--lh-mono);--cond:var(--lh-body);font-family:var(--lh-body);color:var(--ink);background:none!important;display:block}}\n'
-            f'{P} h1{{font-family:var(--lh-display)!important;font-weight:450;letter-spacing:-.02em}}\n'
-            f'{P} h2,{P} h3{{font-family:var(--lh-display)!important;font-weight:520;letter-spacing:-.01em}}\n'
+            f'{P} :is(h1,h2,h3){{font-family:var(--lh-display)!important}}\n'
             f'{P} a{{text-decoration:none}}\n'
             f'{P} .lh-sheet-foot{{display:flex;flex-wrap:wrap;gap:6px 18px;max-width:1520px;margin:0 auto;padding:6px 28px 30px;font-size:11px;color:var(--ink3)}}\n')

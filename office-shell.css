@@ -59,3 +59,27 @@
   html:root body .office-topbar .local-badge{display:none}
   html:root body header.office-topbar .office-context{margin:0 -20px;padding:0 20px}
 }
+
+/* The preview's top bar: Overview, Macro, Markets, Research Lab, Portfolio, Records, then the find box and a theme icon.
+   Data Sources and Preferences stay one search away (Ctrl K) and in the Records sheet; nothing is removed from the app. */
+@media (min-width:1001px){
+  html:root body header.office-topbar #office-navigation .office-secondary>a[data-office-destination="data-sources"],
+  html:root body header.office-topbar .office-preferences,
+  html:root body .office-topbar .local-badge{display:none!important}
+  html:root body header.office-topbar .office-secondary>a:first-of-type{padding-left:0}
+  html:root body header.office-topbar .office-secondary>a:first-of-type:before{display:none}
+  html:root body header.office-topbar .office-sidebar .brand{font:600 13px/1 var(--lh-display)!important;letter-spacing:.06em;text-transform:uppercase}
+  html:root body header.office-topbar .office-sidebar .brand b{font:600 13px/1 var(--lh-display)!important;letter-spacing:.06em}
+  html:root body header.office-topbar .office-sidebar .brand-mark,html:root body header.office-topbar .office-sidebar .brand-mark svg{width:30px;height:30px;flex-basis:30px}
+  html:root body .office-search{min-width:230px;justify-content:flex-start;gap:10px;padding:0 12px;font:400 13px var(--lh-body)}
+  html:root body .office-search kbd{margin-left:auto;font:10px var(--lh-mono);color:var(--app-muted);background:none;border:0;padding:0}
+  html:root body .office-topbar .theme-toggle{width:34px;min-width:34px;height:34px;padding:0;font-size:0!important;color:transparent!important;border:1px solid var(--app-line);background:transparent;position:relative}
+  html:root body .office-topbar .theme-toggle::before{content:"";position:absolute;inset:8px;background:var(--app-ink);
+    -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.6'%3E%3Cpath d='M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z'/%3E%3C/svg%3E") center/contain no-repeat;
+            mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.6'%3E%3Cpath d='M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z'/%3E%3C/svg%3E") center/contain no-repeat}
+  html:root[data-theme=dark] body .office-topbar .theme-toggle::before{
+    -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.6'%3E%3Ccircle cx='12' cy='12' r='4.5'/%3E%3Cpath d='M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8'/%3E%3C/svg%3E");
+            mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.6'%3E%3Ccircle cx='12' cy='12' r='4.5'/%3E%3Cpath d='M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8'/%3E%3C/svg%3E")}
+  html:root body .office-topbar .theme-toggle:hover{border-color:var(--app-muted)}
+}
+@media (min-width:1001px){html:root body header.office-topbar .office-sidebar .brand>span{display:inline;white-space:nowrap}html:root body header.office-topbar .office-sidebar .brand b{display:inline;margin:0}}
