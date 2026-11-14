@@ -23,5 +23,5 @@ export const MARKET_CATEGORIES={
 // rolls (NYMEX TTF=F in Oct 2026, ICE US Sugar No. 11 SB=F in Nov 2026). Each
 // alias is pinned to its verified listing exchange; the contract class stays
 // FUTURE and no currency or unit conversion is applied.
-const PROVIDER_ALIAS_EXCHANGES=Object.freeze({'TTF=F':'NYM','SB=F':'NYB'});
+const PROVIDER_ALIAS_EXCHANGES=Object.freeze({'TTF=F':'NYM','SB=F':'NYB','OJ=F':'NYB'});
 export const marketProviderTypeMatches=(instrument,type,exchange)=>type===instrument.type||instrument.type==='FUTURE'&&type==='ALTSYMBOL'&&Object.hasOwn(PROVIDER_ALIAS_EXCHANGES,instrument.symbol)&&exchange===PROVIDER_ALIAS_EXCHANGES[instrument.symbol];
