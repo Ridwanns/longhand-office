@@ -1,0 +1,161 @@
+/* Overview desk: the layout of design preview sheet 01, on the Longhand identity (office-identity.css).
+   Glass sheets over the paper grain, Newsreader headings, IBM Plex for text and figures, the nib green as the only
+   accent and red ink for losses. Colours come from the identity tokens, so light and dark both follow the toggle. */
+html:root .command-center.desk{
+  --desk-glass:color-mix(in srgb,var(--app-white) 70%,transparent);
+  --desk-edge:color-mix(in srgb,var(--app-line) 85%,#fff 15%);
+  --desk-shade:0 1px 0 rgba(255,255,255,.55) inset,0 18px 40px -30px rgba(21,32,26,.45);
+  --desk-rule:var(--app-line);--desk-ink2:var(--app-muted);--desk-ink3:color-mix(in srgb,var(--app-muted) 72%,var(--app-paper));
+  --desk-pick:var(--app-accent);
+  color:var(--app-ink);font:14px/1.5 var(--lh-body);display:flex;flex-direction:column;gap:22px;max-width:1520px;margin:0 auto}
+html:root[data-theme=dark] .command-center.desk{
+  --desk-glass:color-mix(in srgb,var(--app-white) 66%,transparent);--desk-edge:color-mix(in srgb,var(--app-line) 80%,#fff 8%);
+  --desk-shade:0 1px 0 rgba(255,255,255,.04) inset,0 18px 44px -26px rgba(0,0,0,.75)}
+html:root .desk .desk-glass{background:var(--desk-glass);-webkit-backdrop-filter:blur(14px) saturate(1.15);backdrop-filter:blur(14px) saturate(1.15);border:1px solid var(--desk-edge);box-shadow:var(--desk-shade);border-radius:var(--desk-radius)}
+html:root .desk .desk-kicker{margin:0;font:500 11px/1.4 var(--lh-body)!important;letter-spacing:.13em;text-transform:uppercase;color:var(--desk-ink3)}
+html:root .desk .up{color:var(--gain)}html:root .desk .dn{color:var(--loss)}html:root .desk .flat{color:var(--desk-ink2)}
+
+/* stage: opening and market schedule on the left, the model on the right */
+html:root .desk .desk-stage{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:28px;align-items:start}
+html:root .desk .desk-lead{display:flex;flex-direction:column;gap:24px;min-width:0}
+html:root .desk .command-heading.desk-hero{display:block;padding:6px 0 0;margin:0;border:0}
+html:root .desk .desk-hero h1{font:450 clamp(40px,4.4vw,66px)/1 var(--lh-display)!important;letter-spacing:-.022em;margin:14px 0 18px;text-wrap:balance}
+html:root .desk .desk-dek{margin:0;max-width:52ch;font-size:15.5px;line-height:1.6;color:var(--desk-ink2);text-wrap:pretty}
+html:root .desk .desk-dek b{color:var(--app-ink);font-weight:600;font-family:var(--lh-mono)!important;letter-spacing:-.02em}
+
+/* market schedule */
+html:root .desk .desk-schedule{padding:4px 0 2px;min-width:0;container-type:inline-size}
+html:root .desk .desk-schedule-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px 8px}
+html:root .desk .desk-seg{display:inline-flex;border:1px solid var(--desk-rule);border-radius:4px;overflow:hidden;flex:none}
+html:root .desk .desk-seg button{background:none;border:0;border-radius:0;min-height:0;padding:4px 11px;font:500 11px/1.5 var(--lh-body);letter-spacing:.06em;color:var(--desk-ink2);cursor:pointer;transition:background-color .2s var(--lh-ease),color .2s var(--lh-ease)}
+html:root .desk .desk-seg button+button{border-left:1px solid var(--desk-rule)}
+html:root .desk .desk-seg button:hover{color:var(--app-ink)}
+html:root .desk .desk-seg button[aria-pressed=true]{background:var(--app-ink);color:var(--app-paper)}
+html:root .desk .desk-table-wrap{overflow-x:auto;overflow-y:hidden}
+html:root .desk .desk-table{width:100%;border-collapse:collapse;margin:0;font-variant-numeric:tabular-nums}
+html:root .desk .desk-table th,html:root .desk .desk-table td{padding:11px 10px;border:0;border-bottom:1px solid var(--desk-rule);text-align:right;vertical-align:middle;white-space:nowrap;background:none}
+html:root .desk .desk-table thead th{font:500 10.5px/1.3 var(--lh-body);letter-spacing:.1em;text-transform:uppercase;color:var(--desk-ink3);padding-top:6px;padding-bottom:7px}
+html:root .desk .desk-table th:first-child,html:root .desk .desk-table td:first-child{text-align:left;padding-left:16px}
+html:root .desk .desk-table tbody tr:last-child>*{border-bottom:0}
+html:root .desk .desk-table .command-market-card{display:table-row;padding:0;border:0;border-radius:0;transition:background-color .2s var(--lh-ease)}
+html:root .desk .desk-table tbody tr{cursor:pointer}
+/* rows rise in once, when the schedule first fills; later re-renders (window, resize, price refresh) do not replay it */
+html:root .desk .desk-table tbody.desk-enter tr{animation:desk-rise .5s var(--lh-ease) both}
+html:root .desk .desk-table tbody.desk-enter tr:nth-child(2){animation-delay:.06s}html:root .desk .desk-table tbody.desk-enter tr:nth-child(3){animation-delay:.12s}html:root .desk .desk-table tbody.desk-enter tr:nth-child(4){animation-delay:.18s}
+html:root .desk .desk-table tbody tr:hover{background:color-mix(in srgb,var(--app-ink) 4%,transparent)}
+html:root .desk .desk-table tbody tr.is-featured{background:var(--lh-accent-soft);box-shadow:inset 3px 0 0 var(--desk-pick)}
+html:root .desk .desk-table tbody th{font-weight:400;text-transform:none;letter-spacing:normal;color:var(--app-ink)}
+html:root .desk .desk-market{display:block;font-weight:600;color:var(--app-ink);text-decoration:none}
+html:root .desk .desk-unit{display:block;font-size:11px;color:var(--desk-ink3)}
+html:root .desk .desk-last{display:block;font:500 15px/1.25 var(--lh-mono)!important;letter-spacing:-.02em}
+html:root .desk .desk-last-cell time{display:block;margin-top:2px;font-size:10.5px;color:var(--desk-ink3);white-space:normal;max-width:15ch;margin-left:auto}
+html:root .desk .desk-chg{font:400 12.5px/1.3 var(--lh-mono)!important}
+html:root .desk .desk-chg small{display:block;font:400 10px/1.3 var(--lh-body)!important;color:var(--desk-ink3)}
+html:root .desk .desk-spark-col{width:128px}
+html:root .desk .desk-spark{display:block;width:120px;height:34px;margin-left:auto;padding:0;border:0;border-radius:3px;background:none;cursor:pointer}
+html:root .desk .desk-spark svg{display:block;width:100%;height:100%;overflow:visible}
+html:root .desk .desk-spark-line{fill:none;stroke:currentColor;stroke-width:1.4;vector-effect:non-scaling-stroke}
+html:root .desk .desk-spark-dot{fill:currentColor}
+html:root .desk .desk-spark[aria-pressed=true]{outline:1px solid color-mix(in srgb,var(--desk-pick) 55%,transparent);outline-offset:2px}
+html:root .desk .desk-range-col{width:118px}
+html:root .desk .desk-rbar{position:relative;height:4px;background:var(--desk-rule);border-radius:2px}
+html:root .desk .desk-rbar i{position:absolute;top:-4px;left:50%;width:2px;height:12px;background:var(--app-ink)}
+html:root .desk .desk-rlab{display:flex;justify-content:space-between;gap:8px;margin-top:5px;font:400 9.5px/1.2 var(--lh-mono)!important;color:var(--desk-ink3)}
+html:root .desk .desk-asof{margin:0;padding:10px 16px 9px;border-top:1px solid var(--desk-rule);font-size:11px;line-height:1.5;color:var(--desk-ink3)}
+html:root .desk .desk-unavailable td{color:var(--desk-ink3)}
+
+/* model */
+html:root .desk .desk-model{position:relative;margin:0;min-width:0}
+html:root .desk .desk-viewer{position:relative;aspect-ratio:3/2;user-select:none}
+html:root .desk .desk-model-image,html:root .desk .desk-model-build{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none}
+html:root .desk .desk-model-image{opacity:0;transition:opacity .8s var(--lh-ease)}
+html:root .desk .desk-model-image.ready{opacity:1}
+html:root .desk .desk-model-build{opacity:0;transition:opacity .35s}
+html:root .desk .desk-model-build.on{opacity:1;transition:none}
+html:root .desk .desk-viewer.unavailable{aspect-ratio:auto;min-height:0}
+html:root .desk .desk-leaders{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;transition:opacity .25s}
+html:root .desk .desk-leaders.fade{opacity:0}
+html:root .desk .desk-leaders line{stroke:var(--desk-ink2);stroke-width:1;vector-effect:non-scaling-stroke;stroke-dasharray:var(--len,600);stroke-dashoffset:var(--len,600);transition:stroke .2s}
+html:root .desk .desk-leaders.drawn line{animation:desk-draw .9s cubic-bezier(.4,0,.2,1) forwards}
+html:root .desk .desk-leaders circle{fill:var(--app-paper);stroke:var(--desk-ink2);stroke-width:1.2;vector-effect:non-scaling-stroke;opacity:0}
+html:root .desk .desk-leaders.drawn circle{animation:desk-fade .3s .5s forwards}
+html:root .desk .desk-leaders g.hi line,html:root .desk .desk-leaders g.hi circle{stroke:var(--desk-pick)}
+html:root .desk .desk-callout{position:absolute;width:170px;padding:0 0 7px;border-bottom:1px solid var(--desk-ink2);color:var(--app-ink);text-decoration:none!important;opacity:0;transform:translateY(4px);transition:border-color .2s;text-shadow:0 0 2px var(--app-paper),0 0 8px var(--app-paper),0 0 14px var(--app-paper)}
+html:root .desk .desk-callout.right{text-align:right}
+html:root .desk .desk-callout.show{animation:desk-rise .45s var(--lh-ease) forwards}
+html:root .desk .desk-callout-no{display:block;font:500 10.5px/1.3 var(--lh-mono)!important;color:var(--desk-ink3)}
+html:root .desk .desk-callout b{display:block;margin:1px 0;font:560 18px/1.15 var(--lh-display)!important;letter-spacing:-.01em;transition:color .2s}
+html:root .desk .desk-callout-sub{font-size:12px;color:var(--desk-ink2)}
+html:root .desk .desk-callout:hover,html:root .desk .desk-callout.hi,html:root .desk .desk-callout:focus-visible{border-color:var(--desk-pick)}
+html:root .desk .desk-callout:hover b,html:root .desk .desk-callout.hi b,html:root .desk .desk-callout:focus-visible b{color:var(--desk-pick)}
+html:root .desk .desk-modelbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:6px 4px 0}
+html:root .desk .desk-replay{flex:none;white-space:nowrap;height:28px;min-height:0;padding:0 12px;border:1px solid var(--desk-rule);border-radius:4px;background:transparent;font:500 12px var(--lh-body);color:var(--desk-ink2);cursor:pointer;transition:border-color .2s,color .2s}
+html:root .desk .desk-replay:hover{border-color:var(--desk-ink2);color:var(--app-ink)}
+html:root .desk .desk-replay:disabled{opacity:.45;cursor:default}
+html:root .desk .desk-titleblock{display:grid;grid-template-columns:1.3fr .9fr 1fr 1.6fr;margin-top:12px}
+html:root .desk .desk-titleblock>div{padding:8px 12px;border-right:1px solid var(--desk-rule);min-width:0}
+html:root .desk .desk-titleblock>div:last-child{border-right:0}
+html:root .desk .desk-titleblock small{display:block;font:500 10px/1.4 var(--lh-body);letter-spacing:.12em;text-transform:uppercase;color:var(--desk-ink3)}
+html:root .desk .desk-titleblock strong{display:block;font:500 13px/1.35 var(--lh-body);overflow-wrap:anywhere}
+html:root .desk .desk-titleblock a{color:inherit}
+html:root .desk .desk-logo{width:17px;height:17px;vertical-align:-4px;margin-right:6px;border-radius:50%;box-shadow:0 0 0 1px var(--desk-rule)}
+
+/* featured chart */
+html:root .desk .desk-feature{padding:18px 20px 12px}
+html:root .desk .desk-feature-head{display:flex;align-items:flex-end;gap:16px 28px;flex-wrap:wrap}
+html:root .desk .desk-feature-title{min-width:0;margin-right:auto}
+html:root .desk .desk-feature h2{font:500 28px/1.1 var(--lh-display)!important;letter-spacing:-.012em;margin:6px 0 0}
+html:root .desk .desk-stat small{display:block;font:500 10.5px/1.4 var(--lh-body);letter-spacing:.1em;text-transform:uppercase;color:var(--desk-ink3)}
+html:root .desk .desk-stat b{font:500 20px/1.3 var(--lh-mono)!important;letter-spacing:-.03em}
+html:root .desk .desk-feature-chart{margin-top:14px;min-height:300px}
+html:root .desk .desk-feature-plot{display:block;width:100%;height:300px;overflow:visible;touch-action:pan-y;cursor:crosshair}
+html:root .desk .desk-grid-lines line{stroke:var(--desk-rule)}
+html:root .desk .desk-feature-plot text{font:400 10.5px var(--lh-mono);fill:var(--desk-ink3)}
+html:root .desk .desk-series .desk-area{fill:currentColor;opacity:.13}
+html:root .desk .desk-series .desk-line{fill:none;stroke:currentColor;stroke-width:1.6;vector-effect:non-scaling-stroke}
+html:root .desk .desk-series.up{color:var(--gain)}html:root .desk .desk-series.dn{color:var(--loss)}
+html:root .desk .desk-peak{stroke:var(--desk-ink3);stroke-dasharray:3 4;vector-effect:non-scaling-stroke}
+html:root .desk .desk-mark{fill:var(--app-ink)}
+html:root .desk .desk-feature-plot .desk-ann{font:500 11px var(--lh-body);letter-spacing:.06em;fill:var(--desk-ink2)}
+html:root .desk .desk-drawdown line{stroke:var(--loss);stroke-width:1.2;vector-effect:non-scaling-stroke}
+html:root .desk .desk-feature-plot .desk-drawdown text{font:500 12px var(--lh-mono);fill:var(--loss)}
+html:root .desk .desk-crosshair{stroke:var(--app-ink);stroke-width:1;vector-effect:non-scaling-stroke;opacity:0}
+html:root .desk .desk-crosshair-dot{fill:var(--app-paper);stroke:var(--app-ink);stroke-width:1.5;opacity:0}
+html:root .desk .inspecting .desk-crosshair{opacity:.5}html:root .desk .inspecting .desk-crosshair-dot{opacity:1}
+html:root .desk .desk-readout{display:flex;flex-wrap:wrap;gap:6px 22px;min-height:20px;margin:6px 0 0;font:400 11.5px/1.5 var(--lh-mono)!important;color:var(--desk-ink2)}
+html:root .desk .desk-readout b{color:var(--app-ink);font-weight:500}html:root .desk .desk-readout b.up{color:var(--gain)}html:root .desk .desk-readout b.dn{color:var(--loss)}
+
+/* the existing panels, re-seated as glass sheets in three columns */
+html:root .desk .desk-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+html:root .desk .desk-lower{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:20px;align-items:start}
+html:root .desk :is(.command-panel,.command-portfolio){background:var(--desk-glass);-webkit-backdrop-filter:blur(14px) saturate(1.15);backdrop-filter:blur(14px) saturate(1.15);border:1px solid var(--desk-edge);box-shadow:var(--desk-shade);border-radius:var(--desk-radius)}
+html:root .desk .command-panel{padding:18px 20px 16px}
+html:root .desk .command-section-head h2,html:root .desk .desk-vault-title h2{font:500 24px/1.15 var(--lh-display)!important;letter-spacing:-.01em;margin:4px 0 0}
+html:root .desk .command-section-head .eyebrow{font:500 11px/1.4 var(--lh-body);letter-spacing:.13em;color:var(--desk-ink3);margin:0}
+html:root .desk .command-portfolio>header{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;padding:16px 20px 12px;border-bottom:1px solid var(--desk-rule);min-height:0}
+html:root .desk .desk-vault-title{margin-right:auto}
+html:root .desk .command-footer{border-top:1px solid var(--desk-rule);padding-top:14px}
+
+@keyframes desk-rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes desk-draw{to{stroke-dashoffset:0}}
+@keyframes desk-fade{to{opacity:1}}
+@media (prefers-reduced-motion:reduce){html:root .desk *{animation-duration:.01ms!important;animation-delay:0s!important;transition:none!important}}
+
+@media (max-width:1280px){html:root .desk .desk-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}html:root .desk .desk-grid .command-markets{grid-column:1/-1}}
+@media (max-width:1150px){html:root .desk .desk-stage{grid-template-columns:minmax(0,1fr)}html:root .desk .desk-hero h1{max-width:16ch}}
+@media (max-width:860px){html:root .desk .desk-grid,html:root .desk .desk-lower{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:720px){
+  html:root .command-center.desk{gap:18px}
+  html:root .desk .desk-callout{width:26px;height:26px;padding:0;border:1px solid var(--desk-ink2);border-radius:50%;display:grid;place-items:center;background:var(--app-paper);text-shadow:none}
+  html:root .desk .desk-callout b,html:root .desk .desk-callout-sub{display:none}
+  html:root .desk .desk-callout-no{color:var(--app-ink)}
+  html:root .desk .desk-titleblock{grid-template-columns:1fr 1fr}
+  html:root .desk .desk-titleblock>div{border-bottom:1px solid var(--desk-rule)}html:root .desk .desk-titleblock>div:nth-child(2n){border-right:0}
+  html:root .desk .desk-titleblock>div:nth-last-child(-n+2){border-bottom:0}
+  html:root .desk .desk-feature{padding:14px 14px 10px}html:root .desk .desk-feature-head{gap:12px 20px}html:root .desk .desk-feature-head .desk-seg{margin-left:0}
+}
+@media (max-width:460px){html:root .desk .desk-stat b{font-size:17px}}
+/* the schedule adapts to its own width: drop the range, then the sparkline, then the units */
+@container (max-width:640px){html:root .desk .desk-range-col{display:none}}
+@container (max-width:520px){html:root .desk .desk-spark-col{width:78px}html:root .desk .desk-spark{width:72px}html:root .desk .desk-table th,html:root .desk .desk-table td{padding-left:6px;padding-right:6px}html:root .desk .desk-table th:first-child,html:root .desk .desk-table td:first-child{padding-left:12px;white-space:normal}}
+@container (max-width:420px){html:root .desk .desk-spark-col{display:none}html:root .desk .desk-unit{display:none}html:root .desk .desk-last{font-size:14px}html:root .desk .desk-chg{font-size:11.5px}}

@@ -2,8 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {WORKSPACES,WORKSPACE_PAGES,navigationState,findDestinations,sectionDestination} from '../workspace-navigation.js';
 
-test('four workspaces preserve their existing landing routes',()=>{
- assert.deepEqual(WORKSPACES.map(w=>[w.label,w.route]),[['Overview','#overview'],['Markets','#market/us'],['Research Lab','#quant'],['Portfolio','#portfolios']]);
+test('the four original workspaces keep their landing routes, with the Macro sheet beside them',()=>{
+ assert.deepEqual(WORKSPACES.map(w=>[w.label,w.route]),[['Overview','#overview'],['Macro','#macro'],['Markets','#markets'],['Research Lab','#quant'],['Portfolio','#portfolios']]);
+ assert.equal(navigationState('macro').page.id,'macro-sheet');assert.equal(navigationState('markets').page.id,'markets-sheet');assert.equal(navigationState('market/us').workspace.id,'markets');assert.equal(navigationState('macro').workspace.id,'macro');
  assert.equal(new Set(WORKSPACE_PAGES.map(p=>p.id)).size,WORKSPACE_PAGES.length);
 });
 test('legacy destinations, nested macro and retained run routes retain their workspace',()=>{
@@ -14,10 +15,10 @@ test('legacy destinations, nested macro and retained run routes retain their wor
 });
 test('finder aliases resolve to real existing controls or working navigation routes',()=>{
  for(const word of ['Valuation','Quant','Forecast','Options','Research','Portfolio','Backup','DCF','Greeks','theme','restore','Pluang','CSV','Data Sources'])assert.ok(findDestinations(word).length,word);
- assert.deepEqual(findDestinations('macro').map(p=>p.route),['#market/macro']);
+ assert.deepEqual(findDestinations('macro').map(p=>p.route),['#macro','#market/macro']);
  assert.equal(findDestinations('no-such-page-test-only').length,0);
  assert.ok(findDestinations('saved valuations').some(p=>p.id==='valuations'));
- assert.ok(WORKSPACE_PAGES.every(p=>p.action==='appearance'||/^#(?:overview|market(?:\/.*)?|quant(?:\/section\/\w+)?|portfolios(?:\/real)?|theses|library|decisions|records|data-sources)$/.test(p.route)));
+ assert.ok(WORKSPACE_PAGES.every(p=>p.action==='appearance'||/^#(?:overview|macro|markets|market(?:\/.*)?|quant(?:\/section\/\w+)?|portfolios(?:\/real)?|theses|library|decisions|records|data-sources)$/.test(p.route)));
 });
 test('section links use existing Quant jump keys, with no dynamic or executable targets',()=>{
  const keys=new Set(['ticker','valuation','models','research','predictions','manual','advanced','valuations','tickers','calculator','reference']);
@@ -27,7 +28,7 @@ test('section links use existing Quant jump keys, with no dynamic or executable 
 });
 test('unknown or shorthand routes normalize to a page that renders and mounts',async()=>{
  const {canonicalRoute}=await import('../workspace-navigation.js');
- for(const route of ['overview','about','records','library','theses','decisions','portfolios','portfolios/real','portfolio/abc','theses/x1','decisions/x1/reviews','market','market/us','market/macro/id/economy','quant','quant/run/r1','data-sources','data-sources/macro'])assert.equal(canonicalRoute(route),route,route);
- assert.equal(canonicalRoute('portfolio'),'portfolios');assert.equal(canonicalRoute('macro'),'market/macro');assert.equal(canonicalRoute('markets'),'market/us');assert.equal(canonicalRoute('research'),'quant');assert.equal(canonicalRoute('journal'),'decisions');
+ for(const route of ['overview','macro','markets','about','records','library','theses','decisions','portfolios','portfolios/real','portfolio/abc','theses/x1','decisions/x1/reviews','market','market/us','market/macro/id/economy','quant','quant/run/r1','data-sources','data-sources/macro'])assert.equal(canonicalRoute(route),route,route);
+ assert.equal(canonicalRoute('portfolio'),'portfolios');assert.equal(canonicalRoute('research'),'quant');assert.equal(canonicalRoute('journal'),'decisions');
  for(const route of ['','no-such-page','constructor','__proto__','overview/extra'])assert.equal(canonicalRoute(route),'overview',route);
 });

@@ -5,8 +5,10 @@ const [repo, S] = process.argv.slice(2);
 const D = f => JSON.parse(fs.readFileSync(path.join(repo, '.pages-data', f + '.json'), 'utf8'));
 const files = ['macro', 'macro-context', 'macro-releases', 'macro-extended'];
 const series = {}; for (const f of files) for (const s of D(f).series) series[s.id] = { ...s, file: f };
-const ctx = { window: {} }; vm.runInNewContext(fs.readFileSync(path.join(S, 'preview', 'atlas.js'), 'utf8'), ctx);
-const A = ctx.window.ATLAS, rates = JSON.parse(fs.readFileSync(path.join(repo, 'design', 'build', 'atlas-rates.json'), 'utf8'));
+const OUT = process.env.LH_SHEET_OUT; // optional: a folder for every generated sheet file (the Pages build uses it)
+const outFile = n => OUT ? path.join(OUT, n) : path.join(S, 'preview', n);
+const ctx = { window: {} }; vm.runInNewContext(fs.readFileSync(outFile('atlas.js'), 'utf8'), ctx);
+const A = ctx.window.ATLAS, rates = JSON.parse(fs.readFileSync(OUT ? path.join(OUT, 'atlas-rates.json') : path.join(repo, 'design', 'build', 'atlas-rates.json'), 'utf8'));
 const { MAP_COUNTRIES } = await import('file:///' + path.join(repo, 'macro-map-data.js').replace(/\\/g, '/'));
 const names = Object.fromEntries(MAP_COUNTRIES.map(c => [c.id, c.name])); names.SGP = 'Singapore';
 for (const r of [...A.gdp, ...A.cpi]) names[r[0]] = r[1];   // the app's own names win (Türkiye, Timor-Leste, Lao PDR…)
@@ -63,8 +65,8 @@ for (const iso of isos) {
   if (Object.keys(wdi).length) c.wdi = wdi;
   out[iso] = c;
 }
-fs.writeFileSync(path.join(S, 'preview', 'countries.js'), '// Built from the Office snapshot (.pages-data) and the atlas computed with the app code.\nwindow.COUNTRIES=' + JSON.stringify(out) + ';\n');
-console.log('countries', Object.keys(out).length, 'bytes', fs.statSync(path.join(S, 'preview', 'countries.js')).size);
+fs.writeFileSync(outFile('countries.js'), '// Built from the Office snapshot (.pages-data) and the atlas computed with the app code.\nwindow.COUNTRIES=' + JSON.stringify(out) + ';\n');
+console.log('countries', Object.keys(out).length, 'bytes', fs.statSync(outFile('countries.js')).size);
 console.log('history coverage', ['gdp', 'cpi', 'policy', 'yield'].map(k => k + ':' + Object.values(out).filter(c => c[k]?.hist?.length).length).join(' '));
 console.log('MISMATCHES (latest vs history end, >0.15pp):\n' + log.join('\n'));
 const u = id => series[id] && (series[id].unit || series[id].spec?.unit);

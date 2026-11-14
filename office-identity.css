@@ -4,10 +4,11 @@
    - The only brand colour is the Longhand nib green; red ink is kept for losses.
    - Fine paper grain behind the page; no grid or ruled background.
    - Panels are flat sheets with a thin edge and a small radius.
-   - Display type Schibsted Grotesk, body IBM Plex Sans, code IBM Plex Mono (self-hosted in fonts/, OFL).
+   - Display type Newsreader (an editorial serif drawn for screen reading, variable optical size), body IBM Plex Sans,
+     code IBM Plex Mono. All self-hosted in fonts/ under the OFL, because the Pages CSP only allows fonts from the site.
    Only tokens and presentation change here; no layout, data or behaviour. */
 
-@font-face{font-family:"Schibsted Grotesk";font-style:normal;font-weight:400 700;font-display:swap;src:url(fonts/schibsted-grotesk-latin.woff2) format("woff2")}
+@font-face{font-family:"Newsreader";font-style:normal;font-weight:200 800;font-display:swap;src:url(fonts/newsreader-latin.woff2) format("woff2")}
 @font-face{font-family:"IBM Plex Sans";font-style:normal;font-weight:100 700;font-display:swap;src:url(fonts/ibm-plex-sans-latin.woff2) format("woff2")}
 @font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/ibm-plex-mono-400-latin.woff2) format("woff2")}
 @font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:500;font-display:swap;src:url(fonts/ibm-plex-mono-500-latin.woff2) format("woff2")}
@@ -19,7 +20,7 @@ html:root{
   --line:var(--app-line); --surface:var(--app-surface); --olive:var(--app-accent);
   --forest:#1f5a3b; --gain:#1d6a43; --loss:#b3261e;
   --desk-radius:6px; --desk-radius-sm:4px; --desk-shadow:0 1px 2px rgba(21,32,26,.05);
-  --lh-display:"Schibsted Grotesk","IBM Plex Sans","Segoe UI",Arial,sans-serif;
+  --lh-display:"Newsreader",Georgia,"Times New Roman",serif;
   --lh-body:"IBM Plex Sans","Segoe UI",Arial,sans-serif;
   --lh-mono:"IBM Plex Mono",Consolas,monospace;
   --lh-accent-soft:rgba(31,90,59,.10);
@@ -43,11 +44,12 @@ html:root,html:root body{background-color:var(--app-paper)}
 html:root body{background-image:var(--lh-grain);background-size:180px 180px;color:var(--app-ink);font-variant-numeric:tabular-nums}
 
 /* type: one body face everywhere (about 300 rules hard-coded Segoe UI, Arial or Georgia), display face for headings */
-html:root body,html:root body *:not(code,pre,kbd,samp){font-family:var(--lh-body)!important}
+html:root body,html:root body *:not(code,pre,kbd,samp,.lh-sheet *){font-family:var(--lh-body)!important}
+/* ported sheets (.lh-sheet) set their own text, figure and heading faces from the same tokens */
 html:root body :is(code,pre,kbd,samp){font-family:var(--lh-mono)!important}
-html:root body :is(h1,h2,h3,.brand,.brand *,.command-heading h1,.page-heading h1,.intro h1,.intro h2){font-family:var(--lh-display)!important}
-html:root body :is(h1,.command-heading h1){font-weight:600;letter-spacing:-.03em}
-html:root body :is(h2,h3){letter-spacing:-.015em}
+html:root body :is(h1,h2,h3,.command-heading h1,.page-heading h1,.intro h1,.intro h2){font-family:var(--lh-display)!important;font-optical-sizing:auto}
+html:root body :is(h1,.command-heading h1){font-weight:500;letter-spacing:-.018em}
+html:root body :is(h2,h3){font-weight:560;letter-spacing:-.008em}
 html:root body :is(h1,h2) em{font-style:normal}
 
 /* brand: the nib on a cream disc replaces the old "LO" mark */

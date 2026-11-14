@@ -12,7 +12,8 @@ const { atlasObservation } = await imp('macro-atlas-data.js');
 const { contextAtlasDatum } = await imp('macro-context-math.js');
 const feed = J('macro.json'), releases = J('macro-releases.json'), extended = J('macro-extended.json'), context = J('macro-context.json'), rates = J('official-rates.json');
 const pick = (c, i) => { const r = releaseAtlasDatum(releases, feed, c, i, now, extended); if (r) return r; const a = extendedAtlasDatum(extended, context, c, i); if (a) return a; const e = atlasObservation(feed, c, i, rates); return e.series || e.available ? e : contextAtlasDatum(context, c, i) || e };
-const file = path.join(repo, 'design', 'build', 'atlas-rates.json'), OLD = JSON.parse(fs.readFileSync(file, 'utf8'));
+const OUT = process.env.LH_SHEET_OUT; // optional: a folder for every generated sheet file (the Pages build uses it)
+const file = OUT ? path.join(OUT, 'atlas-rates.json') : path.join(repo, 'design', 'build', 'atlas-rates.json'), OLD = JSON.parse(fs.readFileSync(file, 'utf8'));
 const labelsFile = path.join(repo, 'design', 'build', 'atlas-source-labels.json');
 const LABELS = fs.existsSync(labelsFile) ? JSON.parse(fs.readFileSync(labelsFile, 'utf8')) : {};
 const out = { note: `Computed with the app's atlas code on ${path.basename(data)}, ${nowIso.slice(0, 10)}. [iso, value, period, frequency, source, stale]` };

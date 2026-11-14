@@ -1,0 +1,61 @@
+/* Desktop shell from the design preview: one glass bar across the top instead of the left sidebar.
+   The navigation markup is unchanged (workspace-shell.js still builds it); on wide screens the sidebar and its nav are
+   laid out as rows of the header: brand, workspaces, workspace pages, search, theme. The current workspace's own pages
+   get a second row. Phones and tablets keep the existing drawer. */
+@media (min-width:1001px){
+  html:root{--office-nav-width:0px}
+  html:root body{padding-left:0}
+  html:root body header.office-topbar{position:sticky;top:0;z-index:50;height:auto;min-height:0;padding:0 28px;gap:0 26px;display:flex;flex-wrap:wrap;align-items:stretch;
+    background:color-mix(in srgb,var(--app-paper) 80%,transparent);-webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2);border-bottom:1px solid var(--app-line)}
+  html:root[data-theme=dark] body header.office-topbar{background:color-mix(in srgb,var(--app-paper) 82%,transparent)}
+  html:root body .office-sidebar,html:root body header.office-topbar #office-navigation{display:contents}
+  html:root body .office-sidebar-brand{order:1;min-height:58px;padding:0;border:0;display:flex;align-items:center}
+  html:root body .office-sidebar .brand{gap:11px;font:500 12px/1 var(--lh-body);letter-spacing:.14em;color:var(--app-ink)}
+  html:root body .office-sidebar .brand b{font:500 12px/1 var(--lh-body);letter-spacing:.14em;margin:0}
+  html:root body .office-close-menu,html:root body #office-menu,html:root body .office-breadcrumb,html:root body .office-nav-group,html:root body .office-sidebar-foot,html:root body .office-menu-backdrop{display:none!important}
+  /* workspaces */
+  html:root body header.office-topbar .office-primary{order:2;display:flex;gap:26px;align-items:stretch}
+  html:root body header.office-topbar .office-secondary{order:3;display:flex;gap:22px;align-items:stretch;margin:0;padding:0;border:0;position:relative}
+  html:root body header.office-topbar #office-navigation :is(.office-primary,.office-secondary)>a{display:flex!important;align-items:center;gap:0;min-height:58px;margin:0;padding:0;border-radius:0;background:none;box-shadow:none;color:var(--app-muted);font:500 13.5px/1 var(--lh-body);white-space:nowrap;border-bottom:2px solid transparent;transition:color .2s var(--lh-ease),border-color .2s var(--lh-ease)}
+  html:root body header.office-topbar #office-navigation :is(.office-primary,.office-secondary)>a svg{display:none}
+  html:root body header.office-topbar #office-navigation :is(.office-primary,.office-secondary)>a:hover{color:var(--app-ink);background:none}
+  html:root body header.office-topbar #office-navigation :is(.office-primary,.office-secondary)>a[aria-current]{color:var(--app-ink);background:none;box-shadow:none;border-bottom-color:var(--app-accent);font-weight:500}
+  html:root body header.office-topbar #office-navigation a[aria-current]:after{display:none}
+  html:root body header.office-topbar .office-secondary>a:first-of-type{padding-left:22px;border-left:1px solid var(--app-line)}
+  html:root body header.office-topbar .office-secondary>a:first-of-type{border-left:0;position:relative}
+  html:root body header.office-topbar .office-secondary>a:first-of-type:before{content:"";position:absolute;left:0;top:19px;bottom:19px;width:1px;background:var(--app-line)}
+  /* preferences: a small menu */
+  html:root body .office-preferences{position:relative;display:flex;align-items:stretch;margin:0;padding:0}
+  html:root body .office-preferences>summary{list-style:none;cursor:pointer;color:var(--app-muted);font:500 13.5px/1 var(--lh-body);padding:0;margin:0;white-space:nowrap;display:flex;align-items:center;min-height:58px}
+  html:root body .office-preferences>summary::-webkit-details-marker{display:none}
+  html:root body .office-preferences>summary:after{content:"";display:inline-block;width:5px;height:5px;margin-left:7px;border-right:1.4px solid currentColor;border-bottom:1.4px solid currentColor;transform:translateY(-3px) rotate(45deg)}
+  html:root body .office-preferences>summary:hover{color:var(--app-ink)}
+  html:root body .office-preferences[open]>:not(summary){position:absolute}
+  html:root body .office-preferences[open]{z-index:5}
+  html:root body .office-preferences[open]>summary{color:var(--app-ink)}
+  html:root body header.office-topbar #office-navigation .office-preferences>:is(a,button){display:flex!important;box-sizing:border-box;left:-12px;top:58px;width:240px;height:38px;min-height:38px;align-items:center;gap:10px;text-align:left;padding:8px 12px;margin:0;border-radius:0;background:var(--app-white);border:1px solid var(--app-line);border-top:0;color:var(--app-ink);font-size:13px;box-shadow:0 18px 36px -24px rgba(0,0,0,.45)}
+  html:root body header.office-topbar #office-navigation .office-preferences>:is(a,button) svg{width:15px;height:15px;color:var(--app-muted)}
+  /* the three items stack under the summary, each 38px tall */
+  html:root body header.office-topbar #office-navigation .office-preferences>:nth-child(3){top:96px}
+  html:root body header.office-topbar #office-navigation .office-preferences>:nth-child(4){top:134px}
+  /* search, theme, device badge */
+  html:root body .office-search{order:4;margin:0 0 0 auto;align-self:center;min-width:220px;height:34px;min-height:34px;border-radius:4px;border:1px solid var(--app-line);background:transparent;color:var(--app-muted)}
+  html:root body .office-topbar .theme-toggle{order:5;align-self:center;min-height:34px;height:34px;border-radius:4px}
+  html:root body .office-topbar .local-badge{order:6;align-self:center;display:inline-flex;border-radius:4px;min-height:34px}
+  /* the current workspace's pages: a second row */
+  html:root body header.office-topbar .office-context{order:10;flex:1 0 100%;display:flex;align-items:stretch;gap:22px;margin:0 -28px;padding:0 28px;border-top:1px solid var(--app-line);overflow-x:auto;scrollbar-width:none}
+  html:root body header.office-topbar .office-context::-webkit-scrollbar{display:none}
+  html:root body header.office-topbar .office-context:not(:has(>:is(a,button)~:is(a,button))){display:none}
+  html:root body header.office-topbar #office-navigation .office-context>:is(a,button){display:flex!important;align-items:center;gap:8px;flex:none;min-height:40px;margin:0;padding:0;border:0;border-bottom:2px solid transparent;border-radius:0;background:none;color:var(--app-muted);font:500 12.5px/1 var(--lh-body);white-space:nowrap}
+  html:root body header.office-topbar #office-navigation .office-context>:is(a,button) svg{width:15px;height:15px}
+  html:root body header.office-topbar #office-navigation .office-context>:is(a,button):hover{color:var(--app-ink);background:none}
+  html:root body header.office-topbar #office-navigation .office-context>[aria-current]{color:var(--app-ink);border-bottom-color:var(--app-accent);background:none;box-shadow:none}
+}
+@media (min-width:1001px) and (max-width:1560px){html:root body .office-topbar .local-badge{display:none}}
+@media (min-width:1001px) and (max-width:1240px){
+  html:root body header.office-topbar{padding:0 20px;gap:0 18px}
+  html:root body header.office-topbar .office-primary{gap:18px}html:root body header.office-topbar .office-secondary{gap:16px}
+  html:root body .office-search{min-width:0}html:root body .office-search>span{display:none}
+  html:root body .office-topbar .local-badge{display:none}
+  html:root body header.office-topbar .office-context{margin:0 -20px;padding:0 20px}
+}
