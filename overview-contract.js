@@ -5,6 +5,18 @@ import {EXTENDED_SERIES} from './macro-extended-contract.js';
 import {CONTEXT_SERIES} from './macro-context-contract.js';
 import {TREASURY_SOURCE,treasurySpread} from './official-rates-contract.js';
 export const OVERVIEW_MARKETS=[{category:'macro',symbol:'^JKSE',label:'IHSG',route:'#market/macro/id/markets'},{category:'macro',symbol:'^GSPC',label:'S&P 500',route:'#market/macro/us/markets'},{category:'bonds',symbol:'TLT',label:'Long Treasury ETF',route:'#market/bonds'},{category:'commodities',symbol:'GC=F',label:'Gold futures',route:'#market/commodities'}];
+// Closes come from completed sessions only. A bar dated on the retrieval day counts as a close once the exchange's
+// local clock had passed 17:00 at retrieval (the fallback the history builders use when no regular-session end is
+// supplied). A headline observed before then is an intraday print: it stays visible, labelled as such, never as a close.
+const exchangeClock=(at,zone)=>{try{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date(at)).map(x=>[x.type,x.value]));return {date:p.year+'-'+p.month+'-'+p.day,hour:Number(p.hour)%24};}catch{return null;}};
+export function overviewSession(q){
+ const history=Array.isArray(q?.history)?q.history:[],date=q?.marketDate||String(q?.timestamp||'').slice(0,10)||null,at=exchangeClock(q?.retrievedAt,q?.exchangeTimezoneName||'America/New_York');
+ if(!at)return {date,intraday:null,history};
+ // Futures reopen at 18:00 exchange time (CME daily break 17:00 to 18:00), and that evening trading belongs to the next
+ // session, so a futures print observed from 18:00 is intraday too. Its source dates the next bar at 00:00 of that session.
+ const seen=exchangeClock(q?.timestamp,q?.exchangeTimezoneName||'America/New_York'),evening=q?.instrumentType==='FUTURE'&&seen?.date===date&&seen.hour>=18;
+ const open=at.hour<17;return {date,intraday:open&&date===at.date||evening,history:open?history.filter(r=>r.date!==at.date):history};
+}
 const stamp=(v,now)=>typeof v==='string'&&Number.isFinite(Date.parse(v))&&Date.parse(v)<=now+300000;
 const https=v=>{try{const u=new URL(v);return u.protocol==='https:'&&!u.username&&!u.password;}catch{return false;}};
 export function validateOverviewFeed(f,now=Date.now()){
