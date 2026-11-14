@@ -1,5 +1,5 @@
 import {overviewPortfolioSummary,overviewReviewQueue,buildAlignedMarketComparison} from './overview-data.js';
-import {validateOverviewFeed,OVERVIEW_MARKETS} from './overview-contract.js';
+import {validateOverviewFeed,OVERVIEW_MARKETS,overviewSession} from './overview-contract.js';
 import {synchronizedQuarterlyRegime} from './quarterly-regime.js';
 import {readNativePrices,selectNativePrice} from './native-prices.js';
 import {marketComparisonChart,bindMarketComparison,treasuryCurveChart} from './overview-chart.js';
@@ -7,6 +7,7 @@ const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const num=(x,d=2)=>Number.isFinite(x)?new Intl.NumberFormat('en-GB',{maximumFractionDigits:d,minimumFractionDigits:d}).format(x):'Unavailable';
 const signed=(x,d=2)=>(x>0?'+':'')+num(x,d);
 const labelDate=x=>x?new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}).format(new Date(x.slice(0,10)+'T00:00:00Z')):'Date unavailable';
+const intradayTime=q=>{try{return new Intl.DateTimeFormat('en-US',{timeZone:q.exchangeTimezoneName||'America/New_York',hour:'2-digit',minute:'2-digit',hourCycle:'h23',timeZoneName:'short'}).format(new Date(q.timestamp));}catch{return '';}};
 let feedCache=null,feedPromise=null,mode='real',currencyChoice='',economy='IDN',range=90,ticket=0,stopSizing;
 const modeLabel=()=>mode==='real'?'Real':'Paper';
 const groupRoute=()=>mode==='real'?'#portfolios/real':'#portfolios';
@@ -35,8 +36,9 @@ function renderPrivate(root,data,asOf){
  root.querySelector('[data-command-reviews]').innerHTML='<h3 class="command-small-heading">Next reviews</h3>'+(reviews.length?'<ul class="command-review-list">'+reviews.slice(0,3).map(r=>'<li><a href="'+esc(r.href)+'">'+esc(r.title)+'</a><span class="'+(r.due?'command-due':'')+'">'+(r.due?'Due ':'')+labelDate(r.reviewDate)+'</span></li>').join('')+'</ul>':'<p class="command-empty">No scheduled reviews. <a href="#decisions">Record a decision ↗</a></p>');
 }
 function renderMarkets(root,quotes){
- root.querySelector('[data-command-prices]').innerHTML=OVERVIEW_MARKETS.map((spec,i)=>{const item=quotes[i],q=item?.quote,stale=q&&Date.now()-Date.parse(q.timestamp)>7*86400000;return `<a class="command-market-card" href="${spec.route}"><span>${esc(spec.label)}</span>${q?`<strong>${num(q.price,q.price>=1000?0:2)}</strong><small>${esc(q.unit)}</small><span class="command-market-move">${q.change?`${signed(q.change.percent)}% <small>vs ${labelDate(q.change.referenceDate)}</small>`:'Change unavailable'}</span><time datetime="${esc(q.timestamp)}">${labelDate(q.marketDate||q.timestamp)}${stale?' · Older observation':''}</time>`:'<p>Unavailable</p>'}</a>`;}).join('');
- const eligible=feedCache.markets.filter(m=>m.quote&&Date.now()-Date.parse(m.quote.history.at(-1)?.date)>0&&Date.now()-Date.parse(m.quote.history.at(-1)?.date)<7*86400000).map(m=>({key:m.category+':'+m.symbol,label:OVERVIEW_MARKETS.find(s=>s.category===m.category&&s.symbol===m.symbol).label,observations:m.quote.history}));
+ root.querySelector('[data-command-prices]').innerHTML=OVERVIEW_MARKETS.map((spec,i)=>{const item=quotes[i],q=item?.quote,stale=q&&Date.now()-Date.parse(q.timestamp)>7*86400000,session=q&&overviewSession(q);return `<a class="command-market-card" href="${spec.route}"><span>${esc(spec.label)}</span>${q?`<strong>${num(q.price,q.price>=1000?0:2)}</strong><small>${esc(q.unit)}</small><span class="command-market-move">${q.change?`${signed(q.change.percent)}% <small>vs ${labelDate(q.change.referenceDate)}</small>`:'Change unavailable'}</span><time datetime="${esc(q.timestamp)}">${labelDate(q.marketDate||q.timestamp)}${session.intraday?' · Intraday '+esc(intradayTime(q)):''}${stale?' · Older observation':''}</time>`:'<p>Unavailable</p>'}</a>`;}).join('');
+ // The comparison plots closes, so a bar still trading at retrieval is left out.
+ const eligible=feedCache.markets.filter(m=>m.quote).map(m=>({m,observations:overviewSession(m.quote).history})).filter(({observations})=>Date.now()-Date.parse(observations.at(-1)?.date)>0&&Date.now()-Date.parse(observations.at(-1)?.date)<7*86400000).map(({m,observations})=>({key:m.category+':'+m.symbol,label:OVERVIEW_MARKETS.find(s=>s.category===m.category&&s.symbol===m.symbol).label,observations}));
  const end=eligible.flatMap(s=>s.observations).map(o=>o.date).sort().at(-1),start=end?new Date(Date.parse(end)-range*86400000).toISOString().slice(0,10):undefined,result=buildAlignedMarketComparison(eligible,{start});
  const target=root.querySelector('[data-command-comparison]');
  target.innerHTML=result.available&&result.series.length>=2?marketComparisonChart(result,target.clientWidth):'<p class="command-empty">Comparable source history is unavailable. '+esc(result.reason||'At least two current series are required.')+'</p>';
