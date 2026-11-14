@@ -12,7 +12,10 @@ const exchangeClock=(at,zone)=>{try{const p=Object.fromEntries(new Intl.DateTime
 export function overviewSession(q){
  const history=Array.isArray(q?.history)?q.history:[],date=q?.marketDate||String(q?.timestamp||'').slice(0,10)||null,at=exchangeClock(q?.retrievedAt,q?.exchangeTimezoneName||'America/New_York');
  if(!at)return {date,intraday:null,history};
- const open=at.hour<17;return {date,intraday:open&&date===at.date,history:open?history.filter(r=>r.date!==at.date):history};
+ // Futures reopen at 18:00 exchange time (CME daily break 17:00 to 18:00), and that evening trading belongs to the next
+ // session, so a futures print observed from 18:00 is intraday too. Its source dates the next bar at 00:00 of that session.
+ const seen=exchangeClock(q?.timestamp,q?.exchangeTimezoneName||'America/New_York'),evening=q?.instrumentType==='FUTURE'&&seen?.date===date&&seen.hour>=18;
+ const open=at.hour<17;return {date,intraday:open&&date===at.date||evening,history:open?history.filter(r=>r.date!==at.date):history};
 }
 const stamp=(v,now)=>typeof v==='string'&&Number.isFinite(Date.parse(v))&&Date.parse(v)<=now+300000;
 const https=v=>{try{const u=new URL(v);return u.protocol==='https:'&&!u.username&&!u.password;}catch{return false;}};

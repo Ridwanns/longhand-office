@@ -33,6 +33,14 @@ test('An overview price observed while its session was trading is intraday, and 
  // IHSG retrieved 10:00 WIB: today's bar is still trading.
  s=overviewSession({exchangeTimezoneName:'Asia/Jakarta',marketDate:'2026-11-13',timestamp:'2026-11-13T03:00:00Z',retrievedAt:'2026-11-13T03:00:30Z',history:bars});
  assert.equal(s.intraday,true);assert.equal(s.history.at(-1).date,'2026-11-12');
+ // Gold futures: the 16:59 print fetched at 17:30 is the session's last trade; from 18:00 the next session trades.
+ const gold={instrumentType:'FUTURE',exchangeTimezoneName:'America/New_York',marketDate:'2026-11-12',history:bars.slice(0,2)};
+ s=overviewSession({...gold,timestamp:'2026-11-12T21:59:00Z',retrievedAt:'2026-11-12T22:30:00Z'});
+ assert.equal(s.intraday,false);assert.equal(s.history.length,2);
+ s=overviewSession({...gold,timestamp:'2026-11-13T01:00:00Z',retrievedAt:'2026-11-13T01:00:20Z'});
+ assert.equal(s.intraday,true);assert.equal(s.history.length,2);
+ // An index observed after 18:00 is not a futures session and stays a close.
+ assert.equal(overviewSession({...spx,timestamp:'2026-11-13T23:30:00Z',retrievedAt:'2026-11-13T23:31:00Z'}).intraday,false);
  // An unreadable retrieval time withholds the judgement instead of guessing.
  assert.equal(overviewSession({...spx,retrievedAt:'not a time'}).intraday,null);
 });
