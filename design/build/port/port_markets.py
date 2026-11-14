@@ -35,14 +35,10 @@ for a, b in [
 SP.wr(P('sheet-markets-desks.js'), "// Sheet 03 Markets: every desk, rendered from the published sheet data. Ported from design/preview/markets.js.\n"
       "// The watchlist chosen here only selects which instruments this sheet shows; it is kept in this browser.\n" + s)
 
-# lead: a general headline; the data sentence opens the paragraph
+# lead: the preview's headline and paragraph, both written from the data
 l = D('markets-lead.js')
 l = rep(l, "(function(){\nconst K=window.MARKETS;if(!K)return;", "export function mountMarketsLead(){\nconst K=window.MARKETS;if(!K)return;")
 l = l.rstrip(); assert l.endswith('})();'); l = l[:-5] + '}\n'
-a = l.index("document.getElementById('mk-head').textContent="); b = l.index('\n', a)
-lead = l[a:b]; sentence = lead[lead.index('=') + 1:].rstrip(';')
-l = l[:a] + "const opening=" + sentence + ";" + l[b:]
-l = rep(l, "document.getElementById('mk-dek').innerHTML=`", "document.getElementById('mk-dek').innerHTML=opening+' '+`")
 SP.wr(P('sheet-markets-lead.js'), "// Sheet 03 Markets: the opening paragraph, written from the data (plain facts). Ported from design/preview/markets-lead.js.\n" + l)
 
 # shared view switcher
