@@ -444,7 +444,7 @@ html[data-theme=dark] .lh-sheet-portfolio .ic{background:rgba(255,255,255,.02)}
 .lh-sheet-portfolio .deep-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin:10px 0 14px}
 .lh-sheet-portfolio .deep-head h2{font:600 28px/1.1 var(--display);letter-spacing:-.02em;margin-top:4px}
 .lh-sheet-portfolio .deep-head p{max-width:52ch;color:var(--ink2);font-size:14px}
-.lh-sheet-portfolio .tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.lh-sheet-portfolio .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
 .lh-sheet-portfolio .tile{display:grid;grid-template-rows:auto auto auto 1fr auto;gap:6px;text-align:left;padding:16px 16px 14px;min-height:196px;border:1px solid var(--glass-edge);border-radius:4px;background:var(--glass);color:var(--ink);font:inherit;cursor:pointer;position:relative;transition:transform .25s var(--ease,ease),border-color .25s,box-shadow .25s}
 .lh-sheet-portfolio .tile:hover{transform:translateY(-2px);border-color:var(--ink3);box-shadow:0 8px 22px -14px rgba(0,0,0,.35)}
 .lh-sheet-portfolio .tile:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
@@ -872,5 +872,5 @@ html[data-theme=dark] .lh-sheet-portfolio{--m-gdp-0:#d9705f; --m-gdp-1:#3d403b; 
 .lh-sheet-portfolio .lh-portfolio-list{display:grid;gap:8px;margin:10px 0 0;padding:0;list-style:none}
 .lh-sheet-portfolio .lh-portfolio-list a{display:flex;justify-content:space-between;gap:12px;padding:10px 12px;border:1px solid var(--rule);border-radius:4px;color:var(--ink)}
 .lh-sheet-portfolio .lh-portfolio-list a:hover{border-color:var(--focus)}
-.lh-sheet-portfolio .pg.on{box-shadow:inset 0 0 0 1px var(--focus)}
+.lh-sheet-portfolio .pg.on{box-shadow:inset 0 0 0 1px var(--focus);padding-left:20px}
 .lh-sheet-portfolio .pg .btn-line,.lh-sheet-portfolio .pg button{align-self:flex-start;margin-top:10px}
