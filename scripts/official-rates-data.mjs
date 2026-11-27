@@ -1,5 +1,5 @@
 import {createHash} from 'node:crypto';
-import {mkdir,writeFile} from 'node:fs/promises';
+import {mkdir,readFile,writeFile} from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 // DOM-free contract lives in its own module so acquisition also runs in Node.
@@ -23,5 +23,29 @@ export async function collectOfficialRates({years=20,fetcher=fetch,now=()=>new D
  const data={format:'longhand-official-rates',version:1,provider:'us-treasury',sourceUrl:TREASURY_SOURCE,unit:'percent per year',retrievedAt,observations,acquisitions,historyErrors,requestedStart:cutoff,sourceHash:createHash('sha256').update(JSON.stringify(acquisitions)).digest('hex')};
  if(!observations.length){data.error='Treasury history is unavailable.';delete data.sourceHash;}
  validateOfficialRates(data);await mkdir('.pages-data',{recursive:true});await writeFile('.pages-data/official-rates.json',JSON.stringify(data));console.log(JSON.stringify({provider:data.provider,observations:observations.length,first:observations[0]?.date,latest:observations.at(-1)?.date,yearsAcquired:packets.length,historyErrors}));return data;
+}
+// A year that failed to download keeps the observations of the previous validated snapshot, with that acquisition's
+// original retrieval time; after a complete outage the whole previous history is kept. Nothing is filled or estimated.
+export function retainOfficialRates(current,previous){
+ validateOfficialRates(current);
+ if(!previous||previous.error||!previous.observations?.length)return current;
+ validateOfficialRates(previous);
+ const failed=current.error?new Set(previous.observations.map(o=>Number(o.date.slice(0,4)))):new Set((current.historyErrors||[]).map(e=>e.year));
+ if(!failed.size)return current;
+ const fresh=current.error?[]:current.observations,have=new Set(fresh.map(o=>o.date)),start=current.requestedStart||'';
+ const kept=previous.observations.filter(o=>failed.has(Number(o.date.slice(0,4)))&&o.date>=start&&!have.has(o.date));
+ if(!kept.length)return current;
+ const retainedYears=[...new Set(kept.map(o=>Number(o.date.slice(0,4))))].sort((a,b)=>a-b);
+ const acquisitions=[...(current.error?[]:current.acquisitions||[]),...(previous.acquisitions||[]).filter(a=>retainedYears.includes(a.year)).map(a=>({...a,retained:true}))].sort((a,b)=>a.year-b.year);
+ const {error,...rest}=current;
+ const data={...rest,observations:[...fresh,...kept].sort((a,b)=>a.date.localeCompare(b.date)),acquisitions,retainedYears,historyErrors:current.historyErrors||[{error}]};
+ data.sourceHash=createHash('sha256').update(JSON.stringify(acquisitions)).digest('hex');
+ return validateOfficialRates(data);
+}
+export async function retainOfficialRatesFile(dir='.pages-data',previousDir='.pages-data-previous'){
+ const read=async d=>{try{return JSON.parse(await readFile(path.join(d,'official-rates.json'),'utf8'));}catch(e){if(e.code==='ENOENT')return null;throw e;}};
+ const current=await read(dir),previous=await read(previousDir);if(!current)return {retainedYears:[]};
+ const data=retainOfficialRates(current,previous);if(data!==current)await writeFile(path.join(dir,'official-rates.json'),JSON.stringify(data));
+ const summary={retainedYears:data.retainedYears||[]};console.log(JSON.stringify({officialRatesRetention:summary}));return summary;
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url))await collectOfficialRates();

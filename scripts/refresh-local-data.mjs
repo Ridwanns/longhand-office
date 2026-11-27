@@ -21,6 +21,7 @@ await cp(path.join(root,'.pages-data'),path.join(root,'.pages-data-previous'),{r
 step('yahoo-stock-directory',python,['-I','scripts/yahoo-stock-directory.py']);
 for(const s of ['official-rates-data','market-history-data','macro-data','macro-context-data','macro-extended-data','macro-indicators-data','macro-releases-data','fx-history-data','pages-data'])step(s,node,['scripts/'+s+'.mjs']);
 step('retain previous values for failed sources',node,['-e',"import('./scripts/retain-macro-data.mjs').then(m=>m.retainMacroData('.pages-data','.pages-data-previous'))"]);
+step('retain previous Treasury years that failed',node,['-e',"import('./scripts/official-rates-data.mjs').then(m=>m.retainOfficialRatesFile('.pages-data','.pages-data-previous'))"]);
 step('data-coverage',node,['scripts/data-coverage.mjs']);
 step('native-prices',node,['scripts/native-prices-data.mjs','.pages-data']);
 step('sheet-data',node,['-e',"import('./scripts/sheet-data.mjs').then(async m=>console.log(await m.buildSheetData(process.cwd(),'.pages-data','.pages-data/sheet-data')))"]);
