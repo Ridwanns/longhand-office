@@ -11,7 +11,7 @@ const TAPE_LENGTH=52,TAPE_STEP=5,TAPE_HEIGHT=44,TAPE_LIMIT=3;
 export const WIND_GAUGES={
  dollar:{label:'US dollar, broad',source:'contextSeries',id:'broad-dollar',measure:'percent',unit:'index',staleDays:10,sourceName:'Federal Reserve Board via FRED'},
  yield:{label:'US 10-year yield',source:'contextSeries',id:'us-10y',measure:'points',unit:'%',staleDays:10,sourceName:'Federal Reserve Board via FRED'},
- rupiah:{label:'Rupiah per US dollar',source:'fxHistory',id:'FX_IDC:USDIDR',measure:'percent',unit:'IDR per USD',staleDays:10,sourceName:'Yahoo Finance daily close'}
+ rupiah:{label:'Rupiah per US dollar',source:'fxHistory',id:'FX_IDC:USDIDR',measure:'percent',unit:'IDR per USD',staleDays:10,sourceName:'ECB reference rates, USD/IDR cross'}
 };
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt=(n,d=2)=>new Intl.NumberFormat('en-GB',{minimumFractionDigits:d,maximumFractionDigits:d}).format(n);
