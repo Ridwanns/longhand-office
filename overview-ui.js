@@ -2,6 +2,7 @@ import {overviewPortfolioSummary,overviewReviewQueue,buildAlignedMarketCompariso
 import {validateOverviewFeed,OVERVIEW_MARKETS,overviewSession} from './overview-contract.js';
 import {synchronizedQuarterlyRegime} from './quarterly-regime.js';
 import {readNativePrices,selectNativePrice} from './native-prices.js';
+import {validatePublicQuote} from './public-quote-contract.js';
 import {marketComparisonChart,bindMarketComparison} from './overview-chart.js';
 import {SCHEDULE_WINDOWS,FEATURE_WINDOWS,scheduleRow,sparkGeometry,deskFacts,featureChart,shortDate,longDate,monthYear} from './overview-desk.js';
 import {deskModelMarkup,mountDeskModel,setRoomSubtitle} from './overview-model.js';
@@ -79,7 +80,7 @@ function renderMarkets(root,quotes){
  else dekNode.textContent='The published IHSG history is unavailable, so no summary is computed.';
  const j=ihsg.at(-1)?.date,u=spx.at(-1)?.date;root.querySelector('[data-desk-close]').textContent=j&&u?(j===u?'close of '+labelDate(j):'IDX close '+labelDate(j)+' · US close '+labelDate(u)):'publication '+labelDate(feedCache.marketPublishedAt);
  if(j||u)root.querySelector('[data-desk-data-date]').textContent=labelDate([j,u].filter(Boolean).sort().at(-1));
- root.querySelector('[data-desk-asof]').textContent=`Daily closes from the Overview publication of ${labelDate(feedCache.marketPublishedAt)}, completed sessions only. “Last” is the latest source price, marked Intraday while its session was trading. Not real time.`;
+ root.querySelector('[data-desk-asof]').textContent=`Daily closes from the Overview publication of ${labelDate(feedCache.marketPublishedAt)}, completed sessions only. “Last” is the latest source price, marked Intraday while its session was trading. Not real time.`+(root._liveAt?` On this computer “Last” is re-read from the source every minute while this page is open; last read ${new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(root._liveAt)}. The time under each price is the source's own.`:'');
  setRoomSubtitle(root,'screen',feedCache.markets.filter(m=>m.quote).length+' markets on the schedule');
  renderFeature(root);
  // The comparison plots closes, so a bar still trading at retrieval is left out.
@@ -147,6 +148,36 @@ function vaultCrop(root){
 }
 
 async function readFeed(){if(feedCache)return feedCache;if(!feedPromise)feedPromise=(async()=>{const response=await fetch(new URL('./data/overview.json',import.meta.url),{credentials:'omit',cache:'no-store',signal:AbortSignal.timeout(20000)});if(!response.ok)throw Error('Overview publication unavailable.');const text=await response.text();if(text.length>1200000)throw Error('Overview publication exceeds limit.');return feedCache=validateOverviewFeed(JSON.parse(text));})().finally(()=>{feedPromise=null;});return feedPromise;}
+// Local edition only: while the Overview is open and visible, the four headline prices are re-read every minute through
+// the local server's own source read (/api/market/category/price). A quote replaces the shown one only when its source
+// time is newer (selectNativePrice), and every quote is validated first. Charts keep plotting completed closes only.
+// The Pages edition has no local server, so it never polls.
+export const LIVE_PRICE_MS=60000;
+const localEdition=()=>typeof location!=='undefined'&&['127.0.0.1','localhost'].includes(location.hostname);
+let stopLive=null;
+export async function readLiveQuote(market,{fetcher=fetch}={}){
+ const r=await fetcher('/api/market/category/price?category='+encodeURIComponent(market.category)+'&symbol='+encodeURIComponent(market.symbol),{cache:'no-store',credentials:'same-origin',signal:AbortSignal.timeout(15000)});
+ if(!r.ok)throw Error('Live source read unavailable (HTTP '+r.status+').');
+ const quote=await r.json();validatePublicQuote(quote,market.category,market.symbol,quote.retrievedAt);
+ return {generatedAt:quote.retrievedAt,quotes:{[market.category+':'+market.symbol]:{quote}}};
+}
+function startLivePrices(root,own){
+ stopLive?.();if(!localEdition())return;
+ let busy=false;
+ const tick=async()=>{
+  if(!root.isConnected||own!==ticket){stop();return;}
+  if(document.hidden||busy||!feedCache)return;busy=true;
+  try{
+   const current=root._quotes||feedCache.markets;
+   const next=await Promise.all(feedCache.markets.map(async(m,i)=>{try{return selectNativePrice(current[i],await readLiveQuote(m),m.category,m.symbol).item;}catch{return current[i];}}));
+   if(root.isConnected&&own===ticket){root._quotes=next;root._liveAt=Date.now();renderMarkets(root,next);}
+  }finally{busy=false;}
+ };
+ const onVisible=()=>{if(!document.hidden)tick();};
+ const timer=setInterval(tick,LIVE_PRICE_MS);document.addEventListener('visibilitychange',onVisible);
+ const stop=()=>{clearInterval(timer);document.removeEventListener('visibilitychange',onVisible);if(stopLive===stop)stopLive=null;};
+ stopLive=stop;tick();
+}
 export async function mountCommandCenter(data,asOf){
  const root=document.querySelector('.command-center');if(!root)return;const own=++ticket;
  stopSizing?.();stopModel?.();stopModel=mountDeskModel(root);vaultCrop(root);
@@ -159,6 +190,6 @@ export async function mountCommandCenter(data,asOf){
  root.addEventListener('click',e=>{const row=e.target.closest('[data-desk-row]');if(!row||e.target.closest('a,button')||!feedCache)return;featured=row.dataset.deskRow;renderFeature(root);});
  root.querySelector('[data-command-currency]').addEventListener('change',e=>{currencyChoice=e.target.value;renderPrivate(root,data,asOf);});
  try{await readFeed();if(!root.isConnected||own!==ticket)return;renderMarkets(root,feedCache.markets);renderMacro(root);root.querySelector('[data-command-data-status]').textContent='Dated source snapshots. Market publication '+labelDate(feedCache.marketPublishedAt)+'.';
-  const quotes=await Promise.all(feedCache.markets.map(async m=>selectNativePrice(m,await readNativePrices(m.category,m.symbol),m.category,m.symbol).item));if(root.isConnected&&own===ticket){root._quotes=quotes;renderMarkets(root,quotes);}
+  const quotes=await Promise.all(feedCache.markets.map(async m=>selectNativePrice(m,await readNativePrices(m.category,m.symbol),m.category,m.symbol).item));if(root.isConnected&&own===ticket){root._quotes=quotes;renderMarkets(root,quotes);startLivePrices(root,own);}
  }catch{if(!root.isConnected)return;root.querySelector('[data-command-prices]').innerHTML='<p class="command-empty">Published market data unavailable. <a href="#market/us">Open Markets</a></p>';root.querySelector('[data-command-regime]').textContent='Macro publication unavailable. No regime inferred.';root.querySelector('[data-command-data-status]').textContent='Source publication could not be loaded. Your records remain available.';}
 }

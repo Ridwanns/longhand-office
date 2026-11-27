@@ -26,7 +26,21 @@ To bring the local edition's public data up to date (prices, macro, rates, FX an
 node scripts/refresh-local-data.mjs
 ```
 
-It writes only the git-ignored `.pages-data` folder and keeps the previous snapshot in `.pages-data-previous`. A source that fails keeps its previous value and original date. The local server prefers the rebuilt sheets in `.pages-data/sheet-data` over the committed design snapshot, and an old `dist` build never hides newer local data.
+It follows the same steps as the Pages publication and takes about 15 minutes. It writes only the git-ignored `.pages-data` folder and keeps the previous snapshot in `.pages-data-previous`. A source that fails keeps its previous value and original date. A failed check is reported and the data is still written. The local server prefers the rebuilt sheets in `.pages-data/sheet-data` over the committed design snapshot, and an old `dist` build never hides newer local data.
+
+To run it automatically every day at 17:00 (after the IDX close) and 06:00 (after the US close), register the Windows task once:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\schedule-refresh.ps1
+```
+
+A run missed while the computer was asleep starts when it wakes. The last run's output is in `.tools\refresh-last.log`. Remove the task with the same command plus `-Remove`.
+
+While the Overview is open on this computer, the four headline prices are re-read from the source every minute. The time shown under each price is the source's own. Charts keep plotting completed closes only.
+
+Data that someone reviews by hand (Bank Indonesia and other official releases in `sources/`) cannot refresh itself. Such a reading is flagged once its next release is due, judged from that source's own publication lag. Its review date alone does not make it outdated.
+
+USD/IDR history is the cross of the ECB euro reference rates (IDR per EUR ÷ USD per EUR). On the days checked it was within 0.2% of Bank Indonesia's JISDOR. The Overview shows JISDOR itself when it is published. The earlier Yahoo `IDR=X` closes are no longer used: on several November 2026 days they were more than 3% away from JISDOR.
 
 ## Everyday workflow
 
