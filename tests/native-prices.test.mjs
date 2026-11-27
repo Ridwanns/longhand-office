@@ -18,3 +18,17 @@ test('A source regression preserves the newer source observation',async()=>{cons
 test('Price buckets are bounded, deterministic and distinguish asset categories',()=>{for(const symbol of ['AAPL','BBCA','GC=F','^GSPC'])assert.match(nativePriceBucket('us',symbol),/^[0-7][0-9a-f]$/);assert.equal(nativePriceBucket('us','AAPL'),nativePriceBucket('us','AAPL'));assert.notEqual(nativePriceBucket('us','TLT'),nativePriceBucket('bonds','TLT'));});
 
 test('Price-only acquisition preserves separate fundamental values and their original vintage',async()=>{const original=projectNativePrice(raw(),'us','AAPL',at);original.marketCap=100000;original.capitalizationRetrievedAt='2026-10-19T17:00:00Z';original.averageDailyVolume3Month=12345;const f=await collectNativePrices({publishedAt:at,quotes:{'us:AAPL':{quote:original}}},null,{now:()=>at,pause:async()=>{},fetcher:async()=>response({spark:{result:[{symbol:'AAPL',response:raw().chart.result}],error:null}})}),q=f.quotes['us:AAPL'].quote;assert.equal(q.price,110);assert.equal(q.marketCap,100000);assert.equal(q.capitalizationRetrievedAt,original.capitalizationRetrievedAt);assert.equal(q.averageDailyVolume3Month,12345);assert.notEqual(q.capitalizationRetrievedAt,q.retrievedAt);});
+test('The local live read accepts only a validated quote for the asked instrument, and a newer source time wins',async()=>{
+ globalThis.document??={addEventListener(){},removeEventListener(){},querySelector(){return null},querySelectorAll(){return []},documentElement:{dataset:{}}};
+ const {readLiveQuote}=await import('../overview-ui.js');
+ const gold=projectNativePrice(raw('GC=F',{exchangeName:'CMX',instrumentType:'FUTURE'}),'commodities','GC=F',at),market={category:'commodities',symbol:'GC=F'};
+ let asked;const ok=async url=>{asked=url;return {ok:true,status:200,json:async()=>gold};};
+ const live=await readLiveQuote(market,{fetcher:ok});
+ assert.equal(asked,'/api/market/category/price?category=commodities&symbol=GC%3DF');assert.equal(live.quotes['commodities:GC=F'].quote.price,110);
+ // an older shown quote is replaced, a newer shown quote is kept
+ const older={quote:{...gold,price:100,timestamp:'2026-10-20T14:00:00.000Z'}},newer={quote:{...gold,price:120,timestamp:'2026-10-20T16:00:00.000Z',marketDate:gold.marketDate}};
+ assert.equal(selectNativePrice(older,live,'commodities','GC=F').item.quote.price,110);assert.equal(selectNativePrice(newer,live,'commodities','GC=F').item.quote.price,120);
+ // a quote for another instrument, or a failed read, is never shown
+ await assert.rejects(readLiveQuote({category:'commodities',symbol:'SI=F'},{fetcher:ok}));
+ await assert.rejects(readLiveQuote(market,{fetcher:async()=>({ok:false,status:502})}),/HTTP 502/);
+});

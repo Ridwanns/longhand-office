@@ -16,14 +16,14 @@ export function synchronizedQuarterlyRegime(readings,now=Date.now()){
   const d=o.date,p=priorQuarter(d),end=new Date(Date.UTC(Number(d.slice(0,4)),Number(d.slice(5,7))+2,1));if(end.getTime()>now)continue;
   const current=observed(g,d),prior=observed(g,p);if(!current||!prior)continue;
   for(const c of candidates('inflation')){const latest=observed(c,endMonth(d)),previous=observed(c,endMonth(p));if(!latest||!previous)continue;
-   matches.push({date:d,period:quarter(d),priorPeriod:quarter(p),growth:{id:g.id,source:g.spec.source,sourceUrl:g.spec.sourceUrl,retrievedAt:g.retrievedAt,current,prior,method:g.spec.method},inflation:{id:c.id,source:c.spec.source,sourceUrl:c.spec.sourceUrl,retrievedAt:c.retrievedAt,current:latest,prior:previous,method:c.spec.method},priority:(g.spec.priority||0)+(c.spec.priority||0)});
+   matches.push({date:d,period:quarter(d),priorPeriod:quarter(p),growth:{id:g.id,source:g.spec.source,sourceUrl:g.spec.sourceUrl,retrievedAt:g.retrievedAt,reviewed:g.spec.provider==='reviewed',current,prior,method:g.spec.method},inflation:{id:c.id,source:c.spec.source,sourceUrl:c.spec.sourceUrl,retrievedAt:c.retrievedAt,reviewed:c.spec.provider==='reviewed',current:latest,prior:previous,method:c.spec.method},priority:(g.spec.priority||0)+(c.spec.priority||0)});
   }
  }
  matches.sort((a,b)=>b.date.localeCompare(a.date)||b.priority-a.priority||a.growth.id.localeCompare(b.growth.id)||a.inflation.id.localeCompare(b.inflation.id));
  if(!matches.length)return {available:false,reason:'No completed quarter has consecutive GDP YoY rates and CPI YoY rates for both quarter-end months in the connected sources.'};
  const s=matches[0],growthChange=Number((s.growth.current.value-s.growth.prior.value).toFixed(10)),inflationChange=Number((s.inflation.current.value-s.inflation.prior.value).toFixed(10)),quad=growthChange===0||inflationChange===0?null:growthChange>0?(inflationChange<0?1:2):(inflationChange>0?3:4);
  const currentQuarter=Date.UTC(new Date(now).getUTCFullYear(),Math.floor(new Date(now).getUTCMonth()/3)*3,1),previousCompleted=new Date(currentQuarter-86400000),expected=date(previousCompleted.getUTCFullYear(),Math.floor(previousCompleted.getUTCMonth()/3)*3+1);
- return {...s,available:true,growthChange,inflationChange,quad,state:quad?names[quad]:'On an axis · one rate is unchanged',olderCommonQuarter:s.date<expected,oldAcquisition:[s.growth,s.inflation].some(v=>now-Date.parse(v.retrievedAt)>10*86400000),method:'GDP YoY change between consecutive quarters; CPI YoY change between their final months. Not quarter-average CPI. Latest common reported quarter from retained vintages; no nowcast or forecast.'};
+ return {...s,available:true,growthChange,inflationChange,quad,state:quad?names[quad]:'On an axis · one rate is unchanged',olderCommonQuarter:s.date<expected,oldAcquisition:[s.growth,s.inflation].some(v=>!v.reviewed&&now-Date.parse(v.retrievedAt)>10*86400000),method:'GDP YoY change between consecutive quarters; CPI YoY change between their final months. Not quarter-average CPI. Latest common reported quarter from retained vintages; no nowcast or forecast.'};
 }
 export function renderQuarterlyRegime(readings,{country,now=Date.now()}={}){
  const s=synchronizedQuarterlyRegime(readings,now),n=v=>new Intl.NumberFormat('en-GB',{maximumFractionDigits:2,minimumFractionDigits:2}).format(v),signed=v=>(v>0?'+':'')+n(v);

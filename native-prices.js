@@ -24,7 +24,7 @@ export function selectNativePrice(base,feed,category,symbol){
  const item=feed?.quotes?.[category+':'+symbol],candidate=item?.quote,original=base?.quote;
  // Never choose by check time alone. An older source timestamp cannot displace a newer quote.
  if(!candidate||original&&(olderObservation(candidate,original)||candidate.timestamp===original.timestamp&&Date.parse(candidate.retrievedAt)<Date.parse(original.retrievedAt)))return {item:base,publicationTime:null,note:item?.error?'Price refresh unavailable for this instrument; retaining its dated publication.':'No newer source observation in the price-refresh publication.'};
- return {item,publicationTime:feed.generatedAt,note:feed.availabilityError|| (item.error?'Price refresh failed; retaining the last validated source observation.':'Automatic source snapshots · scheduled every 5 minutes; runs and source delivery may be delayed. Real-time entitlement is unverified.')};
+ return {item,publicationTime:feed.generatedAt,note:feed.availabilityError|| (item.error?'Price refresh failed; retaining the last validated source observation.':'Source snapshots from the latest price refresh. Refreshes are scheduled, but runs can start hours late, so the source time on each price is what counts. Real-time entitlement is unverified.')};
 }
 export function nativePriceBucket(category,symbol){let hash=2166136261;for(const c of category+':'+symbol){hash^=c.charCodeAt(0);hash=Math.imul(hash,16777619);}return ((hash>>>0)%128).toString(16).padStart(2,'0');}
 const cache=new Map();

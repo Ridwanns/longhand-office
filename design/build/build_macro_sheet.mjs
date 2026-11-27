@@ -4,7 +4,7 @@
 // freshness flags from coverageFreshness() (acquisition > 10 days; observation older than the cadence allows),
 // quad = sign of growth change and inflation change.
 // usage: node build_macro_sheet.mjs <repo> [dataDir=.pages-data] [now ISO]
-import fs from 'fs'; import path from 'path';
+import fs from 'fs'; import path from 'path'; import { pathToFileURL } from 'url';
 const repo = process.argv[2];
 const DATA = path.resolve(repo, process.argv[3] || '.pages-data');
 const NOW = Date.parse(process.argv[4] || new Date().toISOString()), DAY = 864e5;
@@ -28,14 +28,20 @@ function freqOf(id) {
   return 'M';
 }
 const consecutive = (a, b, f) => f === 'Q' ? mIdx(b) - mIdx(a) === 3 : f === 'M' ? mIdx(b) - mIdx(a) === 1 : f === 'A' ? +b.slice(0, 4) - +a.slice(0, 4) === 1 : true;
-// same rule as the app's coverageFreshness()
+// the app's own freshness rules (source-freshness.js): the period's age against the frequency limit for every source;
+// a reviewed release is also flagged once its next release is due; retrieval age only says something about an
+// automatic source, because a reviewed release's retrieval date is the date someone checked it
 const OBS_DAYS = { D: 10, W: 21, M: 75, Q: 210, A: 550, E: 120 };
+const { periodEnd, nextReleaseDue, acquisitionOld } = await import(pathToFileURL(path.join(repo, 'source-freshness.js')).href);
+const contracts = await Promise.all(['macro-indicators-contract.js', 'macro-extended-contract.js', 'macro-releases-contract.js'].map(f => import(pathToFileURL(path.join(repo, f)).href)));
+const SPECS = [contracts[0].MACRO_INDICATORS, contracts[1].EXTENDED_SERIES, contracts[2].RELEASE_SERIES];
+const reviewed = id => SPECS.some(t => t[id]?.provider === 'reviewed') || S[id]?.acquisition === 'reviewed-release';
 function freshness(id) {
   const o = obs(id).at(-1), f = freqOf(id), s = S[id]; if (!o) return [];
-  // the Macro desk dates a monthly or quarterly observation by its period start (matches the app's pulse flags)
-  let end = o.d; if (f === 'A' && end.endsWith('-01-01')) end = end.slice(0, 4) + '-12-31';
-  const out = []; if (NOW - Date.parse(end) > (OBS_DAYS[f] || 30) * DAY) out.push('Older observation');
-  if (s.retrievedAt && NOW - Date.parse(s.retrievedAt) > 10 * DAY) out.push('Older acquisition');
+  const rev = reviewed(id), out = [];
+  if (NOW - Date.parse(periodEnd(o.d, f) + 'T00:00:00Z') > (OBS_DAYS[f] || 30) * DAY) out.push('Older observation');
+  else if (rev) { const due = nextReleaseDue({ date: o.d, releasedAt: o.releasedAt }, f); if (due && NOW > Date.parse(due + 'T23:59:59Z')) out.push('Newer release due'); }
+  if (acquisitionOld(s.retrievedAt, { reviewed: rev, now: NOW })) out.push('Older acquisition');
   return out;
 }
 const unitWord = u => /%/.test(u || '') ? 'percentage points' : /Index/i.test(u || '') ? 'index points' : /Months/i.test(u || '') ? 'months' : (u || '');
@@ -133,7 +139,7 @@ function swing(pts, mode) { // last 30-day move and its size in usual swings; we
   return { date: pts.at(-1)[0], ...now, tape };
 }
 const state = r => { const a = Math.abs(r); return a < 0.5 ? 'Calm' : (r > 0 ? (a >= 1.5 ? 'Strong headwind' : 'Headwind') : (a >= 1.5 ? 'Strong tailwind' : 'Tailwind')) };
-const fxAll = D('fx-history'), fx = fxAll.entries.find(e => e.symbol === 'IDR=X');
+const fxAll = D('fx-history'), fx = fxAll.entries.find(e => e.id === 'FX_IDC:USDIDR');
 const fxPts = (fx.observations || fx.history || fx.points || []).map(o => Array.isArray(o) ? o : [o.date, o.close ?? o.value]).filter(p => Number.isFinite(p[1])).map(p => [String(p[0]).slice(0, 10), p[1]]);
 const wd = swing(hist('broad-dollar', '2021-06-01'), 'pct'), wy = swing(hist('us-10y', '2021-06-01'), 'bp'), wr = swing(fxPts.filter(p => p[0] >= '2021-06-01'), 'pct');
 const olderObs = (date, days) => NOW - Date.parse(date + 'T00:00:00Z') > days * DAY;
@@ -151,7 +157,7 @@ const rates = { decisions: hist('id-policy'), bisDaily: weekly(hist('bis-IDN-pol
   jisdor: hist('id-jisdor'), usdidr: weekly(fxPts.filter(p => p[0] >= '2016-01-01')),
   yield10: idy && Number.isFinite(idy.v) ? { v: fmt(idy.v), per: `${/^\d{4}-\d{2}-\d{2}$/.test(idy.per) ? label(idy.per, 'D') : idy.per} · Daily`, src: idy.src, flags: idy.stale ? ['Older observation or acquisition'] : [] } : null,
   alternatives: [bisD && `BIS policy instrument rate · ${label(bisD.d, 'D')}`, bisM && `BIS policy instrument rate, end of month · ${label(bisM.d, 'M')}`].filter(Boolean),
-  sources: { decisions: src('id-policy'), bisDaily: src('bis-IDN-policy-D'), bisMonthly: src('bis-IDN-policy-M'), jisdor: src('id-jisdor'), usdidr: { id: fx.id || 'IDR=X', url: fx.sourceUrl, retrieved: fx.retrievedAt, unit: fx.unit } } };
+  sources: { decisions: src('id-policy'), bisDaily: src('bis-IDN-policy-D'), bisMonthly: src('bis-IDN-policy-M'), jisdor: src('id-jisdor'), usdidr: { id: fx.id, name: fx.provider + ' reference rates, ' + fx.symbol + ' cross', url: fx.sourceUrl, retrieved: fx.retrievedAt, unit: fx.unit } } };
 
 // ---- Compare economies: regional rows ----
 const lastOf = (id, f) => { const o = obs(id).at(-1); return o ? [Number.isInteger(o.value) ? o.value.toFixed(1) : String(Math.round(o.value * 100) / 100), `${f === 'Q' ? o.d.slice(0, 4) + '-Q' + ((+o.d.slice(5, 7) + 2) / 3) : f === 'M' ? o.d.slice(0, 7) : f === 'A' ? o.d.slice(0, 4) : o.d} · ${f === 'A' ? 'Annual' : cadence[f] || ''}${o.status === 'estimate' ? ' · estimate' : ''}`] : null };

@@ -1,5 +1,6 @@
 import {MACRO_INDICATORS,INDICATOR_GAPS,validateMacroIndicators} from './macro-indicators-contract.js';
 import {macroDateLabel,macroPointChange,macroSegments} from './macro-chart.js';
+import {acquisitionOld,nextReleaseDue} from './source-freshness.js';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const number=v=>Number.isFinite(v)?new Intl.NumberFormat('en-GB',{minimumFractionDigits:1,maximumFractionDigits:2}).format(v):'Not reported';
 let cached,pending;
@@ -8,7 +9,7 @@ export async function readSupplementaryIndicators(force=false){
  pending=(async()=>{const r=await fetch(new URL('./data/macro-indicators.json',import.meta.url),{cache:'no-store',signal:AbortSignal.timeout(20000)});if(!r.ok)throw Error('Supplementary macro snapshot unavailable.');const text=await r.text();if(text.length>2000000)throw Error('Supplementary macro file exceeds limit.');const feed=validateMacroIndicators(JSON.parse(text));cached={time:Date.now(),feed};return feed;})();try{return await pending;}finally{pending=null;}
 }
 export function supplementaryIndicatorEntries(feed,country,now=Date.now()){
- return (feed?.series||[]).filter(s=>MACRO_INDICATORS[s.id].country===country).map(item=>{const spec=MACRO_INDICATORS[item.id],latest=item.error?null:item.observations.findLast(o=>Number.isFinite(o.value))||null,supplied=item.observations.at(-1),flags=[item.error,latest&&now-Date.parse(latest.date)>({Q:240,M:100}[spec.frequency])*86400000?'Older observation':null,now-Date.parse(item.retrievedAt)>10*86400000?'Older acquisition':null,latest&&supplied?.date>latest.date?'Later supplied period not reported':null].filter(Boolean);
+ return (feed?.series||[]).filter(s=>MACRO_INDICATORS[s.id].country===country).map(item=>{const spec=MACRO_INDICATORS[item.id],latest=item.error?null:item.observations.findLast(o=>Number.isFinite(o.value))||null,supplied=item.observations.at(-1),flags=[item.error,latest&&now-Date.parse(latest.date)>({Q:240,M:100}[spec.frequency])*86400000?'Older observation':null,acquisitionOld(item.retrievedAt,{reviewed:spec.provider==='reviewed',now})?'Older acquisition':null,spec.provider==='reviewed'&&latest&&nextReleaseDue(latest,spec.frequency)&&now>Date.parse(nextReleaseDue(latest,spec.frequency)+'T23:59:59Z')?'Newer release due':null,latest&&supplied?.date>latest.date?'Later supplied period not reported':null].filter(Boolean);
   return {id:item.id,group:spec.group,title:spec.title,unit:spec.unit,frequency:spec.frequency,latest,source:spec.source,sourceUrl:latest?.sourceUrl||spec.sourceUrl,retrievedAt:item.retrievedAt,method:spec.method+(spec.provider==='reviewed'?' Manually reviewed official release; the fixed review date is not renewed by collection. Source hash fingerprints the reviewed record, not the original webpage.':''),observations:item.observations,historyTitle:spec.title,historySource:spec.source,historyFrequency:spec.frequency,sourceId:item.id,historyId:item.id,historyRetrievedAt:item.retrievedAt,sourceHash:item.sourceHash,flags};
  });
 }

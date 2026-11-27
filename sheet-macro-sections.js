@@ -232,7 +232,7 @@ function rates(){
       <div class="box"><div class="kicker">Alternative sources</div>${R.alternatives.map(a=>`<div class="src" data-css="font-size:12.5px;margin-top:6px">${esc(a)}</div>`).join('')}</div>
     </div></div>`;
   lineChart($('#polChart'),R.bisMonthly,{unit:'%',ro:'polRo',srcName:'BIS policy instrument rate, end of month'});
-  lineChart($('#fxChart'),R.usdidr,{unit:'IDR per USD',ro:'fxRo',fmt:v=>Math.round(v).toLocaleString('en-US'),srcName:'Yahoo Finance IDR=X'});
+  lineChart($('#fxChart'),R.usdidr,{unit:'IDR per USD',ro:'fxRo',fmt:v=>Math.round(v).toLocaleString('en-US'),srcName:R.sources?.usdidr?.name||'ECB reference rates, USD/IDR cross'});
 }
 
 /* ---------- 5. Compare economies ---------- */
