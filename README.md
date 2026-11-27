@@ -20,6 +20,14 @@ npm start
 
 Open [Longhand Office](http://127.0.0.1:4173/#overview) and keep the command running. For the separate test environment use `npm run start:test` and port 4174. The Flowless data service on port 8000 is optional for IDX and is neither started nor changed by Office.
 
+To bring the local edition's public data up to date (prices, macro, rates, FX and the Macro/Markets/Records sheets), run:
+
+```powershell
+node scripts/refresh-local-data.mjs
+```
+
+It writes only the git-ignored `.pages-data` folder and keeps the previous snapshot in `.pages-data-previous`. A source that fails keeps its previous value and original date. The local server prefers the rebuilt sheets in `.pages-data/sheet-data` over the committed design snapshot, and an old `dist` build never hides newer local data.
+
 ## Everyday workflow
 
 1. **Markets:** inspect US/IDX stocks, bond ETFs, commodity futures and indices. Source type, currency/unit, observation date and unverified real-time status stay visible. Refresh changes only the market desk.

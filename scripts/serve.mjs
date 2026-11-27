@@ -18,9 +18,11 @@ const root = process.cwd();
 // source files change. Only public publication files are read.
 let overviewCache=null;
 async function readLocalOverview(){
- try{return await readFile(path.join(root,'dist','office','data','overview.json'));}catch(error){if(error.code!=='ENOENT')throw error;}
  const input=path.join(root,'.pages-data'),names=['market-history','macro','macro-context','macro-releases','macro-extended','fx-history','official-rates'];
- const key=(await Promise.all(names.map(name=>stat(path.join(input,name+'.json')).then(s=>s.mtimeMs)))).join(':');
+ const times=await Promise.all(names.map(name=>stat(path.join(input,name+'.json')).then(s=>s.mtimeMs,()=>0))),key=times.join(':');
+ // A Pages build is used only while it is at least as new as the local public data, so a refresh is never hidden by an old build.
+ const built=path.join(root,'dist','office','data','overview.json'),builtAt=await stat(built).then(s=>s.mtimeMs,()=>0);
+ if(builtAt&&builtAt>=Math.max(...times))return readFile(built);
  if(overviewCache?.key!==key){const destination=path.join(input,'overview.json');await writeOverviewSnapshot(input,destination);overviewCache={key,body:await readFile(destination)};}
  return overviewCache.body;
 }
@@ -91,12 +93,18 @@ const server=http.createServer(async(req,res)=>{
   if(url.pathname==='/data/overview.json'){
     try{const body=await readLocalOverview();res.writeHead(200,{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});return res.end(body);}catch{res.writeHead(404);return res.end('Public overview snapshot unavailable.');}
   }
-  // Ported sheets read their data as JSON. Locally that is the committed design snapshot (design/preview/*.js,
-  // window.NAME=...); the Pages build regenerates it from the current .pages-data on every deploy.
+  // Native price-refresh buckets (00-7f), written beside the public snapshot by scripts/native-prices-data.mjs.
+  const bucket=/^data\/native-prices\/([0-7][0-9a-f])\.json$/.exec(name);
+  if(bucket){try{const body=await readFile(path.join(root,'.pages-data','native-prices',bucket[1]+'.json'));res.writeHead(200,{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});return res.end(body);}catch{res.writeHead(404);return res.end('Price-refresh publication unavailable.');}}
+  // Ported sheets read their data as JSON. Locally the sheets rebuilt from the current snapshot are preferred
+  // (.pages-data/sheet-data, written by buildSheetData in scripts/sheet-data.mjs); without them, the committed design
+  // snapshot (design/preview/*.js, window.NAME=...) is used. The Pages build regenerates them on every deploy.
+  const json={'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'};
   const history=/^sheet-data\/mk\/([A-Za-z0-9_.-]+\.json)$/.exec(name);
-  if(history){try{const body=await readFile(path.join(root,'design','preview','mk',history[1]));res.writeHead(200,{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});return res.end(body);}catch{res.writeHead(404);return res.end('Instrument history unavailable.');}}
+  if(history){try{const body=await readFile(path.join(root,'.pages-data','sheet-data','mk',history[1])).catch(()=>readFile(path.join(root,'design','preview','mk',history[1])));res.writeHead(200,json);return res.end(body);}catch{res.writeHead(404);return res.end('Instrument history unavailable.');}}
   const sheet=/^sheet-data\/(countries|macro-sheet|cycles|calendar|markets-sheet|records-sheet)\.json$/.exec(name);
-  if(sheet){try{const text=await readFile(path.join(root,'design','preview',sheet[1]+'.js'),'utf8'),start=text.search(/window\.[A-Z]+=/),body=text.slice(text.indexOf('=',start)+1).trim().replace(/;$/,'');JSON.parse(body);res.writeHead(200,{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});return res.end(body);}catch{res.writeHead(404);return res.end('Sheet data unavailable.');}}
+  if(sheet){try{const fresh=await readFile(path.join(root,'.pages-data','sheet-data',sheet[1]+'.json'),'utf8').then(t=>(JSON.parse(t),t),()=>null);if(fresh){res.writeHead(200,json);return res.end(fresh);}
+   const text=await readFile(path.join(root,'design','preview',sheet[1]+'.js'),'utf8'),start=text.search(/window\.[A-Z]+=/),body=text.slice(text.indexOf('=',start)+1).trim().replace(/;$/,'');JSON.parse(body);res.writeHead(200,json);return res.end(body);}catch{res.writeHead(404);return res.end('Sheet data unavailable.');}}
   // The Overview's architectural model: Blender frames kept once, in design/preview/frames, and served under model/.
   if(/^model\/build-(light|dark)(-(\d{2}|final)\.webp|\.json)$/.test(name)){
     try{const body=await readFile(path.join(root,'design','preview','frames',name.slice(6)));res.writeHead(200,{'Content-Type':types[path.extname(name)],'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});return res.end(body);}catch{res.writeHead(404);return res.end('Not found');}

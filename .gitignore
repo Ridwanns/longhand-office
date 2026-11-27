@@ -30,3 +30,4 @@ Thumbs.db
 .tools/
 
 __pycache__/
+.pages-data-previous/

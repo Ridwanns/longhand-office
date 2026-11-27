@@ -86,7 +86,10 @@ function renderMarkets(root,quotes){
  const eligible=feedCache.markets.filter(m=>m.quote).map(m=>({m,observations:overviewSession(m.quote).history})).filter(({observations})=>Date.now()-Date.parse(observations.at(-1)?.date)>0&&Date.now()-Date.parse(observations.at(-1)?.date)<7*86400000).map(({m,observations})=>({key:m.category+':'+m.symbol,label:OVERVIEW_MARKETS.find(s=>s.category===m.category&&s.symbol===m.symbol).label,observations}));
  const end=eligible.flatMap(s=>s.observations).map(o=>o.date).sort().at(-1),start=end?new Date(Date.parse(end)-range*86400000).toISOString().slice(0,10):undefined,result=buildAlignedMarketComparison(eligible,{start});
  const target=root.querySelector('[data-command-comparison]');
- target.innerHTML=result.available&&result.series.length>=2?marketComparisonChart(result,target.clientWidth):'<p class="command-empty">Comparable source history is unavailable. '+esc(result.reason||'At least two current series are required.')+'</p>';
+ // Name the real reason: when every series is older than a week the problem is the snapshot's age, not the selection.
+ const newest=feedCache.markets.filter(m=>m.quote).map(m=>overviewSession(m.quote).history.at(-1)?.date).filter(Boolean).sort().at(-1);
+ const reason=eligible.length<2&&newest?'The latest published closes ('+labelDate(newest)+') are more than a week old. Refresh the market data to compare them.':result.reason||'At least two current series are required.';
+ target.innerHTML=result.available&&result.series.length>=2?marketComparisonChart(result,target.clientWidth):'<p class="command-empty">Comparable source history is unavailable. '+esc(reason)+'</p>';
  if(result.available&&result.series.length>=2)bindMarketComparison(target,result);
  root.querySelector('[data-command-context]').innerHTML=feedCache.context.filter(c=>!feedCache.yieldCurve||c.key!=='UST10Y').map(c=>'<a href="'+(c.key==='UST10Y'?'#market/bonds':'#market/macro/id/markets')+'"><span>'+esc(c.label)+'</span><strong>'+num(c.value,c.key==='USDIDR'?0:2)+' <small>'+esc(c.unit)+'</small></strong><time>'+labelDate(c.date)+'</time></a>').join('');
  root.querySelectorAll('[data-command-range]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.commandRange)===range)));
