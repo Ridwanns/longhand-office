@@ -6,48 +6,52 @@
   "series": [
     {
       "id": "review-KOR-inflation",
-      "sourceUrl": "https://mods.go.kr/board.es?act=view&bid=11751&list_no=447323&mid=a20109020000",
-      "reviewedAt": "2026-10-18T13:58:20Z",
-      "observations": [{"date": "2026-09-01", "value": 2.9, "status": "reported", "releasedAt": "2026-10-02"}],
-      "sourceNotes": "Official national headline CPI annual change for September. Not the 0.3% monthly change, the 2.8% excluding-food-and-energy annual change, or the 120.43 index level (2020=100)."
+      "sourceUrl": "https://mods.go.kr/board.es?act=view&bid=11751&list_no=447803&mid=a20109020000",
+      "reviewedAt": "2026-11-27T13:58:00Z",
+      "observations": [{"date": "2026-10-01", "value": 2.8, "status": "reported", "releasedAt": "2026-11-03"}],
+      "sourceNotes": "Press release \"Consumer Price Index in October 2026\", dated 2026-11-03: \"The Consumer Price Index was 120.73 (2020=100) in October 2026. The index increased 0.2 percent from the preceding month and rose 2.8 percent from the same month of the previous year.\" Official national headline CPI annual change for October. Not the 0.2% monthly change, the 2.8% excluding-food-and-energy annual change, or the 120.73 index level. Earlier review: 2.9 for September 2026 (release of 2 October 2026)."
     },
     {
       "id": "review-CHN-inflation",
-      "sourceUrl": "https://www.stats.gov.cn/english/PressRelease/202610/t20261015_1965500.html",
+      "sourceUrl": "https://www.stats.gov.cn/english/PressRelease/202611/t20261111_1965808.html",
+      "reviewedAt": "2026-11-27T13:59:00Z",
       "observations": [
         {
-          "date": "2026-09-01",
-          "value": 0.9,
+          "date": "2026-10-01",
+          "value": 0.7,
           "status": "reported",
-          "releasedAt": "2026-10-15"
+          "releasedAt": "2026-11-10"
         }
       ],
-      "sourceNotes": "Headline national CPI, not January-September average or monthly change."
+      "sourceNotes": "NBS press release \"Consumer Price Index in October 2026\", page header \"2026-11-10 09:30\" (the English page address carries 20261111): \"In October 2026, China's Consumer Price Index (CPI) increased by 0.7% year on year.\" Table row Consumer Price Index, column Growth Rate Y/Y (%): 0.7. Headline national CPI, not the 0.9% January-October average or the 0.0% month-on-month change. The release notes that CPI has been compiled on a 2025 base since January 2026. Earlier review: 0.9 for September 2026 (release of 15 October 2026)."
     },
     {
       "id": "review-IND-inflation",
       "sourceUrl": "https://esankhyiki.mospi.gov.in/",
+      "reviewedAt": "2026-11-27T14:01:00Z",
       "observations": [
         {
-          "date": "2026-09-01",
-          "value": 5.54,
+          "date": "2026-10-01",
+          "value": 6.09,
           "status": "provisional",
-          "releasedAt": "2026-10-12"
+          "releasedAt": "2026-11-12"
         }
       ],
-      "sourceNotes": "All India combined, base 2024. September provisional rate; previous-base history is kept separate. Official dashboard and 12 October release-calendar entry checked."
+      "sourceNotes": "All India combined CPI (General), base 2024=100. eSankhyiki CPI table row 2024 | Current | 2026 | October | All India | Combined | CPI (General): index 110.05, inflation 6.09. MoSPI \"Press Release of Consumer Price Index on Base 2024=100 for October, 2026\" (PIB, posted 12 Nov 2026 4:00PM): \"Year-on-year inflation rate based on All India Consumer Price Index (CPI) with base year 2024 for the month of October, 2026 over October, 2025 is 6.09% (Provisional)\". Combined column, not rural 6.63% or urban 5.41%. The same release gives September 2026 (Final) combined 5.54, unchanged from the provisional rate reviewed earlier, and says CPI for November 2026 will be released on 14 December 2026. Previous-base history is kept separate."
     },
     {
       "id": "review-THA-inflation",
       "sourceUrl": "https://www.bot.or.th/en/thai-economy.html",
+      "reviewedAt": "2026-11-27T14:02:00Z",
       "observations": [
         {
-          "date": "2026-08-01",
-          "value": 2.53,
-          "status": "reported"
+          "date": "2026-10-01",
+          "value": 3.9,
+          "status": "reported",
+          "releasedAt": "2026-11-06"
         }
       ],
-      "sourceNotes": "Official Bank of Thailand economy page labels August headline inflation 2.53%; the BIS August vintage differs and is kept separate."
+      "sourceNotes": "Bank of Thailand economy page, Key Economic and Financial Statistics: \"Headline Inflation (%YoY) 3.90% Oct 2026\"; not core inflation 1.58%. The BOT page gives no release date. The national compiler, the Ministry of Commerce Trade Policy and Strategy Office, shows the same reading on tpso.go.th (CPI, OCT 69: index 103.9, M/M 0.94, Y/Y 3.9, A/A 1.77), and its list of trade-index press conferences dates the October 2026 release \"เผยแพร่เมื่อวันที่ 06 พฤศจิกายน 2569\" (published 6 November 2026); releasedAt is that date. Earlier review: 2.53 for August 2026. BIS vintages are kept separate."
     },
     {
       "id": "review-IDN-yield",
@@ -65,30 +69,33 @@
     {
       "id": "review-MYS-yield",
       "sourceUrl": "https://financialmarkets.bnm.gov.my/benchmark-yields?form=MG0AV3",
+      "reviewedAt": "2026-11-27T14:06:00Z",
       "observations": [
         {
-          "date": "2026-10-16",
-          "value": 3.83,
+          "date": "2026-11-27",
+          "value": 3.79,
           "status": "reported"
         }
       ],
-      "sourceNotes": "Conventional MGS 10Y Close column, not 3.48 coupon, MGII Islamic 3.90 close or a 3Y/5Y yield. Trading date 16 October."
+      "sourceNotes": "Benchmark Yields, Trading Date 27 Nov 2026, table Malaysian Government Securities (MGS) - Conventional, row 10Y (maturity October 2036), Close column 3.79; the page header also shows \"MGS 10 YEAR YIELD 3.79% as at 27 Nov 2026\". Not the 3.92 coupon, the 3.77 low, the MGII Islamic 10Y close 3.81 or a 3Y/5Y/7Y yield. Read at 22:06 Kuala Lumpur time, after that trading day. A daily close has no separate release date. Earlier review: 3.83 on 16 October 2026."
     },
     {
       "id": "review-SGP-yield",
       "sourceUrl": "https://data.gov.sg/datasets/d_5fe5a4bb4a1ecc4d8a56a095832e2b24/view",
+      "reviewedAt": "2026-11-27T14:07:00Z",
       "observations": [
         {
-          "date": "2026-08-01",
-          "value": 2.35,
-          "status": "reported"
+          "date": "2026-10-01",
+          "value": 2.24,
+          "status": "reported",
+          "releasedAt": "2026-11-19"
         }
       ],
-      "sourceNotes": "Row Government Securities - 10-Year Bond Yield, column 2026 Aug. End-of-period monthly value. The official API returned HTTP 403 during acquisition; this row was manually checked on the official dataset page."
+      "sourceNotes": "Dataset Current Banks Interest Rates (End Of Period), Monthly (SingStat; source Monetary Authority of Singapore), row Government Securities - 10-Year Bond Yield, column 2026 Oct: 2.24. End-of-period monthly value (\"Interest rates at the end-period are as at the end of month\"). The page shows \"Data from Jan 1988 to Oct 2026\" and \"Last updated 8 days ago (19 Nov 2026)\"; it states no separate release date for the October value, so releasedAt is that last-update date. The upstream SingStat table M700071 shows \"Data Last Updated: 13 Nov 2026\". Earlier review: 2.35 for August 2026; the same row now shows September 2026 at 2.47."
     },
     {
       "id": "review-AUS-inflation",
-      "reviewedAt": "2026-10-18T13:44:28Z",
+      "reviewedAt": "2026-11-27T14:05:00Z",
       "sourceUrl": "https://www.abs.gov.au/statistics/economy/price-indexes-and-inflation/consumer-price-index-australia/latest-release",
       "observations": [
         {
@@ -175,9 +182,21 @@
           "date": "2026-08-01",
           "value": 4,
           "status": "reported"
+        },
+        {
+          "date": "2026-09-01",
+          "value": 4.3,
+          "status": "reported",
+          "releasedAt": "2026-10-28"
+        },
+        {
+          "date": "2026-10-01",
+          "value": 4.9,
+          "status": "reported",
+          "releasedAt": "2026-11-25"
         }
       ],
-      "sourceNotes": "Original ABS annual-change column, April 2025 through August 2026. Last release 30 September; next release 28 October 2026. Not trimmed mean or monthly movement."
+      "sourceNotes": "Original ABS annual-change column of the table All groups CPI, Australia, monthly and annual movement (%), April 2025 through October 2026. Latest release \"Consumer Price Index, Australia, October 2026\", Released 25/11/2026: \"The Consumer Price Index (CPI) rose 4.9%, up from 4.3% in the 12 months to September 2026.\" It republishes April 2025-August 2026 unchanged. September 2026 (4.3%) was first published in the September 2026 release, Released 28/10/2026. Not trimmed mean (3.8%), the seasonally adjusted series or the monthly movement (0.5%)."
     },
     {
       "id": "review-NZL-inflation",

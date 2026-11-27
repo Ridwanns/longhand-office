@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
 import {RELEASE_SERIES,RELEASE_COUNTRIES,RELEASE_GROUPS,releasePeriodEnd,validateMacroReleases} from '../macro-releases-contract.js';
 import {releaseYoY,projectReleaseGem,projectReleaseDosm,projectReleaseSingstat,projectReleaseEuro,projectReleaseFred,projectReleaseOns} from '../scripts/macro-releases-data.mjs';
 import {releaseAtlasDatum,releaseCandidates,releaseHistory,releaseSummary,renderReleaseDesk} from '../macro-releases-ui.js';
@@ -34,4 +35,11 @@ test('Geographic overview prefers actual quarterly releases and preserves separa
  const feed={series:[item('review-MYS-gdp',[row('2026-07-01',5.3,'estimate')]),item('dosm-MYS-gdp',[row('2026-01-01',5.4),row('2026-04-01',6)])]},before=JSON.stringify(feed),datum=releaseAtlasDatum(feed,null,'MYS','gdp',now);
  assert.equal(datum.value,5.3);assert.equal(datum.period,'2026-Q3');assert.equal(datum.frequency,'Q');assert.equal(datum.status,'estimate');assert.equal(datum.change,'Previous consecutive observation unavailable');assert.equal(releaseHistory(datum.releaseItems).id,'dosm-MYS-gdp');assert.equal(JSON.stringify(feed),before);
  assert.equal(releaseAtlasDatum(feed,null,'TLS','gdp',now),null);assert.equal(releaseAtlasDatum(feed,null,'MYS','policy',now),null);assert.equal(releaseAtlasDatum(null,null,'MYS','gdp',now),null);
+});
+test('Each reviewed regional release keeps its own review time, contract source and a release date no later than the review',async()=>{
+ const record=JSON.parse(await readFile(new URL('../sources/macro-regional-reviewed.json',import.meta.url),'utf8')),reviewedAt=s=>s.reviewedAt??record.reviewedAt;
+ assert.deepEqual(record.series.map(s=>s.id).sort(),Object.keys(RELEASE_SERIES).filter(id=>RELEASE_SERIES[id].provider==='reviewed').sort());
+ const generatedAt=record.series.map(reviewedAt).sort().at(-1),f=fixture();f.generatedAt=generatedAt;
+ for(const s of record.series){assert.equal(s.sourceUrl,RELEASE_SERIES[s.id].sourceUrl);assert.ok(reviewedAt(s)>=record.reviewedAt);for(const o of s.observations)assert.ok(o.releasedAt===null||o.releasedAt<=reviewedAt(s).slice(0,10));f.series[f.series.findIndex(x=>x.id===s.id)]={...item(s.id,s.observations),retrievedAt:reviewedAt(s)};}
+ assert.equal(validateMacroReleases(f,Date.parse(generatedAt)),f);
 });
