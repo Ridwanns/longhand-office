@@ -51,15 +51,16 @@
     },
     {
       "id": "review-IDN-yield",
-      "sourceUrl": "https://www.kemenkeu.go.id/APBNKitaSeptember2026",
+      "sourceUrl": "https://www.kemenkeu.go.id/APBNKitaNovember2026",
+      "reviewedAt": "2026-11-27T12:45:00Z",
       "observations": [
         {
-          "date": "2026-09-15",
-          "value": 7.17,
+          "date": "2026-11-11",
+          "value": 7.59,
           "status": "reported"
         }
       ],
-      "sourceNotes": "End-of-period value through 15 September, not the 6.80% year-to-date average. This is an older observation and must be flagged."
+      "sourceNotes": "APBN KiTa, EDISI November 2026, Realisasi Asumsi Dasar Ekonomi Makro: Suku Bunga SBN 10 Tahun 7,59 (eop) (%; s.d. 11 Nov 2026). End-of-period value through 11 November 2026, not the 6.89% year-to-date average (s.d. 10 Nov 2026). The page gives no separate release date, so none is recorded. Earlier review: 7.17 through 15 September 2026 (APBN KiTa September 2026)."
     },
     {
       "id": "review-MYS-yield",

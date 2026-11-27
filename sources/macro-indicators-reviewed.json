@@ -1,6 +1,6 @@
 {
-  "reviewedAt": "2026-11-08T09:35:00.000Z",
-  "note": "Manually reviewed official Bank Indonesia releases on 20 October 2026; October 2026 inflation composition (sp_2823826) and October 2026 reserves (sp_2824226) added from the official BI pages opened on 8 November 2026. Realisations only. Survey projections and expectations about future production are not appended as realised observations. Review date is fixed; collection does not renew this vintage.",
+  "reviewedAt": "2026-11-27T12:55:00.000Z",
+  "note": "Manually reviewed official Bank Indonesia releases. Opened on 27 November 2026: Survei Konsumen Oktober 2026 (sp_2824526), Survei Penjualan Eceran Oktober 2026 (sp_2824626, September realisation only), Uang Beredar September 2026 (sp_2823526) and Oktober 2026 (sp_2825626, which revised September M2 and credit growth), and the trade-balance release citing BPS (sp_2823926). Earlier: releases of 20 October 2026, and on 8 November 2026 the October 2026 inflation composition (sp_2823826) and October 2026 reserves (sp_2824226). Realisations only. Survey projections and expectations about future production are not appended as realised observations. Each observation keeps the release that reported it. Review date is fixed; collection does not renew this vintage.",
   "series": [
     {
       "id": "id-cci",
@@ -11,6 +11,13 @@
           "status": "reported",
           "releasedAt": "2026-10-08",
           "sourceUrl": "https://www.bi.go.id/en/publikasi/ruang-media/news-release/Pages/sp_2821626.aspx"
+        },
+        {
+          "date": "2026-10-01",
+          "value": 119.9,
+          "status": "reported",
+          "releasedAt": "2026-11-09",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2824526.aspx"
         }
       ]
     },
@@ -30,6 +37,13 @@
           "status": "reported",
           "releasedAt": "2026-10-08",
           "sourceUrl": "https://www.bi.go.id/en/publikasi/ruang-media/news-release/Pages/sp_2821626.aspx"
+        },
+        {
+          "date": "2026-10-01",
+          "value": 130.7,
+          "status": "reported",
+          "releasedAt": "2026-11-09",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2824526.aspx"
         }
       ]
     },
@@ -49,6 +63,13 @@
           "status": "reported",
           "releasedAt": "2026-10-08",
           "sourceUrl": "https://www.bi.go.id/en/publikasi/ruang-media/news-release/Pages/sp_2821626.aspx"
+        },
+        {
+          "date": "2026-10-01",
+          "value": 109.1,
+          "status": "reported",
+          "releasedAt": "2026-11-09",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2824526.aspx"
         }
       ]
     },
@@ -68,6 +89,13 @@
           "status": "reported",
           "releasedAt": "2026-10-09",
           "sourceUrl": "https://www.bi.go.id/en/publikasi/ruang-media/news-release/Pages/sp_2821726.aspx"
+        },
+        {
+          "date": "2026-09-01",
+          "value": 0.6,
+          "status": "reported",
+          "releasedAt": "2026-11-10",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2824626.aspx"
         }
       ]
     },
@@ -137,6 +165,20 @@
           "status": "reported",
           "releasedAt": "2026-09-24",
           "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2819526.aspx"
+        },
+        {
+          "date": "2026-09-01",
+          "value": 10587.9,
+          "status": "reported",
+          "releasedAt": "2026-10-22",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2823526.aspx"
+        },
+        {
+          "date": "2026-10-01",
+          "value": 10698,
+          "status": "reported",
+          "releasedAt": "2026-11-23",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2825626.aspx"
         }
       ]
     },
@@ -156,6 +198,20 @@
           "status": "reported",
           "releasedAt": "2026-09-24",
           "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2819526.aspx"
+        },
+        {
+          "date": "2026-09-01",
+          "value": 8.5,
+          "status": "reported",
+          "releasedAt": "2026-11-23",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2825626.aspx"
+        },
+        {
+          "date": "2026-10-01",
+          "value": 9.3,
+          "status": "reported",
+          "releasedAt": "2026-11-23",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2825626.aspx"
         }
       ]
     },
@@ -175,6 +231,20 @@
           "status": "reported",
           "releasedAt": "2026-09-24",
           "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2819526.aspx"
+        },
+        {
+          "date": "2026-09-01",
+          "value": 12.8,
+          "status": "reported",
+          "releasedAt": "2026-11-23",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2825626.aspx"
+        },
+        {
+          "date": "2026-10-01",
+          "value": 12.7,
+          "status": "reported",
+          "releasedAt": "2026-11-23",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2825626.aspx"
         }
       ]
     },
@@ -303,15 +373,15 @@
     },
     {
       "id": "id-trade-official",
-      "reviewedAt": "2026-10-21T05:40:51.000Z",
+      "reviewedAt": "2026-11-27T12:55:00.000Z",
       "evidence": {
-        "reviewMode": "Official publisher article text returned by web search; direct page request timed out.",
-        "releasedAt": "2026-10-06",
-        "sourceUrl": "https://www.kemendag.go.id/index.php/berita/siaran-pers/surplus-perdagangan-agustus-2026-menguat-surplus-januari-agustus-2026-tembus-usd-725-miliar",
-        "precision": "Reported monthly balances rounded to USD billions; not derived from rounded exports/imports or cumulative totals.",
+        "reviewMode": "Official Bank Indonesia release page opened directly.",
+        "releasedAt": "2026-11-02",
+        "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2823926.aspx",
+        "precision": "Reported monthly balances in USD billions, as BI states them from BPS data; not derived from exports minus imports.",
         "excerpts": [
-          "surplus senilai USD 3,55 miliar",
-          "surplus Juli 2026 yang tercatat sebesar USD 0,12 miliar."
+          "neraca perdagangan Indonesia pada September 2026 mencatat surplus sebesar 3,36 miliar dolar AS",
+          "melanjutkan surplus pada Agustus 2026 sebesar 3,55 miliar dolar AS"
         ]
       },
       "observations": [
@@ -326,10 +396,27 @@
           "date": "2026-08-01",
           "value": 3.55,
           "status": "reported",
-          "releasedAt": "2026-10-06",
-          "sourceUrl": "https://www.kemendag.go.id/index.php/berita/siaran-pers/surplus-perdagangan-agustus-2026-menguat-surplus-januari-agustus-2026-tembus-usd-725-miliar"
+          "releasedAt": "2026-11-02",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2823926.aspx"
+        },
+        {
+          "date": "2026-09-01",
+          "value": 3.36,
+          "status": "reported",
+          "releasedAt": "2026-11-02",
+          "sourceUrl": "https://www.bi.go.id/id/publikasi/ruang-media/news-release/Pages/sp_2823926.aspx"
         }
-      ]
+      ],
+      "priorEvidence": {
+        "reviewMode": "Official publisher article text returned by web search; direct page request timed out.",
+        "releasedAt": "2026-10-06",
+        "sourceUrl": "https://www.kemendag.go.id/index.php/berita/siaran-pers/surplus-perdagangan-agustus-2026-menguat-surplus-januari-agustus-2026-tembus-usd-725-miliar",
+        "precision": "Reported monthly balances rounded to USD billions; not derived from rounded exports/imports or cumulative totals.",
+        "excerpts": [
+          "surplus senilai USD 3,55 miliar",
+          "surplus Juli 2026 yang tercatat sebesar USD 0,12 miliar."
+        ]
+      }
     }
   ],
   "expectations": [
