@@ -1,9 +1,10 @@
 import {EXTENDED_SERIES} from './macro-extended-contract.js';
-import {RELEASE_SERIES,releasePeriodEnd,validateMacroReleases} from './macro-releases-contract.js';
+import {RELEASE_SERIES,validateMacroReleases} from './macro-releases-contract.js';
 import {MACRO_SERIES} from './macro-contract.js';
 import {CONTEXT_COUNTRIES} from './macro-context-contract.js';
 import {macroPeriodRows,macroDateLabel,macroPointChange,nativeMacroChart} from './macro-chart.js';
 import {contextWindow} from './macro-context-math.js';
+import {readingOutdated} from './source-freshness.js';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const num=v=>new Intl.NumberFormat('en-GB',{maximumFractionDigits:2,minimumFractionDigits:1}).format(v);
 let cache,pending;
@@ -17,7 +18,7 @@ export function releaseCandidates(feed,legacy,country,metric,extended=null){
 export function releaseHistory(items,requested){return items.find(s=>s.id===requested)||items.find(s=>s.observations.filter(o=>Number.isFinite(o.value)).length>=40)||items.find(s=>s.observations.filter(o=>Number.isFinite(o.value)).length>1)||items[0]||null;}
 export function releaseSummary(item,now=Date.now()){
  if(!item?.latest)return {available:false,outdated:false,laterMissing:false};const {spec,latest}=item;
- return {available:true,outdated:now-Date.parse(releasePeriodEnd(latest.date,spec.frequency))>({Q:210,M:75}[spec.frequency])*86400000||now-Date.parse(item.retrievedAt)>10*86400000,laterMissing:item.supplied?.date>latest.date};
+ return {available:true,outdated:readingOutdated({latest,frequency:spec.frequency,retrievedAt:item.retrievedAt,reviewed:spec.provider==='reviewed',limitDays:{Q:210,M:75}[spec.frequency],now}),laterMissing:item.supplied?.date>latest.date};
 }
 export function releaseAtlasDatum(feed,legacy,country,indicator,now=Date.now(),extended=null){
  if(!feed&&!extended||!['gdp','cpi'].includes(indicator))return null;

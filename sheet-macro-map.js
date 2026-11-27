@@ -1,6 +1,9 @@
 // Sheet 02 Macro: world map, schedule and country dossier. Ported from design/preview/macro.html.
 // Every value comes from the published sheet data (window.COUNTRIES), built from the Office snapshot.
 import {MAP_COUNTRIES} from './macro-map-data.js';
+// The headline compares like with like: a reading flagged outdated, or an annual figure among quarterly and monthly
+// ones, is kept on the map but not counted or ranked.
+export const comparableReadings=all=>({current:all.filter(r=>!r.stale&&r.f!=='A'),left:all.filter(r=>r.stale||r.f==='A')});
 export function mountMacroMap(listen){
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const C=window.COUNTRIES;
@@ -64,16 +67,22 @@ function tipMove(e){if(tipReq)return;tipReq=requestAnimationFrame(()=>{tipReq=nu
 
 /* ---------- headline, legend, schedule ---------- */
 function headline(){
-  const R=ranked(K),n=R.length,idn=R.find(r=>r.iso==='IDN'),rk=idn?R.indexOf(idn)+1:null;
-  const top=R[0],low=R.at(-1),med=median(R);
-  if(K==='gdp'){const neg=R.filter(r=>r.v<0);$('#headline').innerHTML=`${neg.length} of ${n} economies are <em>shrinking</em>.`;
-    $('#dek').innerHTML=`Below zero: ${neg.map(r=>r.name).join(', ')}. Fastest: ${top.name} ${f2(top.v)}%. Median ${f2(med)}%. Indonesia <b>${f2(idn.v)}%</b> (${idn.per}), rank ${rk} of ${n}.`}
-  if(K==='cpi'){const hot=R.filter(r=>r.v>=4);$('#headline').innerHTML=`Inflation is <em>4% or higher</em> in ${hot.length} of ${n} economies.`;
-    $('#dek').innerHTML=`Highest: ${R.slice(0,3).map(r=>`${r.name} ${r.v.toFixed(1)}%`).join(', ')}. Lowest: ${low.name} ${f2(low.v)}%. Median ${f2(med)}%. Indonesia <b>${f2(idn.v)}%</b> (${idn.per}), rank ${rk} of ${n}.`}
+  const all=ranked(K),{current:R,left}=comparableReadings(all),n=R.length;
+  const notCounted=left.length?` Not counted: ${left.length} with only an annual or outdated reading (${left.map(r=>r.name).join(', ')}).`:'';
+  if(!n){$('#headline').innerHTML=`No current ${IND[K].t.toLowerCase()} readings.`;$('#dek').innerHTML=notCounted.trim();return legend();}
+  const idnAll=all.find(r=>r.iso==='IDN'),idn=R.find(r=>r.iso==='IDN'),rk=idn?R.indexOf(idn)+1:null,top=R[0],low=R.at(-1),med=median(R);
+  const indo=(label,extra='')=>idn?` ${label} <b>${f2(idn.v)}%</b> (${extra}${idn.per}), rank ${rk} of ${n}.`:idnAll?` ${label} <b>${f2(idnAll.v)}%</b> (${idnAll.per}), outdated and not ranked.`:'';
+  if(K==='gdp'){const neg=R.filter(r=>r.v<0);$('#headline').innerHTML=`${neg.length} of ${n} economies with current data are <em>shrinking</em>.`;
+    $('#dek').innerHTML=`${neg.length?'Below zero: '+neg.map(r=>r.name).join(', ')+'. ':''}Fastest: ${top.name} ${f2(top.v)}%. Median ${f2(med)}%.${indo('Indonesia')}${notCounted}`}
+  if(K==='cpi'){const hot=R.filter(r=>r.v>=4);$('#headline').innerHTML=`Inflation is <em>4% or higher</em> in ${hot.length} of ${n} economies with current data.`;
+    $('#dek').innerHTML=`Highest: ${R.slice(0,3).map(r=>`${r.name} ${r.v.toFixed(1)}%`).join(', ')}. Lowest: ${low.name} ${f2(low.v)}%. Median ${f2(med)}%.${indo('Indonesia')}${notCounted}`}
   if(K==='policy'){$('#headline').innerHTML=`Policy rates run from <em>${f2(low.v)}%</em> to <em>${f2(top.v)}%</em>.`;
-    $('#dek').innerHTML=`${low.name} lowest, ${top.name} highest, across ${n} central banks. Median ${f2(med)}%. Bank Indonesia <b>${f2(idn.v)}%</b> (decision ${idn.per}), rank ${rk} of ${n}.`}
+    $('#dek').innerHTML=`${low.name} lowest, ${top.name} highest, across ${n} central banks with current data. Median ${f2(med)}%.${indo('Bank Indonesia','decision ')}${notCounted}`}
   if(K==='yield'){$('#headline').innerHTML=`Ten-year yields: <em>${f2(low.v)}%</em> in ${low.name}, <em>${f2(top.v)}%</em> in ${top.name}.`;
-    $('#dek').innerHTML=`${n} government bond markets connected. Median ${f2(med)}%. Indonesia <b>${f2(idn.v)}%</b> (${idn.per}${idn.stale?', flagged outdated':''}), rank ${rk} of ${n}.`}
+    $('#dek').innerHTML=`${n} government bond markets with current data. Median ${f2(med)}%.${indo('Indonesia')}${notCounted}`}
+  legend();
+}
+function legend(){
   $('#legend').innerHTML=IND[K].bins.map(b=>`<span><i class="sw" data-css="background:${b[2]}"></i>${b[3]}</span>`).join('')+`<span><i class="sw hatch"></i>outdated (app flag)</span><span><i class="sw" data-css="background:var(--land)"></i>no connected series</span>`;
 }
 function schedule(){
